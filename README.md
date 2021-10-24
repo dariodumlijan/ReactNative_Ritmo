@@ -16,6 +16,8 @@ Easy to use, user-friendly interface:
 -   10 different sound library (Acoustic, Trap, Lofi and more) - more to come
 -   3 time signatures
 -   An adjustable BPM
+-   Presets
+-   Export as MIDI
 
 Ritmo is a redefined beatmaker. It is meant to help people create new and interesting beats/rhythms in a way they never made them before. Encouraging the user to think of a beat as a circle instead of a straight path, you can more easily see and find new possibilities.
 
