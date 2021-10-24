@@ -1,0 +1,845 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		00E356F31AD99517003FC87E /* RitmoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RitmoTests.m */; };
+		0691992D34C10146A1FB0B67 /* libPods-Ritmo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC3AC5A26133FA110C26954E /* libPods-Ritmo.a */; };
+		0A364380B0164841B5D19F37 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 35D199E344164BBBB2EECEE6 /* Montserrat-SemiBold.ttf */; };
+		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
+		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		249016A554714B3BB406B080 /* midiFile.png in Resources */ = {isa = PBXBuildFile; fileRef = 1919AF634765473C9E053803 /* midiFile.png */; };
+		2FDDAD665B604F34A65BDF93 /* midiFile_Logic.png in Resources */ = {isa = PBXBuildFile; fileRef = AB5094021E134B16833A7F46 /* midiFile_Logic.png */; };
+		3E0E2AEC2724D05A002BFFB7 /* epictoms_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ACE2724D05A002BFFB7 /* epictoms_kick.mp3 */; };
+		3E0E2AED2724D05A002BFFB7 /* african1_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ACF2724D05A002BFFB7 /* african1_kick.mp3 */; };
+		3E0E2AEE2724D05A002BFFB7 /* trap_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD02724D05A002BFFB7 /* trap_snare.mp3 */; };
+		3E0E2AEF2724D05A002BFFB7 /* latin_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD12724D05A002BFFB7 /* latin_snare.mp3 */; };
+		3E0E2AF02724D05A002BFFB7 /* toms_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD22724D05A002BFFB7 /* toms_hihat.mp3 */; };
+		3E0E2AF12724D05A002BFFB7 /* african2_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD32724D05A002BFFB7 /* african2_snare.mp3 */; };
+		3E0E2AF22724D05A002BFFB7 /* taiko_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD42724D05A002BFFB7 /* taiko_hihat.mp3 */; };
+		3E0E2AF32724D05A002BFFB7 /* taiko_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD52724D05A002BFFB7 /* taiko_kick.mp3 */; };
+		3E0E2AF42724D05A002BFFB7 /* hiphop_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD62724D05A002BFFB7 /* hiphop_hihat.mp3 */; };
+		3E0E2AF52724D05A002BFFB7 /* hiphop_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD72724D05A002BFFB7 /* hiphop_kick.mp3 */; };
+		3E0E2AF62724D05A002BFFB7 /* latin_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD82724D05A002BFFB7 /* latin_kick.mp3 */; };
+		3E0E2AF72724D05A002BFFB7 /* acoustic_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD92724D05A002BFFB7 /* acoustic_hihat.mp3 */; };
+		3E0E2AF82724D05A002BFFB7 /* lofi_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ADA2724D05A002BFFB7 /* lofi_hihat.mp3 */; };
+		3E0E2AF92724D05A002BFFB7 /* epictoms_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ADB2724D05A002BFFB7 /* epictoms_snare.mp3 */; };
+		3E0E2AFA2724D05A002BFFB7 /* african1_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ADC2724D05A002BFFB7 /* african1_hihat.mp3 */; };
+		3E0E2AFB2724D05A002BFFB7 /* taiko_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ADD2724D05A002BFFB7 /* taiko_snare.mp3 */; };
+		3E0E2AFC2724D05A002BFFB7 /* acoustic_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ADE2724D05A002BFFB7 /* acoustic_kick.mp3 */; };
+		3E0E2AFD2724D05A002BFFB7 /* lofi_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ADF2724D05A002BFFB7 /* lofi_kick.mp3 */; };
+		3E0E2AFE2724D05A002BFFB7 /* hiphop_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE02724D05A002BFFB7 /* hiphop_snare.mp3 */; };
+		3E0E2AFF2724D05A002BFFB7 /* trap_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE12724D05A002BFFB7 /* trap_hihat.mp3 */; };
+		3E0E2B002724D05A002BFFB7 /* latin_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE22724D05A002BFFB7 /* latin_hihat.mp3 */; };
+		3E0E2B012724D05A002BFFB7 /* african2_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE32724D05A002BFFB7 /* african2_kick.mp3 */; };
+		3E0E2B022724D05A002BFFB7 /* toms_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE42724D05A002BFFB7 /* toms_snare.mp3 */; };
+		3E0E2B032724D05A002BFFB7 /* african2_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE52724D05A002BFFB7 /* african2_hihat.mp3 */; };
+		3E0E2B042724D05A002BFFB7 /* trap_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE62724D05A002BFFB7 /* trap_kick.mp3 */; };
+		3E0E2B052724D05A002BFFB7 /* toms_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE72724D05A002BFFB7 /* toms_kick.mp3 */; };
+		3E0E2B062724D05A002BFFB7 /* epictoms_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE82724D05A002BFFB7 /* epictoms_hihat.mp3 */; };
+		3E0E2B072724D05A002BFFB7 /* african1_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE92724D05A002BFFB7 /* african1_snare.mp3 */; };
+		3E0E2B082724D05A002BFFB7 /* acoustic_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AEA2724D05A002BFFB7 /* acoustic_snare.mp3 */; };
+		3E0E2B092724D05A002BFFB7 /* lofi_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AEB2724D05A002BFFB7 /* lofi_snare.mp3 */; };
+		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		A728D8DF5314A6CDC861CF79 /* libPods-Ritmo-RitmoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D242DC80942A1FD7309BF658 /* libPods-Ritmo-RitmoTests.a */; };
+		CBF4BEFACF8B4AC4945F24EF /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7A4A786CCE940F0A56C0042 /* Montserrat-Regular.ttf */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		00E356F41AD99517003FC87E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
+			remoteInfo = Ritmo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		00E356EE1AD99517003FC87E /* RitmoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RitmoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* RitmoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RitmoTests.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* Ritmo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ritmo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Ritmo/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Ritmo/AppDelegate.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Ritmo/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Ritmo/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Ritmo/main.m; sourceTree = "<group>"; };
+		176F1212BA3CF7F9ADFD6B91 /* Pods-Ritmo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ritmo.debug.xcconfig"; path = "Target Support Files/Pods-Ritmo/Pods-Ritmo.debug.xcconfig"; sourceTree = "<group>"; };
+		1919AF634765473C9E053803 /* midiFile.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = midiFile.png; path = ../app/assets/img/midiFile.png; sourceTree = "<group>"; };
+		35D199E344164BBBB2EECEE6 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../app/assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
+		3E0E2ACE2724D05A002BFFB7 /* epictoms_kick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = epictoms_kick.mp3; sourceTree = "<group>"; };
+		3E0E2ACF2724D05A002BFFB7 /* african1_kick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = african1_kick.mp3; sourceTree = "<group>"; };
+		3E0E2AD02724D05A002BFFB7 /* trap_snare.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = trap_snare.mp3; sourceTree = "<group>"; };
+		3E0E2AD12724D05A002BFFB7 /* latin_snare.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = latin_snare.mp3; sourceTree = "<group>"; };
+		3E0E2AD22724D05A002BFFB7 /* toms_hihat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = toms_hihat.mp3; sourceTree = "<group>"; };
+		3E0E2AD32724D05A002BFFB7 /* african2_snare.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = african2_snare.mp3; sourceTree = "<group>"; };
+		3E0E2AD42724D05A002BFFB7 /* taiko_hihat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = taiko_hihat.mp3; sourceTree = "<group>"; };
+		3E0E2AD52724D05A002BFFB7 /* taiko_kick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = taiko_kick.mp3; sourceTree = "<group>"; };
+		3E0E2AD62724D05A002BFFB7 /* hiphop_hihat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hiphop_hihat.mp3; sourceTree = "<group>"; };
+		3E0E2AD72724D05A002BFFB7 /* hiphop_kick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hiphop_kick.mp3; sourceTree = "<group>"; };
+		3E0E2AD82724D05A002BFFB7 /* latin_kick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = latin_kick.mp3; sourceTree = "<group>"; };
+		3E0E2AD92724D05A002BFFB7 /* acoustic_hihat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = acoustic_hihat.mp3; sourceTree = "<group>"; };
+		3E0E2ADA2724D05A002BFFB7 /* lofi_hihat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lofi_hihat.mp3; sourceTree = "<group>"; };
+		3E0E2ADB2724D05A002BFFB7 /* epictoms_snare.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = epictoms_snare.mp3; sourceTree = "<group>"; };
+		3E0E2ADC2724D05A002BFFB7 /* african1_hihat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = african1_hihat.mp3; sourceTree = "<group>"; };
+		3E0E2ADD2724D05A002BFFB7 /* taiko_snare.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = taiko_snare.mp3; sourceTree = "<group>"; };
+		3E0E2ADE2724D05A002BFFB7 /* acoustic_kick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = acoustic_kick.mp3; sourceTree = "<group>"; };
+		3E0E2ADF2724D05A002BFFB7 /* lofi_kick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lofi_kick.mp3; sourceTree = "<group>"; };
+		3E0E2AE02724D05A002BFFB7 /* hiphop_snare.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hiphop_snare.mp3; sourceTree = "<group>"; };
+		3E0E2AE12724D05A002BFFB7 /* trap_hihat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = trap_hihat.mp3; sourceTree = "<group>"; };
+		3E0E2AE22724D05A002BFFB7 /* latin_hihat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = latin_hihat.mp3; sourceTree = "<group>"; };
+		3E0E2AE32724D05A002BFFB7 /* african2_kick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = african2_kick.mp3; sourceTree = "<group>"; };
+		3E0E2AE42724D05A002BFFB7 /* toms_snare.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = toms_snare.mp3; sourceTree = "<group>"; };
+		3E0E2AE52724D05A002BFFB7 /* african2_hihat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = african2_hihat.mp3; sourceTree = "<group>"; };
+		3E0E2AE62724D05A002BFFB7 /* trap_kick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = trap_kick.mp3; sourceTree = "<group>"; };
+		3E0E2AE72724D05A002BFFB7 /* toms_kick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = toms_kick.mp3; sourceTree = "<group>"; };
+		3E0E2AE82724D05A002BFFB7 /* epictoms_hihat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = epictoms_hihat.mp3; sourceTree = "<group>"; };
+		3E0E2AE92724D05A002BFFB7 /* african1_snare.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = african1_snare.mp3; sourceTree = "<group>"; };
+		3E0E2AEA2724D05A002BFFB7 /* acoustic_snare.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = acoustic_snare.mp3; sourceTree = "<group>"; };
+		3E0E2AEB2724D05A002BFFB7 /* lofi_snare.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lofi_snare.mp3; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Ritmo/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8CB28F7762B660257A678DB0 /* Pods-Ritmo-RitmoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ritmo-RitmoTests.debug.xcconfig"; path = "Target Support Files/Pods-Ritmo-RitmoTests/Pods-Ritmo-RitmoTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8CF969082B7D1AD45D25FF03 /* Pods-Ritmo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ritmo.release.xcconfig"; path = "Target Support Files/Pods-Ritmo/Pods-Ritmo.release.xcconfig"; sourceTree = "<group>"; };
+		8EB736AC1DD327329816F691 /* Pods-Ritmo-RitmoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ritmo-RitmoTests.release.xcconfig"; path = "Target Support Files/Pods-Ritmo-RitmoTests/Pods-Ritmo-RitmoTests.release.xcconfig"; sourceTree = "<group>"; };
+		A7A4A786CCE940F0A56C0042 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../app/assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		AB5094021E134B16833A7F46 /* midiFile_Logic.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = midiFile_Logic.png; path = ../app/assets/img/midiFile_Logic.png; sourceTree = "<group>"; };
+		AC3AC5A26133FA110C26954E /* libPods-Ritmo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Ritmo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D242DC80942A1FD7309BF658 /* libPods-Ritmo-RitmoTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Ritmo-RitmoTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		00E356EB1AD99517003FC87E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A728D8DF5314A6CDC861CF79 /* libPods-Ritmo-RitmoTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		13B07F8C1A680F5B00A75B9A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0691992D34C10146A1FB0B67 /* libPods-Ritmo.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		00E356EF1AD99517003FC87E /* RitmoTests */ = {
+			isa = PBXGroup;
+			children = (
+				00E356F21AD99517003FC87E /* RitmoTests.m */,
+				00E356F01AD99517003FC87E /* Supporting Files */,
+			);
+			path = RitmoTests;
+			sourceTree = "<group>";
+		};
+		00E356F01AD99517003FC87E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				00E356F11AD99517003FC87E /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		13B07FAE1A68108700A75B9A /* Ritmo */ = {
+			isa = PBXGroup;
+			children = (
+				3E0E2ACD2724D05A002BFFB7 /* samples */,
+				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				13B07FB01A68108700A75B9A /* AppDelegate.m */,
+				13B07FB51A68108700A75B9A /* Images.xcassets */,
+				13B07FB61A68108700A75B9A /* Info.plist */,
+				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
+				13B07FB71A68108700A75B9A /* main.m */,
+			);
+			name = Ritmo;
+			sourceTree = "<group>";
+		};
+		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
+				AC3AC5A26133FA110C26954E /* libPods-Ritmo.a */,
+				D242DC80942A1FD7309BF658 /* libPods-Ritmo-RitmoTests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3E0E2ACD2724D05A002BFFB7 /* samples */ = {
+			isa = PBXGroup;
+			children = (
+				3E0E2ACE2724D05A002BFFB7 /* epictoms_kick.mp3 */,
+				3E0E2ACF2724D05A002BFFB7 /* african1_kick.mp3 */,
+				3E0E2AD02724D05A002BFFB7 /* trap_snare.mp3 */,
+				3E0E2AD12724D05A002BFFB7 /* latin_snare.mp3 */,
+				3E0E2AD22724D05A002BFFB7 /* toms_hihat.mp3 */,
+				3E0E2AD32724D05A002BFFB7 /* african2_snare.mp3 */,
+				3E0E2AD42724D05A002BFFB7 /* taiko_hihat.mp3 */,
+				3E0E2AD52724D05A002BFFB7 /* taiko_kick.mp3 */,
+				3E0E2AD62724D05A002BFFB7 /* hiphop_hihat.mp3 */,
+				3E0E2AD72724D05A002BFFB7 /* hiphop_kick.mp3 */,
+				3E0E2AD82724D05A002BFFB7 /* latin_kick.mp3 */,
+				3E0E2AD92724D05A002BFFB7 /* acoustic_hihat.mp3 */,
+				3E0E2ADA2724D05A002BFFB7 /* lofi_hihat.mp3 */,
+				3E0E2ADB2724D05A002BFFB7 /* epictoms_snare.mp3 */,
+				3E0E2ADC2724D05A002BFFB7 /* african1_hihat.mp3 */,
+				3E0E2ADD2724D05A002BFFB7 /* taiko_snare.mp3 */,
+				3E0E2ADE2724D05A002BFFB7 /* acoustic_kick.mp3 */,
+				3E0E2ADF2724D05A002BFFB7 /* lofi_kick.mp3 */,
+				3E0E2AE02724D05A002BFFB7 /* hiphop_snare.mp3 */,
+				3E0E2AE12724D05A002BFFB7 /* trap_hihat.mp3 */,
+				3E0E2AE22724D05A002BFFB7 /* latin_hihat.mp3 */,
+				3E0E2AE32724D05A002BFFB7 /* african2_kick.mp3 */,
+				3E0E2AE42724D05A002BFFB7 /* toms_snare.mp3 */,
+				3E0E2AE52724D05A002BFFB7 /* african2_hihat.mp3 */,
+				3E0E2AE62724D05A002BFFB7 /* trap_kick.mp3 */,
+				3E0E2AE72724D05A002BFFB7 /* toms_kick.mp3 */,
+				3E0E2AE82724D05A002BFFB7 /* epictoms_hihat.mp3 */,
+				3E0E2AE92724D05A002BFFB7 /* african1_snare.mp3 */,
+				3E0E2AEA2724D05A002BFFB7 /* acoustic_snare.mp3 */,
+				3E0E2AEB2724D05A002BFFB7 /* lofi_snare.mp3 */,
+			);
+			name = samples;
+			path = ../app/assets/samples;
+			sourceTree = "<group>";
+		};
+		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		83CBB9F61A601CBA00E9B192 = {
+			isa = PBXGroup;
+			children = (
+				13B07FAE1A68108700A75B9A /* Ritmo */,
+				832341AE1AAA6A7D00B99B32 /* Libraries */,
+				00E356EF1AD99517003FC87E /* RitmoTests */,
+				83CBBA001A601CBA00E9B192 /* Products */,
+				2D16E6871FA4F8E400B85C8A /* Frameworks */,
+				9B7F5DF9DB5D70BCDF0A19FC /* Pods */,
+				E7981D2047CD4D83B6B4E301 /* Resources */,
+			);
+			indentWidth = 2;
+			sourceTree = "<group>";
+			tabWidth = 2;
+			usesTabs = 0;
+		};
+		83CBBA001A601CBA00E9B192 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				13B07F961A680F5B00A75B9A /* Ritmo.app */,
+				00E356EE1AD99517003FC87E /* RitmoTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9B7F5DF9DB5D70BCDF0A19FC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				176F1212BA3CF7F9ADFD6B91 /* Pods-Ritmo.debug.xcconfig */,
+				8CF969082B7D1AD45D25FF03 /* Pods-Ritmo.release.xcconfig */,
+				8CB28F7762B660257A678DB0 /* Pods-Ritmo-RitmoTests.debug.xcconfig */,
+				8EB736AC1DD327329816F691 /* Pods-Ritmo-RitmoTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		E7981D2047CD4D83B6B4E301 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A7A4A786CCE940F0A56C0042 /* Montserrat-Regular.ttf */,
+				35D199E344164BBBB2EECEE6 /* Montserrat-SemiBold.ttf */,
+				AB5094021E134B16833A7F46 /* midiFile_Logic.png */,
+				1919AF634765473C9E053803 /* midiFile.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		00E356ED1AD99517003FC87E /* RitmoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "RitmoTests" */;
+			buildPhases = (
+				374AF866D2D73ADFC4E9BAEA /* [CP] Check Pods Manifest.lock */,
+				00E356EA1AD99517003FC87E /* Sources */,
+				00E356EB1AD99517003FC87E /* Frameworks */,
+				00E356EC1AD99517003FC87E /* Resources */,
+				2D243942CFBEC0EF942C3182 /* [CP] Embed Pods Frameworks */,
+				68E99A9D20872BE081F25AE1 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				00E356F51AD99517003FC87E /* PBXTargetDependency */,
+			);
+			name = RitmoTests;
+			productName = RitmoTests;
+			productReference = 00E356EE1AD99517003FC87E /* RitmoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		13B07F861A680F5B00A75B9A /* Ritmo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Ritmo" */;
+			buildPhases = (
+				CA385CF8069438B951738670 /* [CP] Check Pods Manifest.lock */,
+				FD10A7F022414F080027D42C /* Start Packager */,
+				13B07F871A680F5B00A75B9A /* Sources */,
+				13B07F8C1A680F5B00A75B9A /* Frameworks */,
+				13B07F8E1A680F5B00A75B9A /* Resources */,
+				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				C8C7D1FCBF1A6E533036CAC3 /* [CP] Embed Pods Frameworks */,
+				9E7A1CB103665072ADF49545 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Ritmo;
+			productName = Ritmo;
+			productReference = 13B07F961A680F5B00A75B9A /* Ritmo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		83CBB9F71A601CBA00E9B192 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1210;
+				TargetAttributes = {
+					00E356ED1AD99517003FC87E = {
+						CreatedOnToolsVersion = 6.2;
+						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						LastSwiftMigration = 1120;
+					};
+				};
+			};
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Ritmo" */;
+			compatibilityVersion = "Xcode 12.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 83CBB9F61A601CBA00E9B192;
+			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				13B07F861A680F5B00A75B9A /* Ritmo */,
+				00E356ED1AD99517003FC87E /* RitmoTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		00E356EC1AD99517003FC87E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		13B07F8E1A680F5B00A75B9A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3E0E2AF42724D05A002BFFB7 /* hiphop_hihat.mp3 in Resources */,
+				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				3E0E2AFE2724D05A002BFFB7 /* hiphop_snare.mp3 in Resources */,
+				3E0E2AF62724D05A002BFFB7 /* latin_kick.mp3 in Resources */,
+				3E0E2AF82724D05A002BFFB7 /* lofi_hihat.mp3 in Resources */,
+				3E0E2B062724D05A002BFFB7 /* epictoms_hihat.mp3 in Resources */,
+				3E0E2AF92724D05A002BFFB7 /* epictoms_snare.mp3 in Resources */,
+				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				3E0E2AF72724D05A002BFFB7 /* acoustic_hihat.mp3 in Resources */,
+				3E0E2AEE2724D05A002BFFB7 /* trap_snare.mp3 in Resources */,
+				3E0E2AEF2724D05A002BFFB7 /* latin_snare.mp3 in Resources */,
+				CBF4BEFACF8B4AC4945F24EF /* Montserrat-Regular.ttf in Resources */,
+				3E0E2B032724D05A002BFFB7 /* african2_hihat.mp3 in Resources */,
+				3E0E2AF52724D05A002BFFB7 /* hiphop_kick.mp3 in Resources */,
+				3E0E2AFF2724D05A002BFFB7 /* trap_hihat.mp3 in Resources */,
+				0A364380B0164841B5D19F37 /* Montserrat-SemiBold.ttf in Resources */,
+				3E0E2B052724D05A002BFFB7 /* toms_kick.mp3 in Resources */,
+				3E0E2B012724D05A002BFFB7 /* african2_kick.mp3 in Resources */,
+				3E0E2AF12724D05A002BFFB7 /* african2_snare.mp3 in Resources */,
+				3E0E2AEC2724D05A002BFFB7 /* epictoms_kick.mp3 in Resources */,
+				3E0E2AFD2724D05A002BFFB7 /* lofi_kick.mp3 in Resources */,
+				3E0E2AED2724D05A002BFFB7 /* african1_kick.mp3 in Resources */,
+				3E0E2B002724D05A002BFFB7 /* latin_hihat.mp3 in Resources */,
+				2FDDAD665B604F34A65BDF93 /* midiFile_Logic.png in Resources */,
+				3E0E2AFC2724D05A002BFFB7 /* acoustic_kick.mp3 in Resources */,
+				3E0E2AFA2724D05A002BFFB7 /* african1_hihat.mp3 in Resources */,
+				3E0E2B022724D05A002BFFB7 /* toms_snare.mp3 in Resources */,
+				3E0E2AF22724D05A002BFFB7 /* taiko_hihat.mp3 in Resources */,
+				249016A554714B3BB406B080 /* midiFile.png in Resources */,
+				3E0E2AF02724D05A002BFFB7 /* toms_hihat.mp3 in Resources */,
+				3E0E2B042724D05A002BFFB7 /* trap_kick.mp3 in Resources */,
+				3E0E2AF32724D05A002BFFB7 /* taiko_kick.mp3 in Resources */,
+				3E0E2AFB2724D05A002BFFB7 /* taiko_snare.mp3 in Resources */,
+				3E0E2B072724D05A002BFFB7 /* african1_snare.mp3 in Resources */,
+				3E0E2B092724D05A002BFFB7 /* lofi_snare.mp3 in Resources */,
+				3E0E2B082724D05A002BFFB7 /* acoustic_snare.mp3 in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle React Native code and images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+		};
+		2D243942CFBEC0EF942C3182 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Ritmo-RitmoTests/Pods-Ritmo-RitmoTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Ritmo-RitmoTests/Pods-Ritmo-RitmoTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ritmo-RitmoTests/Pods-Ritmo-RitmoTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		374AF866D2D73ADFC4E9BAEA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Ritmo-RitmoTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		68E99A9D20872BE081F25AE1 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Ritmo-RitmoTests/Pods-Ritmo-RitmoTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Ritmo-RitmoTests/Pods-Ritmo-RitmoTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ritmo-RitmoTests/Pods-Ritmo-RitmoTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9E7A1CB103665072ADF49545 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Ritmo/Pods-Ritmo-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Ritmo/Pods-Ritmo-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ritmo/Pods-Ritmo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C8C7D1FCBF1A6E533036CAC3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Ritmo/Pods-Ritmo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Ritmo/Pods-Ritmo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ritmo/Pods-Ritmo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CA385CF8069438B951738670 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Ritmo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FD10A7F022414F080027D42C /* Start Packager */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Start Packager";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		00E356EA1AD99517003FC87E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00E356F31AD99517003FC87E /* RitmoTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		13B07F871A680F5B00A75B9A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				13B07FC11A68108700A75B9A /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 13B07F861A680F5B00A75B9A /* Ritmo */;
+			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		00E356F61AD99517003FC87E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8CB28F7762B660257A678DB0 /* Pods-Ritmo-RitmoTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = RitmoTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lc++",
+					"$(inherited)",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Ritmo.app/Ritmo";
+			};
+			name = Debug;
+		};
+		00E356F71AD99517003FC87E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8EB736AC1DD327329816F691 /* Pods-Ritmo-RitmoTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COPY_PHASE_STRIP = NO;
+				INFOPLIST_FILE = RitmoTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lc++",
+					"$(inherited)",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Ritmo.app/Ritmo";
+			};
+			name = Release;
+		};
+		13B07F941A680F5B00A75B9A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 176F1212BA3CF7F9ADFD6B91 /* Pods-Ritmo.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3586QUHAP4;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = Ritmo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.chimerastudio.ritmoios;
+				PRODUCT_NAME = Ritmo;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		13B07F951A680F5B00A75B9A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8CF969082B7D1AD45D25FF03 /* Pods-Ritmo.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3586QUHAP4;
+				INFOPLIST_FILE = Ritmo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.chimerastudio.ritmoios;
+				PRODUCT_NAME = Ritmo;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		83CBBA201A601CBA00E9B192 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SDKROOT)/usr/lib/swift\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
+					"\"$(inherited)\"",
+				);
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		83CBBA211A601CBA00E9B192 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SDKROOT)/usr/lib/swift\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
+					"\"$(inherited)\"",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "RitmoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00E356F61AD99517003FC87E /* Debug */,
+				00E356F71AD99517003FC87E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Ritmo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				13B07F941A680F5B00A75B9A /* Debug */,
+				13B07F951A680F5B00A75B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Ritmo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83CBBA201A601CBA00E9B192 /* Debug */,
+				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
+}
