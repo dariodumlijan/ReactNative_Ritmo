@@ -1516,6 +1516,7 @@ export const RewardedScreen = ({ rewardedCallback }) => {
   }
 
   /* Register Admob Listeners - START */
+  /*
   RewardedAd.addEventListener('rewardedVideoDidFailToLoad', () => {
     resetRewarded();
   });
@@ -1535,17 +1536,20 @@ export const RewardedScreen = ({ rewardedCallback }) => {
       refreshCount();
     }
   });
+  */
   /* Register Admob Listeners - END */
 
   /* Request Ad Video - Function */
   async function requestReward() {
     setLoadRewarded(true);
 
+    /*
     await RewardedAd.setAdUnitID(
       Platform.OS === 'ios' ? admob_ios.rewarded : admob_android.rewarded,
     ); // Test ID, Replace with your-admob-unit-id
     await RewardedAd.requestAdAsync();
     await RewardedAd.showAdAsync();
+    */
   }
 
   /* Reset Rewarded Loading Animation - Function */
@@ -2780,7 +2784,7 @@ export const RhythmScreen = forwardRef((props, ref) => {
     <View style={styles.screenWrapper}>
       <View style={styles.topWrapper}>
         <View style={styles.navigation}>
-          <Logo style={styles.logo} />
+          <Logo style={styles.logo} fill={colors.gray} />
           <TouchableOpacity activeOpacity={0.8} onPress={navOpen}>
             <Menu style={styles.menu} />
           </TouchableOpacity>
@@ -3074,7 +3078,7 @@ function Home() {
   useEffect(() => {
     ImmersiveMode.setBarMode('FullSticky');
     initFadeIn();
-    // setTimeout(askForPermission, 1000);
+    /* setTimeout(askForPermission, 1000); */
   }, []);
 
   function initFadeIn() {
@@ -3184,7 +3188,7 @@ function Home() {
   }
   /* Screen Transition Animations - END */
 
-  /* Permission for tracking & personalised Ads */
+  /* Permission for tracking & personalised Ads
   async function askForPermission() {
     const { granted } = await getPermissionsAsync();
     if (granted) {
@@ -3198,6 +3202,7 @@ function Home() {
       setAds(true);
     }
   }
+  */
 
   /* Refs */
   const refMain = useRef(null);
@@ -3697,7 +3702,7 @@ function Home() {
         </Animated.View>
       ) : null}
 
-      {/* RewardedScreen */}
+      {/* RewardedScreen 
       {rewardedOpen ? (
         <Animated.View
           style={{
@@ -3707,6 +3712,7 @@ function Home() {
           <RewardedScreen rewardedCallback={openRewarded} />
         </Animated.View>
       ) : null}
+      */}
 
       {/* LibraryScreen & LibraryScreen BG - Not yet supported */}
       {/*
@@ -3832,7 +3838,7 @@ function Home() {
         </View>
       </Modal>
 
-      {/* Banner Ad */}
+      {/* Banner Ad
       <View style={styles.ads}>
         {ads && !rewardedOpen ? (
           <BannerAd
@@ -3844,6 +3850,7 @@ function Home() {
           />
         ) : null}
       </View>
+      */}
     </SafeAreaView>
   );
 }

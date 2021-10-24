@@ -8,12 +8,12 @@ import Logo from '../assets/icons/Logo';
 const isTablet = DeviceInfo.isTablet();
 const isiPhone = Platform.OS === 'ios' && !isTablet;
 const deviceWidth = Dimensions.get('screen').width;
-const useWidth = deviceWidth * 0.28;
+const useWidth = deviceWidth * 0.15;
 
 function MenuBG() {
   return (
     <View style={styles.backgroundWrapper}>
-      <Logo style={styles.menuLogo} />
+      <Logo style={styles.menuLogo} fill={colors.grayBlue} />
     </View>
   );
 }
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   menuLogo: {
     width: '200%',
     aspectRatio: 3 / 1,
-    opacity: 0.5,
+    opacity: 0.3,
     transform: [{ translateX: useWidth }, { rotate: '90deg' }],
   },
 });
