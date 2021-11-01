@@ -1,11 +1,5 @@
 /* eslint-disable */
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  forwardRef,
-  useImperativeHandle,
-} from 'react';
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -21,13 +15,10 @@ import {
   ActivityIndicator,
   Keyboard,
   TouchableWithoutFeedback,
-  Platform,
   Dimensions,
   useWindowDimensions,
   Image,
-  AppState,
 } from 'react-native';
-import ImmersiveMode from 'react-native-immersive-mode';
 
 /* Other - Modules */
 import DeviceInfo from 'react-native-device-info';
@@ -37,6 +28,7 @@ import { Slider } from '@miblanchard/react-native-slider';
 /* Audio & Midi - Modules */
 import Sound from 'react-native-sound';
 import * as MidiWriter from 'midi-writer-js';
+import { Buffer } from 'buffer';
 
 /* Save - Modules */
 import RNFS from 'react-native-fs';
@@ -91,7 +83,7 @@ const midiBarTicks = 512;
 const countdownHours = 24;
 const refreshHours = 5;
 const reviewMinutes = 2;
-const reviewWait = new Date().getTime() + reviewMinutes * 6e4;
+const reviewWait = new Date().valueOf() + reviewMinutes * 6e4;
 
 /* Device specific variables */
 const isTablet = DeviceInfo.isTablet();
@@ -102,7 +94,6 @@ const useWidth = deviceWidth + deviceWidth * 0.06;
 /* Ads Configuration */
 let personalisedAds = false;
 const emulator = DeviceInfo.isEmulator();
-// console.log(emulator);
 const admob_ios = {
   banner: emulator ? admob.banner.ios : admob.banner.ios_test,
   rewarded: emulator ? admob.rewarded.ios : admob.rewarded.ios_test,
@@ -822,8 +813,7 @@ function calcSoundDelay() {
     let delaySound,
       calcDelay = delayDegree * hihatSliderVal,
       beatDelay = delayDegree * hihatCircle[i].initAngle + calcDelay;
-    (delaySound =
-      beatDelay > bpmInterval ? beatDelay - bpmInterval : beatDelay),
+    (delaySound = beatDelay > bpmInterval ? beatDelay - bpmInterval : beatDelay),
       (hihatCircle[i].soundDelay = delaySound);
     hihatCircle[i].soundDelayKey = delaySound + '_timeout';
   }
@@ -832,8 +822,7 @@ function calcSoundDelay() {
     let delaySound,
       calcDelay = delayDegree * snareSliderVal,
       beatDelay = delayDegree * snareCircle[i].initAngle + calcDelay;
-    (delaySound =
-      beatDelay > bpmInterval ? beatDelay - bpmInterval : beatDelay),
+    (delaySound = beatDelay > bpmInterval ? beatDelay - bpmInterval : beatDelay),
       (snareCircle[i].soundDelay = delaySound);
     snareCircle[i].soundDelayKey = delaySound + '_timeout';
   }
@@ -842,8 +831,7 @@ function calcSoundDelay() {
     let delaySound,
       calcDelay = delayDegree * kickSliderVal,
       beatDelay = delayDegree * kickCircle[i].initAngle + calcDelay;
-    (delaySound =
-      beatDelay > bpmInterval ? beatDelay - bpmInterval : beatDelay),
+    (delaySound = beatDelay > bpmInterval ? beatDelay - bpmInterval : beatDelay),
       (kickCircle[i].soundDelay = delaySound);
     kickCircle[i].soundDelayKey = delaySound + '_timeout';
   }
@@ -856,7 +844,7 @@ function playSoundLib() {
       hihatCircle[i].soundDelayKey = setTimeout(async function () {
         const hihatMP3 = new Sound(hihatPath, Sound.MAIN_BUNDLE, (error) => {
           if (error) {
-            console.log(hihatPath + 'Failed', error);
+            // console.log(hihatPath + 'Failed', error);
             return;
           }
           hihatMP3.setVolume(0.8);
@@ -865,7 +853,7 @@ function playSoundLib() {
             if (success) {
               hihatMP3.release();
             } else {
-              console.log('Playback Fail');
+              // console.log('Playback Fail');
             }
           });
         });
@@ -878,7 +866,7 @@ function playSoundLib() {
       snareCircle[i].soundDelayKey = setTimeout(async function () {
         const snareMP3 = new Sound(snarePath, Sound.MAIN_BUNDLE, (error) => {
           if (error) {
-            console.log(snarePath + 'Failed', error);
+            // console.log(snarePath + 'Failed', error);
             return;
           }
           snareMP3.setVolume(0.8);
@@ -887,7 +875,7 @@ function playSoundLib() {
             if (success) {
               snareMP3.release();
             } else {
-              console.log('Playback Fail');
+              // console.log('Playback Fail');
             }
           });
         });
@@ -900,7 +888,7 @@ function playSoundLib() {
       kickCircle[i].soundDelayKey = setTimeout(async function () {
         const kickMP3 = new Sound(kickPath, Sound.MAIN_BUNDLE, (error) => {
           if (error) {
-            console.log(kickPath + 'Failed', error);
+            // console.log(kickPath + 'Failed', error);
             return;
           }
           kickMP3.setVolume(0.8);
@@ -909,7 +897,7 @@ function playSoundLib() {
             if (success) {
               kickMP3.release();
             } else {
-              console.log('Playback Fail');
+              // console.log('Playback Fail');
             }
           });
         });
@@ -921,10 +909,7 @@ function playSoundLib() {
 /* Change TimeSig - Function */
 function changeTimeSig() {
   for (let i in hihatCircle) {
-    if (
-      hihatCircle[i].timeSig !== useTimeSig &&
-      hihatCircle[i].timeSig !== 'Free'
-    ) {
+    if (hihatCircle[i].timeSig !== useTimeSig && hihatCircle[i].timeSig !== 'Free') {
       hihatCircle[i].visible = false;
     } else {
       hihatCircle[i].visible = true;
@@ -932,10 +917,7 @@ function changeTimeSig() {
   }
 
   for (let i in snareCircle) {
-    if (
-      snareCircle[i].timeSig !== useTimeSig &&
-      snareCircle[i].timeSig !== 'Free'
-    ) {
+    if (snareCircle[i].timeSig !== useTimeSig && snareCircle[i].timeSig !== 'Free') {
       snareCircle[i].visible = false;
     } else {
       snareCircle[i].visible = true;
@@ -943,10 +925,7 @@ function changeTimeSig() {
   }
 
   for (let i in kickCircle) {
-    if (
-      kickCircle[i].timeSig !== useTimeSig &&
-      kickCircle[i].timeSig !== 'Free'
-    ) {
+    if (kickCircle[i].timeSig !== useTimeSig && kickCircle[i].timeSig !== 'Free') {
       kickCircle[i].visible = false;
     } else {
       kickCircle[i].visible = true;
@@ -997,8 +976,7 @@ function changeTimeSig() {
 let date;
 function getDate() {
   let today = new Date();
-  date =
-    today.getFullYear() + '' + (today.getMonth() + 1) + '.' + today.getDate();
+  date = today.getFullYear() + '' + (today.getMonth() + 1) + '.' + today.getDate();
 }
 /* Current Date - Call onLoad */
 getDate();
@@ -1006,28 +984,23 @@ getDate();
 /* Review - Function */
 async function askForReview() {
   const available = InAppReview.isAvailable();
-  const currentDate = new Date().getTime();
+  const currentDate = new Date().valueOf();
 
-  if ((reviewWait - currentDate) <= 0) {
+  if (reviewWait - currentDate <= 0 && available) {
     const numberDATE = Number(date);
 
     const timeStamp = await AsyncStorage.getItem('reviewTimeStampSAVE');
     const reviewTimeStamp = Number(timeStamp);
 
-    if (
-      reviewTimeStamp <= numberDATE || reviewTimeStamp == 0
-    ) {
+    if (reviewTimeStamp <= numberDATE || reviewTimeStamp == 0) {
       await AsyncStorage.removeItem('reviewTimeStampSAVE');
 
       InAppReview.RequestInAppReview().then(async (hasFlowFinishedSuccessfully) => {
         if (hasFlowFinishedSuccessfully) {
           /* 0.1 = 1day, 1 = 1month */
-          await AsyncStorage.setItem(
-            'reviewTimeStampSAVE',
-            JSON.stringify(numberDATE + 1),
-          );
+          await AsyncStorage.setItem('reviewTimeStampSAVE', JSON.stringify(numberDATE + 1));
         }
-      })
+      });
     }
   }
 }
@@ -1054,9 +1027,7 @@ const CustomThumbKick = () => (
 
 /* Dismiss Keyboard Component */
 const DismissKeyboard = ({ children }) => (
-  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    {children}
-  </TouchableWithoutFeedback>
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 );
 
 /* Guide Screen */
@@ -1068,7 +1039,8 @@ export const GuideScreen = ({ guideCallback }) => {
       <TouchableOpacity
         activeOpacity={0.6}
         style={styles.exit}
-        onPress={() => guideCallback(false)}>
+        onPress={() => guideCallback(false)}
+      >
         <Svg height="100%" width="100%" viewBox="0 0 352 352">
           <Path
             fill={colors.primaryDark}
@@ -1119,8 +1091,7 @@ export const GuideScreen = ({ guideCallback }) => {
         </View>
 
         <Text style={styles.guideTxt}>
-          You can offset the individual sounds by using the sliders below the
-          circle.
+          You can offset the individual sounds by using the sliders below the circle.
         </Text>
         <Slider
           value={15}
@@ -1133,17 +1104,14 @@ export const GuideScreen = ({ guideCallback }) => {
           trackStyle={styles.sliderTrack}
           renderThumbComponent={CustomThumbHihat}
           thumbTouchSize={{ width: 65, height: 25 }}
-        //onValueChange={}
+          //onValueChange={}
         />
         <Text style={styles.guideTxt}>
-          Once you have activated at least one input you can start the beat. Any
-          changes made to the beat while in play mode will be heard on the next
-          interval pass.
+          Once you have activated at least one input you can start the beat. Any changes made to the
+          beat while in play mode will be heard on the next interval pass.
         </Text>
         <Text style={styles.guideSub}>Settings</Text>
-        <Text style={styles.guideTxt}>
-          In the settings screen you can change:
-        </Text>
+        <Text style={styles.guideTxt}>In the settings screen you can change:</Text>
         <View style={styles.guideBullet}>
           <View
             style={{
@@ -1184,16 +1152,16 @@ export const GuideScreen = ({ guideCallback }) => {
         </View>
 
         <Text style={styles.guideTxt}>
-          Any changes in the settings screen will pause your beat if it is
-          playing so that changes can be applied correctly.
+          Any changes in the settings screen will pause your beat if it is playing so that changes
+          can be applied correctly.
         </Text>
         <Text style={styles.guideSub}>Presets</Text>
         <Text style={styles.guideTxt}>
           <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>Save</Text>
           {'\n'}
-          Once you have a beat you can tap on a preset to save that beat. (This
-          will save your configuration including the active inputs, the position
-          of each slider, the BPM and the time signature)
+          Once you have a beat you can tap on a preset to save that beat. (This will save your
+          configuration including the active inputs, the position of each slider, the BPM and the
+          time signature)
         </Text>
         <View style={styles.guidePresetWrapper}>
           <View style={styles.guidePresetCont}>
@@ -1203,7 +1171,8 @@ export const GuideScreen = ({ guideCallback }) => {
                 beat1 ? styles.presetBtn : styles.presetBtnEmpty,
                 { paddingVertical: 8, width: '100%' },
               ]}
-              onPress={() => setBeat1(!beat1)}>
+              onPress={() => setBeat1(!beat1)}
+            >
               <Text style={styles.presetText}>Beat 1</Text>
             </TouchableHighlight>
             <Text
@@ -1212,7 +1181,8 @@ export const GuideScreen = ({ guideCallback }) => {
                 fontSize: 12,
                 textAlign: 'center',
                 color: colors.primaryDark,
-              }}>
+              }}
+            >
               Empty preset
             </Text>
           </View>
@@ -1223,7 +1193,8 @@ export const GuideScreen = ({ guideCallback }) => {
                 beat2 ? styles.presetBtn : styles.presetBtnEmpty,
                 { paddingVertical: 8, width: '100%' },
               ]}
-              onPress={() => setBeat2(!beat2)}>
+              onPress={() => setBeat2(!beat2)}
+            >
               <Text style={styles.presetText}>Beat 2</Text>
             </TouchableHighlight>
             <Text
@@ -1232,14 +1203,15 @@ export const GuideScreen = ({ guideCallback }) => {
                 fontSize: 12,
                 textAlign: 'center',
                 color: colors.primaryDark,
-              }}>
+              }}
+            >
               Saved preset
             </Text>
           </View>
         </View>
         <Text style={styles.guideTxt}>
-          Once saved the preset button will change colour to indicate that it
-          can now be loaded.{'\n'}
+          Once saved the preset button will change colour to indicate that it can now be loaded.
+          {'\n'}
           {'\n'}
           <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>Load</Text>
           {'\n'}
@@ -1248,13 +1220,11 @@ export const GuideScreen = ({ guideCallback }) => {
           <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>Delete</Text>
           {'\n'}
           To clear/delete the preset{' '}
-          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>long-press</Text> it and a
-          window will appear asking you to confirm the action.
+          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>long-press</Text> it and a window will
+          appear asking you to confirm the action.
         </Text>
         <View style={styles.guideModalView}>
-          <Text style={styles.modalExp}>
-            Are you sure you want to clear the saved beat?
-          </Text>
+          <Text style={styles.modalExp}>Are you sure you want to clear the saved beat?</Text>
           <View style={styles.modalBtnCont}>
             <TouchableOpacity activeOpacity={0.8} style={styles.modalBtn}>
               <Text style={styles.modalBtnTxt}>Yes</Text>
@@ -1266,44 +1236,33 @@ export const GuideScreen = ({ guideCallback }) => {
         </View>
         <Text style={styles.guideSub}>Export MIDI</Text>
         <Text style={styles.guideTxt}>
-          When selected you will be prompted with a window to name your MIDI
-          file. (If no name is given the placeholder name "
-          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>Ritmo_MIDI</Text>" will be
-          used){'\n'}
+          When selected you will be prompted with a window to name your MIDI file. (If no name is
+          given the placeholder name "
+          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>Ritmo_MIDI</Text>" will be used){'\n'}
           {'\n'}
-          Once named you can save it, this will open up a sharing option to
-          transfer your file to your computer so you can use your Ritmo beat in
-          your DAW.
+          Once named you can save it, this will open up a sharing option to transfer your file to
+          your computer so you can use your Ritmo beat in your DAW.
         </Text>
         <View style={styles.guideImgCont}>
-          <Image
-            style={styles.guideImg}
-            resizeMode={'contain'}
-            source={MidiFile}
-          />
+          <Image style={styles.guideImg} resizeMode={'contain'} source={MidiFile} />
         </View>
         <Text style={styles.guideTxt}>
-          The exported MIDI file is a single bar (that can be looped), with a
-          Kick (C1 - pitch), Snare (D1 - pitch) and Hi-Hat (F#1 - pitch)
-          configuration. It has a fixed velocity, an encoded BPM and time
-          signature if your beat is NOT in "Free time sig" mode.
+          The exported MIDI file is a single bar (that can be looped), with a Kick (C1 - pitch),
+          Snare (D1 - pitch) and Hi-Hat (F#1 - pitch) configuration. It has a fixed velocity, an
+          encoded BPM and time signature if your beat is NOT in "Free time sig" mode.
         </Text>
         <View style={styles.guideImgCont2}>
-          <Image
-            style={styles.guideImg}
-            resizeMode={'contain'}
-            source={MidiFileLogic}
-          />
+          <Image style={styles.guideImg} resizeMode={'contain'} source={MidiFileLogic} />
         </View>
         <Text style={styles.guideTxt}>
-          The MIDI file is not stored in the internal phone storage unless you
-          save it yourself inside the share window. (This is done to minimise
-          app space and conserve your phone's storage space)
+          The MIDI file is not stored in the internal phone storage unless you save it yourself
+          inside the share window. (This is done to minimise app space and conserve your phone's
+          storage space)
         </Text>
         <Text style={styles.guideSub}>Contact</Text>
         <Text style={styles.guideTxt}>
-          If you find any bugs or have any other questions or ideas for
-          improving Ritmo, please contact us at:
+          If you find any bugs or have any other questions or ideas for improving Ritmo, please
+          contact us at:
         </Text>
         <Text
           style={{
@@ -1312,7 +1271,8 @@ export const GuideScreen = ({ guideCallback }) => {
             fontSize: 16,
             color: colors.primaryDark,
           }}
-          selectable={true}>
+          selectable={true}
+        >
           chimerastudiotm@gmail.com
         </Text>
       </ScrollView>
@@ -1328,7 +1288,8 @@ export const LibraryScreen = ({ libraryCallback }) => {
       <TouchableOpacity
         activeOpacity={0.6}
         style={styles.exit}
-        onPress={() => libraryCallback(false)}>
+        onPress={() => libraryCallback(false)}
+      >
         <Svg height="100%" width="100%" viewBox="0 0 352 352">
           <Path
             fill={colors.primaryDark}
@@ -1371,7 +1332,7 @@ export const RewardedScreen = ({ rewardedCallback }) => {
     setSecs(('0' + timerUpdate.seconds).slice(-2));
     checkTimerStart();
     setSelectedRewardName(rewardListName);
-    rewardIndex = soundList.findIndex(obj => obj.name == rewardListName);
+    rewardIndex = soundList.findIndex((obj) => obj.name == rewardListName);
   }, []);
 
   /* Rewarded States */
@@ -1409,7 +1370,7 @@ export const RewardedScreen = ({ rewardedCallback }) => {
   async function checkRewardCountdown() {
     let countdownDate = JSON.parse(await AsyncStorage.getItem('countdownTime'));
 
-    let currentDate = new Date().getTime();
+    let currentDate = new Date().valueOf();
     let timeDiff = countdownDate - currentDate;
     ms2Time(timeDiff);
 
@@ -1422,17 +1383,9 @@ export const RewardedScreen = ({ rewardedCallback }) => {
 
   /* Countdown tick Interval - Function */
   function tick() {
-    if (
-      timerUpdate.hours === 0 &&
-      timerUpdate.minutes === 0 &&
-      timerUpdate.seconds === 0
-    ) {
+    if (timerUpdate.hours === 0 && timerUpdate.minutes === 0 && timerUpdate.seconds === 0) {
       lockRewards();
-    } else if (
-      timerUpdate.hours <= -1 ||
-      timerUpdate.minutes <= -1 ||
-      timerUpdate.seconds <= -1
-    ) {
+    } else if (timerUpdate.hours <= -1 || timerUpdate.minutes <= -1 || timerUpdate.seconds <= -1) {
       clearInterval(tickVariable);
       checkRewardCountdown();
     } else if (timerUpdate.minutes === 0 && timerUpdate.seconds === 0) {
@@ -1490,7 +1443,7 @@ export const RewardedScreen = ({ rewardedCallback }) => {
       rewardListName = rewardList[0].name;
     }
     setSelectedRewardName(rewardListName);
-    rewardIndex = soundList.findIndex(obj => obj.name == rewardListName);
+    rewardIndex = soundList.findIndex((obj) => obj.name == rewardListName);
   }
 
   /* Check what Reward Content to Show - Function */
@@ -1567,9 +1520,9 @@ export const RewardedScreen = ({ rewardedCallback }) => {
   };
 
   /* Select Reward Item - Function */
-  const selectedSound = name => {
+  const selectedSound = (name) => {
     setSelectedRewardName(name);
-    rewardIndex = soundList.findIndex(obj => obj.name == name);
+    rewardIndex = soundList.findIndex((obj) => obj.name == name);
 
     setOpenSelect(false);
   };
@@ -1580,7 +1533,7 @@ export const RewardedScreen = ({ rewardedCallback }) => {
     await AsyncStorage.removeItem('countdownTime');
     await AsyncStorage.removeItem('unlockedRewards');
 
-    let countdownDate = new Date().getTime() + countdownHours * 36e5;
+    let countdownDate = new Date().valueOf() + countdownHours * 36e5;
     await AsyncStorage.setItem('countdownTime', JSON.stringify(countdownDate));
 
     timerStart = true;
@@ -1588,10 +1541,7 @@ export const RewardedScreen = ({ rewardedCallback }) => {
 
     soundList[rewardIndex].disabled = false;
     unlockedSamples = soundList.map(({ disabled }) => disabled);
-    await AsyncStorage.setItem(
-      'unlockedRewards',
-      JSON.stringify(unlockedSamples),
-    );
+    await AsyncStorage.setItem('unlockedRewards', JSON.stringify(unlockedSamples));
 
     rewardEarned = true;
     rewardedCallback(false);
@@ -1602,7 +1552,7 @@ export const RewardedScreen = ({ rewardedCallback }) => {
     await AsyncStorage.removeItem('timerStart');
     await AsyncStorage.removeItem('countdownTime');
 
-    let countdownDate = new Date().getTime() + countdownHours * 36e5;
+    let countdownDate = new Date().valueOf() + countdownHours * 36e5;
     await AsyncStorage.setItem('countdownTime', JSON.stringify(countdownDate));
 
     timerStart = true;
@@ -1618,7 +1568,8 @@ export const RewardedScreen = ({ rewardedCallback }) => {
         activeOpacity={0.6}
         style={styles.exit}
         disabled={loadRewarded || openSelect ? true : false}
-        onPress={exitReward}>
+        onPress={exitReward}
+      >
         <Svg height="100%" width="100%" viewBox="0 0 352 352">
           <Path
             fill={!loadRewarded ? colors.gray : colors.grayBlue}
@@ -1635,9 +1586,7 @@ export const RewardedScreen = ({ rewardedCallback }) => {
         ) : (
           <Text style={styles.countdownTimer}>00:00:00</Text>
         )}
-        <Text style={styles.countdownTxt}>
-          till unlocked samples are locked
-        </Text>
+        <Text style={styles.countdownTxt}>till unlocked samples are locked</Text>
       </View>
 
       {!refresh ? (
@@ -1648,10 +1597,9 @@ export const RewardedScreen = ({ rewardedCallback }) => {
               activeOpacity={0.6}
               style={styles.selectRewardInput}
               disabled={disableList}
-              onPress={openSelectList}>
-              <Text style={styles.selectRewardInputText}>
-                {selectedRewardName}
-              </Text>
+              onPress={openSelectList}
+            >
+              <Text style={styles.selectRewardInputText}>{selectedRewardName}</Text>
               <Arrow style={styles.selectRewardArrow} />
             </TouchableOpacity>
           </View>
@@ -1665,26 +1613,22 @@ export const RewardedScreen = ({ rewardedCallback }) => {
               The unlocked sample will be available for{' '}
               <Text style={{ color: colors.orange }}>24h</Text>
               {'\n'}
-              from <Text style={{ color: colors.orange }}>the last one</Text> that
-              you unlocked.
+              from <Text style={{ color: colors.orange }}>the last one</Text> that you unlocked.
             </Text>
           </View>
           <TouchableOpacity
-            style={
-              !loadRewarded ? styles.rewardedStart : styles.rewardedDisabled
-            }
+            style={!loadRewarded ? styles.rewardedStart : styles.rewardedDisabled}
             activeOpacity={1}
             disabled={loadRewarded || openSelect ? true : false}
-            onPress={() => requestReward()}>
+            onPress={() => requestReward()}
+          >
             {!loadRewarded ? (
               <Text style={styles.rewardedStartText}>Watch the Ad</Text>
             ) : (
               <ActivityIndicator size="large" color={colors.grayLight} />
             )}
           </TouchableOpacity>
-          <Text style={styles.rewardedDisc}>
-            If no Advert is shown come back a bit later
-          </Text>
+          <Text style={styles.rewardedDisc}>If no Advert is shown come back a bit later</Text>
         </View>
       ) : (
         <View style={styles.rewardedCon}>
@@ -1694,34 +1638,26 @@ export const RewardedScreen = ({ rewardedCallback }) => {
               watch one Advert:
             </Text>
             <Text style={styles.rewardedExp2Text}>
-              The refresh will give you{' '}
-              <Text style={{ color: colors.orange }}>24h</Text>
+              The refresh will give you <Text style={{ color: colors.orange }}>24h</Text>
               {'\n'}
-              from <Text style={{ color: colors.orange }}>
-                the end of the Ad
-              </Text>{' '}
-              {'\n'}
+              from <Text style={{ color: colors.orange }}>the end of the Ad</Text> {'\n'}
               and will become available again{'\n'}
-              <Text style={{ color: colors.orange }}>6h</Text> before the time
-              runs out.
+              <Text style={{ color: colors.orange }}>6h</Text> before the time runs out.
             </Text>
           </View>
           <TouchableOpacity
-            style={
-              !loadRewarded ? styles.rewardedStart : styles.rewardedDisabled
-            }
+            style={!loadRewarded ? styles.rewardedStart : styles.rewardedDisabled}
             activeOpacity={1}
             disabled={loadRewarded || openSelect ? true : false}
-            onPress={() => requestReward()}>
+            onPress={() => requestReward()}
+          >
             {!loadRewarded ? (
               <Text style={styles.rewardedStartText}>Watch the Ad</Text>
             ) : (
               <ActivityIndicator size="large" color={colors.grayLight} />
             )}
           </TouchableOpacity>
-          <Text style={styles.rewardedDisc}>
-            If no Advert is shown come back a bit later
-          </Text>
+          <Text style={styles.rewardedDisc}>If no Advert is shown come back a bit later</Text>
         </View>
       )}
 
@@ -1730,17 +1666,17 @@ export const RewardedScreen = ({ rewardedCallback }) => {
           <ScrollView
             showsVerticalScrollIndicator={false}
             style={styles.selectList}
-            centerContent={true}>
+            centerContent={true}
+          >
             {rewardList.map((sound, index) => (
               <TouchableOpacity
                 activeOpacity={0.6}
                 style={
-                  index === rewardList.length - 1
-                    ? styles.selectItemNoBorder
-                    : styles.selectItem
+                  index === rewardList.length - 1 ? styles.selectItemNoBorder : styles.selectItem
                 }
                 key={sound.name}
-                onPress={() => selectedSound(sound.name)}>
+                onPress={() => selectedSound(sound.name)}
+              >
                 <Text style={styles.selectText}>{sound.name}</Text>
               </TouchableOpacity>
             ))}
@@ -1776,9 +1712,7 @@ export const MenuScreen = forwardRef((props, ref) => {
   const [bpmNumber, setBpmNumber] = useState(useBPM.toString());
   const [radioCheck, setRadioCheck] = useState(useTimeSig);
   const [openSelect, setOpenSelect] = useState(false);
-  const [selectedSoundName, setSelectedSoundName] = useState(
-    selectedSoundNameSaved,
-  );
+  const [selectedSoundName, setSelectedSoundName] = useState(selectedSoundNameSaved);
   const [disabled, setDisabled] = useState(rewardDisabled);
   const [refresh, setRefresh] = useState(refreshEnabled);
   const [alertShow, setAlertShow] = useState(false);
@@ -1842,7 +1776,7 @@ export const MenuScreen = forwardRef((props, ref) => {
     let countdownDate = JSON.parse(await AsyncStorage.getItem('countdownTime'));
 
     if (countdownDate) {
-      let currentDate = new Date().getTime();
+      let currentDate = new Date().valueOf();
       let timeDiff = countdownDate - currentDate;
       ms2Time(timeDiff);
 
@@ -1911,12 +1845,12 @@ export const MenuScreen = forwardRef((props, ref) => {
   }
 
   /* BPM Input - Function */
-  const bpmUpdate = value => {
+  const bpmUpdate = (value) => {
     setBpmNumber(value.toString());
   };
 
   /* BPM on Blur/Submit - Function */
-  const bpmCheck = value => {
+  const bpmCheck = (value) => {
     let valueNum = Math.trunc(Number(value));
     if (valueNum < 1) {
       setBpmNumber('1');
@@ -1935,7 +1869,7 @@ export const MenuScreen = forwardRef((props, ref) => {
   };
 
   /* Time Sig Update - Function */
-  const gridChange = value => {
+  const gridChange = (value) => {
     Keyboard.dismiss();
     useTimeSig = value.toString();
     setRadioCheck(useTimeSig);
@@ -1984,10 +1918,7 @@ export const MenuScreen = forwardRef((props, ref) => {
     <DismissKeyboard>
       <View style={styles.screenMenuWrapper}>
         <View style={styles.navigationMenu}>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            disabled={openSelect}
-            onPress={menuClose}>
+          <TouchableOpacity activeOpacity={0.8} disabled={openSelect} onPress={menuClose}>
             <Animated.View style={[rotateArrow, styles.menuCloseW]}>
               <Close style={styles.menuClose} />
             </Animated.View>
@@ -2000,7 +1931,7 @@ export const MenuScreen = forwardRef((props, ref) => {
             <TextInput
               style={styles.inputBPM}
               maxLength={3}
-              onChangeText={bpmNumber => bpmUpdate(bpmNumber)}
+              onChangeText={(bpmNumber) => bpmUpdate(bpmNumber)}
               onSubmitEditing={() => bpmCheck(bpmNumber)}
               onBlur={() => bpmCheck(bpmNumber)}
               onFocus={pause}
@@ -2013,45 +1944,27 @@ export const MenuScreen = forwardRef((props, ref) => {
 
           <View style={styles.radioWrapper}>
             <Text style={styles.menuTitle}>Time Signature</Text>
-            <TouchableOpacity
-              activeOpacity={0.6}
-              onPress={() => gridChange('Free')}>
+            <TouchableOpacity activeOpacity={0.6} onPress={() => gridChange('Free')}>
               <View style={styles.radioCont}>
                 <Text style={styles.radioText}>Free</Text>
                 <View
-                  style={
-                    radioCheck == 'Free'
-                      ? styles.radioSelected
-                      : styles.radioNotSelected
-                  }
+                  style={radioCheck == 'Free' ? styles.radioSelected : styles.radioNotSelected}
                 />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.6}
-              onPress={() => gridChange('4/4')}>
+            <TouchableOpacity activeOpacity={0.6} onPress={() => gridChange('4/4')}>
               <View style={styles.radioCont}>
                 <Text style={styles.radioText}>4/4</Text>
                 <View
-                  style={
-                    radioCheck == '4/4'
-                      ? styles.radioSelected
-                      : styles.radioNotSelected
-                  }
+                  style={radioCheck == '4/4' ? styles.radioSelected : styles.radioNotSelected}
                 />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.6}
-              onPress={() => gridChange('3/4')}>
+            <TouchableOpacity activeOpacity={0.6} onPress={() => gridChange('3/4')}>
               <View style={styles.radioCont}>
                 <Text style={styles.radioText}>3/4</Text>
                 <View
-                  style={
-                    radioCheck == '3/4'
-                      ? styles.radioSelected
-                      : styles.radioNotSelected
-                  }
+                  style={radioCheck == '3/4' ? styles.radioSelected : styles.radioNotSelected}
                 />
               </View>
             </TouchableOpacity>
@@ -2063,7 +1976,8 @@ export const MenuScreen = forwardRef((props, ref) => {
               disabled={openSelect}
               activeOpacity={0.6}
               style={styles.selectInput}
-              onPress={openSelectList}>
+              onPress={openSelectList}
+            >
               <Text style={styles.selectInputText}>{selectedSoundName}</Text>
               <Arrow style={styles.selectListArrow} />
             </TouchableOpacity>
@@ -2115,24 +2029,19 @@ export const MenuScreen = forwardRef((props, ref) => {
             <ScrollView
               showsVerticalScrollIndicator={false}
               style={styles.selectList}
-              centerContent={true}>
+              centerContent={true}
+            >
               {soundList.map((sound, index) => (
                 <TouchableOpacity
                   activeOpacity={0.6}
                   style={
-                    index === soundList.length - 1
-                      ? styles.selectItemNoBorder
-                      : styles.selectItem
+                    index === soundList.length - 1 ? styles.selectItemNoBorder : styles.selectItem
                   }
                   key={sound.name}
                   disabled={sound.disabled}
-                  onPress={() => selectedSound(sound.name, index)}>
-                  <Text
-                    style={
-                      !sound.disabled
-                        ? styles.selectText
-                        : styles.selectDisabledText
-                    }>
+                  onPress={() => selectedSound(sound.name, index)}
+                >
+                  <Text style={!sound.disabled ? styles.selectText : styles.selectDisabledText}>
                     {sound.name}
                   </Text>
                 </TouchableOpacity>
@@ -2144,8 +2053,7 @@ export const MenuScreen = forwardRef((props, ref) => {
         {alertShow ? (
           <Animated.View style={[styles.alertWrapper, { opacity: fadeAlert }]}>
             <Text style={styles.alertText2}>
-              This will become available{' '}
-              <Text style={{ color: colors.green }}>6h</Text> before
+              This will become available <Text style={{ color: colors.green }}>6h</Text> before
               {'\n'}
               the timer runs out.
             </Text>
@@ -2256,17 +2164,17 @@ export const RhythmScreen = forwardRef((props, ref) => {
   };
 
   /* Calc Circle Radius - START */
-  const getHihatDimentions = event => {
+  const getHihatDimentions = (event) => {
     let { width } = event.nativeEvent.layout;
     setHihatRadius(width / 2 - 2.5);
   };
 
-  const getSnareDimentions = event => {
+  const getSnareDimentions = (event) => {
     let { width } = event.nativeEvent.layout;
     setSnareRadius(width / 2 - 2.5);
   };
 
-  const getKickDimentions = event => {
+  const getKickDimentions = (event) => {
     let { width } = event.nativeEvent.layout;
     setKickRadius(width / 2 - 2.5);
   };
@@ -2284,7 +2192,7 @@ export const RhythmScreen = forwardRef((props, ref) => {
         duration: bpmInterval,
         easing: Easing.linear,
         useNativeDriver: true,
-      }),
+      })
     ).start();
     Animated.loop(
       Animated.sequence([
@@ -2300,7 +2208,7 @@ export const RhythmScreen = forwardRef((props, ref) => {
           easing: Easing.linear,
           useNativeDriver: true,
         }),
-      ]),
+      ])
     ).start();
   };
 
@@ -2348,9 +2256,9 @@ export const RhythmScreen = forwardRef((props, ref) => {
 
   /* Checkbox Reset - Function */
   const checkboxInitReset = () => {
-    Object.keys(hihatCircle).forEach(i => (hihatCircle[i].checked = false));
-    Object.keys(snareCircle).forEach(i => (snareCircle[i].checked = false));
-    Object.keys(kickCircle).forEach(i => (kickCircle[i].checked = false));
+    Object.keys(hihatCircle).forEach((i) => (hihatCircle[i].checked = false));
+    Object.keys(snareCircle).forEach((i) => (snareCircle[i].checked = false));
+    Object.keys(kickCircle).forEach((i) => (kickCircle[i].checked = false));
 
     setCheckedHihatState(false);
     setCheckedSnareState(false);
@@ -2358,7 +2266,7 @@ export const RhythmScreen = forwardRef((props, ref) => {
   };
 
   /* Slider & Circle Rotate - Function - START */
-  const rotateHihatCircle = value => {
+  const rotateHihatCircle = (value) => {
     setHihatValue(value);
     hihatSliderVal = value;
     for (let i in hihatCircle) {
@@ -2370,7 +2278,7 @@ export const RhythmScreen = forwardRef((props, ref) => {
     calcSoundDelay();
   };
 
-  const rotateSnareCircle = value => {
+  const rotateSnareCircle = (value) => {
     setSnareValue(value);
     snareSliderVal = value;
     for (let i in snareCircle) {
@@ -2382,7 +2290,7 @@ export const RhythmScreen = forwardRef((props, ref) => {
     calcSoundDelay();
   };
 
-  const rotateKickCircle = value => {
+  const rotateKickCircle = (value) => {
     setKickValue(value);
     kickSliderVal = value;
     for (let i in kickCircle) {
@@ -2403,15 +2311,9 @@ export const RhythmScreen = forwardRef((props, ref) => {
     hihatSliderVal = 0;
     snareSliderVal = 0;
     kickSliderVal = 0;
-    Object.keys(hihatCircle).forEach(
-      i => (hihatCircle[i].angle = hihatCircle[i].initAngle),
-    );
-    Object.keys(snareCircle).forEach(
-      i => (snareCircle[i].angle = snareCircle[i].initAngle),
-    );
-    Object.keys(kickCircle).forEach(
-      i => (kickCircle[i].angle = kickCircle[i].initAngle),
-    );
+    Object.keys(hihatCircle).forEach((i) => (hihatCircle[i].angle = hihatCircle[i].initAngle));
+    Object.keys(snareCircle).forEach((i) => (snareCircle[i].angle = snareCircle[i].initAngle));
+    Object.keys(kickCircle).forEach((i) => (kickCircle[i].angle = kickCircle[i].initAngle));
     hihatRotation = hihatCircle.map(({ initAngle }) => initAngle);
     snareRotation = snareCircle.map(({ initAngle }) => initAngle);
     kickRotation = kickCircle.map(({ initAngle }) => initAngle);
@@ -2434,7 +2336,7 @@ export const RhythmScreen = forwardRef((props, ref) => {
   }
 
   /* Load Preset - Function */
-  const loadPreset = async value => {
+  const loadPreset = async (value) => {
     let findBeat = false;
     for (let i in hihatCircle) {
       if (
@@ -2526,7 +2428,7 @@ export const RhythmScreen = forwardRef((props, ref) => {
   };
 
   /* Save Preset - Function */
-  const writePreset = async value => {
+  const writePreset = async (value) => {
     if (value == 1) {
       let obj = {};
       obj.beat = true;
@@ -2537,10 +2439,7 @@ export const RhythmScreen = forwardRef((props, ref) => {
       obj.kickSlider = Number(kickSliderVal);
       preset1Config.push(obj);
 
-      await AsyncStorage.setItem(
-        'preset1Config',
-        JSON.stringify(preset1Config),
-      );
+      await AsyncStorage.setItem('preset1Config', JSON.stringify(preset1Config));
       await AsyncStorage.setItem('preset1Hihat', JSON.stringify(hihatCircle));
       await AsyncStorage.setItem('preset1Snare', JSON.stringify(snareCircle));
       await AsyncStorage.setItem('preset1Kick', JSON.stringify(kickCircle));
@@ -2556,10 +2455,7 @@ export const RhythmScreen = forwardRef((props, ref) => {
       obj.kickSlider = Number(kickSliderVal);
       preset2Config.push(obj);
 
-      await AsyncStorage.setItem(
-        'preset2Config',
-        JSON.stringify(preset2Config),
-      );
+      await AsyncStorage.setItem('preset2Config', JSON.stringify(preset2Config));
       await AsyncStorage.setItem('preset2Hihat', JSON.stringify(hihatCircle));
       await AsyncStorage.setItem('preset2Snare', JSON.stringify(snareCircle));
       await AsyncStorage.setItem('preset2Kick', JSON.stringify(kickCircle));
@@ -2574,10 +2470,7 @@ export const RhythmScreen = forwardRef((props, ref) => {
       obj.kickSlider = Number(kickSliderVal);
       preset3Config.push(obj);
 
-      await AsyncStorage.setItem(
-        'preset3Config',
-        JSON.stringify(preset3Config),
-      );
+      await AsyncStorage.setItem('preset3Config', JSON.stringify(preset3Config));
       await AsyncStorage.setItem('preset3Hihat', JSON.stringify(hihatCircle));
       await AsyncStorage.setItem('preset3Snare', JSON.stringify(snareCircle));
       await AsyncStorage.setItem('preset3Kick', JSON.stringify(kickCircle));
@@ -2586,7 +2479,7 @@ export const RhythmScreen = forwardRef((props, ref) => {
   };
 
   /* Open Preset Modal for Delete - Function */
-  const openPresetModul = value => {
+  const openPresetModul = (value) => {
     if (beat1 || beat2 || beat3) {
       selectedPresetModul = value;
       setPresetModul(true);
@@ -2794,10 +2687,7 @@ export const RhythmScreen = forwardRef((props, ref) => {
             style={[
               styles.beatline,
               {
-                transform: [
-                  { rotate: rotateBeat },
-                  { translateY: -hihatRadius / 2 },
-                ],
+                transform: [{ rotate: rotateBeat }, { translateY: -hihatRadius / 2 }],
               },
             ]}
           />
@@ -2826,16 +2716,11 @@ export const RhythmScreen = forwardRef((props, ref) => {
                     ],
                   },
                 ]}
-                onPress={() => toggleCheckbox(checkBox.soundName, index)}>
-                <View
-                  style={
-                    !checkedHihatState[index]
-                      ? styles.unchecked
-                      : styles.checkedHihat
-                  }
-                />
+                onPress={() => toggleCheckbox(checkBox.soundName, index)}
+              >
+                <View style={!checkedHihatState[index] ? styles.unchecked : styles.checkedHihat} />
               </TouchableOpacity>
-            ) : null,
+            ) : null
           )}
 
           {snareCircle.map((checkBox, index) =>
@@ -2856,16 +2741,11 @@ export const RhythmScreen = forwardRef((props, ref) => {
                     ],
                   },
                 ]}
-                onPress={() => toggleCheckbox(checkBox.soundName, index)}>
-                <View
-                  style={
-                    !checkedSnareState[index]
-                      ? styles.unchecked
-                      : styles.checkedSnare
-                  }
-                />
+                onPress={() => toggleCheckbox(checkBox.soundName, index)}
+              >
+                <View style={!checkedSnareState[index] ? styles.unchecked : styles.checkedSnare} />
               </TouchableOpacity>
-            ) : null,
+            ) : null
           )}
 
           {kickCircle.map((checkBox, index) =>
@@ -2886,23 +2766,19 @@ export const RhythmScreen = forwardRef((props, ref) => {
                     ],
                   },
                 ]}
-                onPress={() => toggleCheckbox(checkBox.soundName, index)}>
-                <View
-                  style={
-                    !checkedKickState[index]
-                      ? styles.unchecked
-                      : styles.checkedKick
-                  }
-                />
+                onPress={() => toggleCheckbox(checkBox.soundName, index)}
+              >
+                <View style={!checkedKickState[index] ? styles.unchecked : styles.checkedKick} />
               </TouchableOpacity>
-            ) : null,
+            ) : null
           )}
 
           {!play ? (
             <TouchableHighlight
               style={[styles.circleBtnWrapper]}
               underlayColor={colors.primaryDark}
-              onPress={start}>
+              onPress={start}
+            >
               <Play style={styles.circleBtn} />
             </TouchableHighlight>
           ) : (
@@ -2912,14 +2788,16 @@ export const RhythmScreen = forwardRef((props, ref) => {
               onPress={() => {
                 pause();
                 askForReview();
-              }}>
+              }}
+            >
               <Animated.View
                 style={[
                   styles.circleBtnAnimated,
                   {
                     transform: [{ scale: pulseBtn }],
                   },
-                ]}>
+                ]}
+              >
                 <Pause style={styles.circleBtn} />
               </Animated.View>
             </TouchableHighlight>
@@ -2932,21 +2810,24 @@ export const RhythmScreen = forwardRef((props, ref) => {
             underlayColor={colors.grayBlue}
             style={beat1 ? styles.presetBtn : styles.presetBtnEmpty}
             onPress={() => loadPreset(1)}
-            onLongPress={() => openPresetModul(1)}>
+            onLongPress={() => openPresetModul(1)}
+          >
             <Text style={styles.presetText}>Beat 1</Text>
           </TouchableHighlight>
           <TouchableHighlight
             underlayColor={colors.grayBlue}
             style={beat2 ? styles.presetBtn : styles.presetBtnEmpty}
             onPress={() => loadPreset(2)}
-            onLongPress={() => openPresetModul(2)}>
+            onLongPress={() => openPresetModul(2)}
+          >
             <Text style={styles.presetText}>Beat 2</Text>
           </TouchableHighlight>
           <TouchableHighlight
             underlayColor={colors.grayBlue}
             style={beat3 ? styles.presetBtn : styles.presetBtnEmpty}
             onPress={() => loadPreset(3)}
-            onLongPress={() => openPresetModul(3)}>
+            onLongPress={() => openPresetModul(3)}
+          >
             <Text style={styles.presetText}>Beat 3</Text>
           </TouchableHighlight>
         </View>
@@ -2962,7 +2843,7 @@ export const RhythmScreen = forwardRef((props, ref) => {
             trackStyle={styles.sliderTrack}
             renderThumbComponent={CustomThumbHihat}
             thumbTouchSize={{ width: 65, height: 25 }}
-            onValueChange={hihatValue => rotateHihatCircle(hihatValue)}
+            onValueChange={(hihatValue) => rotateHihatCircle(hihatValue)}
           />
 
           <Slider
@@ -2976,7 +2857,7 @@ export const RhythmScreen = forwardRef((props, ref) => {
             trackStyle={styles.sliderTrack}
             renderThumbComponent={CustomThumbSnare}
             thumbTouchSize={{ width: 65, height: 25 }}
-            onValueChange={snareValue => rotateSnareCircle(snareValue)}
+            onValueChange={(snareValue) => rotateSnareCircle(snareValue)}
           />
           <Slider
             value={kickValue}
@@ -2989,20 +2870,22 @@ export const RhythmScreen = forwardRef((props, ref) => {
             trackStyle={styles.sliderTrack}
             renderThumbComponent={CustomThumbKick}
             thumbTouchSize={{ width: 65, height: 25 }}
-            onValueChange={kickValue => rotateKickCircle(kickValue)}
+            onValueChange={(kickValue) => rotateKickCircle(kickValue)}
           />
         </View>
         <View style={styles.btnWrapper}>
           <TouchableHighlight
             underlayColor={colors.grayBlue}
             style={styles.btnPrimary}
-            onPress={clearBeat}>
+            onPress={clearBeat}
+          >
             <Text style={styles.btnPrimaryText}>Clear beat</Text>
           </TouchableHighlight>
           <TouchableHighlight
             underlayColor={colors.grayBlue}
             style={styles.btnPrimary}
-            onPress={resetAll}>
+            onPress={resetAll}
+          >
             <Text style={styles.btnPrimaryText}>Reset all</Text>
           </TouchableHighlight>
 
@@ -3031,20 +2914,16 @@ export const RhythmScreen = forwardRef((props, ref) => {
 
       <Modal animationType="fade" transparent={true} visible={presetModul}>
         <View style={styles.modalView}>
-          <Text style={styles.modalExp}>
-            Are you sure you want to clear the saved beat?
-          </Text>
+          <Text style={styles.modalExp}>Are you sure you want to clear the saved beat?</Text>
           <View style={styles.modalBtnCont}>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={styles.modalBtn}
-              onPress={clearPreset}>
+            <TouchableOpacity activeOpacity={0.8} style={styles.modalBtn} onPress={clearPreset}>
               <Text style={styles.modalBtnTxt}>Yes</Text>
             </TouchableOpacity>
             <TouchableOpacity
               activeOpacity={0.8}
               style={styles.modalBtn}
-              onPress={() => setPresetModul(false)}>
+              onPress={() => setPresetModul(false)}
+            >
               <Text style={styles.modalBtnTxt}>No</Text>
             </TouchableOpacity>
           </View>
@@ -3057,7 +2936,6 @@ export const RhythmScreen = forwardRef((props, ref) => {
 /* Final Screen */
 function Home() {
   /* Component States */
-  const appState = useRef(AppState.currentState);
   const windowHeight = useWindowDimensions().height;
   const [ads, setAds] = useState(false);
   const [midiName, setMidiName] = useState('');
@@ -3076,7 +2954,6 @@ function Home() {
 
   /* onLoad */
   useEffect(() => {
-    ImmersiveMode.setBarMode('FullSticky');
     initFadeIn();
     /* setTimeout(askForPermission, 1000); */
   }, []);
@@ -3224,9 +3101,7 @@ function Home() {
     let zVal = -1;
     if (navCheck == true) {
       slideYVal = !isTablet ? -deviceWidth : -deviceWidth / 2;
-      slideXVal = !isTablet
-        ? 0 - (deviceWidth / 100) * 5
-        : (deviceWidth / 100) * 45;
+      slideXVal = !isTablet ? 0 - (deviceWidth / 100) * 5 : (deviceWidth / 100) * 45;
       displayDelay = 0;
       heightVal = deviceHeight + (deviceWidth / 100) * 10;
       opacityVal = 0.5;
@@ -3335,7 +3210,7 @@ function Home() {
   };
 
   /* Open & Close - Navigation */
-  const openNav = value => {
+  const openNav = (value) => {
     navCheck = value;
     slideNavEffect();
   };
@@ -3347,7 +3222,7 @@ function Home() {
   };
 
   /* Open & Close - Settings Screen */
-  const openMenu = value => {
+  const openMenu = (value) => {
     setMenuOpen(value);
     menuCheck = value;
     refMenu.current.rotateEffect();
@@ -3356,7 +3231,7 @@ function Home() {
   };
 
   /* Open & Close - Rewarded Screen */
-  const openRewarded = value => {
+  const openRewarded = (value) => {
     if (value == false) {
       fadeRewardedOut();
     } else {
@@ -3365,7 +3240,7 @@ function Home() {
   };
 
   /* Open & Close - Library Screen */
-  const openLibrary = value => {
+  const openLibrary = (value) => {
     if (value == false) {
       setRecordingsOpen(value);
       setMainOpen(!value);
@@ -3379,7 +3254,7 @@ function Home() {
   };
 
   /* Open & Close - Guide Screen */
-  const openGuide = value => {
+  const openGuide = (value) => {
     if (value == false) {
       fadeGuideOut();
     } else {
@@ -3412,22 +3287,22 @@ function Home() {
   };
 
   /* Close midi Modal */
-  const exitMidiModal = () => {
+  const exitMidiModal = (bool) => {
     Keyboard.dismiss();
     setMidiModal(false);
     setMidiName('');
-    if (appState.current === 'active') {
-      RNFS.unlink(fileUri);
+    if (bool === true) {
+      // RNFS.unlink(fileUri);
     }
   };
 
   /* Custom Name midi file */
-  const nameMidiFile = value => {
+  const nameMidiFile = (value) => {
     setMidiName(value.toString());
   };
 
   /* Midi Modal on Save */
-  const saveMIDI = value => {
+  const saveMIDI = (value) => {
     Keyboard.dismiss();
     if (value == undefined || value == null || value == '') {
       exportMIDI(fileName);
@@ -3437,7 +3312,7 @@ function Home() {
   };
 
   /* Write midi file and Share */
-  const exportMIDI = async value => {
+  const exportMIDI = async (value) => {
     /* Get position of all notes for each sound */
     let hihatMIDI = [];
     let snareMIDI = [];
@@ -3518,7 +3393,7 @@ function Home() {
     }
 
     /* Create midi note layout array without rests (R) */
-    let midiLayout = notesLayout.filter(i => i !== 'R');
+    let midiLayout = notesLayout.filter((i) => i !== 'R');
 
     /* Write midi sequance */
     let track = new MidiWriter.Track();
@@ -3530,7 +3405,7 @@ function Home() {
             pitch: ['C2', 'D2', 'F#2'],
             duration: notesTicks[i],
             startTick: startTicks[i],
-          }),
+          })
         );
       } else if (midiLayout[i] === 'KS') {
         notesMIDI.push(
@@ -3538,7 +3413,7 @@ function Home() {
             pitch: ['C2', 'D2'],
             duration: notesTicks[i],
             startTick: startTicks[i],
-          }),
+          })
         );
       } else if (midiLayout[i] === 'KH') {
         notesMIDI.push(
@@ -3546,7 +3421,7 @@ function Home() {
             pitch: ['C2', 'F#2'],
             duration: notesTicks[i],
             startTick: startTicks[i],
-          }),
+          })
         );
       } else if (midiLayout[i] === 'SH') {
         notesMIDI.push(
@@ -3554,7 +3429,7 @@ function Home() {
             pitch: ['D2', 'F#2'],
             duration: notesTicks[i],
             startTick: startTicks[i],
-          }),
+          })
         );
       } else if (midiLayout[i] === 'K') {
         notesMIDI.push(
@@ -3562,7 +3437,7 @@ function Home() {
             pitch: ['C2'],
             duration: notesTicks[i],
             startTick: startTicks[i],
-          }),
+          })
         );
       } else if (midiLayout[i] === 'S') {
         notesMIDI.push(
@@ -3570,7 +3445,7 @@ function Home() {
             pitch: ['D2'],
             duration: notesTicks[i],
             startTick: startTicks[i],
-          }),
+          })
         );
       } else if (midiLayout[i] === 'H') {
         notesMIDI.push(
@@ -3578,7 +3453,7 @@ function Home() {
             pitch: ['F#2'],
             duration: notesTicks[i],
             startTick: startTicks[i],
-          }),
+          })
         );
       }
     }
@@ -3593,27 +3468,31 @@ function Home() {
     }
 
     /* Write .mid file to app storage */
-    const write = new MidiWriter.Writer(track);
-    fileUri = RNFS.DocumentDirectoryPath + `/${encodeURI(value)}.midi`;
-    RNFS.writeFile(fileUri, write.base64(), 'base64');
+    const write = new MidiWriter.Writer(track).base64();
+    // fileUri = RNFS.DocumentDirectoryPath + `/${encodeURI(value)}.midi`;
+    // RNFS.writeFile(fileUri, write, 'base64');
+    let shareUrl = 'data:audio/midi audio/x-midi;base64,';
 
     /* Start Share */
     const shareOptions = {
-      url: fileUri,
+      type: 'audio/midi audio/x-midi',
+      filename: encodeURI(value),
+      url: shareUrl + write,
       failOnCancel: true,
     };
-    const shareResponse = await Share.open(shareOptions).then((res) => {
-      /* Close midi modal, reset custom name & delete file from storage */
-      exitMidiModal();
-    }).catch((err) => {
-      /* Close midi modal, reset custom name & delete file from storage */
-      exitMidiModal();
-    });
+    await Share.open(shareOptions)
+      .then(() => {
+        /* Close midi modal, reset custom name & delete file from storage */
+        exitMidiModal(true);
+      })
+      .catch(() => {
+        /* Close midi modal, reset custom name & delete file from storage */
+        exitMidiModal(true);
+      });
   };
 
   return (
-    <SafeAreaView
-      style={[styles.container, { minHeight: Math.round(windowHeight) }]}>
+    <SafeAreaView style={[styles.container, { minHeight: Math.round(windowHeight) }]}>
       <StatusBar hidden />
 
       {/* APP BG & RewardedScreen BG */}
@@ -3630,7 +3509,8 @@ function Home() {
               opacity: opacityMain,
               flex: 1,
             },
-          ]}>
+          ]}
+        >
           <HomeBG />
         </Animated.View>
       ) : null}
@@ -3643,7 +3523,8 @@ function Home() {
               opacity: opacityMain,
               flex: 1,
             },
-          ]}>
+          ]}
+        >
           <RhythmScreen navCallback={openNav} ref={refMain} />
         </Animated.View>
       ) : null}
@@ -3660,7 +3541,8 @@ function Home() {
               opacity: opacityMenu,
               zIndex: 3,
             },
-          ]}>
+          ]}
+        >
           <MenuBG />
           <MenuScreen
             menuCallback={openMenu}
@@ -3684,7 +3566,8 @@ function Home() {
               opacity: opacityGuide,
               flex: 1,
             },
-          ]}>
+          ]}
+        >
           <MenuBG />
         </Animated.View>
       ) : null}
@@ -3697,7 +3580,8 @@ function Home() {
               opacity: opacityGuide,
               flex: 1,
             },
-          ]}>
+          ]}
+        >
           <GuideScreen guideCallback={openGuide} />
         </Animated.View>
       ) : null}
@@ -3745,15 +3629,15 @@ function Home() {
                 Redefine Beatmaking
               </Animated.Text>
 
-              <Animated.Text
-                style={[{ opacity: opacityAlert }, styles.navTagAlert]}>
+              <Animated.Text style={[{ opacity: opacityAlert }, styles.navTagAlert]}>
                 Nothing to export!
               </Animated.Text>
 
               <TouchableOpacity
                 style={styles.navClose}
                 activeOpacity={0.6}
-                onPress={() => openNav(false)}>
+                onPress={() => openNav(false)}
+              >
                 <Exit fill={colors.grayLight} />
               </TouchableOpacity>
             </View>
@@ -3761,7 +3645,8 @@ function Home() {
               <TouchableOpacity
                 style={styles.navBtnCont}
                 activeOpacity={0.6}
-                onPress={openMenuCall}>
+                onPress={openMenuCall}
+              >
                 <View style={styles.navBtn}>
                   <Text style={styles.navTxt}>Settings</Text>
                   <Settings style={styles.navIcon} />
@@ -3786,7 +3671,8 @@ function Home() {
               <TouchableOpacity
                 style={styles.navBtnCont}
                 activeOpacity={0.6}
-                onPress={() => openGuide(true)}>
+                onPress={() => openGuide(true)}
+              >
                 <View style={styles.navBtn}>
                   <Text style={styles.navTxt}>How to use</Text>
                   <Guide style={styles.navIcon} />
@@ -3795,7 +3681,8 @@ function Home() {
               <TouchableOpacity
                 style={styles.navBtnCont}
                 activeOpacity={0.6}
-                onPress={openMidiModal}>
+                onPress={openMidiModal}
+              >
                 <View style={styles.navBtn}>
                   <Text style={styles.navTxt}>Export MIDI</Text>
                   <Export style={styles.navIcon} />
@@ -3812,7 +3699,7 @@ function Home() {
           <Text style={styles.modalTxt}>MIDI file name:</Text>
           <TextInput
             style={styles.inputMidi}
-            onChangeText={midiName => nameMidiFile(midiName)}
+            onChangeText={(midiName) => nameMidiFile(midiName)}
             onSubmitEditing={() => nameMidiFile(midiName)}
             value={midiName}
             placeholder={'Ritmo_MIDI'}
@@ -3825,13 +3712,11 @@ function Home() {
             <TouchableOpacity
               style={styles.modalBtn}
               activeOpacity={0.8}
-              onPress={() => saveMIDI(midiName)}>
+              onPress={() => saveMIDI(midiName)}
+            >
               <Text style={styles.modalBtnTxt}>Save</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.modalBtn}
-              activeOpacity={0.8}
-              onPress={exitMidiModal}>
+            <TouchableOpacity style={styles.modalBtn} activeOpacity={0.8} onPress={exitMidiModal}>
               <Text style={styles.modalBtnTxt}>Cancel</Text>
             </TouchableOpacity>
           </View>

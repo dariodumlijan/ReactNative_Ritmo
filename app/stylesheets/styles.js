@@ -7,7 +7,7 @@ const isiPhone = Platform.OS === 'ios' && !isTablet;
 const deviceWidth = Dimensions.get('screen').width;
 const circleRad = deviceWidth / 2;
 
-var navY = '55%';
+let navY = '55%';
 if (isiPhone) {
   navY = '60%';
 }
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   menu: {
     height: '120%',
     aspectRatio: 1 / 2,
-    //marginTop: "40%",
+    // marginTop: "40%",
   },
   menuCloseW: {
     height: '80%',

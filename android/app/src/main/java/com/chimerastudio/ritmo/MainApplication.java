@@ -1,9 +1,15 @@
-package com.ritmo;
+package com.chimerastudio.ritmo;
 
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.ibits.react_native_in_app_review.AppReviewPackage;
+import cl.json.RNSharePackage;
+import com.rnfs.RNFSPackage;
+import com.zmxv.RNSound.RNSoundPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -62,7 +68,7 @@ public class MainApplication extends Application implements ReactApplication {
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("com.ritmo.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("com.chimerastudio.ritmo.ReactNativeFlipper");
         aClass
             .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
             .invoke(null, context, reactInstanceManager);

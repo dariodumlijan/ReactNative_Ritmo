@@ -1,5 +1,6 @@
-package com.ritmo;
+package com.chimerastudio.ritmo;
 import android.os.Bundle;
+import android.view.View;
 import com.facebook.react.ReactActivity;
 import org.devio.rn.splashscreen.SplashScreen;
 public class MainActivity extends ReactActivity {
@@ -16,6 +17,22 @@ public class MainActivity extends ReactActivity {
   @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.show(this);  // here
+        hideNavigationBar();
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            hideNavigationBar();
+        }
+    }
+
+    private void hideNavigationBar() {
+        getWindow().getDecorView().setSystemUiVisibility(
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
     }
 }

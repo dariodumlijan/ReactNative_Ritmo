@@ -14,7 +14,8 @@ function HomeBG() {
       colors={[colors.bg, colors.gray]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
-      locations={[0.5, 0.5]}>
+      locations={[0.5, 0.5]}
+    >
       <View style={styles.backgroundTop}>
         <View style={styles.backgroundTopBlue} />
       </View>
