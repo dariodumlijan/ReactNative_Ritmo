@@ -3292,7 +3292,7 @@ function Home() {
     setMidiModal(false);
     setMidiName('');
     if (bool === true) {
-      // RNFS.unlink(fileUri);
+      RNFS.unlink(fileUri);
     }
   };
 
@@ -3469,15 +3469,14 @@ function Home() {
 
     /* Write .mid file to app storage */
     const write = new MidiWriter.Writer(track).base64();
-    // fileUri = RNFS.DocumentDirectoryPath + `/${encodeURI(value)}.midi`;
-    // RNFS.writeFile(fileUri, write, 'base64');
-    let shareUrl = 'data:audio/midi audio/x-midi;base64,';
+    fileUri = RNFS.DocumentDirectoryPath + `/${encodeURI(value)}.midi`;
+    RNFS.writeFile(fileUri, write, 'base64');
 
     /* Start Share */
     const shareOptions = {
       type: 'audio/midi audio/x-midi',
       filename: encodeURI(value),
-      url: shareUrl + write,
+      url: 'file://' + fileUri,
       failOnCancel: true,
     };
     await Share.open(shareOptions)

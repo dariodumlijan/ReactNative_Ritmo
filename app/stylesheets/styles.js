@@ -340,6 +340,7 @@ const styles = StyleSheet.create({
   presetText: {
     fontFamily: 'Montserrat-SemiBold',
     fontSize: 14,
+    lineHeight: 16,
     textAlign: 'center',
     color: colors.white,
   },
@@ -373,6 +374,7 @@ const styles = StyleSheet.create({
   sliderThumbText: {
     fontFamily: 'Montserrat-SemiBold',
     fontSize: 14,
+    lineHeight: 16,
     color: colors.primaryDark,
   },
   btnWrapper: {
