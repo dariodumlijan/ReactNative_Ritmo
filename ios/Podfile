@@ -23,6 +23,8 @@ target 'Ritmo' do
   pod 'RNShare', :path => '../node_modules/react-native-share'
 
   pod 'react-native-in-app-review', :path => '../node_modules/react-native-in-app-review'
+  
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
   target 'RitmoTests' do
     inherit! :complete
@@ -38,7 +40,10 @@ target 'Ritmo' do
   post_install do |installer|
     react_native_post_install(installer)
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
+    installer.pods_project.targets.each do |target|
+      if target.name == "React"
+        target.remove_from_project
+      end
+    end
   end
 end
-
-pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'

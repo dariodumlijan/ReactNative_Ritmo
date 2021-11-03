@@ -9,45 +9,11 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* RitmoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RitmoTests.m */; };
 		0691992D34C10146A1FB0B67 /* libPods-Ritmo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC3AC5A26133FA110C26954E /* libPods-Ritmo.a */; };
-		0A364380B0164841B5D19F37 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 35D199E344164BBBB2EECEE6 /* Montserrat-SemiBold.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		249016A554714B3BB406B080 /* midiFile.png in Resources */ = {isa = PBXBuildFile; fileRef = 1919AF634765473C9E053803 /* midiFile.png */; };
-		2FDDAD665B604F34A65BDF93 /* midiFile_Logic.png in Resources */ = {isa = PBXBuildFile; fileRef = AB5094021E134B16833A7F46 /* midiFile_Logic.png */; };
-		3E0E2AEC2724D05A002BFFB7 /* epictoms_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ACE2724D05A002BFFB7 /* epictoms_kick.mp3 */; };
-		3E0E2AED2724D05A002BFFB7 /* african1_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ACF2724D05A002BFFB7 /* african1_kick.mp3 */; };
-		3E0E2AEE2724D05A002BFFB7 /* trap_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD02724D05A002BFFB7 /* trap_snare.mp3 */; };
-		3E0E2AEF2724D05A002BFFB7 /* latin_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD12724D05A002BFFB7 /* latin_snare.mp3 */; };
-		3E0E2AF02724D05A002BFFB7 /* toms_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD22724D05A002BFFB7 /* toms_hihat.mp3 */; };
-		3E0E2AF12724D05A002BFFB7 /* african2_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD32724D05A002BFFB7 /* african2_snare.mp3 */; };
-		3E0E2AF22724D05A002BFFB7 /* taiko_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD42724D05A002BFFB7 /* taiko_hihat.mp3 */; };
-		3E0E2AF32724D05A002BFFB7 /* taiko_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD52724D05A002BFFB7 /* taiko_kick.mp3 */; };
-		3E0E2AF42724D05A002BFFB7 /* hiphop_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD62724D05A002BFFB7 /* hiphop_hihat.mp3 */; };
-		3E0E2AF52724D05A002BFFB7 /* hiphop_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD72724D05A002BFFB7 /* hiphop_kick.mp3 */; };
-		3E0E2AF62724D05A002BFFB7 /* latin_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD82724D05A002BFFB7 /* latin_kick.mp3 */; };
-		3E0E2AF72724D05A002BFFB7 /* acoustic_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD92724D05A002BFFB7 /* acoustic_hihat.mp3 */; };
-		3E0E2AF82724D05A002BFFB7 /* lofi_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ADA2724D05A002BFFB7 /* lofi_hihat.mp3 */; };
-		3E0E2AF92724D05A002BFFB7 /* epictoms_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ADB2724D05A002BFFB7 /* epictoms_snare.mp3 */; };
-		3E0E2AFA2724D05A002BFFB7 /* african1_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ADC2724D05A002BFFB7 /* african1_hihat.mp3 */; };
-		3E0E2AFB2724D05A002BFFB7 /* taiko_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ADD2724D05A002BFFB7 /* taiko_snare.mp3 */; };
-		3E0E2AFC2724D05A002BFFB7 /* acoustic_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ADE2724D05A002BFFB7 /* acoustic_kick.mp3 */; };
-		3E0E2AFD2724D05A002BFFB7 /* lofi_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ADF2724D05A002BFFB7 /* lofi_kick.mp3 */; };
-		3E0E2AFE2724D05A002BFFB7 /* hiphop_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE02724D05A002BFFB7 /* hiphop_snare.mp3 */; };
-		3E0E2AFF2724D05A002BFFB7 /* trap_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE12724D05A002BFFB7 /* trap_hihat.mp3 */; };
-		3E0E2B002724D05A002BFFB7 /* latin_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE22724D05A002BFFB7 /* latin_hihat.mp3 */; };
-		3E0E2B012724D05A002BFFB7 /* african2_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE32724D05A002BFFB7 /* african2_kick.mp3 */; };
-		3E0E2B022724D05A002BFFB7 /* toms_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE42724D05A002BFFB7 /* toms_snare.mp3 */; };
-		3E0E2B032724D05A002BFFB7 /* african2_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE52724D05A002BFFB7 /* african2_hihat.mp3 */; };
-		3E0E2B042724D05A002BFFB7 /* trap_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE62724D05A002BFFB7 /* trap_kick.mp3 */; };
-		3E0E2B052724D05A002BFFB7 /* toms_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE72724D05A002BFFB7 /* toms_kick.mp3 */; };
-		3E0E2B062724D05A002BFFB7 /* epictoms_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE82724D05A002BFFB7 /* epictoms_hihat.mp3 */; };
-		3E0E2B072724D05A002BFFB7 /* african1_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE92724D05A002BFFB7 /* african1_snare.mp3 */; };
-		3E0E2B082724D05A002BFFB7 /* acoustic_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AEA2724D05A002BFFB7 /* acoustic_snare.mp3 */; };
-		3E0E2B092724D05A002BFFB7 /* lofi_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AEB2724D05A002BFFB7 /* lofi_snare.mp3 */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		3E34634B27332C0400D79E46 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		3E34634C27332C0B00D79E46 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A728D8DF5314A6CDC861CF79 /* libPods-Ritmo-RitmoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D242DC80942A1FD7309BF658 /* libPods-Ritmo-RitmoTests.a */; };
-		CBF4BEFACF8B4AC4945F24EF /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7A4A786CCE940F0A56C0042 /* Montserrat-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -319,7 +285,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1210;
+				LastUpgradeCheck = 1240;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -361,42 +327,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E0E2AF42724D05A002BFFB7 /* hiphop_hihat.mp3 in Resources */,
-				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				3E0E2AFE2724D05A002BFFB7 /* hiphop_snare.mp3 in Resources */,
-				3E0E2AF62724D05A002BFFB7 /* latin_kick.mp3 in Resources */,
-				3E0E2AF82724D05A002BFFB7 /* lofi_hihat.mp3 in Resources */,
-				3E0E2B062724D05A002BFFB7 /* epictoms_hihat.mp3 in Resources */,
-				3E0E2AF92724D05A002BFFB7 /* epictoms_snare.mp3 in Resources */,
-				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				3E0E2AF72724D05A002BFFB7 /* acoustic_hihat.mp3 in Resources */,
-				3E0E2AEE2724D05A002BFFB7 /* trap_snare.mp3 in Resources */,
-				3E0E2AEF2724D05A002BFFB7 /* latin_snare.mp3 in Resources */,
-				CBF4BEFACF8B4AC4945F24EF /* Montserrat-Regular.ttf in Resources */,
-				3E0E2B032724D05A002BFFB7 /* african2_hihat.mp3 in Resources */,
-				3E0E2AF52724D05A002BFFB7 /* hiphop_kick.mp3 in Resources */,
-				3E0E2AFF2724D05A002BFFB7 /* trap_hihat.mp3 in Resources */,
-				0A364380B0164841B5D19F37 /* Montserrat-SemiBold.ttf in Resources */,
-				3E0E2B052724D05A002BFFB7 /* toms_kick.mp3 in Resources */,
-				3E0E2B012724D05A002BFFB7 /* african2_kick.mp3 in Resources */,
-				3E0E2AF12724D05A002BFFB7 /* african2_snare.mp3 in Resources */,
-				3E0E2AEC2724D05A002BFFB7 /* epictoms_kick.mp3 in Resources */,
-				3E0E2AFD2724D05A002BFFB7 /* lofi_kick.mp3 in Resources */,
-				3E0E2AED2724D05A002BFFB7 /* african1_kick.mp3 in Resources */,
-				3E0E2B002724D05A002BFFB7 /* latin_hihat.mp3 in Resources */,
-				2FDDAD665B604F34A65BDF93 /* midiFile_Logic.png in Resources */,
-				3E0E2AFC2724D05A002BFFB7 /* acoustic_kick.mp3 in Resources */,
-				3E0E2AFA2724D05A002BFFB7 /* african1_hihat.mp3 in Resources */,
-				3E0E2B022724D05A002BFFB7 /* toms_snare.mp3 in Resources */,
-				3E0E2AF22724D05A002BFFB7 /* taiko_hihat.mp3 in Resources */,
-				249016A554714B3BB406B080 /* midiFile.png in Resources */,
-				3E0E2AF02724D05A002BFFB7 /* toms_hihat.mp3 in Resources */,
-				3E0E2B042724D05A002BFFB7 /* trap_kick.mp3 in Resources */,
-				3E0E2AF32724D05A002BFFB7 /* taiko_kick.mp3 in Resources */,
-				3E0E2AFB2724D05A002BFFB7 /* taiko_snare.mp3 in Resources */,
-				3E0E2B072724D05A002BFFB7 /* african1_snare.mp3 in Resources */,
-				3E0E2B092724D05A002BFFB7 /* lofi_snare.mp3 in Resources */,
-				3E0E2B082724D05A002BFFB7 /* acoustic_snare.mp3 in Resources */,
+				3E34634C27332C0B00D79E46 /* LaunchScreen.storyboard in Resources */,
+				3E34634B27332C0400D79E46 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -583,13 +515,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8CB28F7762B660257A678DB0 /* Pods-Ritmo-RitmoTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = RitmoTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -610,10 +543,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8EB736AC1DD327329816F691 /* Pods-Ritmo-RitmoTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = RitmoTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -636,7 +570,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 3586QUHAP4;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Ritmo/Info.plist;
@@ -644,6 +580,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -651,6 +588,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.chimerastudio.ritmoios;
 				PRODUCT_NAME = Ritmo;
+				PROVISIONING_PROFILE_SPECIFIER = "Ritmo App Store Distribution";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -664,13 +602,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 3586QUHAP4;
 				INFOPLIST_FILE = Ritmo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -678,6 +619,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.chimerastudio.ritmoios;
 				PRODUCT_NAME = Ritmo;
+				PROVISIONING_PROFILE_SPECIFIER = "Ritmo App Store Distribution";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -733,7 +675,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -792,7 +734,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
