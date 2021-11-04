@@ -13,6 +13,38 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3E34634B27332C0400D79E46 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		3E34634C27332C0B00D79E46 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		3E3A22552734774B001FC489 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7A4A786CCE940F0A56C0042 /* Montserrat-Regular.ttf */; };
+		3E3A22562734774B001FC489 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 35D199E344164BBBB2EECEE6 /* Montserrat-SemiBold.ttf */; };
+		3E3A225927347CD0001FC489 /* epictoms_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ACE2724D05A002BFFB7 /* epictoms_kick.mp3 */; };
+		3E3A225A27347CD0001FC489 /* african1_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ACF2724D05A002BFFB7 /* african1_kick.mp3 */; };
+		3E3A225B27347CD0001FC489 /* trap_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD02724D05A002BFFB7 /* trap_snare.mp3 */; };
+		3E3A225C27347CD0001FC489 /* latin_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD12724D05A002BFFB7 /* latin_snare.mp3 */; };
+		3E3A225D27347CD0001FC489 /* toms_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD22724D05A002BFFB7 /* toms_hihat.mp3 */; };
+		3E3A225E27347CD0001FC489 /* african2_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD32724D05A002BFFB7 /* african2_snare.mp3 */; };
+		3E3A225F27347CD0001FC489 /* taiko_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD42724D05A002BFFB7 /* taiko_hihat.mp3 */; };
+		3E3A226027347CD0001FC489 /* taiko_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD52724D05A002BFFB7 /* taiko_kick.mp3 */; };
+		3E3A226127347CD0001FC489 /* hiphop_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD62724D05A002BFFB7 /* hiphop_hihat.mp3 */; };
+		3E3A226227347CD0001FC489 /* hiphop_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD72724D05A002BFFB7 /* hiphop_kick.mp3 */; };
+		3E3A226327347CD0001FC489 /* latin_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD82724D05A002BFFB7 /* latin_kick.mp3 */; };
+		3E3A226427347CD0001FC489 /* acoustic_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AD92724D05A002BFFB7 /* acoustic_hihat.mp3 */; };
+		3E3A226527347CD0001FC489 /* lofi_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ADA2724D05A002BFFB7 /* lofi_hihat.mp3 */; };
+		3E3A226627347CD0001FC489 /* epictoms_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ADB2724D05A002BFFB7 /* epictoms_snare.mp3 */; };
+		3E3A226727347CD0001FC489 /* african1_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ADC2724D05A002BFFB7 /* african1_hihat.mp3 */; };
+		3E3A226827347CD0001FC489 /* taiko_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ADD2724D05A002BFFB7 /* taiko_snare.mp3 */; };
+		3E3A226927347CD0001FC489 /* acoustic_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ADE2724D05A002BFFB7 /* acoustic_kick.mp3 */; };
+		3E3A226A27347CD0001FC489 /* lofi_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2ADF2724D05A002BFFB7 /* lofi_kick.mp3 */; };
+		3E3A226B27347CD0001FC489 /* hiphop_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE02724D05A002BFFB7 /* hiphop_snare.mp3 */; };
+		3E3A226C27347CD0001FC489 /* trap_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE12724D05A002BFFB7 /* trap_hihat.mp3 */; };
+		3E3A226D27347CD0001FC489 /* latin_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE22724D05A002BFFB7 /* latin_hihat.mp3 */; };
+		3E3A226E27347CD0001FC489 /* african2_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE32724D05A002BFFB7 /* african2_kick.mp3 */; };
+		3E3A226F27347CD0001FC489 /* toms_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE42724D05A002BFFB7 /* toms_snare.mp3 */; };
+		3E3A227027347CD0001FC489 /* african2_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE52724D05A002BFFB7 /* african2_hihat.mp3 */; };
+		3E3A227127347CD0001FC489 /* trap_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE62724D05A002BFFB7 /* trap_kick.mp3 */; };
+		3E3A227227347CD0001FC489 /* toms_kick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE72724D05A002BFFB7 /* toms_kick.mp3 */; };
+		3E3A227327347CD0001FC489 /* epictoms_hihat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE82724D05A002BFFB7 /* epictoms_hihat.mp3 */; };
+		3E3A227427347CD0001FC489 /* african1_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AE92724D05A002BFFB7 /* african1_snare.mp3 */; };
+		3E3A227527347CD0001FC489 /* acoustic_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AEA2724D05A002BFFB7 /* acoustic_snare.mp3 */; };
+		3E3A227627347CD0001FC489 /* lofi_snare.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E2AEB2724D05A002BFFB7 /* lofi_snare.mp3 */; };
 		A728D8DF5314A6CDC861CF79 /* libPods-Ritmo-RitmoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D242DC80942A1FD7309BF658 /* libPods-Ritmo-RitmoTests.a */; };
 /* End PBXBuildFile section */
 
@@ -327,6 +359,38 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E3A225927347CD0001FC489 /* epictoms_kick.mp3 in Resources */,
+				3E3A225A27347CD0001FC489 /* african1_kick.mp3 in Resources */,
+				3E3A225B27347CD0001FC489 /* trap_snare.mp3 in Resources */,
+				3E3A225C27347CD0001FC489 /* latin_snare.mp3 in Resources */,
+				3E3A225D27347CD0001FC489 /* toms_hihat.mp3 in Resources */,
+				3E3A225E27347CD0001FC489 /* african2_snare.mp3 in Resources */,
+				3E3A225F27347CD0001FC489 /* taiko_hihat.mp3 in Resources */,
+				3E3A226027347CD0001FC489 /* taiko_kick.mp3 in Resources */,
+				3E3A226127347CD0001FC489 /* hiphop_hihat.mp3 in Resources */,
+				3E3A226227347CD0001FC489 /* hiphop_kick.mp3 in Resources */,
+				3E3A226327347CD0001FC489 /* latin_kick.mp3 in Resources */,
+				3E3A226427347CD0001FC489 /* acoustic_hihat.mp3 in Resources */,
+				3E3A226527347CD0001FC489 /* lofi_hihat.mp3 in Resources */,
+				3E3A226627347CD0001FC489 /* epictoms_snare.mp3 in Resources */,
+				3E3A226727347CD0001FC489 /* african1_hihat.mp3 in Resources */,
+				3E3A226827347CD0001FC489 /* taiko_snare.mp3 in Resources */,
+				3E3A226927347CD0001FC489 /* acoustic_kick.mp3 in Resources */,
+				3E3A226A27347CD0001FC489 /* lofi_kick.mp3 in Resources */,
+				3E3A226B27347CD0001FC489 /* hiphop_snare.mp3 in Resources */,
+				3E3A226C27347CD0001FC489 /* trap_hihat.mp3 in Resources */,
+				3E3A226D27347CD0001FC489 /* latin_hihat.mp3 in Resources */,
+				3E3A226E27347CD0001FC489 /* african2_kick.mp3 in Resources */,
+				3E3A226F27347CD0001FC489 /* toms_snare.mp3 in Resources */,
+				3E3A227027347CD0001FC489 /* african2_hihat.mp3 in Resources */,
+				3E3A227127347CD0001FC489 /* trap_kick.mp3 in Resources */,
+				3E3A227227347CD0001FC489 /* toms_kick.mp3 in Resources */,
+				3E3A227327347CD0001FC489 /* epictoms_hihat.mp3 in Resources */,
+				3E3A227427347CD0001FC489 /* african1_snare.mp3 in Resources */,
+				3E3A227527347CD0001FC489 /* acoustic_snare.mp3 in Resources */,
+				3E3A227627347CD0001FC489 /* lofi_snare.mp3 in Resources */,
+				3E3A22552734774B001FC489 /* Montserrat-Regular.ttf in Resources */,
+				3E3A22562734774B001FC489 /* Montserrat-SemiBold.ttf in Resources */,
 				3E34634C27332C0B00D79E46 /* LaunchScreen.storyboard in Resources */,
 				3E34634B27332C0400D79E46 /* Images.xcassets in Resources */,
 			);
@@ -572,7 +636,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 3586QUHAP4;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Ritmo/Info.plist;
@@ -580,7 +644,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -604,14 +668,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 3586QUHAP4;
 				INFOPLIST_FILE = Ritmo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

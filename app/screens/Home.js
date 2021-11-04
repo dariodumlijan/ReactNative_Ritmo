@@ -43,6 +43,7 @@ import {
   // getPermissionsAsync,
 } from '@react-native-firebase/admob';
 */
+import { getTrackingStatus, requestTrackingPermission } from 'react-native-tracking-transparency';
 import admob from '../tokens';
 import InAppReview from 'react-native-in-app-review';
 
@@ -2955,7 +2956,7 @@ function Home() {
   /* onLoad */
   useEffect(() => {
     initFadeIn();
-    /* setTimeout(askForPermission, 1000); */
+    setTimeout(askForPermission, 1000);
   }, []);
 
   function initFadeIn() {
@@ -3065,21 +3066,20 @@ function Home() {
   }
   /* Screen Transition Animations - END */
 
-  /* Permission for tracking & personalised Ads
+  /* Permission for tracking & personalised Ads */
   async function askForPermission() {
-    const { granted } = await getPermissionsAsync();
-    if (granted) {
+    const status = await getTrackingStatus();
+    if (status === 'authorized' || status === 'unavailable') {
       personalisedAds = true;
-      setAds(true);
+      // setAds(true);
     } else {
-      const { status } = await requestPermissionsAsync();
-      if (status === 'granted') {
+      const newStatus = await requestTrackingPermission();
+      if (newStatus === 'authorized' || newStatus === 'unavailable') {
         personalisedAds = true;
       }
-      setAds(true);
+      // setAds(true);
     }
   }
-  */
 
   /* Refs */
   const refMain = useRef(null);
