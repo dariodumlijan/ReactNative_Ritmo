@@ -1,24 +1,17 @@
+// @flow
 import React from 'react';
+import type { Node } from 'react';
 import { StyleSheet, Platform, Dimensions, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import colors from '../stylesheets/colors';
-
-import Logo from '../assets/icons/Logo';
+import Logo from '../../assets/icons/Logo';
+import colors from '../../styles/colors';
 
 const isTablet = DeviceInfo.isTablet();
 const isiPhone = Platform.OS === 'ios' && !isTablet;
 const deviceWidth = Dimensions.get('screen').width;
 const useWidth = deviceWidth * 0.15;
 
-function MenuBG() {
-  return (
-    <View style={styles.backgroundWrapper}>
-      <Logo style={styles.menuLogo} fill={colors.grayBlue} />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
+const styles: Object = StyleSheet.create({
   backgroundWrapper: {
     position: 'absolute',
     top: '-5%',
@@ -31,7 +24,7 @@ const styles = StyleSheet.create({
     width: '112%',
     height: '120%',
     backgroundColor: colors.gray,
-    flex: isiPhone ? null : 1,
+    ...(isiPhone && { flex: 1 }),
     overflow: 'hidden',
   },
   menuLogo: {
@@ -41,5 +34,13 @@ const styles = StyleSheet.create({
     transform: [{ translateX: useWidth }, { rotate: '90deg' }],
   },
 });
+
+function MenuBG(): Node {
+  return (
+    <View style={styles.backgroundWrapper}>
+      <Logo style={styles.menuLogo} fill={colors.grayBlue} />
+    </View>
+  );
+}
 
 export default MenuBG;

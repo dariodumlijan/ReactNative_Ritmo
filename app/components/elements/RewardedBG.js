@@ -1,16 +1,14 @@
+// @flow
 import React from 'react';
+import type { Node } from 'react';
 import { StyleSheet, Platform, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import colors from '../stylesheets/colors';
+import colors from '../../styles/colors';
 
 const isTablet = DeviceInfo.isTablet();
 const isiPhone = Platform.OS === 'ios' && !isTablet;
 
-function RewardedBG() {
-  return <View style={styles.backgroundWrapper} />;
-}
-
-const styles = StyleSheet.create({
+const styles: Object = StyleSheet.create({
   backgroundWrapper: {
     position: 'absolute',
     top: '-5%',
@@ -23,8 +21,12 @@ const styles = StyleSheet.create({
     width: '112%',
     height: '120%',
     backgroundColor: colors.primaryDark,
-    flex: isiPhone ? null : 1,
+    ...(isiPhone && { flex: 1 }),
   },
 });
+
+function RewardedBG(): Node {
+  return <View style={styles.backgroundWrapper} />;
+}
 
 export default RewardedBG;

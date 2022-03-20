@@ -1,3 +1,4 @@
+// @flow
 import { StyleSheet, Platform, Dimensions } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import colors from './colors';
@@ -12,7 +13,7 @@ if (isiPhone) {
   navY = '60%';
 }
 
-const styles = StyleSheet.create({
+const styles: Object = StyleSheet.create({
   container: {
     flex: 1,
     marginVertical: 0,

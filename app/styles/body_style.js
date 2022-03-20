@@ -1,7 +1,8 @@
+// @flow
 import { StyleSheet } from 'react-native';
 import colors from './colors';
 
-const body = StyleSheet.create({
+const body: Object = StyleSheet.create({
   container: {
     flex: 1,
     marginVertical: 0,

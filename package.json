@@ -1,20 +1,29 @@
 {
   "name": "ritmo",
-  "version": "0.0.1",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
+    "flow": "flow",
     "lint": "eslint ."
   },
   "dependencies": {
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "@contentful/rich-text-react-renderer": "^15.11.1",
+    "@contentful/rich-text-types": "^15.11.1",
     "@miblanchard/react-native-slider": "^2.0.2",
     "@react-native-async-storage/async-storage": "^1.15.9",
+    "axios": "^0.26.0",
     "buffer": "^6.0.3",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-react-native": "^3.11.0",
+    "lodash": "^4.17.21",
     "midi-writer-js": "^2.0.1",
     "react": "17.0.2",
     "react-native": "0.66.1",
@@ -27,7 +36,13 @@
     "react-native-splash-screen": "^3.2.0",
     "react-native-svg": "^12.1.1",
     "react-native-svg-transformer": "^0.14.3",
-    "react-native-tracking-transparency": "^0.1.1"
+    "react-native-tracking-transparency": "^0.1.1",
+    "react-redux": "^7.2.5",
+    "react-router": "^6.2.1",
+    "react-router-dom": "^6.2.1",
+    "redux": "^4.1.1",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -39,6 +54,7 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "flow-bin": "^0.160.2",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.66.2",
     "react-test-renderer": "17.0.2"

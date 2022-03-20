@@ -1,16 +1,29 @@
-const admob = {
+// @flow
+export const admob = {
   banner: {
-    android_test: "ca-app-pub-3940256099942544/6300978111",
-    android: "ca-app-pub-6627549364207364/2449317174",
-    ios_test: "ca-app-pub-3940256099942544/2934735716",
-    ios: "ca-app-pub-6627549364207364/2825823719",
+    android_test: 'ca-app-pub-3940256099942544/6300978111',
+    ios_test: 'ca-app-pub-3940256099942544/2934735716',
   },
   rewarded: {
-    android_test: "ca-app-pub-3940256099942544/5224354917",
-    android: "ca-app-pub-6627549364207364/2449206773",
-    ios_test: "ca-app-pub-3940256099942544/1712485313",
-    ios: "ca-app-pub-6627549364207364/2502405996",
+    android_test: 'ca-app-pub-3940256099942544/5224354917',
+    ios_test: 'ca-app-pub-3940256099942544/1712485313',
   },
 };
 
-export default admob;
+export const cms = {
+  graphql_url: 'https://graphql.contentful.com/content/v1/spaces/',
+  space: '09o8ljwczvon',
+  authorization: 'OoNVrxgnyHnoRXqTtFb4aZguCY8RKJdv1EoQ1NWq__s',
+};
+
+export const localStorageKeys = {
+  appContent: 'appContent',
+  contentTimestamps: 'contentTimestamps',
+  announcementTimestamp: 'announcementTimestamp',
+  reviewTimestamp: 'reviewTimestamp',
+};
+
+export const appKeys = {
+  noConnection: 'noConnection',
+  noLocalData: 'noLocalData',
+};

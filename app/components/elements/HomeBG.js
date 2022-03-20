@@ -1,32 +1,15 @@
+// @flow
 import React from 'react';
+import type { Node } from 'react';
 import { StyleSheet, Platform, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import LinearGradient from 'react-native-linear-gradient';
-import colors from '../stylesheets/colors';
+import colors from '../../styles/colors';
 
 const isTablet = DeviceInfo.isTablet();
 const isiPhone = Platform.OS === 'ios' && !isTablet;
 
-function HomeBG() {
-  return (
-    <LinearGradient
-      style={styles.backgroundWrapper}
-      colors={[colors.bg, colors.gray]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 0 }}
-      locations={[0.5, 0.5]}
-    >
-      <View style={styles.backgroundTop}>
-        <View style={styles.backgroundTopBlue} />
-      </View>
-      <View style={styles.backgroundBottom}>
-        <View style={styles.backgroundBottomGray} />
-      </View>
-    </LinearGradient>
-  );
-}
-
-const styles = StyleSheet.create({
+const styles: Object = StyleSheet.create({
   backgroundWrapper: {
     position: 'absolute',
     top: 0,
@@ -37,7 +20,7 @@ const styles = StyleSheet.create({
     width: '112%',
     height: '120%',
     backgroundColor: colors.bg,
-    flex: isiPhone ? null : 1,
+    ...(isiPhone && { flex: 1 }),
   },
   backgroundTop: {
     height: isiPhone ? '55%' : '50%',
@@ -58,5 +41,24 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 70,
   },
 });
+
+function HomeBG(): Node {
+  return (
+    <LinearGradient
+      style={styles.backgroundWrapper}
+      colors={[colors.bg, colors.gray]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 0 }}
+      locations={[0.5, 0.5]}
+    >
+      <View style={styles.backgroundTop}>
+        <View style={styles.backgroundTopBlue} />
+      </View>
+      <View style={styles.backgroundBottom}>
+        <View style={styles.backgroundBottomGray} />
+      </View>
+    </LinearGradient>
+  );
+}
 
 export default HomeBG;

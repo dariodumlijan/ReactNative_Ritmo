@@ -1,3 +1,4 @@
+// @flow
 export default {
   primary: '#242e8f',
   primaryDark: '#0d1032',
