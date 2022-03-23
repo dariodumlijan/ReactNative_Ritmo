@@ -5,6 +5,7 @@ import { types as cmsTypes } from './cmsStore';
 import type { ReduxAction, ReduxState } from '../types';
 
 export type State = {
+  showBanner: boolean,
   unlocked: boolean,
 };
 

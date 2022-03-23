@@ -1,12 +1,9 @@
 // @flow
 import React from 'react';
 import type { Node } from 'react';
-import { StyleSheet, Platform, View } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
-import colors from '../../styles/colors';
-
-const isTablet = DeviceInfo.isTablet();
-const isiPhone = Platform.OS === 'ios' && !isTablet;
+import { StyleSheet, View } from 'react-native';
+import { isiPhone } from '../../../utils';
+import colors from '../../../styles/colors';
 
 const styles: Object = StyleSheet.create({
   backgroundWrapper: {
@@ -25,8 +22,8 @@ const styles: Object = StyleSheet.create({
   },
 });
 
-function RewardedBG(): Node {
+function DarkBackground(): Node {
   return <View style={styles.backgroundWrapper} />;
 }
 
-export default RewardedBG;
+export default DarkBackground;

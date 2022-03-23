@@ -1,13 +1,11 @@
 // @flow
 import React from 'react';
 import type { Node } from 'react';
-import { StyleSheet, Platform, Dimensions, View } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
-import Logo from '../../assets/icons/Logo';
-import colors from '../../styles/colors';
+import { StyleSheet, Dimensions, View } from 'react-native';
+import Logo from '../../../assets/icons/Logo';
+import { isiPhone } from '../../../utils';
+import colors from '../../../styles/colors';
 
-const isTablet = DeviceInfo.isTablet();
-const isiPhone = Platform.OS === 'ios' && !isTablet;
 const deviceWidth = Dimensions.get('screen').width;
 const useWidth = deviceWidth * 0.15;
 
@@ -35,7 +33,7 @@ const styles: Object = StyleSheet.create({
   },
 });
 
-function MenuBG(): Node {
+function LightBackground(): Node {
   return (
     <View style={styles.backgroundWrapper}>
       <Logo style={styles.menuLogo} fill={colors.grayBlue} />
@@ -43,4 +41,4 @@ function MenuBG(): Node {
   );
 }
 
-export default MenuBG;
+export default LightBackground;

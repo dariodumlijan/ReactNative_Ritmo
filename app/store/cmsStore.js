@@ -12,6 +12,7 @@ export type State = {
   timestamps: Object,
   master: Object,
   announcement: Object,
+  samples: Object[],
 };
 
 export const types = {
@@ -53,10 +54,12 @@ const _storeCMS = (state: State, payload: Object, local: boolean): State => {
   merge(newState, state, {
     master: payload.data.appCollection.items[0],
     announcement: payload.data.announcementCollection.items[0],
+    samples: payload.data.ritmoCollection.items,
   });
 
   const storeState = {
     master: payload.data.appCollection.items[0],
+    samples: payload.data.ritmoCollection.items,
   };
 
   storeDataToLocal(localStorageKeys.contentTimestamps, JSON.stringify(payload.timestamps));

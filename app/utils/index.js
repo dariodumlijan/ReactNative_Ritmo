@@ -11,6 +11,7 @@ import { localStorageKeys, admob } from '../tokens';
 export const isRealDevice: boolean = !DeviceInfo.isEmulator();
 export const isApple: boolean = Platform.OS === 'ios';
 export const isPad: boolean = DeviceInfo.isTablet();
+export const isiPhone: boolean = isApple && !isPad;
 
 // $FlowFixMe
 export const isPromise = (p) => !!p && typeof p.then === 'function';
@@ -78,13 +79,15 @@ export const useLocationInfo = (): Object => {
   const location = useLocation();
   const pathHome = location.pathname === '/';
   const pathRewarded = location.pathname === '/rewarded';
-  const pathInfo = location.pathname === '/info';
+  const pathSettings = location.pathname === '/settings';
+  const pathGuide = location.pathname === '/guide';
 
   return {
     current: location.pathname,
     isHome: pathHome,
     isRewarded: pathRewarded,
-    isInfo: pathInfo,
+    isSettings: pathSettings,
+    isGuide: pathGuide,
   };
 };
 

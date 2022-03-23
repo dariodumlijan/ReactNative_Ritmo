@@ -1,13 +1,10 @@
 // @flow
 import React from 'react';
 import type { Node } from 'react';
-import { StyleSheet, Platform, View } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
+import { StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import colors from '../../styles/colors';
-
-const isTablet = DeviceInfo.isTablet();
-const isiPhone = Platform.OS === 'ios' && !isTablet;
+import { isiPhone } from '../../../utils';
+import colors from '../../../styles/colors';
 
 const styles: Object = StyleSheet.create({
   backgroundWrapper: {
@@ -42,7 +39,7 @@ const styles: Object = StyleSheet.create({
   },
 });
 
-function HomeBG(): Node {
+function SplitBackground(): Node {
   return (
     <LinearGradient
       style={styles.backgroundWrapper}
@@ -61,4 +58,4 @@ function HomeBG(): Node {
   );
 }
 
-export default HomeBG;
+export default SplitBackground;

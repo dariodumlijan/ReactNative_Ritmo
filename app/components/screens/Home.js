@@ -5,24 +5,19 @@ import {
   StatusBar,
   Text,
   View,
-  ScrollView,
   TouchableOpacity,
   TouchableHighlight,
   TextInput,
   Modal,
   Animated,
   Easing,
-  ActivityIndicator,
   Keyboard,
-  TouchableWithoutFeedback,
   Dimensions,
   useWindowDimensions,
-  Image,
 } from 'react-native';
 
 /* Other - Modules */
 import DeviceInfo from 'react-native-device-info';
-import { Svg, Path } from 'react-native-svg';
 import { Slider } from '@miblanchard/react-native-slider';
 
 /* Audio & Midi - Modules */
@@ -35,27 +30,11 @@ import RNFS from 'react-native-fs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Share from 'react-native-share';
 
-/* Admob & Review - Modules 
-import {
-  BannerAd,
-  RewardedAd,
-  // requestPermissionsAsync,
-  // getPermissionsAsync,
-} from '@react-native-firebase/admob';
-*/
-import { getTrackingStatus, requestTrackingPermission } from 'react-native-tracking-transparency';
-import InAppReview from 'react-native-in-app-review';
 import { admob } from '../../tokens';
 
 /* Style & Color */
 import colors from '../../styles/colors';
 import styles from '../../styles/styles';
-
-/* Backgrounds */
-import HomeBG from '../elements/HomeBG';
-import MenuBG from '../elements/MenuBG';
-import RewardedBG from '../elements/RewardedBG';
-import SliderThumb from '../elements/SliderThumb';
 
 /* SVG's */
 import Logo from '../../assets/icons/Logo';
@@ -64,42 +43,14 @@ import Settings from '../../assets/icons/Settings';
 // import Recordings from '../assets/icons/Recordings';
 import Guide from '../../assets/icons/Guide';
 import Export from '../../assets/icons/Export';
-import Close from '../../assets/icons/Close';
 import Exit from '../../assets/icons/Exit';
-import Arrow from '../../assets/icons/Arrow';
 import Play from '../../assets/icons/Play';
 import Pause from '../../assets/icons/Pause';
 
-/* General Configurations */
-const sliderMin = 0;
-const sliderMax = 90;
-const sliderStep = 5;
-const stepsInBar = 360 / sliderStep;
-const midiNoteMin = 8;
-const midiNoteMax = 64;
-const midiBarTicks = 512;
-const countdownHours = 24;
-const refreshHours = 5;
-const reviewMinutes = 2;
-const reviewWait = new Date().valueOf() + reviewMinutes * 6e4;
-
 /* Device specific variables */
-const isTablet = DeviceInfo.isTablet();
 const deviceHeight = Dimensions.get('screen').height;
 const deviceWidth = Dimensions.get('screen').width;
 const useWidth = deviceWidth + deviceWidth * 0.06;
-
-/* Ads Configuration */
-let personalisedAds = false;
-const emulator = DeviceInfo.isEmulator();
-const admob_ios = {
-  banner: emulator ? admob.banner.ios : admob.banner.ios_test,
-  rewarded: emulator ? admob.rewarded.ios : admob.rewarded.ios_test,
-};
-const admob_android = {
-  banner: emulator ? admob.banner.android : admob.banner.android_test,
-  rewarded: emulator ? admob.rewarded.android : admob.rewarded.android_test,
-};
 
 /* Hihat Array - START */
 let hihatCircle = [
@@ -2003,21 +1954,6 @@ function Home() {
   }
   /* Screen Transition Animations - END */
 
-  /* Permission for tracking & personalised Ads */
-  async function askForPermission() {
-    const status = await getTrackingStatus();
-    if (status === 'authorized' || status === 'unavailable') {
-      personalisedAds = true;
-      // setAds(true);
-    } else {
-      const newStatus = await requestTrackingPermission();
-      if (newStatus === 'authorized' || newStatus === 'unavailable') {
-        personalisedAds = true;
-      }
-      // setAds(true);
-    }
-  }
-
   /* Refs */
   const refMain = useRef(null);
   const refMenu = useRef(null);
@@ -2506,40 +2442,6 @@ function Home() {
         </Animated.View>
       ) : null}
 
-      {/* GuideScreen */}
-      {guideOpen ? (
-        <Animated.View
-          style={[
-            {
-              opacity: opacityGuide,
-              flex: 1,
-            },
-          ]}
-        >
-          <GuideScreen guideCallback={openGuide} />
-        </Animated.View>
-      ) : null}
-
-      {/* RewardedScreen 
-      {rewardedOpen ? (
-        <Animated.View
-          style={{
-            opacity: opacityRewarded,
-            flex: 1,
-          }}>
-          <RewardedScreen rewardedCallback={openRewarded} />
-        </Animated.View>
-      ) : null}
-      */}
-
-      {/* LibraryScreen & LibraryScreen BG - Not yet supported */}
-      {/*
-			{recordingsOpen ? <MenuBG /> : null}
-			{recordingsOpen ? (
-				<LibraryScreen libraryCallback={openLibrary} />
-			) : null}
-			 */}
-
       {/* Navigation BG */}
       {mainOpen ? (
         <Animated.View
@@ -2552,79 +2454,6 @@ function Home() {
             },
           ]}
         />
-      ) : null}
-
-      {/* Navigation */}
-      {mainOpen ? (
-        <Animated.View style={[moveNav, styles.nav]}>
-          <View style={styles.navWrapper}>
-            <View style={styles.navTop}>
-              <Animated.Text style={[{ opacity: opacityTag }, styles.navTag]}>
-                Redefine Beatmaking
-              </Animated.Text>
-
-              <Animated.Text style={[{ opacity: opacityAlert }, styles.navTagAlert]}>
-                Nothing to export!
-              </Animated.Text>
-
-              <TouchableOpacity
-                style={styles.navClose}
-                activeOpacity={0.6}
-                onPress={() => openNav(false)}
-              >
-                <Exit fill={colors.grayLight} />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.navItems}>
-              <TouchableOpacity
-                style={styles.navBtnCont}
-                activeOpacity={0.6}
-                onPress={openMenuCall}
-              >
-                <View style={styles.navBtn}>
-                  <Text style={styles.navTxt}>Settings</Text>
-                  <Settings style={styles.navIcon} />
-                </View>
-              </TouchableOpacity>
-              {/*
-								<TouchableOpacity
-									style={styles.navBtnCont}
-									activeOpacity={0.6}
-									onPress={() => openLibrary(true)}
-								>
-									<View style={styles.navBtn}>
-										<Text style={styles.navTxt}>
-											Recordings
-										</Text>
-										<Recordings
-											style={styles.navIcon}
-										/>
-									</View>
-								</TouchableOpacity>
-								*/}
-              <TouchableOpacity
-                style={styles.navBtnCont}
-                activeOpacity={0.6}
-                onPress={() => openGuide(true)}
-              >
-                <View style={styles.navBtn}>
-                  <Text style={styles.navTxt}>How to use</Text>
-                  <Guide style={styles.navIcon} />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.navBtnCont}
-                activeOpacity={0.6}
-                onPress={openMidiModal}
-              >
-                <View style={styles.navBtn}>
-                  <Text style={styles.navTxt}>Export MIDI</Text>
-                  <Export style={styles.navIcon} />
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Animated.View>
       ) : null}
 
       {/* Save MIDI Modal */}
@@ -2656,20 +2485,6 @@ function Home() {
           </View>
         </View>
       </Modal>
-
-      {/* Banner Ad
-      <View style={styles.ads}>
-        {ads && !rewardedOpen ? (
-          <BannerAd
-            bannerSize="smartBannerPortrait"
-            adUnitID={
-              Platform.OS === 'ios' ? admob_ios.banner : admob_android.banner
-            } // Test ID, Replace with your-admob-unit-id
-            servePersonalizedAds={personalisedAds}
-          />
-        ) : null}
-      </View>
-      */}
     </SafeAreaView>
   );
 }
