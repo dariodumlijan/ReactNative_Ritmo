@@ -4,7 +4,7 @@ import type { Node } from 'react';
 import { Svg, G, Circle } from 'react-native-svg';
 
 type Props = {
-  style: Object,
+  style?: Object,
 };
 
 const Menu = (props: Props): Node => (

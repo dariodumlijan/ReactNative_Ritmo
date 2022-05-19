@@ -61,3 +61,4 @@ buck-out/
 
 # Privacy
 /app/tokens/
+env.json

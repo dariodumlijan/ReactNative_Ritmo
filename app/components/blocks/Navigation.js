@@ -1,76 +1,150 @@
 // @flow
-import React from 'react';
+import React, { useState } from 'react';
 import type { Node } from 'react';
-import { Animated, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Easing, Text, TouchableOpacity, View } from 'react-native';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-native';
+import { forEach, isEqual } from 'lodash';
 import Exit from '../../assets/icons/Exit';
 import Recordings from '../../assets/icons/Recordings';
 import Guide from '../../assets/icons/Guide';
 import Export from '../../assets/icons/Export';
 import Settings from '../../assets/icons/Settings';
+import useLocale from '../../locales';
 import styles from '../../styles/styles';
+import navigationStyle from '../../styles/navigation_style';
 import colors from '../../styles/colors';
+import type { State } from '../../store/beatsStore';
 
-type Props = {};
+type Props = {
+  visible: boolean,
+  exit: Function,
+};
 
 function Navigation(props: Props): Node {
+  const { t } = useLocale();
+  const beats: State = useSelector((state) => state.beats, isEqual);
+  const opacityTag = useState(new Animated.Value(1))[0];
+  const opacityAlert = useState(new Animated.Value(0))[0];
+
+  const fadeNavAlert = () => {
+    Animated.sequence([
+      Animated.timing(opacityTag, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+        // $FlowFixMe
+        easing: Easing.linear,
+      }),
+      Animated.timing(opacityAlert, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+        // $FlowFixMe
+        easing: Easing.linear,
+      }),
+    ]).start();
+    Animated.sequence([
+      Animated.delay(4000),
+      Animated.timing(opacityAlert, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+        // $FlowFixMe
+        easing: Easing.linear,
+      }),
+      Animated.timing(opacityTag, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+        // $FlowFixMe
+        easing: Easing.linear,
+      }),
+    ]).start();
+  };
+
+  const links = [
+    {
+      path: 'settings',
+      label: t('navigation.settings'),
+      icon: <Settings style={styles.navIcon} />,
+    },
+    {
+      path: 'library',
+      label: t('navigation.library'),
+      icon: <Recordings style={styles.navIcon} />,
+    },
+    {
+      path: 'guide',
+      label: t('navigation.guide'),
+      icon: <Guide style={styles.navIcon} />,
+    },
+  ];
+
+  const openMidiModal = () => {
+    let findBeat = false;
+    forEach(beats.hihat, (o: Object, i: number) => {
+      if (
+        beats.hihat[i].checked === true ||
+        beats.snare[i].checked === true ||
+        beats.kick[i].checked === true
+      ) {
+        findBeat = true;
+
+        return false;
+      }
+    });
+    if (findBeat) props.exit();
+    else fadeNavAlert();
+  };
+
+  if (!props.visible) return null;
+
   return (
-    <Animated.View style={[moveNav, styles.nav]}>
-      <View style={styles.navWrapper}>
+    <View style={navigationStyle.wrapper}>
+      <View style={navigationStyle.wrapperBG} />
+      <View style={navigationStyle.nav}>
         <View style={styles.navTop}>
           <Animated.Text style={[{ opacity: opacityTag }, styles.navTag]}>
-            Redefine Beatmaking
+            {t('navigation.title')}
           </Animated.Text>
 
           <Animated.Text style={[{ opacity: opacityAlert }, styles.navTagAlert]}>
-            Nothing to export!
+            {t('navigation.alert')}
           </Animated.Text>
 
           <TouchableOpacity
             style={styles.navClose}
             activeOpacity={0.6}
-            onPress={() => openNav(false)}
+            onPress={() => props.exit()}
           >
             <Exit fill={colors.grayLight} />
           </TouchableOpacity>
         </View>
         <View style={styles.navItems}>
-          <TouchableOpacity style={styles.navBtnCont} activeOpacity={0.6} onPress={openMenuCall}>
-            <View style={styles.navBtn}>
-              <Text style={styles.navTxt}>Settings</Text>
-              <Settings style={styles.navIcon} />
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.navBtnCont}
-            activeOpacity={0.6}
-            onPress={() => openLibrary(true)}
-          >
-            <View style={styles.navBtn}>
-              <Text style={styles.navTxt}>Recordings</Text>
-              <Recordings style={styles.navIcon} />
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.navBtnCont}
-            activeOpacity={0.6}
-            onPress={() => openGuide(true)}
-          >
-            <View style={styles.navBtn}>
-              <Text style={styles.navTxt}>How to use</Text>
-              <Guide style={styles.navIcon} />
-            </View>
-          </TouchableOpacity>
+          {links.map((link) => (
+            <Link
+              key={link.path}
+              style={styles.navBtnCont}
+              underlayColor={null}
+              to={link.path}
+              onPress={() => props.exit()}
+            >
+              <View style={styles.navBtn}>
+                <Text style={styles.navTxt}>{link.label}</Text>
+                {link.icon}
+              </View>
+            </Link>
+          ))}
           <TouchableOpacity style={styles.navBtnCont} activeOpacity={0.6} onPress={openMidiModal}>
             <View style={styles.navBtn}>
-              <Text style={styles.navTxt}>Export MIDI</Text>
+              <Text style={styles.navTxt}>{t('navigation.export')}</Text>
               <Export style={styles.navIcon} />
             </View>
           </TouchableOpacity>
         </View>
       </View>
-    </Animated.View>
+    </View>
   );
 }
 

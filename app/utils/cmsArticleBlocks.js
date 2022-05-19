@@ -4,8 +4,8 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { BLOCKS, INLINES, MARKS } from '@contentful/rich-text-types';
 import Hr from '../components/elements/Hr';
-import colors from '../styles/colors';
 import announcementStyle from '../styles/announcement_style';
+import colors from '../styles/colors';
 
 const contentfulToReactNative = (): any => ({
   renderMark: {
@@ -13,7 +13,7 @@ const contentfulToReactNative = (): any => ({
       <Text style={[announcementStyle.text, { textDecorationLine: 'underline' }]}>{text}</Text>
     ),
     [MARKS.BOLD]: (text) => (
-      <Text style={[announcementStyle.text, { fontFamily: 'NegativeHarmonyBold' }]}>{text}</Text>
+      <Text style={[announcementStyle.text, { fontFamily: 'Montserrat-SemiBold' }]}>{text}</Text>
     ),
     [MARKS.ITALIC]: (text) => <Text style={announcementStyle.text}>{text}</Text>,
     [MARKS.CODE]: (text) => <Text style={announcementStyle.text}>{text}</Text>,
@@ -25,42 +25,42 @@ const contentfulToReactNative = (): any => ({
     [BLOCKS.EMBEDDED_ASSET]: () => null,
     [BLOCKS.HEADING_1]: (_node, children) => (
       <Text
-        style={[announcementStyle.heading, { fontFamily: 'NegativeHarmonyBold', fontSize: 26 }]}
+        style={[announcementStyle.heading, { fontFamily: 'Montserrat-SemiBold', fontSize: 26 }]}
       >
         {children}
       </Text>
     ),
     [BLOCKS.HEADING_2]: (_node, children) => (
       <Text
-        style={[announcementStyle.heading, { fontFamily: 'NegativeHarmonyBold', fontSize: 24 }]}
+        style={[announcementStyle.heading, { fontFamily: 'Montserrat-SemiBold', fontSize: 24 }]}
       >
         {children}
       </Text>
     ),
     [BLOCKS.HEADING_3]: (_node, children) => (
       <Text
-        style={[announcementStyle.heading, { fontFamily: 'NegativeHarmonyBold', fontSize: 22 }]}
+        style={[announcementStyle.heading, { fontFamily: 'Montserrat-SemiBold', fontSize: 22 }]}
       >
         {children}
       </Text>
     ),
     [BLOCKS.HEADING_4]: (_node, children) => (
       <Text
-        style={[announcementStyle.heading, { fontFamily: 'NegativeHarmonyBold', fontSize: 20 }]}
+        style={[announcementStyle.heading, { fontFamily: 'Montserrat-SemiBold', fontSize: 20 }]}
       >
         {children}
       </Text>
     ),
     [BLOCKS.HEADING_5]: (_node, children) => (
       <Text
-        style={[announcementStyle.heading, { fontFamily: 'NegativeHarmonyBold', fontSize: 18 }]}
+        style={[announcementStyle.heading, { fontFamily: 'Montserrat-SemiBold', fontSize: 18 }]}
       >
         {children}
       </Text>
     ),
     [BLOCKS.HEADING_6]: (_node, children) => (
       <Text
-        style={[announcementStyle.heading, { fontFamily: 'NegativeHarmonyBold', fontSize: 15 }]}
+        style={[announcementStyle.heading, { fontFamily: 'Montserrat-SemiBold', fontSize: 15 }]}
       >
         {children}
       </Text>

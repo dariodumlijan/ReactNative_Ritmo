@@ -1,34 +1,68 @@
+/* eslint-disable no-console */
 // @flow
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { concat, forEach, get, isString } from 'lodash';
-import { reducer as cmsStoreReducer } from './cmsStore';
+import { concat, forEach, get, includes, isString } from 'lodash';
 import { reducer as globalStoreReducer } from './globalStore';
-import { isPromise } from '../utils';
+import { reducer as cmsStoreReducer } from './cmsStore';
+import { reducer as beatsStoreReducer } from './beatsStore';
+import { isPromise, isRealDevice } from '../utils';
+import ENV from '../../env.json';
+import type { ReduxState, ReduxAction, ReduxMiddlewareArgument, ActionChains } from '../types';
 
-import type { ReduxState, ReduxMiddlewareArgument, ActionChains } from '../types';
+const sanitizedActions = get(ENV, 'REDUX.SANITIZEDLIST', []);
+const actionsDenyList = get(ENV, 'REDUX.DENYLIST', []);
 
-const actionsDenylist = () => get(process.env, 'REACT_APP_REDUX_ACTIONS_BLACKLIST', '').split(',');
+const sanitizedPayload = 'Set REACT_APP_REDUX_SANITIZER=false';
+const actionSanitizer = (action: ReduxAction): ReduxAction => {
+  if (!action.payload) return action;
+
+  return includes(sanitizedActions, action.type)
+    ? { ...action, payload: sanitizedPayload }
+    : action;
+};
+
+const stateSanitizer = (state: ReduxState): any => {
+  if (get(ENV, 'REDUX.STATE_LOG')) console.log(state);
+  if (!state) return state;
+
+  return {
+    ...state,
+  };
+};
 
 function promiseMiddleware({ dispatch }: ReduxMiddlewareArgument): any {
   return (next) => (action) => {
     if (action.payload && isPromise(action.payload)) {
       action.payload
         .then((payload) => {
+          if (!isRealDevice) {
+            const isObject: boolean = typeof action.payload === 'object';
+            const payloadString: string = isObject
+              ? JSON.stringify(action.payload)
+              : String(action.payload);
+            console.debug(`REDUX: ${action.type}_FULFILLED: payload = `, payloadString);
+            console.log(
+              `REDUX: ${action.type}_FULFILLED: payload: `,
+              isObject ? '{...}' : payloadString
+            );
+          }
           dispatch({ type: action.type + '_FULFILLED', payload });
         })
         .catch((e) => {
-          const message = get(e, 'message') || get(e, 'errorMessage');
-          const statusCode = get(e, 'code') || get(e, 'errorCode') || get(e, 'statusCode');
-          dispatch({
-            type: `${action.type}_REJECTED`,
-            error: true,
-            payload: {
-              message,
-              statusCode,
-            },
-          });
+          console.error(
+            `REDUX: ${action.type}_REJECTED: statusCode = `,
+            (e && e.status) || '',
+            'name = ',
+            (e && e.name) || '',
+            'message = ',
+            (e && e.message) || ''
+          );
+          // const rejectAction = e
+          //   ? reportErrorAction(`${action.type}_REJECTED`, e)
+          //   : reportErrorActionCustom(`${action.type}_REJECTED`, 'Promise reject error', `${action.type}_REJECTED error`);
+          // dispatch(rejectAction);
         });
 
       return dispatch({ type: `${action.type}_PENDING` });
@@ -47,8 +81,10 @@ export function chainActionsMiddleware(chainedActions: ActionChains): any {
         nextActions = concat(nextActions);
         forEach(nextActions, (nextAction) => {
           if (isString(nextAction)) {
+            console.debug(`REDUX: dispatched chained action: ${nextAction}`);
             dispatch({ type: nextAction });
           } else {
+            console.debug(`REDUX: dispatched chained action: ${nextAction.type}`);
             dispatch(nextAction(action));
           }
         });
@@ -60,7 +96,7 @@ export function chainActionsMiddleware(chainedActions: ActionChains): any {
 
 function dispatchRecorder(dispatchedActions: ?Array<string>): any {
   return () => (next) => (action) => {
-    if (dispatchedActions && !actionsDenylist().includes(action.type)) {
+    if (dispatchedActions && !actionsDenyList.includes(action.type)) {
       dispatchedActions.push(action.type);
     }
 
@@ -68,12 +104,11 @@ function dispatchRecorder(dispatchedActions: ?Array<string>): any {
   };
 }
 
-// $FlowFixMe
 export const configureStore = (
   initialState: {} | ReduxState,
   actionChains: ?ActionChains,
   dispatchedActions: ?Array<string>
-): any => {
+): Function => {
   const middleware = [thunk];
   if (dispatchedActions) {
     middleware.push(dispatchRecorder(dispatchedActions));
@@ -82,8 +117,11 @@ export const configureStore = (
   if (actionChains) {
     middleware.push(chainActionsMiddleware(actionChains));
   }
+
+  const sanitizers = get(ENV, 'REDUX.SANITIZER') !== false && { actionSanitizer, stateSanitizer };
   const composeEnhancers = composeWithDevTools({
-    actionsDenylist: actionsDenylist(),
+    ...sanitizers,
+    actionsDenylist: actionsDenyList,
   });
   const middlewareApplier = composeEnhancers(applyMiddleware(...middleware));
 
@@ -91,6 +129,7 @@ export const configureStore = (
     combineReducers({
       cms: cmsStoreReducer,
       global: globalStoreReducer,
+      beats: beatsStoreReducer,
     }),
     initialState,
     middlewareApplier

@@ -1,15 +1,25 @@
 // @flow
 import React, { useState } from 'react';
 import type { Node } from 'react';
-import { Image, ScrollView, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { Slider } from '@miblanchard/react-native-slider';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-native';
 import Svg, { Path } from 'react-native-svg';
-import SliderThumb from '../elements/SliderThumb';
+import SliderThumb from '../elements/inputs/SliderThumb';
 import MidiFile from '../../assets/img/midiFile.png';
 import MidiFileLogic from '../../assets/img/midiFile_Logic.png';
 import useLocale from '../../locales';
 import styles from '../../styles/styles';
+import guideStyle from '../../styles/guide_style';
+import bottomStyle from '../../styles/bottom_style';
 import colors from '../../styles/colors';
 
 type Props = {
@@ -19,13 +29,14 @@ type Props = {
 };
 
 export const Guide = (props: Props): Node => {
-  const t = useLocale;
+  const { t } = useLocale();
   const [beat1, setBeat1] = useState(false);
   const [beat2, setBeat2] = useState(true);
+  const [slider, setSlider] = useState(15);
 
   return (
-    <View style={styles.guideWrapper}>
-      <Link to="/" style={styles.exit}>
+    <SafeAreaView style={guideStyle.wrapper}>
+      <Link to="/" style={styles.exit} underlayColor={null}>
         <Svg height="100%" width="100%" viewBox="0 0 352 352">
           <Path
             fill={colors.primaryDark}
@@ -34,11 +45,11 @@ export const Guide = (props: Props): Node => {
         </Svg>
       </Link>
 
-      <ScrollView style={styles.guideScroll}>
-        <Text style={styles.guideTitle}>How to use Ritmo</Text>
-        <Text style={styles.guideSub}>Create your beat</Text>
-        <Text style={styles.guideTxt}>Tap on any input to activate it.</Text>
-        <View style={styles.guideBullet}>
+      <ScrollView style={guideStyle.guideScroll}>
+        <Text style={guideStyle.guideTitle}>{t('guide.title')}</Text>
+        <Text style={guideStyle.guideSub}>{t('guide.section_1.title')}</Text>
+        <Text style={guideStyle.guideTxt}>{t('guide.section_1.paragraph_1')}</Text>
+        <View style={guideStyle.guideBullet}>
           <View
             style={{
               width: 15,
@@ -48,9 +59,9 @@ export const Guide = (props: Props): Node => {
               backgroundColor: colors.orange,
             }}
           />
-          <Text style={styles.guideTxt}>ORANGE represent the Hi-Hat</Text>
+          <Text style={guideStyle.guideTxt}>{t('guide.section_1.bullet_1')}</Text>
         </View>
-        <View style={styles.guideBullet}>
+        <View style={guideStyle.guideBullet}>
           <View
             style={{
               width: 15,
@@ -60,9 +71,9 @@ export const Guide = (props: Props): Node => {
               backgroundColor: colors.green,
             }}
           />
-          <Text style={styles.guideTxt}>GREEN represent the Snare</Text>
+          <Text style={guideStyle.guideTxt}>{t('guide.section_1.bullet_2')}</Text>
         </View>
-        <View style={styles.guideBullet}>
+        <View style={guideStyle.guideBullet}>
           <View
             style={{
               width: 15,
@@ -72,14 +83,12 @@ export const Guide = (props: Props): Node => {
               backgroundColor: colors.cyan,
             }}
           />
-          <Text style={styles.guideTxt}>CYAN represent the Kick</Text>
+          <Text style={guideStyle.guideTxt}>{t('guide.section_1.bullet_3')}</Text>
         </View>
 
-        <Text style={styles.guideTxt}>
-          You can offset the individual sounds by using the sliders below the circle.
-        </Text>
+        <Text style={guideStyle.guideTxt}>{t('guide.section_1.paragraph_2')}</Text>
         <Slider
-          value={15}
+          value={slider}
           minimumValue={props.sliderMin}
           maximumValue={props.sliderMax}
           step={props.sliderStep}
@@ -87,17 +96,14 @@ export const Guide = (props: Props): Node => {
           maximumTrackTintColor={colors.grayLight}
           containerStyle={[styles.sliderContainer, { marginVertical: 10 }]}
           trackStyle={styles.sliderTrack}
-          renderThumbComponent={<SliderThumb label={t('hihat')} color={colors.orange} />}
+          renderThumbComponent={() => <SliderThumb label={t('hihat')} color={colors.orange} />}
           thumbTouchSize={{ width: 65, height: 25 }}
-          // onValueChange={}
+          onValueChange={(val) => setSlider(val)}
         />
-        <Text style={styles.guideTxt}>
-          Once you have activated at least one input you can start the beat. Any changes made to the
-          beat while in play mode will be heard on the next interval pass.
-        </Text>
-        <Text style={styles.guideSub}>Settings</Text>
-        <Text style={styles.guideTxt}>In the settings screen you can change:</Text>
-        <View style={styles.guideBullet}>
+        <Text style={guideStyle.guideTxt}>{t('guide.section_1.paragraph_3')}</Text>
+        <Text style={guideStyle.guideSub}>{t('guide.section_2.title')}</Text>
+        <Text style={guideStyle.guideTxt}>{t('guide.section_2.paragraph_1')}</Text>
+        <View style={guideStyle.guideBullet}>
           <View
             style={{
               width: 15,
@@ -107,10 +113,10 @@ export const Guide = (props: Props): Node => {
               backgroundColor: colors.grayBlue,
             }}
           />
-          <Text style={styles.guideTxt}>BPM</Text>
+          <Text style={guideStyle.guideTxt}>{t('guide.section_2.bullet_1')}</Text>
         </View>
 
-        <View style={styles.guideBullet}>
+        <View style={guideStyle.guideBullet}>
           <View
             style={{
               width: 15,
@@ -120,10 +126,10 @@ export const Guide = (props: Props): Node => {
               backgroundColor: colors.grayBlue,
             }}
           />
-          <Text style={styles.guideTxt}>Time Signature</Text>
+          <Text style={guideStyle.guideTxt}>{t('guide.section_2.bullet_2')}</Text>
         </View>
 
-        <View style={styles.guideBullet}>
+        <View style={guideStyle.guideBullet}>
           <View
             style={{
               width: 15,
@@ -133,32 +139,34 @@ export const Guide = (props: Props): Node => {
               backgroundColor: colors.grayBlue,
             }}
           />
-          <Text style={styles.guideTxt}>Sound Library</Text>
+          <Text style={guideStyle.guideTxt}>{t('guide.section_2.bullet_3')}</Text>
         </View>
 
-        <Text style={styles.guideTxt}>
-          Any changes in the settings screen will pause your beat if it is playing so that changes
-          can be applied correctly.
+        <Text style={guideStyle.guideTxt}>{t('guide.section_2.paragraph_2')}</Text>
+        <Text style={guideStyle.guideSub}>{t('guide.section_3.title')}</Text>
+        <Text style={guideStyle.guideTxt}>
+          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>
+            {t('guide.section_3.subsection_1.title')}
+          </Text>
+          {t('guide.section_3.subsection_1.paragraph_1')}
         </Text>
-        <Text style={styles.guideSub}>Presets</Text>
-        <Text style={styles.guideTxt}>
-          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>Save</Text>
-          {'\n'}
-          Once you have a beat you can tap on a preset to save that beat. (This will save your
-          configuration including the active inputs, the position of each slider, the BPM and the
-          time signature)
-        </Text>
-        <View style={styles.guidePresetWrapper}>
-          <View style={styles.guidePresetCont}>
+        <View style={guideStyle.guidePresetWrapper}>
+          <View style={guideStyle.guidePresetCont}>
             <TouchableHighlight
               underlayColor={colors.grayBlue}
-              style={[
-                beat1 ? styles.presetBtn : styles.presetBtnEmpty,
-                { paddingVertical: 8, width: '100%' },
-              ]}
+              style={{
+                ...bottomStyle.presetBtn,
+                ...{ paddingVertical: 8, width: '100%' },
+                ...(beat1 && {
+                  borderColor: colors.gray,
+                  backgroundColor: colors.bg,
+                }),
+              }}
               onPress={() => setBeat1(!beat1)}
             >
-              <Text style={styles.presetText}>Beat 1</Text>
+              <Text style={bottomStyle.presetText}>
+                {t('guide.section_3.subsection_1.button_1')}
+              </Text>
             </TouchableHighlight>
             <Text
               style={{
@@ -168,19 +176,25 @@ export const Guide = (props: Props): Node => {
                 color: colors.primaryDark,
               }}
             >
-              Empty preset
+              {t('guide.section_3.subsection_1.button_desc_1')}
             </Text>
           </View>
-          <View style={styles.guidePresetCont}>
+          <View style={guideStyle.guidePresetCont}>
             <TouchableHighlight
               underlayColor={colors.grayBlue}
-              style={[
-                beat2 ? styles.presetBtn : styles.presetBtnEmpty,
-                { paddingVertical: 8, width: '100%' },
-              ]}
+              style={{
+                ...bottomStyle.presetBtn,
+                ...{ paddingVertical: 8, width: '100%' },
+                ...(beat2 && {
+                  borderColor: colors.gray,
+                  backgroundColor: colors.bg,
+                }),
+              }}
               onPress={() => setBeat2(!beat2)}
             >
-              <Text style={styles.presetText}>Beat 2</Text>
+              <Text style={bottomStyle.presetText}>
+                {t('guide.section_3.subsection_1.button_2')}
+              </Text>
             </TouchableHighlight>
             <Text
               style={{
@@ -190,66 +204,54 @@ export const Guide = (props: Props): Node => {
                 color: colors.primaryDark,
               }}
             >
-              Saved preset
+              {t('guide.section_3.subsection_1.button_desc_2')}
             </Text>
           </View>
         </View>
-        <Text style={styles.guideTxt}>
-          Once saved the preset button will change colour to indicate that it can now be loaded.
-          {'\n'}
-          {'\n'}
-          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>Load</Text>
-          {'\n'}
-          To load the preset just tap it.{'\n'}
-          {'\n'}
-          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>Delete</Text>
-          {'\n'}
-          To clear/delete the preset{' '}
-          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>long-press</Text> it and a window will
-          appear asking you to confirm the action.
+        <Text style={guideStyle.guideTxt}>
+          {t('guide.section_3.subsection_1.paragraph_2')}
+          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>
+            {t('guide.section_3.subsection_2.title')}
+          </Text>
+          {t('guide.section_3.subsection_2.paragraph_1')}
+          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>
+            {t('guide.section_3.subsection_3.title')}
+          </Text>
+          {t('guide.section_3.subsection_3.paragraph_1')}
+          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>
+            {t('guide.section_3.subsection_3.bold_1')}
+          </Text>
+          {t('guide.section_3.subsection_3.paragraph_2')}
         </Text>
-        <View style={styles.guideModalView}>
-          <Text style={styles.modalExp}>Are you sure you want to clear the saved beat?</Text>
+        <View style={guideStyle.guideModalView}>
+          <Text style={styles.modalExp}>{t('guide.section_3.subsection_3.modal.text')}</Text>
           <View style={styles.modalBtnCont}>
             <TouchableOpacity activeOpacity={0.8} style={styles.modalBtn}>
-              <Text style={styles.modalBtnTxt}>Yes</Text>
+              <Text style={styles.modalBtnTxt}>{t('guide.section_3.subsection_3.modal.yes')}</Text>
             </TouchableOpacity>
             <TouchableOpacity activeOpacity={0.8} style={styles.modalBtn}>
-              <Text style={styles.modalBtnTxt}>No</Text>
+              <Text style={styles.modalBtnTxt}>{t('guide.section_3.subsection_3.modal.no')}</Text>
             </TouchableOpacity>
           </View>
         </View>
-        <Text style={styles.guideSub}>Export MIDI</Text>
-        <Text style={styles.guideTxt}>
-          When selected you will be prompted with a window to name your MIDI file. (If no name is
-          given the placeholder name &quot;
-          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>Ritmo_MIDI</Text>&quot; will be used)
-          {'\n'}
-          {'\n'}
-          Once named you can save it, this will open up a sharing option to transfer your file to
-          your computer so you can use your Ritmo beat in your DAW.
+        <Text style={guideStyle.guideSub}>{t('guide.section_4.title')}</Text>
+        <Text style={guideStyle.guideTxt}>
+          {t('guide.section_4.paragraph_1')}
+          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>
+            {t('guide.section_4.paragraph_2')}
+          </Text>
+          {t('guide.section_4.paragraph_3')}
         </Text>
-        <View style={styles.guideImgCont}>
-          <Image style={styles.guideImg} resizeMode="contain" source={MidiFile} />
+        <View style={guideStyle.guideImgCont}>
+          <Image style={guideStyle.guideImg} resizeMode="contain" source={MidiFile} />
         </View>
-        <Text style={styles.guideTxt}>
-          The exported MIDI file is a single bar (that can be looped), with a Kick (C1 - pitch),
-          Snare (D1 - pitch) and Hi-Hat (F#1 - pitch) configuration. It has a fixed velocity, an
-          encoded BPM and time signature if your beat is NOT in &quot;Free time sig&quot; mode.
-        </Text>
-        <View style={styles.guideImgCont2}>
-          <Image style={styles.guideImg} resizeMode="contain" source={MidiFileLogic} />
+        <Text style={guideStyle.guideTxt}>{t('guide.section_4.paragraph_4')}</Text>
+        <View style={guideStyle.guideImgCont2}>
+          <Image style={guideStyle.guideImg} resizeMode="contain" source={MidiFileLogic} />
         </View>
-        <Text style={styles.guideTxt}>
-          The MIDI file is not stored in the internal phone storage unless you save it yourself
-          inside the share window. (This is done to minimise app space and conserve your
-          phone&apos;s storage space)
-        </Text>
-        <Text style={styles.guideSub}>Contact</Text>
-        <Text style={styles.guideTxt}>
-          If you find any bugs or have any other questions or ideas for improving Ritmo, please
-          contact us at:
-        </Text>
+        <Text style={guideStyle.guideTxt}>{t('guide.section_4.paragraph_5')}</Text>
+        <Text style={guideStyle.guideSub}>{t('guide.section_5.title')}</Text>
+        <Text style={guideStyle.guideTxt}>{t('guide.section_5.paragraph_1')}</Text>
         <Text
           style={{
             fontFamily: 'Montserrat-SemiBold',
@@ -259,11 +261,11 @@ export const Guide = (props: Props): Node => {
           }}
           selectable
         >
-          chimerastudiotm@gmail.com
+          {t('guide.section_5.email')}
         </Text>
       </ScrollView>
       <View style={styles.adSpace} />
-    </View>
+    </SafeAreaView>
   );
 };
 

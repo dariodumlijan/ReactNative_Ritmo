@@ -68,16 +68,6 @@ export const PRODUCTION_QUERY = `
         }
       }
     }
-    ritmoCollection(where: {destination: true}) {
-      items {
-        samplesCollection {
-          items {
-            title
-            url
-          }
-        }
-      }
-    }
   }
 `;
 
@@ -95,16 +85,6 @@ export const STAGING_QUERY = `
       items {
         content {
           json
-        }
-      }
-    }
-    ritmoCollection(where: {destination: false}) {
-      items {
-        samplesCollection {
-          items {
-            title
-            url
-          }
         }
       }
     }

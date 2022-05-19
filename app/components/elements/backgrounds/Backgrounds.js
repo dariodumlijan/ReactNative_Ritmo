@@ -1,10 +1,10 @@
 // @flow
 import React from 'react';
 import type { Node } from 'react';
-import SplitBackground from './backgrounds/SplitBackground';
-import LightBackground from './backgrounds/LightBackground';
-import DarkBackground from './backgrounds/DarkBackground';
-import { useLocationInfo } from '../../utils';
+import SplitBackground from './SplitBackground';
+import LightBackground from './LightBackground';
+import DarkBackground from './DarkBackground';
+import { useLocationInfo } from '../../../utils';
 
 const Backgrounds = (): Node => {
   const locationInfo = useLocationInfo();

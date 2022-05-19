@@ -7,17 +7,16 @@ const mainStyle: Object = StyleSheet.create({
   container: {
     backgroundColor: colors.white,
     flex: 1,
-    marginHorizontal: '5%',
     position: 'relative',
-    width: '90%',
+    width: '100%',
   },
   safe: {
     flex: 1,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    position: 'relative',
+    marginLeft: '5%',
+    marginRight: '5%',
     maxWidth: 500,
-    width: '100%',
+    position: 'relative',
+    width: '90%',
   },
   scrollContainer: {
     backgroundColor: colors.white,
@@ -43,7 +42,7 @@ const mainStyle: Object = StyleSheet.create({
   },
   alertText: {
     color: colors.black,
-    fontFamily: 'NegativeHarmonyBold',
+    fontFamily: 'Montserrat-SemiBold',
     fontSize: 18,
     textAlign: 'center',
   },

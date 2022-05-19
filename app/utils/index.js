@@ -6,7 +6,9 @@ import InAppReview from 'react-native-in-app-review';
 import DeviceInfo from 'react-native-device-info';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLocation } from 'react-router-dom';
+import { includes } from 'lodash';
 import { localStorageKeys, admob } from '../tokens';
+import type { Sample } from "./lists";
 
 export const isRealDevice: boolean = !DeviceInfo.isEmulator();
 export const isApple: boolean = Platform.OS === 'ios';
@@ -16,30 +18,60 @@ export const isiPhone: boolean = isApple && !isPad;
 // $FlowFixMe
 export const isPromise = (p) => !!p && typeof p.then === 'function';
 
-export const useReview = async (unlocked: boolean, reviewDelay: Date) => {
+const getItem = async (key: string): any => {
+  try {
+    const response = await AsyncStorage.getItem(key);
+
+    return response;
+  } catch (error) {
+    Promise.reject(error);
+  }
+};
+
+const setItem = async (key: string, data: string) => {
+  try {
+    await AsyncStorage.setItem(key, data);
+  } catch (error) {
+    Promise.reject(error);
+  }
+};
+
+const removeItem = async (key: string) => {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch (error) {
+    Promise.reject(error);
+  }
+};
+
+export const useLocalStorage = (): {
+  getItem: Function,
+  setItem: Function,
+  removeItem: Function,
+} => ({
+  getItem,
+  setItem,
+  removeItem,
+});
+
+export const useReview = (unlocked: boolean, reviewDelay: Date) => {
+  const localStorage = useLocalStorage();
   const available = InAppReview.isAvailable();
   const date = Date.now();
   if (unlocked && reviewDelay <= date) {
-    const timestamp = await AsyncStorage.getItem(localStorageKeys.reviewTimestamp);
+    const timestamp = localStorage.getItem(localStorageKeys.reviewTimestamp);
 
     if (Number(timestamp) <= date || Number(timestamp) === 0) {
       if (available) {
-        InAppReview.RequestInAppReview().then(async (hasFlowFinishedSuccessfully) => {
+        InAppReview.RequestInAppReview().then((hasFlowFinishedSuccessfully) => {
           if (hasFlowFinishedSuccessfully) {
             const newTimestamp = new Date(date).setMonth(new Date(date).getMonth() + 1).valueOf();
-            await AsyncStorage.setItem(
-              localStorageKeys.reviewTimestamp,
-              JSON.stringify(newTimestamp)
-            );
+            localStorage.setItem(localStorageKeys.reviewTimestamp, JSON.stringify(newTimestamp));
           }
         });
       }
     }
   }
-};
-
-export const storeDataToLocal = async (key: string, dataString: string) => {
-  await AsyncStorage.setItem(key, dataString);
 };
 
 export const useAdmobIds = (adIds: Object): Object => {
@@ -91,6 +123,8 @@ export const useLocationInfo = (): Object => {
   };
 };
 
-export const DismissKeyboard = (children: Node): Node => (
+export const DismissKeyboard = ({ children }: Function): Node => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 );
+
+export const isSampleUnlocked = (unlockedSamples: string[], sample: Sample): boolean => includes(unlockedSamples, sample.label);

@@ -1,5 +1,5 @@
 // @flow
-export default {
+const colors = {
   primary: '#242e8f',
   primaryDark: '#0d1032',
   primaryTransparent: '#242e8ffa',
@@ -19,3 +19,5 @@ export default {
   disabledList: '#6f7ba4cc',
   transparent: '#00000000',
 };
+
+export default colors;

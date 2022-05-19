@@ -4,7 +4,7 @@ import type { Node } from 'react';
 import { Svg, Path } from 'react-native-svg';
 
 type Props = {
-  style: Object,
+  style?: Object,
 };
 
 const Play = (props: Props): Node => (

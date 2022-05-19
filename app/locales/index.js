@@ -1,10 +1,16 @@
 // @flow
-import get from "lodash/get";
+import get from 'lodash/get';
 // $FlowFixMe
-import * as en from "./en.json";
+import * as en from './en.json';
 
-const useLocale = (key: string): string => {
-  return get(en, key, key.toString());
+type Props = {
+  t: Function,
 };
+
+const t = (key: string): string => get(en, key, key.toString());
+
+const useLocale = (): Props => ({
+  t,
+});
 
 export default useLocale;

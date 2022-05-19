@@ -1,17 +1,16 @@
 // @flow
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { Node } from 'react';
 import { StatusBar, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { NativeRouter, Routes, Route } from 'react-router-native';
-import {
-  BannerAd,
-  // requestPermissionsAsync,
-  // getPermissionsAsync,
-} from '@react-native-firebase/admob';
+// import {
+//   BannerAd,
+//   // requestPermissionsAsync,
+//   // getPermissionsAsync,
+// } from '@react-native-firebase/admob';
 import { getTrackingStatus, requestTrackingPermission } from 'react-native-tracking-transparency';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { get, isEqual } from 'lodash';
+import { get, isEqual, every, has } from 'lodash';
 import Home from './screens/Home';
 import Settings from './screens/Settings';
 import Library from './screens/Library';
@@ -20,32 +19,35 @@ import Rewarded from './screens/Rewarded';
 import Announcement from './screens/Announcement';
 import Loading from './screens/Loading';
 import Navigation from './blocks/Navigation';
-import Backgrounds from './elements/Backgrounds';
-import { actions } from '../store/cmsStore';
+import Backgrounds from './elements/backgrounds/Backgrounds';
+import { actions as cmsActions } from '../store/cmsStore';
+import { actions as globalActions } from '../store/globalStore';
 import { isRealDevice, useAdmobIds } from '../utils';
-import { appKeys, localStorageKeys } from '../tokens';
+import { appKeys } from '../tokens';
 import mainStyle from '../styles/main_style';
 
 function Body(): Node {
   const dispatch = useDispatch();
-  const [initLoad, setInitLoad] = useState(true);
+  const initLoad = useRef(true);
   const cms = useSelector((state) => state.cms, isEqual);
   const global = useSelector((state) => state.global, isEqual);
   const admobId = useAdmobIds(get(cms, 'master.adIds', null)).banner;
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const [ads, setAds] = useState(false);
+  const [showNav, setShowNav] = useState(false);
   // const [personalised, setPersonalised] = useState(false);
 
   const localTimestamps = get(cms, 'timestamps.local', 0);
   const onlineTimestamps = get(cms, 'timestamps.online', null);
-  const checkStamps = JSON.stringify(localTimestamps) === JSON.stringify(onlineTimestamps);
+  const hasAnnouncement = get(cms, 'announcement.content');
+  const hasLocalData = !isEqual(localTimestamps, appKeys.noLocalData);
+  const hasOnlineData = !isEqual(onlineTimestamps, appKeys.noConnection);
   const announcementSeen =
     get(cms, 'timestamps.local.announcement', 0) < get(cms, 'timestamps.announcement', 0);
+  const isLoading = every(['master', 'timestamps'], (key) => !has(cms, key));
   const displayAds = isRealDevice
     ? get(cms, 'master.ads', false)
     : get(cms, 'master.adsStaging', false);
-  const loading = !['master', 'samples'].every((key) => key in cms);
-  const hasAnnouncement = get(cms, 'announcement.content', null);
 
   const askForPermission = async () => {
     const status = await getTrackingStatus();
@@ -62,55 +64,29 @@ function Body(): Node {
   };
 
   useEffect(() => {
-    if (loading) {
-      const handleLocalStorage = async () => {
-        const res = await AsyncStorage.getItem(localStorageKeys.appContent);
-        dispatch(actions.storeLocalCMS(JSON.parse(res)));
-      };
-
-      const localCheck = localTimestamps && localTimestamps !== appKeys.noLocalData;
-      const onlineCheck = onlineTimestamps && onlineTimestamps !== appKeys.noConnection;
-
-      if (
-        (localCheck && onlineCheck && !checkStamps) ||
-        (localTimestamps === appKeys.noLocalData && onlineCheck)
-      ) {
-        dispatch(actions.fetchCMS(onlineTimestamps));
-      }
-
-      if (
-        (localCheck && onlineCheck && checkStamps) ||
-        (localCheck && onlineTimestamps === appKeys.noConnection)
-      ) {
-        handleLocalStorage();
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [localTimestamps, onlineTimestamps, checkStamps]);
-
-  useEffect(() => {
-    if (initLoad) {
-      dispatch(actions.checkTimestamps());
+    if (initLoad.current) {
+      dispatch(cmsActions.fetchCMS());
+      dispatch(globalActions.fetchPresetAndSamples());
       setTimeout(askForPermission, 1000);
-      setInitLoad(false);
+      initLoad.current = false;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initLoad]);
+  }, []);
 
   if (
-    (localTimestamps === appKeys.noLocalData && onlineTimestamps === appKeys.noConnection) ||
+    (!hasLocalData && !hasOnlineData) ||
     (hasAnnouncement && !announcementSeen && showAnnouncement)
   ) {
     return (
       <Announcement
-        reload={() => dispatch(actions.checkTimestamps())}
+        reload={() => dispatch(cmsActions.fetchCMS())}
         dismiss={() => setShowAnnouncement(false)}
         cms={hasAnnouncement}
       />
     );
   }
 
-  if (loading) return <Loading />;
+  if (isLoading) return <Loading />;
 
   return (
     <View style={mainStyle.container}>
@@ -118,10 +94,10 @@ function Body(): Node {
 
       <NativeRouter>
         <Backgrounds />
-        <Navigation />
+        <Navigation visible={showNav} exit={() => setShowNav(false)} />
 
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route exact path="/" element={<Home openNav={() => setShowNav(true)} />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/library" element={<Library />} />
           <Route
@@ -129,9 +105,9 @@ function Body(): Node {
             path="/guide"
             element={
               <Guide
-                sliderMin={global.sliderMin}
-                sliderMax={global.sliderMax}
-                sliderStep={global.sliderStep}
+                sliderMin={global.static.sliderMin}
+                sliderMax={global.static.sliderMax}
+                sliderStep={global.static.sliderStep}
               />
             }
           />
@@ -141,11 +117,12 @@ function Body(): Node {
 
       <View style={mainStyle.ads}>
         {ads && displayAds && admobId && global.showBanner && (
-          <BannerAd
-            size="smartBannerPortrait"
-            unitId={admobId}
-            // servePersonalizedAds={personalised}
-          />
+          <></>
+          // <BannerAd
+          //   size="smartBannerPortrait"
+          //   unitId={admobId}
+          //   // servePersonalizedAds={personalised}
+          // />
         )}
       </View>
     </View>

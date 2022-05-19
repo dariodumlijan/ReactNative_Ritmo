@@ -4,7 +4,7 @@ import type { Node } from 'react';
 import { Svg, Path, G, Circle, Rect } from 'react-native-svg';
 
 type Props = {
-  style: Object,
+  style?: Object,
 };
 
 const Close = (props: Props): Node => (

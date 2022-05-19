@@ -4,7 +4,7 @@ import colors from './colors';
 const announcementStyle: Object = StyleSheet.create({
   title: {
     color: colors.black,
-    fontFamily: 'NegativeHarmonyBold',
+    fontFamily: 'Montserrat-SemiBold',
     fontSize: 24,
     marginBottom: 40,
     marginTop: 40,
@@ -13,7 +13,7 @@ const announcementStyle: Object = StyleSheet.create({
 
   text: {
     color: colors.black,
-    fontFamily: 'NegativeHarmonyRegular',
+    fontFamily: 'Montserrat-Regular',
     fontSize: 16,
   },
 
@@ -30,14 +30,14 @@ const announcementStyle: Object = StyleSheet.create({
 
   listCount: {
     alignSelf: 'center',
-    color: colors.blue,
-    fontFamily: 'NegativeHarmonyBold',
+    color: colors.primaryDark,
+    fontFamily: 'Montserrat-SemiBold',
     fontSize: 15,
     marginRight: 6,
   },
 
   listBullet: {
-    backgroundColor: colors.blue,
+    backgroundColor: colors.primaryDark,
     borderRadius: 4,
     height: 8,
     marginTop: 6,
@@ -46,7 +46,7 @@ const announcementStyle: Object = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: colors.blue,
+    backgroundColor: colors.primaryDark,
     borderRadius: 30,
     marginBottom: 60,
     marginVertical: 60,
@@ -56,7 +56,7 @@ const announcementStyle: Object = StyleSheet.create({
 
   buttonText: {
     color: colors.white,
-    fontFamily: 'NegativeHarmonyBold',
+    fontFamily: 'Montserrat-SemiBold',
     fontSize: 16,
     textAlign: 'center',
   },

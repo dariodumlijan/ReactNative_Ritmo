@@ -2,10 +2,12 @@
 /* istanbul ignore file */
 import type { State as CmsState } from '../store/cmsStore';
 import type { State as GlobalState } from '../store/globalStore';
+import type { State as BeatsState } from '../store/beatsStore';
 
 export type ReduxState = {
   cms: CmsState,
   global: GlobalState,
+  beats: BeatsState,
 };
 
 export type BaseReduxAction = {
@@ -20,6 +22,11 @@ export type PayloadReduxAction = {
 export type ReduxAction = {
   type: string,
   payload?: any,
+};
+
+export type ReduxActionWithPayload = {
+  type: string,
+  payload: any,
 };
 
 export type ReduxMiddlewareArgument = {

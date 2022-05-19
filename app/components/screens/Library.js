@@ -1,15 +1,15 @@
 // @flow
 import React from 'react';
 import type { Node } from 'react';
-import { Text, View } from 'react-native';
-import { Link } from 'react-router-dom';
+import { SafeAreaView, Text } from 'react-native';
+import { Link } from 'react-router-native';
 import Svg, { Path } from 'react-native-svg';
 import styles from '../../styles/styles';
 import colors from '../../styles/colors';
 
 const Library = (): Node => (
-  <View style={styles.guideWrapper}>
-    <Link to="/" style={styles.exit}>
+  <SafeAreaView style={styles.guideWrapper}>
+    <Link to="/" style={styles.exit} underlayColor={null}>
       <Svg height="100%" width="100%" viewBox="0 0 352 352">
         <Path
           fill={colors.primaryDark}
@@ -18,7 +18,7 @@ const Library = (): Node => (
       </Svg>
     </Link>
     <Text>Recordings</Text>
-  </View>
+  </SafeAreaView>
 );
 
 export default Library;

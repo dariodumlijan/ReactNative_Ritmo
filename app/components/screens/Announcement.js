@@ -3,14 +3,12 @@ import React from 'react';
 import type { Node } from 'react';
 import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-
 import useLocale from '../../locales';
-import { storeDataToLocal } from '../../utils';
+import { useLocalStorage } from '../../utils';
 import contentfulToReactNative from '../../utils/cmsArticleBlocks';
-
+import { localStorageKeys } from '../../tokens';
 import mainStyle from '../../styles/main_style';
 import announcementStyle from '../../styles/announcement_style';
-import { localStorageKeys } from '../../tokens';
 
 type Props = {
   cms: Object,
@@ -19,14 +17,15 @@ type Props = {
 };
 
 const Announcement = (props: Props): Node => {
-  const t = useLocale;
+  const { t } = useLocale();
+  const localStorage = useLocalStorage();
   const { cms } = props;
   const title = cms ? t('announcement.title') : t('error.title');
   const cta = cms ? t('announcement.cta') : t('error.cta');
 
   const handleButton = () => {
     if (cms) {
-      storeDataToLocal(localStorageKeys.announcementTimestamp, Date.now().toString());
+      localStorage.setItem(localStorageKeys.announcementTimestamp, String(Date.now()));
       props.dismiss();
 
       return;
@@ -46,7 +45,7 @@ const Announcement = (props: Props): Node => {
             bounces={false}
           >
             {cms ? (
-              <>{documentToReactComponents(cms.json, contentfulToReactNative())}</>
+              documentToReactComponents(cms.json, contentfulToReactNative())
             ) : (
               <Text style={announcementStyle.text}>{t('error.text')}</Text>
             )}
