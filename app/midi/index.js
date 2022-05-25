@@ -3,10 +3,10 @@ import Share from 'react-native-share';
 import RNFS from 'react-native-fs';
 import * as MidiWriter from 'midi-writer-js';
 import { forEach, times } from 'lodash';
-import type { Beat, State } from '../store/beatsStore';
+import type { Beat, Beats } from '../sound/beats';
 
 export type BuildMidi = {
-  beats: State,
+  beats: Beats,
   fileName: string,
   midiBarTicks: number,
   midiNoteMax: number,
@@ -115,7 +115,7 @@ export const exportMIDI = async ({
           pitch: ['C2', 'D2', 'F#2'],
           duration: notesTicks[i],
           startTick: startTicks[i],
-        })
+        }),
       );
     } else if (midiLayout[i] === 'KS') {
       notesMIDI.push(
@@ -123,7 +123,7 @@ export const exportMIDI = async ({
           pitch: ['C2', 'D2'],
           duration: notesTicks[i],
           startTick: startTicks[i],
-        })
+        }),
       );
     } else if (midiLayout[i] === 'KH') {
       notesMIDI.push(
@@ -131,7 +131,7 @@ export const exportMIDI = async ({
           pitch: ['C2', 'F#2'],
           duration: notesTicks[i],
           startTick: startTicks[i],
-        })
+        }),
       );
     } else if (midiLayout[i] === 'SH') {
       notesMIDI.push(
@@ -139,7 +139,7 @@ export const exportMIDI = async ({
           pitch: ['D2', 'F#2'],
           duration: notesTicks[i],
           startTick: startTicks[i],
-        })
+        }),
       );
     } else if (midiLayout[i] === 'K') {
       notesMIDI.push(
@@ -147,7 +147,7 @@ export const exportMIDI = async ({
           pitch: ['C2'],
           duration: notesTicks[i],
           startTick: startTicks[i],
-        })
+        }),
       );
     } else if (midiLayout[i] === 'S') {
       notesMIDI.push(
@@ -155,7 +155,7 @@ export const exportMIDI = async ({
           pitch: ['D2'],
           duration: notesTicks[i],
           startTick: startTicks[i],
-        })
+        }),
       );
     } else if (midiLayout[i] === 'H') {
       notesMIDI.push(
@@ -163,7 +163,7 @@ export const exportMIDI = async ({
           pitch: ['F#2'],
           duration: notesTicks[i],
           startTick: startTicks[i],
-        })
+        }),
       );
     }
   });

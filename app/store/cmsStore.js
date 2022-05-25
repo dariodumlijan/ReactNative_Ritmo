@@ -52,7 +52,7 @@ const buildStore = (state: State, payload: InitialCMSResponse): State => {
 
   localStorage.setItem(
     localStorageKeys.contentTimestamps,
-    JSON.stringify(payload.timestamps.online)
+    JSON.stringify(payload.timestamps.online),
   );
   localStorage.setItem(localStorageKeys.appContent, JSON.stringify(storeState));
 

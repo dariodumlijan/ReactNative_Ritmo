@@ -4,29 +4,33 @@ import type { Node } from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Slider } from '@miblanchard/react-native-slider';
-import { map, isEmpty, first, isEqual, flatten, values, some } from 'lodash';
+import {
+  map, isEmpty, first, isEqual, flatten, values, some,
+} from 'lodash';
 import SliderThumb from '../elements/inputs/SliderThumb';
 import ClearPresetModal from '../elements/modals/ClearPresetModal';
-import Alert from "../elements/Alert";
+import Alert from '../elements/misc/Alert';
 import useLocale from '../../locales';
-import { actions as beatActions } from '../../store/beatsStore';
-import { actions as globalActions } from '../../store/globalStore';
+import { actions as globalActions, selectors as globalSelectors } from '../../store/globalStore';
+import { actions as beatActions, selectors as beatSelectors } from '../../store/beatsStore';
+import { stopBeat } from '../../sound';
 import bottomStyle from '../../styles/bottom_style';
 import colors from '../../styles/colors';
-import type { State as BeatsState } from '../../store/beatsStore';
-import type { Preset, State as GlobalState } from "../../store/globalStore";
+import type { Beats } from '../../sound/beats';
+import type { Preset, State as GlobalState } from '../../store/globalStore';
 
 function Bottom(): Node {
   const { t } = useLocale();
   const dispatch = useDispatch();
-  const beats: BeatsState = useSelector((state) => state.beats, isEqual);
-  const global: GlobalState = useSelector((state) => state.global, isEqual);
+  const beats: Beats = useSelector(beatSelectors.getBeats, isEqual);
+  const global: GlobalState = useSelector(globalSelectors.getGlobal, isEqual);
   const [showModal, setShowModal] = useState(null);
-  const [showAlert, setShowAlert] = useState(false);
+  const [showNoBeatAlert, setShowNoBeatAlert] = useState(false);
+  const [showNoPresetAlert, setShowNoPresetAlert] = useState(false);
   const beatExists = some(flatten(values(beats)), 'checked');
 
   const handleSliderChange = (degree: number, key: string) => {
-    if (global.sliders[key] !== degree) dispatch(beatActions.rotateBeat({ degree, key }));
+    if (global.sliders[key] !== degree) dispatch(beatActions.rotateBeat({ key, degree, useBPM: global.ui.useBPM }));
   };
 
   const handlePreset = (preset: Object, key: string) => {
@@ -44,13 +48,38 @@ function Bottom(): Node {
         useTimeSig: global.ui.useTimeSig,
       }));
     } else {
-      setShowAlert(true);
+      setShowNoBeatAlert(true);
     }
   };
 
   const handleClearPreset = () => {
     if (showModal) dispatch(globalActions.clearPreset(showModal));
     setShowModal(null);
+  };
+
+  const handleAlertDestroy = () => {
+    setShowNoBeatAlert(false);
+    setShowNoPresetAlert(false);
+  };
+
+  const handleModalCall = (key: string) => {
+    if (!global.presets || isEmpty(global.presets[key])) {
+      setShowNoPresetAlert(true);
+
+      return;
+    }
+
+    setShowModal(key);
+  };
+
+  const handleClearBeat = () => {
+    dispatch(beatActions.clearBeat());
+    stopBeat(beats);
+  };
+
+  const handleResetBeat = () => {
+    dispatch(beatActions.resetBeat());
+    stopBeat(beats);
   };
 
   const handleRecording = () => {};
@@ -69,7 +98,7 @@ function Bottom(): Node {
         break;
       }
     }
-  
+
     let status = (await Audio.getPermissionsAsync()).granted;
     if (status === true && isPlaying === false && findBeat === true) {
       try {
@@ -83,12 +112,12 @@ function Bottom(): Node {
           interruptionModeAndroid:
             Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
         });
-  
+
         await recording.prepareToRecordAsync(RecordingOptions);
         await recording.startAsync();
-  
+
         start();
-  
+
         isRecording = true;
         setRecordingStatus(isRecording);
       } catch (err) {
@@ -106,10 +135,10 @@ function Bottom(): Node {
           interruptionModeAndroid:
             Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
         });
-  
+
         await recording.prepareToRecordAsync(RecordingOptions);
         await recording.startAsync();
-  
+
         isRecording = true;
         setRecordingStatus(isRecording);
       } catch (err) {
@@ -121,17 +150,17 @@ function Bottom(): Node {
       await Audio.requestPermissionsAsync();
     }
   };
-  
+
   const stopRec = async () => {
     pause();
-  
+
     await recording.stopAndUnloadAsync();
     setRecording(new Audio.Recording());
     const uri = recording.getURI();
-  
+
     console.log(uri);
     // Current Save Folder URL: /Users/dariodumlijan/Library/Developer/CoreSimulator/Devices/B54A7218-4990-45B7-925F-BC578F42FB29/data/Containers/Data/Application/13C70B38-FE6B-4F46-A0C0-CC95AE195051/Library/Caches/ExponentExperienceData/%40ddario%2FRitmo
-  
+
     isRecording = false;
     setRecordingStatus(isRecording);
   };
@@ -154,7 +183,7 @@ function Bottom(): Node {
                 }),
               }}
               onPress={() => handlePreset(preset, key)}
-              onLongPress={() => setShowModal(key)}
+              onLongPress={() => handleModalCall(key)}
             >
               <Text style={bottomStyle.presetText}>{t(`bottom.preset.${key}`)}</Text>
             </TouchableHighlight>
@@ -182,14 +211,14 @@ function Bottom(): Node {
           <TouchableHighlight
             underlayColor={colors.grayBlue}
             style={bottomStyle.btnPrimary}
-            onPress={() => dispatch(beatActions.clearBeat())}
+            onPress={handleClearBeat}
           >
             <Text style={bottomStyle.btnPrimaryText}>{t('bottom.actions.clear')}</Text>
           </TouchableHighlight>
           <TouchableHighlight
             underlayColor={colors.grayBlue}
             style={bottomStyle.btnPrimary}
-            onPress={() => dispatch(beatActions.resetBeat())}
+            onPress={handleResetBeat}
           >
             <Text style={bottomStyle.btnPrimaryText}>{t('bottom.actions.reset')}</Text>
           </TouchableHighlight>
@@ -214,10 +243,10 @@ function Bottom(): Node {
       />
       <Alert
         clearDelayMS={3300}
-        visible={showAlert}
-        onDestroy={() => setShowAlert(false)}
+        visible={showNoBeatAlert || showNoPresetAlert}
+        onDestroy={handleAlertDestroy}
       >
-        <Text>{t('alert.no_beat')}</Text>
+        <Text>{t(showNoPresetAlert ? 'alert.no_preset' : 'alert.no_beat')}</Text>
       </Alert>
     </View>
   );

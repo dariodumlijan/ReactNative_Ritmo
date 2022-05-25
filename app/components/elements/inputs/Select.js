@@ -1,11 +1,13 @@
 // @flow
 import React from 'react';
 import type { Node } from 'react';
-import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Modal, ScrollView, Text, TouchableOpacity, View,
+} from 'react-native';
 import { map } from 'lodash';
 import Arrow from '../../../assets/icons/Arrow';
 import { isSampleUnlocked } from '../../../utils';
-import styles from "../../../styles/styles";
+import styles from '../../../styles/styles';
 
 type Option = {
   label: string,
@@ -22,7 +24,6 @@ type Props = {
 };
 
 function Select(props: Props): Node {
-
   return (
     <>
       <View style={styles.selectWrapper}>
@@ -48,20 +49,20 @@ function Select(props: Props): Node {
             centerContent
           >
             {map(props.options, (option: Option&Object, key: number) => (
-            <TouchableOpacity
-              key={key}
-              activeOpacity={0.6}
-              style={
+              <TouchableOpacity
+                key={key}
+                activeOpacity={0.6}
+                style={
                 key === props.options.length - 1 ? styles.selectItemNoBorder : styles.selectItem
               }
-              disabled={props.compareSamples ? !isSampleUnlocked(props.compareSamples, option) : false}
-              onPress={() => props.onSelect(option)}
-            >
-              <Text style={props.compareSamples && !isSampleUnlocked(props.compareSamples, option) ? styles.selectDisabledText : styles.selectText}>
-                {option.label}
-              </Text>
-            </TouchableOpacity>
-          ))}
+                disabled={props.compareSamples ? !isSampleUnlocked(props.compareSamples, option) : false}
+                onPress={() => props.onSelect(option)}
+              >
+                <Text style={props.compareSamples && !isSampleUnlocked(props.compareSamples, option) ? styles.selectDisabledText : styles.selectText}>
+                  {option.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
           </ScrollView>
         </View>
       </Modal>

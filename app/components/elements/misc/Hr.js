@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Node } from 'react';
 import { View } from 'react-native';
-import colors from '../../styles/colors';
+import colors from '../../../styles/colors';
 
 type Props = {
   height?: number,

@@ -1,7 +1,9 @@
 // @flow
 import React from 'react';
 import type { Node } from 'react';
-import { Modal, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Modal, Text, TouchableOpacity, View,
+} from 'react-native';
 import useLocale from '../../../locales';
 import styles from '../../../styles/styles';
 

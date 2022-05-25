@@ -14,7 +14,7 @@ const initialState: ReduxState = {
     presets: {
       one: null,
       two: null,
-      three: null
+      three: null,
     },
     sliders: {
       hihat: 0,
@@ -42,8 +42,6 @@ const initialState: ReduxState = {
       snareSliderVal: 0,
       kickSliderVal: 0,
       useBPM: 100,
-      bpmInterval: 240000 / 100,
-      pulseInterval: 240000 / 100 / 8,
       useTimeSig: timeSignatures[0].value,
       useSample: samples[0],
     },

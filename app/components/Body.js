@@ -10,7 +10,9 @@ import { NativeRouter, Routes, Route } from 'react-router-native';
 //   // getPermissionsAsync,
 // } from '@react-native-firebase/admob';
 import { getTrackingStatus, requestTrackingPermission } from 'react-native-tracking-transparency';
-import { get, isEqual, every, has } from 'lodash';
+import {
+  get, isEqual, every, has,
+} from 'lodash';
 import Home from './screens/Home';
 import Settings from './screens/Settings';
 import Library from './screens/Library';
@@ -42,8 +44,7 @@ function Body(): Node {
   const hasAnnouncement = get(cms, 'announcement.content');
   const hasLocalData = !isEqual(localTimestamps, appKeys.noLocalData);
   const hasOnlineData = !isEqual(onlineTimestamps, appKeys.noConnection);
-  const announcementSeen =
-    get(cms, 'timestamps.local.announcement', 0) < get(cms, 'timestamps.announcement', 0);
+  const announcementSeen = get(cms, 'timestamps.local.announcement', 0) < get(cms, 'timestamps.announcement', 0);
   const isLoading = every(['master', 'timestamps'], (key) => !has(cms, key));
   const displayAds = isRealDevice
     ? get(cms, 'master.ads', false)
@@ -74,8 +75,8 @@ function Body(): Node {
   }, []);
 
   if (
-    (!hasLocalData && !hasOnlineData) ||
-    (hasAnnouncement && !announcementSeen && showAnnouncement)
+    (!hasLocalData && !hasOnlineData)
+    || (hasAnnouncement && !announcementSeen && showAnnouncement)
   ) {
     return (
       <Announcement
@@ -103,13 +104,13 @@ function Body(): Node {
           <Route
             exact
             path="/guide"
-            element={
+            element={(
               <Guide
                 sliderMin={global.static.sliderMin}
                 sliderMax={global.static.sliderMax}
                 sliderStep={global.static.sliderStep}
               />
-            }
+            )}
           />
           <Route path="/rewarded" element={<Rewarded />} />
         </Routes>

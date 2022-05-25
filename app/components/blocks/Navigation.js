@@ -1,7 +1,9 @@
 // @flow
 import React, { useState } from 'react';
 import type { Node } from 'react';
-import { Animated, Easing, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Animated, Easing, Text, TouchableOpacity, View,
+} from 'react-native';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-native';
 import { forEach, isEqual } from 'lodash';
@@ -10,11 +12,12 @@ import Recordings from '../../assets/icons/Recordings';
 import Guide from '../../assets/icons/Guide';
 import Export from '../../assets/icons/Export';
 import Settings from '../../assets/icons/Settings';
+import { selectors } from '../../store/beatsStore';
 import useLocale from '../../locales';
 import styles from '../../styles/styles';
 import navigationStyle from '../../styles/navigation_style';
 import colors from '../../styles/colors';
-import type { State } from '../../store/beatsStore';
+import type { Beats } from '../../sound/beats';
 
 type Props = {
   visible: boolean,
@@ -23,7 +26,7 @@ type Props = {
 
 function Navigation(props: Props): Node {
   const { t } = useLocale();
-  const beats: State = useSelector((state) => state.beats, isEqual);
+  const beats: Beats = useSelector(selectors.getBeats, isEqual);
   const opacityTag = useState(new Animated.Value(1))[0];
   const opacityAlert = useState(new Animated.Value(0))[0];
 
@@ -85,9 +88,9 @@ function Navigation(props: Props): Node {
     let findBeat = false;
     forEach(beats.hihat, (o: Object, i: number) => {
       if (
-        beats.hihat[i].checked === true ||
-        beats.snare[i].checked === true ||
-        beats.kick[i].checked === true
+        beats.hihat[i].checked === true
+        || beats.snare[i].checked === true
+        || beats.kick[i].checked === true
       ) {
         findBeat = true;
 

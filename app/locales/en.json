@@ -80,7 +80,8 @@
     }
   },
   "alert": {
-    "no_beat": "Tap on a circle to add a beat."
+    "no_beat": "Tap on a circle to add a beat.",
+    "no_preset": "No preset to delete."
   },
   "error": {
     "title": "Attention!",

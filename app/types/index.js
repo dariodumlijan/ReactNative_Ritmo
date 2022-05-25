@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 import type { State as CmsState } from '../store/cmsStore';
 import type { State as GlobalState } from '../store/globalStore';
-import type { State as BeatsState } from '../store/beatsStore';
+import type { Beats as BeatsState } from '../sound/beats';
 
 export type ReduxState = {
   cms: CmsState,

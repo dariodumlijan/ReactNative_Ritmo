@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import type { Node } from 'react';
-import { Animated } from "react-native";
-import styles from '../../styles/styles';
+import { Animated } from 'react-native';
+import styles from '../../../styles/styles';
 
 type Props = {
   children: Node,

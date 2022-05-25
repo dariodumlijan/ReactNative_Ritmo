@@ -21,7 +21,6 @@
     "@react-native-async-storage/async-storage": "^1.15.9",
     "axios": "^0.26.0",
     "buffer": "^6.0.3",
-    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-react-native": "^3.11.0",
     "lodash": "^4.17.21",
     "midi-writer-js": "^2.0.1",

@@ -1,9 +1,9 @@
-/* eslint-disable react/no-array-index-key */
 // @flow
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { Text, View } from 'react-native';
 import { BLOCKS, INLINES, MARKS } from '@contentful/rich-text-types';
-import Hr from '../components/elements/Hr';
+import Hr from '../components/elements/misc/Hr';
 import announcementStyle from '../styles/announcement_style';
 import colors from '../styles/colors';
 

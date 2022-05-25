@@ -12,19 +12,21 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-native';
-import { every, get, includes, isEmpty, isEqual, isNumber, map } from 'lodash';
+import {
+  every, get, includes, isEmpty, isEqual, isNumber, map,
+} from 'lodash';
+import DismissKeyboard from '../elements/misc/DismissKeyboard';
 import Select from '../elements/inputs/Select';
-import Alert from '../elements/Alert';
+import Alert from '../elements/misc/Alert';
 import Close from '../../assets/icons/Close';
 import useLocale from '../../locales';
-import { DismissKeyboard } from "../../utils";
 import useSelectLists from '../../utils/lists';
-import { actions, selectors } from "../../store/globalStore";
+import { actions, selectors } from '../../store/globalStore';
 import styles from '../../styles/styles';
 import mainStyle from '../../styles/main_style';
 import colors from '../../styles/colors';
-import type { Sample } from "../../utils/lists";
-import type { State } from "../../store/globalStore";
+import type { Sample } from '../../utils/lists';
+import type { State } from '../../store/globalStore';
 
 const Settings = (): Node => {
   const { t } = useLocale();
@@ -198,17 +200,17 @@ const Settings = (): Node => {
             compareSamples={global.unlockedSamples}
           />
 
-            <Link
-              to="/rewarded"
-              onPress={handleRewardedOpen}
-              disabled={openSelect || shouldShowAlert}
-              underlayColor={colors.grayBlue}
-              style={shouldShowAlert ? styles.btnRewardScreenDisabled : styles.btnRewardScreen}
-            >
-              <Text style={shouldShowAlert ? styles.btnRewardScreenTextDisabled : styles.btnRewardScreenText}>
-                {t(rewardedBtnIsDisabled ? 'settings.keep_rewards' : 'settings.more_samples')}
-              </Text>
-            </Link>
+          <Link
+            to="/rewarded"
+            onPress={handleRewardedOpen}
+            disabled={openSelect || shouldShowAlert}
+            underlayColor={colors.grayBlue}
+            style={shouldShowAlert ? styles.btnRewardScreenDisabled : styles.btnRewardScreen}
+          >
+            <Text style={shouldShowAlert ? styles.btnRewardScreenTextDisabled : styles.btnRewardScreenText}>
+              {t(rewardedBtnIsDisabled ? 'settings.keep_rewards' : 'settings.more_samples')}
+            </Text>
+          </Link>
         </View>
 
         <Alert

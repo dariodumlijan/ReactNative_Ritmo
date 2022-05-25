@@ -1,14 +1,15 @@
 // @flow
-import React from 'react';
-import type { Node } from 'react';
-import { Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
+import { Platform } from 'react-native';
 import InAppReview from 'react-native-in-app-review';
 import DeviceInfo from 'react-native-device-info';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLocation } from 'react-router-dom';
-import { includes } from 'lodash';
+import {
+  every, flatten, floor, includes, values,
+} from 'lodash';
 import { localStorageKeys, admob } from '../tokens';
-import type { Sample } from "./lists";
+import type { Sample } from './lists';
+import type { Beats } from '../sound/beats';
 
 export const isRealDevice: boolean = !DeviceInfo.isEmulator();
 export const isApple: boolean = Platform.OS === 'ios';
@@ -123,8 +124,22 @@ export const useLocationInfo = (): Object => {
   };
 };
 
-export const DismissKeyboard = ({ children }: Function): Node => (
-  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
-);
-
 export const isSampleUnlocked = (unlockedSamples: string[], sample: Sample): boolean => includes(unlockedSamples, sample.label);
+
+export const isBeatEmpty = (beats: Beats): boolean => every(flatten(values(beats)), ['checked', false]);
+
+export const calcBpmInterval = (bpm: number): number => floor(240000 / bpm);
+
+export const calcPulseInterval = (bpmInterval: number): number => floor(bpmInterval / 8);
+
+export const calcSoundDelay = (initAngle: number, sliderVal?: number, useBPM?: number): number => {
+  const bpm = useBPM || 100;
+  const slider = sliderVal || 0;
+  const bpmInterval = calcBpmInterval(bpm);
+  const bpmAdjust = (60 / bpm) * 4;
+  const delayDegree = (1000 * bpmAdjust) / 360;
+  const calcDelay = delayDegree * slider;
+  const beatDelay = delayDegree * initAngle + calcDelay;
+
+  return floor(beatDelay > bpmInterval ? beatDelay - bpmInterval : beatDelay);
+};

@@ -7,18 +7,18 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
+} from 'react-native';
 import { Link } from 'react-router-native';
 import { useSelector } from 'react-redux';
-import { get, isEqual, } from 'lodash';
+import { get, isEqual } from 'lodash';
 import Select from '../elements/inputs/Select';
-import Exit from "../../assets/icons/Exit";
+import Exit from '../../assets/icons/Exit';
 import useLocale from '../../locales';
-import { selectors } from "../../store/globalStore";
+import { selectors } from '../../store/globalStore';
 import mainStyles from '../../styles/main_style';
 import styles from '../../styles/styles';
 import colors from '../../styles/colors';
-import type { Sample } from "../../utils/lists";
+import type { Sample } from '../../utils/lists';
 
 const Rewarded = (): Node => {
   const { t } = useLocale();
@@ -298,7 +298,7 @@ const Rewarded = (): Node => {
         ) : (
           <View style={styles.rewardedExp}>
             <Text style={styles.rewardedExpText}>
-             {t('rewarded.paragraph_3.text_1')}
+              {t('rewarded.paragraph_3.text_1')}
             </Text>
             <Text style={styles.rewardedExp2Text}>
               {t('rewarded.paragraph_3.text_2')}
@@ -325,7 +325,7 @@ const Rewarded = (): Node => {
         >
           {loadRewarded ? (
             <ActivityIndicator size="large" color={colors.grayLight} />
-            ) : (
+          ) : (
             <Text style={styles.rewardedStartText}>{t('rewarded.cta')}</Text>
           )}
         </TouchableOpacity>

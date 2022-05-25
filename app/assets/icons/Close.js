@@ -1,7 +1,9 @@
 // @flow
 import React from 'react';
 import type { Node } from 'react';
-import { Svg, Path, G, Circle, Rect } from 'react-native-svg';
+import {
+  Svg, Path, G, Circle, Rect,
+} from 'react-native-svg';
 
 type Props = {
   style?: Object,
@@ -11,9 +13,7 @@ const Close = (props: Props): Node => (
   <Svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 206 309" style={props.style}>
     <Path
       fill="#0E123C"
-      d="M9.6,299.4L9.6,299.4c12.8,12.8,33.4,12.8,46.2,0l98.7-98.7l0,0l23.1-23.1c12.8-12.8,12.8-33.4,0-46.2
-	l-23.1-23.1l0,0L55.8,9.6C43-3.2,22.4-3.2,9.6,9.6l0,0C-3.2,22.4-3.2,43,9.6,55.8l98.7,98.7l0,0L9.6,253.2
-	C-3.2,266-3.2,286.7,9.6,299.4z"
+      d="M9.6,299.4L9.6,299.4c12.8,12.8,33.4,12.8,46.2,0l98.7-98.7l0,0l23.1-23.1c12.8-12.8,12.8-33.4,0-46.2l-23.1-23.1l0,0L55.8,9.6C43-3.2,22.4-3.2,9.6,9.6l0,0C-3.2,22.4-3.2,43,9.6,55.8l98.7,98.7l0,0L9.6,253.2C-3.2,266-3.2,286.7,9.6,299.4z"
     />
     <G>
       <Circle fill="#DFE2EC" cx="300.6" cy="154.5" r="51.5" />

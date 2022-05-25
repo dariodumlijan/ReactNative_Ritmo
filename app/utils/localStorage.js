@@ -1,7 +1,7 @@
 // @flow
-import { useLocalStorage } from ".";
-import { localStorageKeys } from "../tokens";
-import type { Preset } from "../store/globalStore";
+import { useLocalStorage } from '.';
+import { localStorageKeys } from '../tokens';
+import type { Preset } from '../store/globalStore';
 
 type FetchResponse = {
   presets: {

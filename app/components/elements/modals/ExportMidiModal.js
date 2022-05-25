@@ -1,17 +1,19 @@
 // @flow
 import React, { useEffect, useState } from 'react';
 import type { Node } from 'react';
-import { Keyboard, Modal, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Keyboard, Modal, Text, TextInput, TouchableOpacity, View,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import RNFS from 'react-native-fs';
 import { isEqual } from 'lodash';
 import useLocale from '../../../locales';
-import { actions } from '../../../store/globalStore';
-import { selectors } from '../../../store/beatsStore';
+import { actions, selectors as globalSelectors } from '../../../store/globalStore';
+import { selectors as beatSelectors } from '../../../store/beatsStore';
 import styles from '../../../styles/styles';
 import colors from '../../../styles/colors';
 import type { State as GlobalState } from '../../../store/globalStore';
-import type { State as BeatsState } from '../../../store/beatsStore';
+import type { Beats } from '../../../sound/beats';
 
 type Props = {
   exit: Function,
@@ -20,8 +22,8 @@ type Props = {
 function ExportMidiModal(props: Props): Node {
   const { t } = useLocale();
   const dispatch = useDispatch();
-  const global: GlobalState = useSelector((state) => state.global, isEqual);
-  const beats: BeatsState = useSelector(selectors.getBeats, isEqual);
+  const global: GlobalState = useSelector(globalSelectors.getGlobal, isEqual);
+  const beats: Beats = useSelector(beatSelectors.getBeats, isEqual);
   const [midiName, setMidiName] = useState('Ritmo_MIDI');
 
   const nameMidiFile = (value) => {
@@ -41,7 +43,7 @@ function ExportMidiModal(props: Props): Node {
         stepsInBar: global.static.stepsInBar,
         useBPM: global.ui.useBPM,
         useTimeSig: global.ui.useTimeSig,
-      })
+      }),
     );
   };
 
@@ -51,7 +53,7 @@ function ExportMidiModal(props: Props): Node {
       if (global.ui.fileUri) RNFS.unlink(global.ui.fileUri);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [],
   );
 
   return (

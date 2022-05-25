@@ -1,5 +1,5 @@
 // @flow
-import useLocale from "../locales";
+import useLocale from '../locales';
 
 export type Sample = {
   label: string,
@@ -87,7 +87,7 @@ const useSelectLists = (): Lists => {
   const timeSignatures = [
     { label: t('settings.time_sig_options.option_1'), value: 'Free' },
     { label: t('settings.time_sig_options.option_2'), value: '4/4' },
-    { label: t('settings.time_sig_options.option_3'), value: '3/4' }
+    { label: t('settings.time_sig_options.option_3'), value: '3/4' },
   ];
 
   return {

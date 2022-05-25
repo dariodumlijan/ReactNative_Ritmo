@@ -3,13 +3,17 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { concat, forEach, get, includes, isString } from 'lodash';
+import {
+  concat, forEach, get, includes, isString,
+} from 'lodash';
 import { reducer as globalStoreReducer } from './globalStore';
 import { reducer as cmsStoreReducer } from './cmsStore';
 import { reducer as beatsStoreReducer } from './beatsStore';
 import { isPromise, isRealDevice } from '../utils';
 import ENV from '../../env.json';
-import type { ReduxState, ReduxAction, ReduxMiddlewareArgument, ActionChains } from '../types';
+import type {
+  ReduxState, ReduxAction, ReduxMiddlewareArgument, ActionChains,
+} from '../types';
 
 const sanitizedActions = get(ENV, 'REDUX.SANITIZEDLIST', []);
 const actionsDenyList = get(ENV, 'REDUX.DENYLIST', []);
@@ -45,7 +49,7 @@ function promiseMiddleware({ dispatch }: ReduxMiddlewareArgument): any {
             console.debug(`REDUX: ${action.type}_FULFILLED: payload = `, payloadString);
             console.log(
               `REDUX: ${action.type}_FULFILLED: payload: `,
-              isObject ? '{...}' : payloadString
+              isObject ? '{...}' : payloadString,
             );
           }
           dispatch({ type: action.type + '_FULFILLED', payload });
@@ -57,7 +61,7 @@ function promiseMiddleware({ dispatch }: ReduxMiddlewareArgument): any {
             'name = ',
             (e && e.name) || '',
             'message = ',
-            (e && e.message) || ''
+            (e && e.message) || '',
           );
           // const rejectAction = e
           //   ? reportErrorAction(`${action.type}_REJECTED`, e)
@@ -73,25 +77,23 @@ function promiseMiddleware({ dispatch }: ReduxMiddlewareArgument): any {
 }
 
 export function chainActionsMiddleware(chainedActions: ActionChains): any {
-  return ({ dispatch }: ReduxMiddlewareArgument) =>
-    (next) =>
-    (action) => {
-      let nextActions = chainedActions[action.type];
-      if (nextActions) {
-        nextActions = concat(nextActions);
-        forEach(nextActions, (nextAction) => {
-          if (isString(nextAction)) {
-            console.debug(`REDUX: dispatched chained action: ${nextAction}`);
-            dispatch({ type: nextAction });
-          } else {
-            console.debug(`REDUX: dispatched chained action: ${nextAction.type}`);
-            dispatch(nextAction(action));
-          }
-        });
-      }
+  return ({ dispatch }: ReduxMiddlewareArgument) => (next) => (action) => {
+    let nextActions = chainedActions[action.type];
+    if (nextActions) {
+      nextActions = concat(nextActions);
+      forEach(nextActions, (nextAction) => {
+        if (isString(nextAction)) {
+          console.debug(`REDUX: dispatched chained action: ${nextAction}`);
+          dispatch({ type: nextAction });
+        } else {
+          console.debug(`REDUX: dispatched chained action: ${nextAction.type}`);
+          dispatch(nextAction(action));
+        }
+      });
+    }
 
-      return next(action);
-    };
+    return next(action);
+  };
 }
 
 function dispatchRecorder(dispatchedActions: ?Array<string>): any {
@@ -107,7 +109,7 @@ function dispatchRecorder(dispatchedActions: ?Array<string>): any {
 export const configureStore = (
   initialState: {} | ReduxState,
   actionChains: ?ActionChains,
-  dispatchedActions: ?Array<string>
+  dispatchedActions: ?Array<string>,
 ): Function => {
   const middleware = [thunk];
   if (dispatchedActions) {
@@ -132,6 +134,6 @@ export const configureStore = (
       beats: beatsStoreReducer,
     }),
     initialState,
-    middlewareApplier
+    middlewareApplier,
   );
 };

@@ -1,7 +1,9 @@
 // @flow
 import React from 'react';
 import type { Node } from 'react';
-import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import {
+  SafeAreaView, ScrollView, Text, TouchableOpacity, View,
+} from 'react-native';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import useLocale from '../../locales';
 import { useLocalStorage } from '../../utils';
