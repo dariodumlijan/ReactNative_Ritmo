@@ -1,5 +1,5 @@
 // @flow
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import type { Node } from 'react';
 import {
   Animated,
@@ -10,32 +10,41 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEqual, map } from 'lodash';
-import Alert from '../elements/misc/Alert';
-import Play from '../../assets/icons/Play';
-import Pause from '../../assets/icons/Pause';
-import { selectors as globalSelectors } from '../../store/globalStore';
-import { actions as beatActions, selectors as beatSelectors } from '../../store/beatsStore';
-import { calcBpmInterval, isBeatEmpty } from '../../utils';
-import useLocale from '../../locales';
-import circleStyle from '../../styles/circle_style';
-import { checkboxStyle } from '../../styles/inputs_style';
-import colors from '../../styles/colors';
-import type { UI } from '../../store/globalStore';
-import type { Beat, Beats } from '../../sound/beats';
+import Alert from '../../elements/misc/Alert';
+import Play from '../../../assets/icons/Play';
+import Pause from '../../../assets/icons/Pause';
+import { selectors as globalSelectors } from '../../../store/globalStore';
+import { actions as beatActions, selectors as beatSelectors } from '../../../store/beatsStore';
+import { calcBpmInterval, isBeatEmpty } from '../../../utils';
+import useLocale from '../../../locales';
+import { PortalContext } from '../../../context';
+import circleStyle from '../../../styles/circle_style';
+import { checkboxStyle } from '../../../styles/inputs_style';
+import styles from '../../../styles/styles';
+import colors from '../../../styles/colors';
+import type { UI } from '../../../store/globalStore';
+import type { Beat, Beats } from '../../../sound/beats';
 
 function Circle(): Node {
   const { t } = useLocale();
+  const { teleport } = useContext(PortalContext);
   const dispatch = useDispatch();
   const global: UI = useSelector(globalSelectors.getUI, isEqual);
   const beats: Beats = useSelector(beatSelectors.getBeats, isEqual);
   const [circleRadius, setCircleRadius] = useState({ hihat: 0, snare: 0, kick: 0 });
-  const [showNoBeatAlert, setShowNoBeatAlert] = useState(false);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => () => dispatch(beatActions.pauseBeat()), []);
 
   const getDimentions = (e: Object, key: string) => setCircleRadius({ ...circleRadius, ...{ [key]: e.nativeEvent.layout.width / 2 - 2.5 } });
 
   const handleStart = () => {
     if (isBeatEmpty(beats)) {
-      setShowNoBeatAlert(true);
+      teleport(
+        <Alert clearDelayMS={3300}>
+          <Text style={styles.alertText}>{t('alert.no_beat')}</Text>
+        </Alert>,
+      );
 
       return;
     }
@@ -123,14 +132,6 @@ function Circle(): Node {
           <Play style={circleStyle.btnIcon} />
         </TouchableHighlight>
       )}
-
-      <Alert
-        clearDelayMS={3300}
-        visible={showNoBeatAlert}
-        onDestroy={() => setShowNoBeatAlert(false)}
-      >
-        <Text>{t('alert.no_beat')}</Text>
-      </Alert>
     </View>
   );
 }

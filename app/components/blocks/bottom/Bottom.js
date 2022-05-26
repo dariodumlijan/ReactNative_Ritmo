@@ -1,5 +1,5 @@
 // @flow
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import type { Node } from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,26 +7,27 @@ import { Slider } from '@miblanchard/react-native-slider';
 import {
   map, isEmpty, first, isEqual, flatten, values, some,
 } from 'lodash';
-import SliderThumb from '../elements/inputs/SliderThumb';
-import ClearPresetModal from '../elements/modals/ClearPresetModal';
-import Alert from '../elements/misc/Alert';
-import useLocale from '../../locales';
-import { actions as globalActions, selectors as globalSelectors } from '../../store/globalStore';
-import { actions as beatActions, selectors as beatSelectors } from '../../store/beatsStore';
-import { stopBeat } from '../../sound';
-import bottomStyle from '../../styles/bottom_style';
-import colors from '../../styles/colors';
-import type { Beats } from '../../sound/beats';
-import type { Preset, State as GlobalState } from '../../store/globalStore';
+import SliderThumb from '../../elements/inputs/SliderThumb';
+import ClearPresetModal from '../../elements/modals/ClearPresetModal';
+import Alert from '../../elements/misc/Alert';
+import { PortalContext } from '../../../context';
+import useLocale from '../../../locales';
+import { actions as globalActions, selectors as globalSelectors } from '../../../store/globalStore';
+import { actions as beatActions, selectors as beatSelectors } from '../../../store/beatsStore';
+import { stopBeat } from '../../../sound';
+import bottomStyle from '../../../styles/bottom_style';
+import styles from '../../../styles/styles';
+import colors from '../../../styles/colors';
+import type { Beats } from '../../../sound/beats';
+import type { Preset, State as GlobalState } from '../../../store/globalStore';
 
 function Bottom(): Node {
   const { t } = useLocale();
+  const { teleport } = useContext(PortalContext);
   const dispatch = useDispatch();
   const beats: Beats = useSelector(beatSelectors.getBeats, isEqual);
   const global: GlobalState = useSelector(globalSelectors.getGlobal, isEqual);
   const [showModal, setShowModal] = useState(null);
-  const [showNoBeatAlert, setShowNoBeatAlert] = useState(false);
-  const [showNoPresetAlert, setShowNoPresetAlert] = useState(false);
   const beatExists = some(flatten(values(beats)), 'checked');
 
   const handleSliderChange = (degree: number, key: string) => {
@@ -48,7 +49,13 @@ function Bottom(): Node {
         useTimeSig: global.ui.useTimeSig,
       }));
     } else {
-      setShowNoBeatAlert(true);
+      teleport(
+        <Alert clearDelayMS={3300}>
+          <Text style={styles.alertText}>
+            {t('alert.no_beat')}
+          </Text>
+        </Alert>,
+      );
     }
   };
 
@@ -57,14 +64,15 @@ function Bottom(): Node {
     setShowModal(null);
   };
 
-  const handleAlertDestroy = () => {
-    setShowNoBeatAlert(false);
-    setShowNoPresetAlert(false);
-  };
-
   const handleModalCall = (key: string) => {
     if (!global.presets || isEmpty(global.presets[key])) {
-      setShowNoPresetAlert(true);
+      teleport(
+        <Alert clearDelayMS={3300}>
+          <Text style={styles.alertText}>
+            {t('alert.no_preset')}
+          </Text>
+        </Alert>,
+      );
 
       return;
     }
@@ -241,13 +249,6 @@ function Bottom(): Node {
         onCancel={() => setShowModal(null)}
         onConfirm={handleClearPreset}
       />
-      <Alert
-        clearDelayMS={3300}
-        visible={showNoBeatAlert || showNoPresetAlert}
-        onDestroy={handleAlertDestroy}
-      >
-        <Text>{t(showNoPresetAlert ? 'alert.no_preset' : 'alert.no_beat')}</Text>
-      </Alert>
     </View>
   );
 }

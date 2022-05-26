@@ -1,53 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import type { Node } from 'react';
 import { Animated } from 'react-native';
+import { PortalContext } from '../../../context';
 import styles from '../../../styles/styles';
 
 type Props = {
   children: Node,
-  onDestroy: Function,
-  visible: boolean,
   clearDelayMS: number,
 };
 
 function Alert(props: Props): Node {
+  const { close } = useContext(PortalContext);
   const fadeAlert = useState(new Animated.Value(0))[0];
 
   useEffect(() => {
-    const timeoutID = setTimeout(() => {
-      if (props.visible) props.onDestroy();
-    }, props.clearDelayMS);
+    const timeoutID = setTimeout(() => close(), props.clearDelayMS);
 
-    if (props.visible) {
-      Animated.sequence([
-        Animated.timing(fadeAlert, {
-          toValue: 1,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-        Animated.timing(fadeAlert, {
-          toValue: 0,
-          delay: props.clearDelayMS - 600,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    }
+    Animated.sequence([
+      Animated.timing(fadeAlert, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(fadeAlert, {
+        toValue: 0,
+        delay: props.clearDelayMS - 600,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+    ]).start();
 
     return () => clearTimeout(timeoutID);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.visible]);
+  }, [props.children]);
 
-  if (props.visible) {
-    return (
-      <Animated.View style={[styles.alertWrapper, { opacity: fadeAlert }]}>
-        {props.children}
-      </Animated.View>
-    );
-  }
-
-  return null;
+  return (
+    <Animated.View style={[styles.alertWrapper, { opacity: fadeAlert }]}>
+      {props.children}
+    </Animated.View>
+  );
 }
 
 export default Alert;

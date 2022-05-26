@@ -20,8 +20,9 @@ import Guide from './screens/Guide';
 import Rewarded from './screens/Rewarded';
 import Announcement from './screens/Announcement';
 import Loading from './screens/Loading';
-import Navigation from './blocks/Navigation';
+import Navigation from './blocks/navigation/Navigation';
 import Backgrounds from './elements/backgrounds/Backgrounds';
+import PortalProvider from './blocks/portal/PortalProvider';
 import { actions as cmsActions } from '../store/cmsStore';
 import { actions as globalActions } from '../store/globalStore';
 import { isRealDevice, useAdmobIds } from '../utils';
@@ -97,23 +98,25 @@ function Body(): Node {
         <Backgrounds />
         <Navigation visible={showNav} exit={() => setShowNav(false)} />
 
-        <Routes>
-          <Route exact path="/" element={<Home openNav={() => setShowNav(true)} />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/library" element={<Library />} />
-          <Route
-            exact
-            path="/guide"
-            element={(
-              <Guide
-                sliderMin={global.static.sliderMin}
-                sliderMax={global.static.sliderMax}
-                sliderStep={global.static.sliderStep}
-              />
-            )}
-          />
-          <Route path="/rewarded" element={<Rewarded />} />
-        </Routes>
+        <PortalProvider>
+          <Routes>
+            <Route exact path="/" element={<Home openNav={() => setShowNav(true)} />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/library" element={<Library />} />
+            <Route
+              exact
+              path="/guide"
+              element={(
+                <Guide
+                  sliderMin={global.static.sliderMin}
+                  sliderMax={global.static.sliderMax}
+                  sliderStep={global.static.sliderStep}
+                />
+              )}
+            />
+            <Route path="/rewarded" element={<Rewarded />} />
+          </Routes>
+        </PortalProvider>
       </NativeRouter>
 
       <View style={mainStyle.ads}>

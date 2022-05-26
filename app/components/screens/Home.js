@@ -2,8 +2,8 @@
 import React from 'react';
 import type { Node } from 'react';
 import { View, TouchableOpacity, SafeAreaView } from 'react-native';
-import Circle from '../blocks/Circle';
-import Bottom from '../blocks/Bottom';
+import Circle from '../blocks/circle/Circle';
+import Bottom from '../blocks/bottom/Bottom';
 import Logo from '../../assets/icons/Logo';
 import Menu from '../../assets/icons/Menu';
 import styles from '../../styles/styles';

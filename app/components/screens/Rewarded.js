@@ -273,7 +273,28 @@ const Rewarded = (): Node => {
       </View>
 
       <View style={styles.rewardedCon}>
-        {!refresh ? (
+        {refresh ? (
+          <View style={styles.rewardedExp}>
+            <Text style={styles.rewardedExpText}>
+              {t('rewarded.paragraph_3.text_1')}
+            </Text>
+            <Text style={styles.rewardedExp2Text}>
+              {t('rewarded.paragraph_3.text_2')}
+              <Text style={{ color: colors.orange }}>
+                {t('rewarded.paragraph_3.text_3')}
+              </Text>
+              {t('rewarded.paragraph_3.text_4')}
+              <Text style={{ color: colors.orange }}>
+                {t('rewarded.paragraph_3.text_5')}
+              </Text>
+              {t('rewarded.paragraph_3.text_6')}
+              <Text style={{ color: colors.orange }}>
+                {t('rewarded.paragraph_3.text_7')}
+              </Text>
+              {t('rewarded.paragraph_3.text_8')}
+            </Text>
+          </View>
+        ) : (
           <>
             <Select
               title={t('rewarded.select_cta')}
@@ -295,27 +316,6 @@ const Rewarded = (): Node => {
               </Text>
             </View>
           </>
-        ) : (
-          <View style={styles.rewardedExp}>
-            <Text style={styles.rewardedExpText}>
-              {t('rewarded.paragraph_3.text_1')}
-            </Text>
-            <Text style={styles.rewardedExp2Text}>
-              {t('rewarded.paragraph_3.text_2')}
-              <Text style={{ color: colors.orange }}>
-                {t('rewarded.paragraph_3.text_3')}
-              </Text>
-              {t('rewarded.paragraph_3.text_4')}
-              <Text style={{ color: colors.orange }}>
-                {t('rewarded.paragraph_3.text_5')}
-              </Text>
-              {t('rewarded.paragraph_3.text_6')}
-              <Text style={{ color: colors.orange }}>
-                {t('rewarded.paragraph_3.text_7')}
-              </Text>
-              {t('rewarded.paragraph_3.text_8')}
-            </Text>
-          </View>
         )}
         <TouchableOpacity
           activeOpacity={1}

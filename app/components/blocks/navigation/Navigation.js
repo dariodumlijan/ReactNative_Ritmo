@@ -7,17 +7,17 @@ import {
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-native';
 import { forEach, isEqual } from 'lodash';
-import Exit from '../../assets/icons/Exit';
-import Recordings from '../../assets/icons/Recordings';
-import Guide from '../../assets/icons/Guide';
-import Export from '../../assets/icons/Export';
-import Settings from '../../assets/icons/Settings';
-import { selectors } from '../../store/beatsStore';
-import useLocale from '../../locales';
-import styles from '../../styles/styles';
-import navigationStyle from '../../styles/navigation_style';
-import colors from '../../styles/colors';
-import type { Beats } from '../../sound/beats';
+import Exit from '../../../assets/icons/Exit';
+import Recordings from '../../../assets/icons/Recordings';
+import Guide from '../../../assets/icons/Guide';
+import Export from '../../../assets/icons/Export';
+import Settings from '../../../assets/icons/Settings';
+import { selectors } from '../../../store/beatsStore';
+import useLocale from '../../../locales';
+import styles from '../../../styles/styles';
+import navigationStyle from '../../../styles/navigation_style';
+import colors from '../../../styles/colors';
+import type { Beats } from '../../../sound/beats';
 
 type Props = {
   visible: boolean,

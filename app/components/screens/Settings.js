@@ -1,5 +1,5 @@
 // @flow
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import type { Node } from 'react';
 import {
   Animated,
@@ -20,6 +20,7 @@ import Select from '../elements/inputs/Select';
 import Alert from '../elements/misc/Alert';
 import Close from '../../assets/icons/Close';
 import useLocale from '../../locales';
+import { PortalContext } from '../../context';
 import useSelectLists from '../../utils/lists';
 import { actions, selectors } from '../../store/globalStore';
 import styles from '../../styles/styles';
@@ -30,12 +31,12 @@ import type { State } from '../../store/globalStore';
 
 const Settings = (): Node => {
   const { t } = useLocale();
+  const { teleport } = useContext(PortalContext);
   const dispatch = useDispatch();
   const { samples, timeSignatures } = useSelectLists();
   const global: State = useSelector(selectors.getGlobal, isEqual);
   const [bpm, setBpm] = useState<string>(String(global.ui.useBPM));
   const [openSelect, setOpenSelect] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
   const rewardedBtnIsDisabled = every(samples, (s) => includes(global.unlockedSamples, s.name));
   const shouldRefresh = false;
   const shouldShowAlert = rewardedBtnIsDisabled && !shouldRefresh;
@@ -126,7 +127,15 @@ const Settings = (): Node => {
 
   const handleRewardedOpen = () => {
     if (shouldShowAlert) {
-      setShowAlert(true);
+      teleport(
+        <Alert clearDelayMS={5000}>
+          <Text style={[styles.alertText, { fontSize: 14 }]}>
+            {t('settings.modal.text_1')}
+            <Text style={{ color: colors.green }}>6h</Text>
+            {t('settings.modal.text_2')}
+          </Text>
+        </Alert>,
+      );
 
       return;
     }
@@ -213,19 +222,7 @@ const Settings = (): Node => {
           </Link>
         </View>
 
-        <Alert
-          onDestroy={() => setShowAlert(false)}
-          visible={showAlert}
-          clearDelayMS={5000}
-        >
-          <Text style={styles.alertText2}>
-            {t('settings.modal.text_1')}
-            <Text style={{ color: colors.green }}>6h</Text>
-            {t('settings.modal.text_2')}
-          </Text>
-        </Alert>
         <View style={styles.adSpace} />
-
       </SafeAreaView>
     </DismissKeyboard>
   );
