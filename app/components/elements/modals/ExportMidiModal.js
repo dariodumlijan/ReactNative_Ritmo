@@ -1,70 +1,74 @@
 // @flow
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import type { Node } from 'react';
 import {
   Keyboard, Modal, Text, TextInput, TouchableOpacity, View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import RNFS from 'react-native-fs';
 import { isEqual } from 'lodash';
 import useLocale from '../../../locales';
+import { PortalContext } from '../../../context';
+import { selectors as staticSelectors } from '../../../store/staticStore';
 import { actions, selectors as globalSelectors } from '../../../store/globalStore';
 import { selectors as beatSelectors } from '../../../store/beatsStore';
 import styles from '../../../styles/styles';
 import colors from '../../../styles/colors';
-import type { State as GlobalState } from '../../../store/globalStore';
+import type { State as StaticState } from '../../../store/staticStore';
+import type { UI } from '../../../store/globalStore';
 import type { Beats } from '../../../sound/beats';
 
-type Props = {
-  exit: Function,
-};
-
-function ExportMidiModal(props: Props): Node {
+function ExportMidiModal(): Node {
   const { t } = useLocale();
+  const { close } = useContext(PortalContext);
   const dispatch = useDispatch();
-  const global: GlobalState = useSelector(globalSelectors.getGlobal, isEqual);
+  const staticState: StaticState = useSelector(staticSelectors.getStatic, isEqual);
+  const globalUI: UI = useSelector(globalSelectors.getUI, isEqual);
   const beats: Beats = useSelector(beatSelectors.getBeats, isEqual);
-  const [midiName, setMidiName] = useState('Ritmo_MIDI');
+  const [fileName, setFileName] = useState('Ritmo_MIDI');
 
-  const nameMidiFile = (value) => {
-    setMidiName(value.toString());
-  };
+  const nameMidiFile = (value) => setFileName(value.toString());
 
-  const saveMIDI = (value) => {
+  const handleExportMIDI = () => {
     Keyboard.dismiss();
     dispatch(
       actions.exportMIDI({
         beats,
-        fileName: value,
-        midiBarTicks: global.static.midiBarTicks,
-        midiNoteMax: global.static.midiNoteMax,
-        midiNoteMin: global.static.midiNoteMin,
-        sliderStep: global.static.sliderStep,
-        stepsInBar: global.static.stepsInBar,
-        useBPM: global.ui.useBPM,
-        useTimeSig: global.ui.useTimeSig,
+        fileName,
+        midiBarTicks: staticState.midiBarTicks,
+        midiNoteMax: staticState.midiNoteMax,
+        midiNoteMin: staticState.midiNoteMin,
+        sliderStep: staticState.sliderStep,
+        stepsInBar: staticState.stepsInBar,
+        useBPM: globalUI.useBPM,
+        useTimeSig: globalUI.useTimeSig,
       }),
     );
   };
 
-  useEffect(
-    () => () => {
+  useEffect(() => {
+    const clean = () => {
       Keyboard.dismiss();
-      if (global.ui.fileUri) RNFS.unlink(global.ui.fileUri);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  );
+      if (globalUI.fileUri) {
+        dispatch(actions.deleteMIDIFile(globalUI.fileUri));
+        close();
+      }
+    };
+
+    clean();
+
+    return () => clean();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [globalUI.fileUri]);
 
   return (
     <Modal animationType="fade" transparent>
       <View style={styles.modalView}>
-        <Text style={styles.modalTxt}>{t('modal.label')}</Text>
+        <Text style={styles.modalTxt}>{t('modal.midi.label')}</Text>
         <TextInput
           style={styles.inputMidi}
           onChangeText={(val) => nameMidiFile(val)}
-          onSubmitEditing={() => nameMidiFile(midiName)}
-          value={midiName}
+          onSubmitEditing={() => nameMidiFile(fileName)}
+          value={fileName}
           placeholder="Ritmo_MIDI"
           placeholderTextColor={colors.grayBlue}
           keyboardType="default"
@@ -75,16 +79,16 @@ function ExportMidiModal(props: Props): Node {
           <TouchableOpacity
             style={styles.modalBtn}
             activeOpacity={0.8}
-            onPress={() => saveMIDI(midiName)}
+            onPress={handleExportMIDI}
           >
-            <Text style={styles.modalBtnTxt}>{t('modal.save')}</Text>
+            <Text style={styles.modalBtnTxt}>{t('modal.midi.save')}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.modalBtn}
             activeOpacity={0.8}
-            onPress={() => props.exit()}
+            onPress={() => close()}
           >
-            <Text style={styles.modalBtnTxt}>{t('modal.cancel')}</Text>
+            <Text style={styles.modalBtnTxt}>{t('modal.midi.cancel')}</Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import Body from './app/components/Body';
+import PortalProvider from './app/components/blocks/portal/PortalProvider';
 import beats from './app/sound/beats';
 import useSelectLists from './app/utils/lists';
 import { configureStore } from './app/store';
@@ -10,6 +11,19 @@ import type { ReduxState } from './app/types';
 // eslint-disable-next-line react-hooks/rules-of-hooks
 const { samples, timeSignatures } = useSelectLists();
 const initialState: ReduxState = {
+  static: {
+    sliderMin: 0,
+    sliderMax: 90,
+    sliderStep: 5,
+    stepsInBar: 360 / 5,
+    midiNoteMin: 8,
+    midiNoteMax: 64,
+    midiBarTicks: 512,
+    countdownHours: 24,
+    refreshHours: 5,
+    reviewMinutes: 2,
+    loadTime: Date.now(),
+  },
   global: {
     presets: {
       one: null,
@@ -20,19 +34,6 @@ const initialState: ReduxState = {
       hihat: 0,
       snare: 0,
       kick: 0,
-    },
-    static: {
-      sliderMin: 0,
-      sliderMax: 90,
-      sliderStep: 5,
-      stepsInBar: 360 / 5,
-      midiNoteMin: 8,
-      midiNoteMax: 64,
-      midiBarTicks: 512,
-      countdownHours: 24,
-      refreshHours: 5,
-      reviewMinutes: 2,
-      loadTime: Date.now(),
     },
     ui: {
       showBanner: true,
@@ -62,7 +63,9 @@ function App() {
 
   return (
     <Provider store={store}>
-      <Body />
+      <PortalProvider>
+        <Body />
+      </PortalProvider>
     </Provider>
   );
 }

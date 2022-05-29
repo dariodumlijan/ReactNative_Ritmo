@@ -1,34 +1,37 @@
 // @flow
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import type { Node } from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Slider } from '@miblanchard/react-native-slider';
 import {
-  map, isEmpty, first, isEqual, flatten, values, some,
+  map, isEmpty, first, isEqual,
 } from 'lodash';
 import SliderThumb from '../../elements/inputs/SliderThumb';
 import ClearPresetModal from '../../elements/modals/ClearPresetModal';
 import Alert from '../../elements/misc/Alert';
 import { PortalContext } from '../../../context';
 import useLocale from '../../../locales';
+import { selectors as staticSelectors } from '../../../store/staticStore';
 import { actions as globalActions, selectors as globalSelectors } from '../../../store/globalStore';
 import { actions as beatActions, selectors as beatSelectors } from '../../../store/beatsStore';
+import { isBeatEmpty } from '../../../utils';
 import { stopBeat } from '../../../sound';
 import bottomStyle from '../../../styles/bottom_style';
 import styles from '../../../styles/styles';
 import colors from '../../../styles/colors';
 import type { Beats } from '../../../sound/beats';
+import type { State as StaticState } from '../../../store/staticStore';
 import type { Preset, State as GlobalState } from '../../../store/globalStore';
 
 function Bottom(): Node {
   const { t } = useLocale();
   const { teleport } = useContext(PortalContext);
   const dispatch = useDispatch();
+  const staticState: StaticState = useSelector(staticSelectors.getStatic, isEqual);
   const beats: Beats = useSelector(beatSelectors.getBeats, isEqual);
   const global: GlobalState = useSelector(globalSelectors.getGlobal, isEqual);
-  const [showModal, setShowModal] = useState(null);
-  const beatExists = some(flatten(values(beats)), 'checked');
+  const beatExists = !isBeatEmpty(beats);
 
   const handleSliderChange = (degree: number, key: string) => {
     if (global.sliders[key] !== degree) dispatch(beatActions.rotateBeat({ key, degree, useBPM: global.ui.useBPM }));
@@ -59,11 +62,6 @@ function Bottom(): Node {
     }
   };
 
-  const handleClearPreset = () => {
-    if (showModal) dispatch(globalActions.clearPreset(showModal));
-    setShowModal(null);
-  };
-
   const handleModalCall = (key: string) => {
     if (!global.presets || isEmpty(global.presets[key])) {
       teleport(
@@ -77,7 +75,7 @@ function Bottom(): Node {
       return;
     }
 
-    setShowModal(key);
+    teleport(<ClearPresetModal presetKey={key} />);
   };
 
   const handleClearBeat = () => {
@@ -202,9 +200,9 @@ function Bottom(): Node {
             <Slider
               key={key}
               value={val}
-              minimumValue={global.static.sliderMin}
-              maximumValue={global.static.sliderMax}
-              step={global.static.sliderStep}
+              minimumValue={staticState.sliderMin}
+              maximumValue={staticState.sliderMax}
+              step={staticState.sliderStep}
               minimumTrackTintColor={colors.grayLight}
               maximumTrackTintColor={colors.grayLight}
               containerStyle={bottomStyle.sliderContainer}
@@ -243,12 +241,6 @@ function Bottom(): Node {
           </TouchableHighlight>
         </View>
       </View>
-
-      <ClearPresetModal
-        visible={!isEmpty(showModal)}
-        onCancel={() => setShowModal(null)}
-        onConfirm={handleClearPreset}
-      />
     </View>
   );
 }

@@ -5,28 +5,14 @@ import {
 import { isRealDevice, isSampleUnlocked } from '../utils';
 import * as LocalStorage from '../utils/localStorage';
 import { types as cmsTypes } from './cmsStore';
-import { exportMIDI as midiExport } from '../midi';
+import * as MIDI from '../midi';
 import { types as beatTypes } from './beatsStore';
 import useSelectLists from '../utils/lists';
 import type { Beats } from '../sound/beats';
-import type { BuildMidi } from '../midi';
+import type { BuildMidi, BuildPromise } from '../midi';
 import type { Sample } from '../utils/lists';
 import type { InitialCMSResponse } from '../api';
 import type { ReduxAction, ReduxActionWithPayload, ReduxState } from '../types';
-
-export type Static = {
-  countdownHours: number,
-  loadTime: Date,
-  midiBarTicks: number,
-  midiNoteMax: number,
-  midiNoteMin: number,
-  refreshHours: number,
-  reviewMinutes: number,
-  sliderMax: number,
-  sliderMin: number,
-  sliderStep: number,
-  stepsInBar: number,
-};
 
 export type Sliders = {
   hihat: number,
@@ -38,10 +24,11 @@ export type UI = {
   fileUri: string,
   isPlaying: boolean,
   isRecording: boolean,
+  navigationOpen: boolean,
   showBanner: boolean,
   useBPM: number,
-  useTimeSig: string,
   useSample: Sample,
+  useTimeSig: string,
 };
 export type Preset = {
   beat: Beats,
@@ -55,7 +42,6 @@ export type State = {
     [string]: Preset|null,
   }|null,
   sliders: Sliders,
-  static: Static,
   ui: UI,
   unlockedSamples: string[],
 };
@@ -63,7 +49,7 @@ export type State = {
 export const types = {
   GB_SHOW_BANNER: 'GB/SHOW_BANNER',
   GB_UNLOCK_REWARD: 'GB/UNLOCK_REWARD',
-  GB_EXPORT_MIDI: 'GB/EXPORT_MIDI',
+  GB_TOGGLE_NAVIGATION: 'GB/TOGGLE_NAVIGATION',
   GB_UPDATE_BPM: 'GB/UPDATE_BPM',
   GB_UPDATE_TIME_SIG: 'GB/UPDATE_TIME_SIG',
   GB_UPDATE_SELECTED_SAMPLE: 'GB/UPDATE_SELECTED_SAMPLE',
@@ -84,6 +70,13 @@ export const types = {
   GB_CLEAR_PRESET_FULFILLED: 'GB/CLEAR_PRESET_FULFILLED',
 
   GB_LOAD_PRESET: 'GB/LOAD_PRESET',
+
+  GB_EXPORT_MIDI: 'GB/EXPORT_MIDI',
+  GB_EXPORT_MIDI_PENDING: 'GB/EXPORT_MIDI_PENDING',
+  GB_EXPORT_MIDI_REJECTED: 'GB/EXPORT_MIDI_REJECTED',
+  GB_EXPORT_MIDI_FULFILLED: 'GB/EXPORT_MIDI_FULFILLED',
+
+  GB_DELETE_MIDI_FILE: 'GB/DELETE_MIDI_FILE',
 };
 
 export const selectors = {
@@ -107,9 +100,17 @@ export const actions = {
     type: types.GB_UNLOCK_REWARD,
     payload: key,
   }),
+  toggleNavigation: (bool: boolean): ReduxAction => ({
+    type: types.GB_TOGGLE_NAVIGATION,
+    payload: { navigationOpen: bool },
+  }),
   exportMIDI: (buildMIDI: BuildMidi): ReduxAction => ({
     type: types.GB_EXPORT_MIDI,
-    payload: midiExport(buildMIDI),
+    payload: MIDI.exportMIDI(buildMIDI),
+  }),
+  deleteMIDIFile: (fileUri: string): ReduxAction => ({
+    type: types.GB_DELETE_MIDI_FILE,
+    payload: MIDI.deleteMIDIFile(fileUri),
   }),
   fetchPresetAndSamples: (): ReduxAction => ({
     type: types.GB_FETCH_PRESET_AND_SAMPLES,
@@ -158,7 +159,7 @@ const checkUnlockedRewards = (state: State, payload: InitialCMSResponse): State 
   return state;
 };
 
-const exportMIDI = (state: State, payload: Object): State => merge({}, state, { ui: { fileUri: payload.fileUri } });
+const exportMIDI = (state: State, payload: BuildPromise): State => merge({}, state, { ui: { fileUri: payload.fileUri } });
 
 const rotateBeat = (
   state: State,
@@ -256,10 +257,16 @@ export const reducer = (state: State, action: ReduxActionWithPayload): State => 
     case beatTypes.BT_PAUSE_BEAT:
       return merge({}, state, { ui: { isPlaying: false } });
 
-    case types.GB_EXPORT_MIDI:
+    case types.GB_EXPORT_MIDI_FULFILLED:
       return exportMIDI(state, action.payload);
 
+    case types.GB_EXPORT_MIDI_REJECTED:
+      actions.deleteMIDIFile(action.payload.fileUri);
+
+      return state;
+
     case types.GB_SHOW_BANNER:
+    case types.GB_TOGGLE_NAVIGATION:
     case types.GB_UPDATE_BPM:
     case types.GB_UPDATE_TIME_SIG:
     case types.GB_UPDATE_SELECTED_SAMPLE:

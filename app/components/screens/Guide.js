@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import { Slider } from '@miblanchard/react-native-slider';
 import { Link } from 'react-router-native';
+import { useSelector } from 'react-redux';
+import { isEqual } from 'lodash';
 import Svg, { Path } from 'react-native-svg';
 import SliderThumb from '../elements/inputs/SliderThumb';
 import MidiFile from '../../assets/img/midiFile.png';
@@ -21,15 +23,15 @@ import styles from '../../styles/styles';
 import guideStyle from '../../styles/guide_style';
 import bottomStyle from '../../styles/bottom_style';
 import colors from '../../styles/colors';
+import type { ReduxState } from '../../types';
 
-type Props = {
-  sliderMin: number,
-  sliderMax: number,
-  sliderStep: number,
-};
-
-export const Guide = (props: Props): Node => {
+export const Guide = (): Node => {
   const { t } = useLocale();
+  const config = useSelector((state: ReduxState) => ({
+    sliderMin: state.static.sliderMin,
+    sliderMax: state.static.sliderMax,
+    sliderStep: state.static.sliderStep,
+  }), isEqual);
   const [beat1, setBeat1] = useState(false);
   const [beat2, setBeat2] = useState(true);
   const [slider, setSlider] = useState(15);
@@ -89,9 +91,9 @@ export const Guide = (props: Props): Node => {
         <Text style={guideStyle.guideTxt}>{t('guide.section_1.paragraph_2')}</Text>
         <Slider
           value={slider}
-          minimumValue={props.sliderMin}
-          maximumValue={props.sliderMax}
-          step={props.sliderStep}
+          minimumValue={config.sliderMin}
+          maximumValue={config.sliderMax}
+          step={config.sliderStep}
           minimumTrackTintColor={colors.grayLight}
           maximumTrackTintColor={colors.grayLight}
           containerStyle={[styles.sliderContainer, { marginVertical: 10 }]}

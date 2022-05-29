@@ -6,6 +6,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import {
   concat, forEach, get, includes, isString,
 } from 'lodash';
+import { reducer as staticStoreReducer } from './staticStore';
 import { reducer as globalStoreReducer } from './globalStore';
 import { reducer as cmsStoreReducer } from './cmsStore';
 import { reducer as beatsStoreReducer } from './beatsStore';
@@ -129,6 +130,7 @@ export const configureStore = (
 
   return createStore(
     combineReducers({
+      static: staticStoreReducer,
       cms: cmsStoreReducer,
       global: globalStoreReducer,
       beats: beatsStoreReducer,

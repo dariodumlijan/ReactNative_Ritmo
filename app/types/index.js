@@ -1,10 +1,12 @@
 // @flow
 /* istanbul ignore file */
+import type { State as StaticState } from '../store/staticStore';
 import type { State as CmsState } from '../store/cmsStore';
 import type { State as GlobalState } from '../store/globalStore';
 import type { Beats as BeatsState } from '../sound/beats';
 
 export type ReduxState = {
+  static: StaticState,
   cms: CmsState,
   global: GlobalState,
   beats: BeatsState,

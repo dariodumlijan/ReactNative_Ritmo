@@ -22,7 +22,6 @@ import Announcement from './screens/Announcement';
 import Loading from './screens/Loading';
 import Navigation from './blocks/navigation/Navigation';
 import Backgrounds from './elements/backgrounds/Backgrounds';
-import PortalProvider from './blocks/portal/PortalProvider';
 import { actions as cmsActions } from '../store/cmsStore';
 import { actions as globalActions } from '../store/globalStore';
 import { isRealDevice, useAdmobIds } from '../utils';
@@ -37,7 +36,6 @@ function Body(): Node {
   const admobId = useAdmobIds(get(cms, 'master.adIds', null)).banner;
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const [ads, setAds] = useState(false);
-  const [showNav, setShowNav] = useState(false);
   // const [personalised, setPersonalised] = useState(false);
 
   const localTimestamps = get(cms, 'timestamps.local', 0);
@@ -96,27 +94,14 @@ function Body(): Node {
 
       <NativeRouter>
         <Backgrounds />
-        <Navigation visible={showNav} exit={() => setShowNav(false)} />
-
-        <PortalProvider>
-          <Routes>
-            <Route exact path="/" element={<Home openNav={() => setShowNav(true)} />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/library" element={<Library />} />
-            <Route
-              exact
-              path="/guide"
-              element={(
-                <Guide
-                  sliderMin={global.static.sliderMin}
-                  sliderMax={global.static.sliderMax}
-                  sliderStep={global.static.sliderStep}
-                />
-              )}
-            />
-            <Route path="/rewarded" element={<Rewarded />} />
-          </Routes>
-        </PortalProvider>
+        <Navigation />
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/library" element={<Library />} />
+          <Route path="/guide" element={(<Guide />)} />
+          <Route path="/rewarded" element={<Rewarded />} />
+        </Routes>
       </NativeRouter>
 
       <View style={mainStyle.ads}>

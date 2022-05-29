@@ -1,5 +1,5 @@
 // @flow
-import { cms } from '../tokens';
+import ENV from '../../env.json';
 
 const cmsHeader = {
   headers: {
@@ -8,7 +8,7 @@ const cmsHeader = {
       'contentful.js/0.0.0-determined-by-semantic-release',
     'Accept-Encoding': 'gzip',
     'user-agent': 'node.js/12',
-    Authorization: `Bearer ${cms.authorization}`,
+    Authorization: `Bearer ${ENV.CMS.AUTHORIZATION}`,
   },
 };
 

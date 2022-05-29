@@ -1,7 +1,7 @@
 // @flow
 import axios from 'axios';
 import { get, isEqual } from 'lodash';
-import { cms, localStorageKeys, appKeys } from '../tokens';
+import { localStorageKeys, appKeys } from '../tokens';
 import cmsHeader from './cms.config';
 import {
   PRODUCTION_QUERY,
@@ -10,6 +10,7 @@ import {
   VALID_STAGING_QUERY,
 } from './cms.querys';
 import { isRealDevice, useLocalStorage } from '../utils';
+import ENV from '../../env.json';
 
 export type InitialCMSResponse = {
   data: Object,
@@ -31,7 +32,7 @@ const VALID_QUERY = isRealDevice ? VALID_PRODUCTION_QUERY : VALID_STAGING_QUERY;
 const MASTER_QUERY = isRealDevice ? PRODUCTION_QUERY : STAGING_QUERY;
 
 export const fetchData = async (query: string): Promise<any> => {
-  const response = await axios.post(cms.graphql_url + cms.space, { query }, cmsHeader);
+  const response = await axios.post(ENV.CMS.GRAPHQL_URL + ENV.CMS.SPACE, { query }, cmsHeader);
 
   if (response.status === 200) {
     return response.data.data;
@@ -53,7 +54,7 @@ export const fetchLocalTimestamps = async (): Promise<{ announcement: any, local
 };
 
 export const fetchCMSTimestamps = async (): Promise<{ master: any, announcement: any } | any> => {
-  const response = await axios.post(cms.graphql_url + cms.space, { query: VALID_QUERY }, cmsHeader);
+  const response = await axios.post(ENV.CMS.GRAPHQL_URL + ENV.CMS.SPACE, { query: VALID_QUERY }, cmsHeader);
 
   if (response.status === 200) {
     const master = get(response.data, 'data.appCollection.items[0].sys.publishedAt');

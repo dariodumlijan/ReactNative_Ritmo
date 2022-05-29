@@ -2,8 +2,11 @@
 import Share from 'react-native-share';
 import RNFS from 'react-native-fs';
 import * as MidiWriter from 'midi-writer-js';
-import { forEach, times } from 'lodash';
+import { filter, forEach, times } from 'lodash';
 import type { Beat, Beats } from '../sound/beats';
+
+type MidiLayout = Array<'KSH'|'KS'|'KH'|'SH'|'K'|'S'|'H'>
+type NotesLayout = Array<'KSH'|'KS'|'KH'|'SH'|'K'|'S'|'H'|'R'>
 
 export type BuildMidi = {
   beats: Beats,
@@ -17,6 +20,10 @@ export type BuildMidi = {
   useTimeSig: string,
 };
 
+export type BuildPromise = {
+  fileUri: string,
+};
+
 export const exportMIDI = async ({
   beats,
   fileName,
@@ -27,26 +34,26 @@ export const exportMIDI = async ({
   stepsInBar,
   useBPM,
   useTimeSig,
-}: BuildMidi): Promise<{ shared: boolean, fileUri: string } | null> => {
+}: BuildMidi): Promise<BuildPromise> => {
   /* Get position of all notes for each sound */
-  const hihatMIDI = [];
-  const snareMIDI = [];
-  const kickMIDI = [];
+  const hihatMIDI: number[] = [];
+  const snareMIDI: number[] = [];
+  const kickMIDI: number[] = [];
   forEach(beats.hihat, (beat: Beat) => {
-    if (beat.checked === true) hihatMIDI.push(beat.angle);
+    if (beat.checked) hihatMIDI.push(beat.angle);
   });
 
   forEach(beats.snare, (beat: Beat) => {
-    if (beat.checked === true) snareMIDI.push(beat.angle);
+    if (beat.checked) snareMIDI.push(beat.angle);
   });
 
   forEach(beats.kick, (beat: Beat) => {
-    if (beat.checked === true) kickMIDI.push(beat.angle);
+    if (beat.checked) kickMIDI.push(beat.angle);
   });
 
   /* Create midi note layout from beat configuration */
   let countAngle = 0;
-  const notesLayout = [];
+  const notesLayout: NotesLayout = [];
   times(stepsInBar, () => {
     const hihatIndex = hihatMIDI.indexOf(countAngle);
     const snareIndex = snareMIDI.indexOf(countAngle);
@@ -71,12 +78,12 @@ export const exportMIDI = async ({
 
     countAngle += sliderStep;
   });
-  const shiftLayout = notesLayout.slice();
+  const shiftLayout: NotesLayout = notesLayout.slice();
 
   /* Calc note start point */
   let countStart = 0;
   let prevStart = 0;
-  const startTicks = [];
+  const startTicks: number[] = [];
   times(shiftLayout.length, () => {
     if (shiftLayout[0] !== 'R') {
       const calcTicks = countStart * midiNoteMin + prevStart;
@@ -91,7 +98,7 @@ export const exportMIDI = async ({
 
   /* Calc note duration */
   let prevNote = midiBarTicks;
-  const notesTicks = [];
+  const notesTicks: string[] = [];
   for (let i = startTicks.length - 1; i >= 0; i--) {
     let calcNoteTick = prevNote - startTicks[i];
     if (calcNoteTick > midiNoteMax) {
@@ -103,11 +110,11 @@ export const exportMIDI = async ({
   }
 
   /* Create midi note layout array without rests (R) */
-  const midiLayout = notesLayout.filter((i) => i !== 'R');
+  const midiLayout: MidiLayout = filter(notesLayout, (key: 'KSH'|'KS'|'KH'|'SH'|'K'|'S'|'H'|'R') => key !== 'R');
 
   /* Write midi sequance */
   const track = new MidiWriter.Track();
-  const notesMIDI = [];
+  const notesMIDI: any[] = [];
   times(midiLayout.length, (i) => {
     if (midiLayout[i] === 'KSH') {
       notesMIDI.push(
@@ -181,21 +188,16 @@ export const exportMIDI = async ({
   RNFS.writeFile(fileUri, write, 'base64');
 
   /* Start Share */
-  const shareOptions = {
+  await Share.open({
     type: 'audio/midi audio/x-midi',
     filename: encodeURI(fileName),
     url: 'file://' + fileUri,
     failOnCancel: true,
-  };
+  });
 
-  let payload = null;
-  await Share.open(shareOptions)
-    .then(() => {
-      payload = { shared: true, fileUri };
-    })
-    .catch(() => {
-      payload = { shared: false, fileUri };
-    });
+  return { fileUri };
+};
 
-  return payload;
+export const deleteMIDIFile = (fileUri: string) => {
+  RNFS.unlink(fileUri);
 };

@@ -59,6 +59,5 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
-# Privacy
-/app/tokens/
+# Secrets
 env.json

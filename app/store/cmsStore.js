@@ -44,6 +44,7 @@ const buildStore = (state: State, payload: InitialCMSResponse): State => {
   merge(newState, state, {
     master: get(payload.data, 'appCollection.items[0]', null),
     announcement: get(payload.data, 'announcementCollection.items[0]', null),
+    isLocal: payload.isLocal,
   });
 
   const storeState = {
