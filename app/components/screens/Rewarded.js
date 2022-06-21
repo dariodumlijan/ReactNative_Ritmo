@@ -15,8 +15,8 @@ import Select from '../elements/inputs/Select';
 import Exit from '../../assets/icons/Exit';
 import useLocale from '../../locales';
 import { selectors } from '../../store/globalStore';
-import mainStyles from '../../styles/main_style';
-import styles from '../../styles/styles';
+import mainStyles from '../../styles/main';
+import styles from '../../styles';
 import colors from '../../styles/colors';
 import type { Sample } from '../../utils/lists';
 

@@ -1,14 +1,14 @@
 // @flow
-import React, { useContext } from 'react';
+import React from 'react';
 import type { Node } from 'react';
 import {
   Modal, Text, TouchableOpacity, View,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import useLocale from '../../../locales';
-import { PortalContext } from '../../../context';
+import { useTeleport } from '../../../utils/hooks';
 import { actions } from '../../../store/globalStore';
-import styles from '../../../styles/styles';
+import styles from '../../../styles';
 
 type Props = {
   presetKey: string,
@@ -16,7 +16,7 @@ type Props = {
 
 function ClearPresetModal(props: Props): Node {
   const { t } = useLocale();
-  const { close } = useContext(PortalContext);
+  const { close } = useTeleport();
   const dispatch = useDispatch();
 
   const handleClear = () => {

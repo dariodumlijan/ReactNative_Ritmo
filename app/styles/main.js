@@ -1,6 +1,6 @@
 // @flow
 import { StyleSheet } from 'react-native';
-import { isApple, isPad } from '../utils';
+import { isApple, isiPhone } from '../utils';
 import colors from './colors';
 
 const mainStyle: Object = StyleSheet.create({
@@ -36,7 +36,7 @@ const mainStyle: Object = StyleSheet.create({
     left: '-5%',
     paddingBottom: 30,
     position: 'absolute',
-    top: isApple && !isPad ? 0 : '-5%',
+    top: isiPhone ? 0 : '-5%',
     width: '110%',
     zIndex: 99,
   },
@@ -62,7 +62,7 @@ const mainStyle: Object = StyleSheet.create({
   },
   ads: {
     alignItems: 'center',
-    bottom: isApple && !isPad ? '4.5%' : 0,
+    bottom: isiPhone ? '4.5%' : 0,
     display: 'flex',
     height: '10%',
     justifyContent: 'flex-end',

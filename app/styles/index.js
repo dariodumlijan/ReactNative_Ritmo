@@ -1,10 +1,7 @@
 // @flow
 import { StyleSheet, Platform } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
+import { isiPhone, isTablet } from '../utils';
 import colors from './colors';
-
-const isTablet = DeviceInfo.isTablet();
-const isiPhone = Platform.OS === 'ios' && !isTablet;
 
 const styles: Object = StyleSheet.create({
   container: {
@@ -34,7 +31,7 @@ const styles: Object = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '60%',
-    marginTop: Platform.isPad ? '2%' : null,
+    marginTop: Platform.isPad ? '2%' : '0',
     // backgroundColor: colors.black,
   },
   bottomWrapper: {

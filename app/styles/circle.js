@@ -1,10 +1,8 @@
 // @flow
-import { StyleSheet, Dimensions } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
+import { StyleSheet } from 'react-native';
+import { deviceWidth, isTablet } from '../utils';
 import colors from './colors';
 
-const isTablet = DeviceInfo.isTablet();
-const deviceWidth = Dimensions.get('screen').width;
 const circleRad = deviceWidth / 2;
 
 const circleStyle: Object = StyleSheet.create({

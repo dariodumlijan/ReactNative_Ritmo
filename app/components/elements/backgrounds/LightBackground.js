@@ -1,13 +1,10 @@
 // @flow
 import React from 'react';
 import type { Node } from 'react';
-import { StyleSheet, Dimensions, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Logo from '../../../assets/icons/Logo';
-import { isiPhone } from '../../../utils';
+import { deviceWidth, isiPhone } from '../../../utils';
 import colors from '../../../styles/colors';
-
-const deviceWidth = Dimensions.get('screen').width;
-const useWidth = deviceWidth * 0.15;
 
 const styles: Object = StyleSheet.create({
   backgroundWrapper: {
@@ -29,7 +26,7 @@ const styles: Object = StyleSheet.create({
     width: '200%',
     aspectRatio: 3 / 1,
     opacity: 0.3,
-    transform: [{ translateX: useWidth }, { rotate: '90deg' }],
+    transform: [{ translateX: deviceWidth * 0.15 }, { rotate: '90deg' }],
   },
 });
 

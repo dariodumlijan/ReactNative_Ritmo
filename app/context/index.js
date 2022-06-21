@@ -2,12 +2,12 @@
 import { createContext } from 'react';
 import type { Context, Node } from 'react';
 
-type Props = {
+export type PortalProps = {
   teleport: Function,
   close: Function,
 }
 
-export const PortalContext: Context<Props> = createContext({
+export const PortalContext: Context<PortalProps> = createContext({
   teleport: (element: Node) => element,
   close: () => null,
 });

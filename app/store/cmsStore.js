@@ -1,7 +1,7 @@
 // @flow
 import { get, merge } from 'lodash';
 import * as API from '../api';
-import { useLocalStorage } from '../utils';
+import { setItem } from '../utils/hooks';
 import { localStorageKeys } from '../tokens';
 import type { InitialCMSResponse } from '../api';
 import type { ReduxAction, ReduxActionWithPayload, ReduxState } from '../types';
@@ -33,8 +33,6 @@ export const actions = {
 };
 
 const buildStore = (state: State, payload: InitialCMSResponse): State => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const localStorage = useLocalStorage();
   const newState = {};
 
   if (payload.isLocal) {
@@ -51,11 +49,11 @@ const buildStore = (state: State, payload: InitialCMSResponse): State => {
     master: get(payload.data, 'appCollection.items[0]', null),
   };
 
-  localStorage.setItem(
+  setItem(
     localStorageKeys.contentTimestamps,
     JSON.stringify(payload.timestamps.online),
   );
-  localStorage.setItem(localStorageKeys.appContent, JSON.stringify(storeState));
+  setItem(localStorageKeys.appContent, JSON.stringify(storeState));
 
   return newState;
 };

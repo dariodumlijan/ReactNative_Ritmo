@@ -6,11 +6,11 @@ import {
 } from 'react-native';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import useLocale from '../../locales';
-import { useLocalStorage } from '../../utils';
+import { useLocalStorage } from '../../utils/hooks';
 import contentfulToReactNative from '../../utils/cmsArticleBlocks';
 import { localStorageKeys } from '../../tokens';
-import mainStyle from '../../styles/main_style';
-import announcementStyle from '../../styles/announcement_style';
+import mainStyle from '../../styles/main';
+import announcementStyle from '../../styles/announcement';
 
 type Props = {
   cms: Object,

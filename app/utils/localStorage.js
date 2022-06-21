@@ -1,5 +1,5 @@
 // @flow
-import { useLocalStorage } from '.';
+import { getItem, removeItem, setItem } from './hooks';
 import { localStorageKeys } from '../tokens';
 import type { Preset } from '../store/globalStore';
 
@@ -20,12 +20,10 @@ type WriteResponse = {
 type ClearResponse = string;
 
 export const fetchPresetAndSamples = async (): Promise<FetchResponse> => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const localStorage = useLocalStorage();
-  const one = await localStorage.getItem(localStorageKeys.presets.one);
-  const two = await localStorage.getItem(localStorageKeys.presets.two);
-  const three = await localStorage.getItem(localStorageKeys.presets.three);
-  const samples = await localStorage.getItem(localStorageKeys.unlockedRewards);
+  const one = await getItem(localStorageKeys.presets.one);
+  const two = await getItem(localStorageKeys.presets.two);
+  const three = await getItem(localStorageKeys.presets.three);
+  const samples = await getItem(localStorageKeys.unlockedRewards);
 
   return {
     presets: {
@@ -38,8 +36,7 @@ export const fetchPresetAndSamples = async (): Promise<FetchResponse> => {
 };
 
 export const writePreset = async (key: string, preset: Preset): Promise<WriteResponse> => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  await useLocalStorage().setItem(localStorageKeys.presets[key], JSON.stringify(preset));
+  await setItem(localStorageKeys.presets[key], JSON.stringify(preset));
 
   return {
     key,
@@ -48,8 +45,7 @@ export const writePreset = async (key: string, preset: Preset): Promise<WriteRes
 };
 
 export const clearPreset = async (key: string): Promise<ClearResponse> => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  await useLocalStorage().removeItem(localStorageKeys.presets[key]);
+  await removeItem(localStorageKeys.presets[key]);
 
   return key;
 };

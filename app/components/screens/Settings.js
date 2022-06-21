@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import type { Node } from 'react';
 import {
   Animated,
@@ -20,18 +20,18 @@ import Select from '../elements/inputs/Select';
 import Alert from '../elements/misc/Alert';
 import Close from '../../assets/icons/Close';
 import useLocale from '../../locales';
-import { PortalContext } from '../../context';
 import useSelectLists from '../../utils/lists';
+import { useTeleport } from '../../utils/hooks';
 import { actions, selectors } from '../../store/globalStore';
-import styles from '../../styles/styles';
-import mainStyle from '../../styles/main_style';
+import styles from '../../styles';
+import mainStyle from '../../styles/main';
 import colors from '../../styles/colors';
 import type { Sample } from '../../utils/lists';
 import type { State } from '../../store/globalStore';
 
 const Settings = (): Node => {
   const { t } = useLocale();
-  const { teleport } = useContext(PortalContext);
+  const { teleport } = useTeleport();
   const dispatch = useDispatch();
   const { samples, timeSignatures } = useSelectLists();
   const global: State = useSelector(selectors.getGlobal, isEqual);

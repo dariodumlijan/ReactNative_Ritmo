@@ -7,7 +7,7 @@ import {
 import { map } from 'lodash';
 import Arrow from '../../../assets/icons/Arrow';
 import { isSampleUnlocked } from '../../../utils';
-import styles from '../../../styles/styles';
+import styles from '../../../styles';
 
 type Option = {
   label: string,

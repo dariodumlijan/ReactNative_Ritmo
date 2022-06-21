@@ -24,9 +24,10 @@ import Navigation from './blocks/navigation/Navigation';
 import Backgrounds from './elements/backgrounds/Backgrounds';
 import { actions as cmsActions } from '../store/cmsStore';
 import { actions as globalActions } from '../store/globalStore';
-import { isRealDevice, useAdmobIds } from '../utils';
+import { isRealDevice } from '../utils';
+import { useAdmobIds } from '../utils/hooks';
 import { appKeys } from '../tokens';
-import mainStyle from '../styles/main_style';
+import mainStyle from '../styles/main';
 
 function Body(): Node {
   const dispatch = useDispatch();

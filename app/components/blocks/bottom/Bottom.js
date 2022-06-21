@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext } from 'react';
+import React from 'react';
 import type { Node } from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,15 +10,15 @@ import {
 import SliderThumb from '../../elements/inputs/SliderThumb';
 import ClearPresetModal from '../../elements/modals/ClearPresetModal';
 import Alert from '../../elements/misc/Alert';
-import { PortalContext } from '../../../context';
 import useLocale from '../../../locales';
 import { selectors as staticSelectors } from '../../../store/staticStore';
 import { actions as globalActions, selectors as globalSelectors } from '../../../store/globalStore';
 import { actions as beatActions, selectors as beatSelectors } from '../../../store/beatsStore';
 import { isBeatEmpty } from '../../../utils';
+import { useTeleport } from '../../../utils/hooks';
 import { stopBeat } from '../../../sound';
-import bottomStyle from '../../../styles/bottom_style';
-import styles from '../../../styles/styles';
+import bottomStyle from '../../../styles/bottom';
+import styles from '../../../styles';
 import colors from '../../../styles/colors';
 import type { Beats } from '../../../sound/beats';
 import type { State as StaticState } from '../../../store/staticStore';
@@ -26,7 +26,7 @@ import type { Preset, State as GlobalState } from '../../../store/globalStore';
 
 function Bottom(): Node {
   const { t } = useLocale();
-  const { teleport } = useContext(PortalContext);
+  const { teleport } = useTeleport();
   const dispatch = useDispatch();
   const staticState: StaticState = useSelector(staticSelectors.getStatic, isEqual);
   const beats: Beats = useSelector(beatSelectors.getBeats, isEqual);

@@ -4,7 +4,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { BLOCKS, INLINES, MARKS } from '@contentful/rich-text-types';
 import Hr from '../components/elements/misc/Hr';
-import announcementStyle from '../styles/announcement_style';
+import announcementStyle from '../styles/announcement';
 import colors from '../styles/colors';
 
 const contentfulToReactNative = (): any => ({

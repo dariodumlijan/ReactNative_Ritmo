@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { Node } from 'react';
 import {
   Keyboard, Modal, Text, TextInput, TouchableOpacity, View,
@@ -7,11 +7,11 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
 import useLocale from '../../../locales';
-import { PortalContext } from '../../../context';
 import { selectors as staticSelectors } from '../../../store/staticStore';
 import { actions, selectors as globalSelectors } from '../../../store/globalStore';
 import { selectors as beatSelectors } from '../../../store/beatsStore';
-import styles from '../../../styles/styles';
+import { useTeleport } from '../../../utils/hooks';
+import styles from '../../../styles';
 import colors from '../../../styles/colors';
 import type { State as StaticState } from '../../../store/staticStore';
 import type { UI } from '../../../store/globalStore';
@@ -19,7 +19,7 @@ import type { Beats } from '../../../sound/beats';
 
 function ExportMidiModal(): Node {
   const { t } = useLocale();
-  const { close } = useContext(PortalContext);
+  const { close } = useTeleport();
   const dispatch = useDispatch();
   const staticState: StaticState = useSelector(staticSelectors.getStatic, isEqual);
   const globalUI: UI = useSelector(globalSelectors.getUI, isEqual);

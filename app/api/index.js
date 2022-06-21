@@ -9,7 +9,8 @@ import {
   VALID_PRODUCTION_QUERY,
   VALID_STAGING_QUERY,
 } from './cms.querys';
-import { isRealDevice, useLocalStorage } from '../utils';
+import { isRealDevice } from '../utils';
+import { getItem } from '../utils/hooks';
 import ENV from '../../env.json';
 
 export type InitialCMSResponse = {
@@ -40,10 +41,8 @@ export const fetchData = async (query: string): Promise<any> => {
 };
 
 export const fetchLocalTimestamps = async (): Promise<{ announcement: any, local: any }> => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const localStorage = useLocalStorage();
-  const contentTimestamps = await localStorage.getItem(localStorageKeys.contentTimestamps);
-  const announcementTimestamp = await localStorage.getItem(localStorageKeys.announcementTimestamp);
+  const contentTimestamps = await getItem(localStorageKeys.contentTimestamps);
+  const announcementTimestamp = await getItem(localStorageKeys.announcementTimestamp);
 
   const local = contentTimestamps ? JSON.parse(contentTimestamps) : appKeys.noLocalData;
   const announcement = announcementTimestamp
@@ -87,7 +86,7 @@ export const fetchCMS = async (): Promise<InitialCMSResponse> => {
   let dataResponse = {};
   if (hasLocalData && (timestampsAreEqual || !hasOnlineData)) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const response = await useLocalStorage().getItem(localStorageKeys.appContent);
+    const response = await getItem(localStorageKeys.appContent);
 
     dataResponse = {
       data: JSON.parse(response),

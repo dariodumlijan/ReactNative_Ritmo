@@ -19,9 +19,9 @@ import SliderThumb from '../elements/inputs/SliderThumb';
 import MidiFile from '../../assets/img/midiFile.png';
 import MidiFileLogic from '../../assets/img/midiFile_Logic.png';
 import useLocale from '../../locales';
-import styles from '../../styles/styles';
-import guideStyle from '../../styles/guide_style';
-import bottomStyle from '../../styles/bottom_style';
+import guideStyle from '../../styles/guide';
+import bottomStyle from '../../styles/bottom';
+import styles from '../../styles';
 import colors from '../../styles/colors';
 import type { ReduxState } from '../../types';
 

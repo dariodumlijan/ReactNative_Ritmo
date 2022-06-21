@@ -4,7 +4,7 @@ import type { Node } from 'react';
 import { SafeAreaView, Text } from 'react-native';
 import { Link } from 'react-router-native';
 import Svg, { Path } from 'react-native-svg';
-import styles from '../../styles/styles';
+import styles from '../../styles';
 import colors from '../../styles/colors';
 
 const Library = (): Node => (

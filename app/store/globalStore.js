@@ -7,7 +7,7 @@ import * as LocalStorage from '../utils/localStorage';
 import { types as cmsTypes } from './cmsStore';
 import * as MIDI from '../midi';
 import { types as beatTypes } from './beatsStore';
-import useSelectLists from '../utils/lists';
+import { getSamples } from '../utils/lists';
 import type { Beats } from '../sound/beats';
 import type { BuildMidi, BuildPromise } from '../midi';
 import type { Sample } from '../utils/lists';
@@ -84,8 +84,7 @@ export const selectors = {
   getUI: (state: ReduxState): UI => state.global.ui,
   getUnlockedSamples: (state: ReduxState): string[] => state.global.unlockedSamples,
   getUnlockableSamples: (state: ReduxState): Sample[] => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { samples } = useSelectLists();
+    const samples = getSamples();
 
     return reject(samples, (sample: Sample) => isSampleUnlocked(state.global.unlockedSamples, sample));
   },
@@ -148,8 +147,7 @@ const unlockReward = (state: State, key: string): State => merge({}, state, {
 });
 
 const checkUnlockedRewards = (state: State, payload: InitialCMSResponse): State => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { samples } = useSelectLists();
+  const samples = getSamples();
   const displayAds = isRealDevice
     ? get(payload.data, 'master.ads', true)
     : get(payload.data, 'master.adsStaging', true);
@@ -170,8 +168,7 @@ const rotateBeat = (
 ): State => merge({}, state, { sliders: { [payload.key]: payload.degree } });
 
 const resetBeat = (state: State): State => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { samples } = useSelectLists();
+  const samples = getSamples();
 
   return merge({}, state, {
     ui: {

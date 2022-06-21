@@ -3,7 +3,7 @@ import React from 'react';
 import type { Node } from 'react';
 import { Text, View } from 'react-native';
 import useLocale from '../../../locales';
-import bottomStyle from '../../../styles/bottom_style';
+import bottomStyle from '../../../styles/bottom';
 import colors from '../../../styles/colors';
 
 type Props = {

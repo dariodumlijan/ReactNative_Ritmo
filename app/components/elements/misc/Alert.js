@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { Node } from 'react';
 import { Animated } from 'react-native';
-import { PortalContext } from '../../../context';
-import styles from '../../../styles/styles';
+import { useTeleport } from '../../../utils/hooks';
+import styles from '../../../styles';
 
 type Props = {
   children: Node,
@@ -10,7 +10,7 @@ type Props = {
 };
 
 function Alert(props: Props): Node {
-  const { close } = useContext(PortalContext);
+  const { close } = useTeleport();
   const fadeAlert = useState(new Animated.Value(0))[0];
 
   useEffect(() => {

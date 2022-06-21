@@ -1,10 +1,10 @@
 // @flow
 import { StyleSheet } from 'react-native';
 import colors from './colors';
-import { isApple } from '../utils';
+import { deviceWidth } from '../utils';
 
 type Style = {
-  wrapper: Object,
+  background: Object,
   nav: Object,
   top: Object,
   tagline: Object,
@@ -17,31 +17,26 @@ type Style = {
 };
 
 const navigationStyle: Style = StyleSheet.create({
-  wrapper: {
-    alignItems: 'center',
-    display: 'flex',
-    height: '100%',
-    justifyContent: 'flex-start',
-    left: 0,
-    position: 'absolute',
-    top: 0,
-    width: '100%',
-    zIndex: 99,
-  },
-  nav: {
+  background: {
+    alignItems: 'flex-start',
     backgroundColor: colors.primaryTransparent,
-    borderBottomLeftRadius: 200,
     borderColor: colors.grayBlue,
+    borderRadius: deviceWidth,
     borderWidth: 2,
     display: 'flex',
-    left: 0,
-    marginTop: -2,
-    paddingBottom: 20,
+    height: deviceWidth * 2,
+    justifyContent: 'flex-end',
+    transform: [
+      { translateY: -deviceWidth },
+    ],
+    width: deviceWidth * 2,
+  },
+  nav: {
+    display: 'flex',
+    flexShrink: 1,
+    marginBottom: 50,
     paddingHorizontal: '5%',
-    paddingTop: isApple ? 75 : 20,
-    position: 'absolute',
-    top: 0,
-    width: '100%',
+    width: deviceWidth,
   },
   top: {
     alignItems: 'flex-start',
@@ -73,27 +68,27 @@ const navigationStyle: Style = StyleSheet.create({
     width: '100%',
   },
   link: {
-    width: '50%',
     marginLeft: '50%',
+    width: '50%',
   },
   button: {
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    alignItems: 'center',
-    width: '100%',
     marginVertical: 16,
+    width: '100%',
   },
   icon: {
-    height: 24,
     aspectRatio: 1 / 1,
+    height: 24,
     marginLeft: 10,
   },
   label: {
+    color: colors.grayLight,
     fontFamily: 'Montserrat-SemiBold',
     fontSize: 18,
     textAlign: 'left',
-    color: colors.grayLight,
   },
 });
 
