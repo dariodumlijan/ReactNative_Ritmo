@@ -25,7 +25,7 @@ import {
 import { useTeleport } from '../../../utils/hooks';
 import circleStyle from '../../../styles/circle';
 import { checkboxStyle } from '../../../styles/inputs';
-import styles from '../../../styles';
+import notificationsStyle from '../../../styles/notifications';
 import colors from '../../../styles/colors';
 import type { UI } from '../../../store/globalStore';
 import type { Beat, Beats } from '../../../sound/beats';
@@ -96,7 +96,7 @@ function Circle(): Node {
     if (isBeatEmpty(beats)) {
       teleport(
         <Alert clearDelayMS={3300}>
-          <Text style={styles.alertText}>{t('alert.no_beat')}</Text>
+          <Text style={notificationsStyle.alertText}>{t('alert.no_beat')}</Text>
         </Alert>,
       );
 

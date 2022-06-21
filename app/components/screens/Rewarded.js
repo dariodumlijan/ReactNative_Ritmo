@@ -26,7 +26,7 @@ const Rewarded = (): Node => {
   const [selectedReward, setSelectedReward] = useState(get(unlockableSamples, [0], null));
   const [openSelect, setOpenSelect] = useState(false);
   const [loadRewarded, setLoadRewarded] = useState(false);
-  const [countdownStart, setCountdownStart] = useState(false);
+  const [isInCountdown, setIsInCountdown] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
   // /* Register Reward Variables */
@@ -267,10 +267,12 @@ const Rewarded = (): Node => {
         <Exit fill={!loadRewarded ? colors.gray : colors.grayBlue} />
       </Link>
 
-      <View style={styles.countdownCon}>
-        {countdownStart && (<Text style={styles.countdownTimer}>12:00:00</Text>)}
-        <Text style={styles.countdownTxt}>{t('rewarded.countdown')}</Text>
-      </View>
+      {isInCountdown && (
+        <View style={styles.countdownCon}>
+          <Text style={styles.countdownTimer}>12:00:00</Text>
+          <Text style={styles.countdownTxt}>{t('rewarded.countdown')}</Text>
+        </View>
+      )}
 
       <View style={styles.rewardedCon}>
         {refresh ? (

@@ -97,7 +97,13 @@ export const useAdmobIds = (adIds: Object): Object => {
   };
 };
 
-export const useLocationInfo = (): Object => {
+export const useLocationInfo = (): {
+  current: string,
+  isHome: boolean,
+  isRewarded: boolean,
+  isSettings: boolean,
+  isGuide: boolean,
+} => {
   const location = useLocation();
   const pathHome = location.pathname === '/';
   const pathRewarded = location.pathname === '/rewarded';

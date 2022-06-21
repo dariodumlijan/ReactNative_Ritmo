@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import type { Node } from 'react';
 import { Animated } from 'react-native';
 import { useTeleport } from '../../../utils/hooks';
-import styles from '../../../styles';
+import notificationsStyle from '../../../styles/notifications';
 
 type Props = {
   children: Node,
@@ -36,7 +36,7 @@ function Alert(props: Props): Node {
   }, [props.children]);
 
   return (
-    <Animated.View style={[styles.alertWrapper, { opacity: fadeAlert }]}>
+    <Animated.View style={[notificationsStyle.alertWrapper, { opacity: fadeAlert }]}>
       {props.children}
     </Animated.View>
   );

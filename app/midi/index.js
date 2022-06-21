@@ -188,14 +188,14 @@ export const exportMIDI = async ({
   RNFS.writeFile(fileUri, write, 'base64');
 
   /* Start Share */
-  await Share.open({
+  const sharedPayload = await Share.open({
     type: 'audio/midi audio/x-midi',
     filename: encodeURI(fileName),
     url: 'file://' + fileUri,
     failOnCancel: true,
-  });
+  }).then(() => ({ fileUri })).catch(() => ({ fileUri }));
 
-  return { fileUri };
+  return sharedPayload;
 };
 
 export const deleteMIDIFile = (fileUri: string) => {

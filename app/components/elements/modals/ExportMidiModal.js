@@ -46,17 +46,11 @@ function ExportMidiModal(): Node {
   };
 
   useEffect(() => {
-    const clean = () => {
-      Keyboard.dismiss();
-      if (globalUI.fileUri) {
-        dispatch(actions.deleteMIDIFile(globalUI.fileUri));
-        close();
-      }
-    };
-
-    clean();
-
-    return () => clean();
+    Keyboard.dismiss();
+    if (globalUI.fileUri) {
+      dispatch(actions.deleteMIDIFile(globalUI.fileUri));
+      close();
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalUI.fileUri]);
 

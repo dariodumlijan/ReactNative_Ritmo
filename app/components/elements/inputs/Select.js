@@ -7,7 +7,8 @@ import {
 import { map } from 'lodash';
 import Arrow from '../../../assets/icons/Arrow';
 import { isSampleUnlocked } from '../../../utils';
-import styles from '../../../styles';
+import { useLocationInfo } from '../../../utils/hooks';
+import { selectStyle } from '../../../styles/inputs';
 
 type Option = {
   label: string,
@@ -24,28 +25,30 @@ type Props = {
 };
 
 function Select(props: Props): Node {
+  const locationInfo = useLocationInfo();
+
   return (
     <>
-      <View style={styles.selectWrapper}>
+      <View style={locationInfo.isRewarded ? selectStyle.inputWrapper : selectStyle.inputWrapper}>
         {props.title && (
-          <Text style={styles.menuTitle}>{props.title}</Text>
+          <Text style={selectStyle.label}>{props.title}</Text>
         )}
         <TouchableOpacity
           disabled={props.isOpen}
           activeOpacity={0.6}
-          style={styles.selectInput}
+          style={selectStyle.input}
           onPress={() => props.onOpen()}
         >
-          <Text style={styles.selectInputText}>{props.value}</Text>
-          <Arrow style={styles.selectListArrow} />
+          <Text style={selectStyle.inputText}>{props.value}</Text>
+          <Arrow style={selectStyle.inputIcon} />
         </TouchableOpacity>
       </View>
 
       <Modal animationType="fade" transparent visible={props.isOpen}>
-        <View style={styles.selectListWrapper}>
+        <View style={selectStyle.listWrapper}>
           <ScrollView
             showsVerticalScrollIndicator={false}
-            style={styles.selectList}
+            style={selectStyle.list}
             centerContent
           >
             {map(props.options, (option: Option&Object, key: number) => (
@@ -53,12 +56,12 @@ function Select(props: Props): Node {
                 key={key}
                 activeOpacity={0.6}
                 style={
-                key === props.options.length - 1 ? styles.selectItemNoBorder : styles.selectItem
+                key === props.options.length - 1 ? selectStyle.listItemNoBorder : selectStyle.listItem
               }
                 disabled={props.compareSamples ? !isSampleUnlocked(props.compareSamples, option) : false}
                 onPress={() => props.onSelect(option)}
               >
-                <Text style={props.compareSamples && !isSampleUnlocked(props.compareSamples, option) ? styles.selectDisabledText : styles.selectText}>
+                <Text style={props.compareSamples && !isSampleUnlocked(props.compareSamples, option) ? selectStyle.listDisabledText : selectStyle.listText}>
                   {option.label}
                 </Text>
               </TouchableOpacity>

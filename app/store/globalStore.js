@@ -1,6 +1,6 @@
 // @flow
 import {
-  merge, get, keys, reject,
+  merge, get, keys, reject, omit,
 } from 'lodash';
 import { isRealDevice, isSampleUnlocked } from '../utils';
 import * as LocalStorage from '../utils/localStorage';
@@ -255,12 +255,11 @@ export const reducer = (state: State, action: ReduxActionWithPayload): State => 
       return merge({}, state, { ui: { isPlaying: false } });
 
     case types.GB_EXPORT_MIDI_FULFILLED:
+    case types.GB_EXPORT_MIDI_REJECTED:
       return exportMIDI(state, action.payload);
 
-    case types.GB_EXPORT_MIDI_REJECTED:
-      actions.deleteMIDIFile(action.payload.fileUri);
-
-      return state;
+    case types.GB_DELETE_MIDI_FILE:
+      return omit(state, 'ui.fileUri');
 
     case types.GB_SHOW_BANNER:
     case types.GB_TOGGLE_NAVIGATION:

@@ -18,7 +18,7 @@ import { isBeatEmpty } from '../../../utils';
 import { useTeleport } from '../../../utils/hooks';
 import { stopBeat } from '../../../sound';
 import bottomStyle from '../../../styles/bottom';
-import styles from '../../../styles';
+import notificationsStyle from '../../../styles/notifications';
 import colors from '../../../styles/colors';
 import type { Beats } from '../../../sound/beats';
 import type { State as StaticState } from '../../../store/staticStore';
@@ -54,7 +54,7 @@ function Bottom(): Node {
     } else {
       teleport(
         <Alert clearDelayMS={3300}>
-          <Text style={styles.alertText}>
+          <Text style={notificationsStyle.alertText}>
             {t('alert.no_beat')}
           </Text>
         </Alert>,
@@ -66,7 +66,7 @@ function Bottom(): Node {
     if (!global.presets || isEmpty(global.presets[key])) {
       teleport(
         <Alert clearDelayMS={3300}>
-          <Text style={styles.alertText}>
+          <Text style={notificationsStyle.alertText}>
             {t('alert.no_preset')}
           </Text>
         </Alert>,
