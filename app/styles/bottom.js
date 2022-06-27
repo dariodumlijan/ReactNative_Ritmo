@@ -50,38 +50,6 @@ const bottomStyle: Object = StyleSheet.create({
     lineHeight: 16,
     textAlign: 'center',
   },
-  sliderWrapper: {
-    alignItems: 'center',
-    display: 'flex',
-    flexGrow: 1,
-    justifyContent: 'space-between',
-    marginHorizontal: !isTablet ? '5%' : '10%',
-    marginVertical: '5%',
-    width: !isTablet ? '90%' : '80%',
-  },
-  sliderContainer: {
-    flexShrink: 1,
-    width: '100%',
-  },
-  sliderTrack: {
-    borderRadius: 2,
-    height: 4,
-    width: '100%',
-  },
-  sliderThumb: {
-    alignItems: 'center',
-    borderRadius: 30,
-    display: 'flex',
-    height: 30,
-    justifyContent: 'center',
-    width: 70,
-  },
-  sliderThumbText: {
-    color: colors.primaryDark,
-    fontFamily: 'Montserrat-SemiBold',
-    fontSize: 14,
-    lineHeight: 16,
-  },
   btnWrapper: {
     alignItems: 'center',
     display: 'flex',

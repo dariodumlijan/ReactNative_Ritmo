@@ -134,3 +134,46 @@ export const selectStyle: SelectStyle = StyleSheet.create({
     marginVertical: 10,
   },
 });
+
+type SliderStyle = {
+  wrapper: Object,
+  container: Object,
+  track: Object,
+  thumb: Object,
+  label: Object,
+}
+
+export const sliderStyle: SliderStyle = StyleSheet.create({
+  wrapper: {
+    alignItems: 'center',
+    display: 'flex',
+    flexGrow: 1,
+    justifyContent: 'space-between',
+    marginHorizontal: !isTablet ? '5%' : '10%',
+    marginVertical: '5%',
+    width: !isTablet ? '90%' : '80%',
+  },
+  container: {
+    flexShrink: 1,
+    width: '100%',
+  },
+  track: {
+    borderRadius: 2,
+    height: 4,
+    width: '100%',
+  },
+  thumb: {
+    alignItems: 'center',
+    borderRadius: 30,
+    display: 'flex',
+    height: 30,
+    justifyContent: 'center',
+    width: 70,
+  },
+  label: {
+    color: colors.primaryDark,
+    fontFamily: 'Montserrat-SemiBold',
+    fontSize: 14,
+    lineHeight: 16,
+  },
+});

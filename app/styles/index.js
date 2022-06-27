@@ -1,52 +1,9 @@
 // @flow
-import { StyleSheet, Platform } from 'react-native';
-import { isiPhone, isTablet } from '../utils';
+import { StyleSheet } from 'react-native';
+import { isTablet } from '../utils';
 import colors from './colors';
 
 const styles: Object = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginVertical: 0,
-    marginHorizontal: '5%',
-    backgroundColor: colors.primaryDark,
-  },
-  ads: {
-    position: 'absolute',
-    bottom: isiPhone ? '4.5%' : 0,
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    width: '100%',
-    height: '10%',
-    zIndex: 999,
-  },
-  adSpace: {
-    width: '100%',
-    height: Platform.OS === 'ios' ? '10%' : '14%',
-    backgroundColor: colors.black,
-  },
-  topWrapper: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    width: '100%',
-    height: '60%',
-    marginTop: Platform.isPad ? '2%' : '0',
-    // backgroundColor: colors.black,
-  },
-  bottomWrapper: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    width: '100%',
-    flex: 1,
-  },
-  screenMenuWrapper: {
-    flex: 1,
-    display: 'flex',
-    alignItems: 'center',
-    marginTop: isiPhone ? '15%' : '2%',
-  },
   navigationMenu: {
     display: 'flex',
     flexDirection: 'row',
@@ -179,13 +136,6 @@ const styles: Object = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     backgroundColor: colors.primaryDark,
-  },
-  exit: {
-    position: 'absolute',
-    top: '3%',
-    right: 0,
-    width: 30,
-    aspectRatio: 1 / 1,
   },
   countdownCon: {
     marginTop: '2%',

@@ -22,6 +22,8 @@ import useLocale from '../../locales';
 import guideStyle from '../../styles/guide';
 import bottomStyle from '../../styles/bottom';
 import styles from '../../styles';
+import mainStyle from '../../styles/main';
+import { sliderStyle } from '../../styles/inputs';
 import colors from '../../styles/colors';
 import type { ReduxState } from '../../types';
 
@@ -38,7 +40,7 @@ export const Guide = (): Node => {
 
   return (
     <SafeAreaView style={guideStyle.wrapper}>
-      <Link to="/" style={styles.exit} underlayColor={null}>
+      <Link to="/" style={mainStyle.exit} underlayColor={null}>
         <Svg height="100%" width="100%" viewBox="0 0 352 352">
           <Path
             fill={colors.primaryDark}
@@ -96,8 +98,8 @@ export const Guide = (): Node => {
           step={config.sliderStep}
           minimumTrackTintColor={colors.grayLight}
           maximumTrackTintColor={colors.grayLight}
-          containerStyle={[styles.sliderContainer, { marginVertical: 10 }]}
-          trackStyle={styles.sliderTrack}
+          containerStyle={[sliderStyle.container, { marginVertical: 10 }]}
+          trackStyle={sliderStyle.track}
           renderThumbComponent={() => <SliderThumb label={t('hihat')} color={colors.orange} />}
           thumbTouchSize={{ width: 65, height: 25 }}
           onValueChange={(val) => setSlider(val)}
@@ -266,7 +268,7 @@ export const Guide = (): Node => {
           {t('guide.section_5.email')}
         </Text>
       </ScrollView>
-      <View style={styles.adSpace} />
+      <View style={mainStyle.adSpace} />
     </SafeAreaView>
   );
 };

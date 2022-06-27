@@ -8,6 +8,7 @@ import Bottom from '../blocks/bottom/Bottom';
 import Logo from '../../assets/icons/Logo';
 import Menu from '../../assets/icons/Menu';
 import { actions } from '../../store/globalStore';
+import mainStyle from '../../styles/main';
 import homeStyle from '../../styles/home';
 import styles from '../../styles';
 import colors from '../../styles/colors';
@@ -33,7 +34,7 @@ function Home(): Node {
         </View>
       </View>
       <Bottom />
-      <View style={styles.adSpace} />
+      <View style={mainStyle.adSpace} />
     </SafeAreaView>
   );
 }

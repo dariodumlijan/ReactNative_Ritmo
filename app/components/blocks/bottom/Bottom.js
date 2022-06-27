@@ -19,6 +19,7 @@ import { useTeleport } from '../../../utils/hooks';
 import { stopBeat } from '../../../sound';
 import bottomStyle from '../../../styles/bottom';
 import notificationsStyle from '../../../styles/notifications';
+import { sliderStyle } from '../../../styles/inputs';
 import colors from '../../../styles/colors';
 import type { Beats } from '../../../sound/beats';
 import type { State as StaticState } from '../../../store/staticStore';
@@ -195,7 +196,7 @@ function Bottom(): Node {
             </TouchableHighlight>
           ))}
         </View>
-        <View style={bottomStyle.sliderWrapper}>
+        <View style={sliderStyle.wrapper}>
           {map(global.sliders, (val: number, key: string) => (
             <Slider
               key={key}
@@ -205,8 +206,8 @@ function Bottom(): Node {
               step={staticState.sliderStep}
               minimumTrackTintColor={colors.grayLight}
               maximumTrackTintColor={colors.grayLight}
-              containerStyle={bottomStyle.sliderContainer}
-              trackStyle={bottomStyle.sliderTrack}
+              containerStyle={sliderStyle.container}
+              trackStyle={sliderStyle.track}
               renderThumbComponent={() => <SliderThumb label={key} />}
               thumbTouchSize={{ width: 65, height: 25 }}
               onValueChange={(targetVal) => handleSliderChange(first(targetVal), key)}

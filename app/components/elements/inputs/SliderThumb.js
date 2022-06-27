@@ -3,7 +3,7 @@ import React from 'react';
 import type { Node } from 'react';
 import { Text, View } from 'react-native';
 import useLocale from '../../../locales';
-import bottomStyle from '../../../styles/bottom';
+import { sliderStyle } from '../../../styles/inputs';
 import colors from '../../../styles/colors';
 
 type Props = {
@@ -22,8 +22,8 @@ function SliderThumb(props: Props): Node {
   };
 
   return (
-    <View style={[bottomStyle.sliderThumb, { backgroundColor: handleColor() }]}>
-      <Text style={bottomStyle.sliderThumbText}>{t(`bottom.slider.${props.label}`)}</Text>
+    <View style={[sliderStyle.thumb, { backgroundColor: handleColor() }]}>
+      <Text style={sliderStyle.label}>{t(`bottom.slider.${props.label}`)}</Text>
     </View>
   );
 }

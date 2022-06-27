@@ -1,9 +1,21 @@
 // @flow
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { isApple, isiPhone } from '../utils';
 import colors from './colors';
 
-const mainStyle: Object = StyleSheet.create({
+type MainStyles ={
+  container: Object,
+  safe: Object,
+  scrollContainer: Object,
+  alert: Object,
+  alertText: Object,
+  exit: Object,
+  exitDisabled: Object,
+  ads: Object,
+  adSpace: Object,
+}
+
+const mainStyle: MainStyles = StyleSheet.create({
   container: {
     backgroundColor: colors.white,
     flex: 1,
@@ -69,6 +81,11 @@ const mainStyle: Object = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     zIndex: 999,
+  },
+  adSpace: {
+    width: '100%',
+    height: Platform.OS === 'ios' ? '10%' : '14%',
+    backgroundColor: colors.black,
   },
 });
 

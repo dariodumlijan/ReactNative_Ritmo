@@ -222,7 +222,7 @@ const Settings = (): Node => {
           </Link>
         </View>
 
-        <View style={styles.adSpace} />
+        <View style={mainStyle.adSpace} />
       </SafeAreaView>
     </DismissKeyboard>
   );
