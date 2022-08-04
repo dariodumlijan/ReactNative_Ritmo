@@ -10,7 +10,6 @@ import Menu from '../../assets/icons/Menu';
 import { actions } from '../../store/globalStore';
 import mainStyle from '../../styles/main';
 import homeStyle from '../../styles/home';
-import styles from '../../styles';
 import colors from '../../styles/colors';
 
 function Home(): Node {
@@ -25,9 +24,9 @@ function Home(): Node {
       <View style={homeStyle.topWrapper}>
         <View style={homeStyle.topWrapperBG}>
           <View style={homeStyle.navigation}>
-            <Logo style={styles.logo} fill={colors.gray} />
+            <Logo style={homeStyle.logo} fill={colors.gray} />
             <TouchableOpacity activeOpacity={0.8} onPress={handleOpenNav}>
-              <Menu style={styles.menu} />
+              <Menu style={homeStyle.menu} />
             </TouchableOpacity>
           </View>
           <Circle />

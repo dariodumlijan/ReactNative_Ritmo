@@ -26,6 +26,7 @@ export type UI = {
   isRecording: boolean,
   navigationOpen: boolean,
   showBanner: boolean,
+  personalisedAds: boolean,
   useBPM: number,
   useSample: Sample,
   useTimeSig: string,
@@ -47,6 +48,7 @@ export type State = {
 };
 
 export const types = {
+  GB_SHOW_PERSONALISED_ADS: 'GB/SHOW_PERSONALISED_ADS',
   GB_SHOW_BANNER: 'GB/SHOW_BANNER',
   GB_UNLOCK_REWARD: 'GB/UNLOCK_REWARD',
   GB_TOGGLE_NAVIGATION: 'GB/TOGGLE_NAVIGATION',
@@ -91,6 +93,10 @@ export const selectors = {
 };
 
 export const actions = {
+  showPersonalisedAds: (bool: boolean): ReduxAction => ({
+    type: types.GB_SHOW_PERSONALISED_ADS,
+    payload: { personalisedAds: bool },
+  }),
   showBanner: (bool: boolean): ReduxAction => ({
     type: types.GB_SHOW_BANNER,
     payload: { showBanner: bool },
@@ -261,6 +267,7 @@ export const reducer = (state: State, action: ReduxActionWithPayload): State => 
     case types.GB_DELETE_MIDI_FILE:
       return omit(state, 'ui.fileUri');
 
+    case types.GB_SHOW_PERSONALISED_ADS:
     case types.GB_SHOW_BANNER:
     case types.GB_TOGGLE_NAVIGATION:
     case types.GB_UPDATE_BPM:

@@ -11,7 +11,7 @@ import { selectors as staticSelectors } from '../../../store/staticStore';
 import { actions, selectors as globalSelectors } from '../../../store/globalStore';
 import { selectors as beatSelectors } from '../../../store/beatsStore';
 import { useTeleport } from '../../../utils/hooks';
-import styles from '../../../styles';
+import modalsStyle from '../../../styles/modals';
 import colors from '../../../styles/colors';
 import type { State as StaticState } from '../../../store/staticStore';
 import type { UI } from '../../../store/globalStore';
@@ -56,10 +56,10 @@ function ExportMidiModal(): Node {
 
   return (
     <Modal animationType="fade" transparent>
-      <View style={styles.modalView}>
-        <Text style={styles.modalTxt}>{t('modal.midi.label')}</Text>
+      <View style={modalsStyle.modalView}>
+        <Text style={modalsStyle.modalTxt}>{t('modal.midi.label')}</Text>
         <TextInput
-          style={styles.inputMidi}
+          style={modalsStyle.inputMidi}
           onChangeText={(val) => nameMidiFile(val)}
           onSubmitEditing={() => nameMidiFile(fileName)}
           value={fileName}
@@ -69,20 +69,20 @@ function ExportMidiModal(): Node {
           multiline={false}
         />
 
-        <View style={styles.modalBtnCont}>
+        <View style={modalsStyle.modalBtnCont}>
           <TouchableOpacity
-            style={styles.modalBtn}
+            style={modalsStyle.modalBtn}
             activeOpacity={0.8}
             onPress={handleExportMIDI}
           >
-            <Text style={styles.modalBtnTxt}>{t('modal.midi.save')}</Text>
+            <Text style={modalsStyle.modalBtnTxt}>{t('modal.midi.save')}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.modalBtn}
+            style={modalsStyle.modalBtn}
             activeOpacity={0.8}
             onPress={() => close()}
           >
-            <Text style={styles.modalBtnTxt}>{t('modal.midi.cancel')}</Text>
+            <Text style={modalsStyle.modalBtnTxt}>{t('modal.midi.cancel')}</Text>
           </TouchableOpacity>
         </View>
       </View>

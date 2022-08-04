@@ -3,8 +3,7 @@ import { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import InAppReview from 'react-native-in-app-review';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { localStorageKeys, admob } from '../tokens';
-import { isApple, isRealDevice } from '.';
+import { localStorageKeys } from '../tokens';
 import { PortalContext } from '../context';
 import type { PortalProps } from '../context';
 
@@ -62,39 +61,6 @@ export const useReview = (unlocked: boolean, reviewDelay: Date) => {
       }
     }
   }
-};
-
-export const useAdmobIds = (adIds: Object): Object => {
-  let adId = null;
-
-  const getBannerID = () => {
-    if (!adIds) return null;
-
-    if (isApple) {
-      adId = isRealDevice ? adIds.banner.ios : admob.banner.ios_test;
-    } else {
-      adId = isRealDevice ? adIds.banner.android : admob.banner.android_test;
-    }
-
-    return adId;
-  };
-
-  const getRewardedID = () => {
-    if (!adIds) return null;
-
-    if (isApple) {
-      adId = isRealDevice ? adIds.rewarded.ios : admob.rewarded.ios_test;
-    } else {
-      adId = isRealDevice ? adIds.rewarded.android : admob.rewarded.android_test;
-    }
-
-    return adId;
-  };
-
-  return {
-    banner: getBannerID(),
-    rewarded: getRewardedID(),
-  };
 };
 
 export const useLocationInfo = (): {

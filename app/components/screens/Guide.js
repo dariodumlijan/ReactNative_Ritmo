@@ -14,15 +14,15 @@ import { Slider } from '@miblanchard/react-native-slider';
 import { Link } from 'react-router-native';
 import { useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
-import Svg, { Path } from 'react-native-svg';
 import SliderThumb from '../elements/inputs/SliderThumb';
+import Exit from '../../assets/icons/Exit';
+import useLocale from '../../locales';
 import MidiFile from '../../assets/img/midiFile.png';
 import MidiFileLogic from '../../assets/img/midiFile_Logic.png';
-import useLocale from '../../locales';
 import guideStyle from '../../styles/guide';
 import bottomStyle from '../../styles/bottom';
-import styles from '../../styles';
 import mainStyle from '../../styles/main';
+import modalsStyle from '../../styles/modals';
 import { sliderStyle } from '../../styles/inputs';
 import colors from '../../styles/colors';
 import type { ReduxState } from '../../types';
@@ -39,14 +39,9 @@ export const Guide = (): Node => {
   const [slider, setSlider] = useState(15);
 
   return (
-    <SafeAreaView style={guideStyle.wrapper}>
+    <SafeAreaView style={mainStyle.safe}>
       <Link to="/" style={mainStyle.exit} underlayColor={null}>
-        <Svg height="100%" width="100%" viewBox="0 0 352 352">
-          <Path
-            fill={colors.primaryDark}
-            d="M242.7,176L342.8,75.9c12.3-12.3,12.3-32.2,0-44.5L320.6,9.2c-12.3-12.3-32.2-12.3-44.5,0L176,109.3L75.9,9.2 C63.7-3.1,43.7-3.1,31.5,9.2L9.2,31.4c-12.3,12.3-12.3,32.2,0,44.5L109.3,176L9.2,276.1c-12.3,12.3-12.3,32.2,0,44.5l22.2,22.2 c12.3,12.3,32.2,12.3,44.5,0L176,242.7l100.1,100.1c12.3,12.3,32.2,12.3,44.5,0l22.2-22.2c12.3-12.3,12.3-32.2,0-44.5L242.7,176z"
-          />
-        </Svg>
+        <Exit fill={colors.primaryDark} />
       </Link>
 
       <ScrollView style={guideStyle.guideScroll}>
@@ -160,7 +155,11 @@ export const Guide = (): Node => {
               underlayColor={colors.grayBlue}
               style={{
                 ...bottomStyle.presetBtn,
-                ...{ paddingVertical: 8, width: '100%' },
+                ...{
+                  paddingVertical: 8,
+                  height: 35,
+                  width: '100%',
+                },
                 ...(beat1 && {
                   borderColor: colors.gray,
                   backgroundColor: colors.bg,
@@ -188,7 +187,11 @@ export const Guide = (): Node => {
               underlayColor={colors.grayBlue}
               style={{
                 ...bottomStyle.presetBtn,
-                ...{ paddingVertical: 8, width: '100%' },
+                ...{
+                  paddingVertical: 8,
+                  height: 35,
+                  width: '100%',
+                },
                 ...(beat2 && {
                   borderColor: colors.gray,
                   backgroundColor: colors.bg,
@@ -228,13 +231,13 @@ export const Guide = (): Node => {
           {t('guide.section_3.subsection_3.paragraph_2')}
         </Text>
         <View style={guideStyle.guideModalView}>
-          <Text style={styles.modalExp}>{t('guide.section_3.subsection_3.modal.text')}</Text>
-          <View style={styles.modalBtnCont}>
-            <TouchableOpacity activeOpacity={0.8} style={styles.modalBtn}>
-              <Text style={styles.modalBtnTxt}>{t('guide.section_3.subsection_3.modal.yes')}</Text>
+          <Text style={modalsStyle.modalExp}>{t('guide.section_3.subsection_3.modal.text')}</Text>
+          <View style={modalsStyle.modalBtnCont}>
+            <TouchableOpacity activeOpacity={0.8} style={modalsStyle.modalBtn}>
+              <Text style={modalsStyle.modalBtnTxt}>{t('guide.section_3.subsection_3.modal.yes')}</Text>
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.8} style={styles.modalBtn}>
-              <Text style={styles.modalBtnTxt}>{t('guide.section_3.subsection_3.modal.no')}</Text>
+            <TouchableOpacity activeOpacity={0.8} style={modalsStyle.modalBtn}>
+              <Text style={modalsStyle.modalBtnTxt}>{t('guide.section_3.subsection_3.modal.no')}</Text>
             </TouchableOpacity>
           </View>
         </View>

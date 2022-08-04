@@ -1,11 +1,22 @@
 // @flow
 import { StyleSheet } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
+import { isTablet } from '../utils';
 import colors from './colors';
 
-const isTablet = DeviceInfo.isTablet();
+type BottomStyle = {
+  wrapper: Object,
+  wrapperBG: Object,
+  presetWrapper: Object,
+  presetBtn: Object,
+  presetText: Object,
+  btnWrapper: Object,
+  btnPrimary: Object,
+  btnPrimaryText: Object,
+  btnRecording: Object,
+  iconRecording: Object,
+};
 
-const bottomStyle: Object = StyleSheet.create({
+const bottomStyle: BottomStyle = StyleSheet.create({
   wrapper: {
     alignItems: 'center',
     backgroundColor: colors.bg,
@@ -51,12 +62,12 @@ const bottomStyle: Object = StyleSheet.create({
     textAlign: 'center',
   },
   btnWrapper: {
+    // marginBottom: isiPhone ? 80 : 40,
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
     flexShrink: 1,
     justifyContent: 'flex-start',
-    // marginBottom: isiPhone ? 80 : 40,
     marginHorizontal: !isTablet ? '5%' : 0,
     width: !isTablet ? '90%' : '78%',
   },

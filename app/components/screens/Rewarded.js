@@ -1,5 +1,5 @@
 // @flow
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { Node } from 'react';
 import {
   ActivityIndicator,
@@ -8,26 +8,65 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Link } from 'react-router-native';
-import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { RewardedAd, RewardedAdEventType } from 'react-native-google-mobile-ads';
 import { get, isEqual } from 'lodash';
 import Select from '../elements/inputs/Select';
 import Exit from '../../assets/icons/Exit';
 import useLocale from '../../locales';
-import { selectors } from '../../store/globalStore';
-import mainStyles from '../../styles/main';
-import styles from '../../styles';
+import { actions, selectors } from '../../store/globalStore';
+import { selectors as selectorsCMS } from '../../store/cmsStore';
+import mainStyle from '../../styles/main';
+import rewardedStyle from '../../styles/rewarded';
 import colors from '../../styles/colors';
 import type { Sample } from '../../utils/lists';
+import type { ReduxState } from '../../types';
 
 const Rewarded = (): Node => {
   const { t } = useLocale();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const unlockableSamples = useSelector(selectors.getUnlockableSamples, isEqual);
+  const personalisedAds = useSelector((state: ReduxState) => state.global.ui.personalisedAds, isEqual);
+  const { rewarded } = useSelector(selectorsCMS.getAdmobIds, isEqual);
   const [selectedReward, setSelectedReward] = useState(get(unlockableSamples, [0], null));
   const [openSelect, setOpenSelect] = useState(false);
-  const [loadRewarded, setLoadRewarded] = useState(false);
+  const [adLoading, setAdLoading] = useState(false);
+  const [rewardEarned, setRewardEarned] = useState(false);
   const [isInCountdown, setIsInCountdown] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  const rewardedAd = RewardedAd.createForAdRequest(rewarded, {
+    requestNonPersonalizedAdsOnly: personalisedAds,
+    keywords: ['music'],
+  });
+
+  useEffect(() => {
+    const unsubscribeLoaded = rewardedAd.addAdEventListener(
+      RewardedAdEventType.LOADED, () => {
+        setAdLoading(false);
+        rewardedAd.show();
+      });
+
+    const unsubscribeEarned = rewardedAd.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD, (reward) => {
+        // console.log('User earned reward of ', reward);
+        dispatch(actions.unlockSample(selectedReward.label));
+        setRewardEarned(true);
+      },
+    );
+
+    return () => {
+      unsubscribeLoaded();
+      unsubscribeEarned();
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (rewardEarned) navigate('/settings');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rewardEarned]);
 
   // /* Register Reward Variables */
   // const rewardList = [];
@@ -170,46 +209,14 @@ const Rewarded = (): Node => {
   //   }
   // }
 
-  /* Register Admob Listeners - START */
-  /*
-  RewardedAd.addEventListener('rewardedVideoDidFailToLoad', () => {
-    resetRewarded();
-  });
-
-  RewardedAd.addEventListener('rewardedVideoDidFailToPresent', () => {
-    resetRewarded();
-  });
-
-  RewardedAd.addEventListener('rewardedVideoDidDismiss', () => {
-    resetRewarded();
-  });
-
-  RewardedAd.addEventListener('rewardedVideoUserDidEarnReward', () => {
-    if (!rewardDisabled) {
-      unlockSamples();
-    } else {
-      refreshCount();
-    }
-  });
-  */
-  /* Register Admob Listeners - END */
-
-  /* Request Ad Video - Function */
-  // async function requestReward() {
-  //   setLoadRewarded(true);
-
-  //   /*
-  //   await RewardedAd.setAdUnitID(
-  //     Platform.OS === 'ios' ? admob_ios.rewarded : admob_android.rewarded,
-  //   ); // Test ID, Replace with your-admob-unit-id
-  //   await RewardedAd.requestAdAsync();
-  //   await RewardedAd.showAdAsync();
-  //   */
-  // }
+  const requestReward = () => {
+    setAdLoading(true);
+    rewardedAd.load();
+  };
 
   /* Reset Rewarded Loading Animation - Function */
   // function resetRewarded() {
-  //   if (loadRewarded === true && rewardEarned === false) {
+  //   if (adLoading && !rewardEarned) {
   //     setTimeout(() => {
   //       setLoadRewarded(false);
   //     }, 10000);
@@ -257,30 +264,30 @@ const Rewarded = (): Node => {
   // }
 
   return (
-    <SafeAreaView style={mainStyles.safe}>
+    <SafeAreaView style={mainStyle.safe}>
       <Link
         to="/settings"
-        style={styles.exit}
+        style={mainStyle.exit}
         underlayColor={null}
-        disabled={loadRewarded || openSelect}
+        disabled={adLoading || openSelect}
       >
-        <Exit fill={!loadRewarded ? colors.gray : colors.grayBlue} />
+        <Exit fill={!adLoading ? colors.gray : colors.grayBlue} />
       </Link>
 
       {isInCountdown && (
-        <View style={styles.countdownCon}>
-          <Text style={styles.countdownTimer}>12:00:00</Text>
-          <Text style={styles.countdownTxt}>{t('rewarded.countdown')}</Text>
+        <View style={rewardedStyle.countdownWrapper}>
+          <Text style={rewardedStyle.countdownTimer}>12:00:00</Text>
+          <Text style={rewardedStyle.countdownTxt}>{t('rewarded.countdown')}</Text>
         </View>
       )}
 
-      <View style={styles.rewardedCon}>
+      <View style={rewardedStyle.rewardedCon}>
         {refresh ? (
-          <View style={styles.rewardedExp}>
-            <Text style={styles.rewardedExpText}>
+          <View style={rewardedStyle.rewardedExp}>
+            <Text style={rewardedStyle.rewardedExpText}>
               {t('rewarded.paragraph_3.text_1')}
             </Text>
-            <Text style={styles.rewardedExp2Text}>
+            <Text style={rewardedStyle.rewardedExp2Text}>
               {t('rewarded.paragraph_3.text_2')}
               <Text style={{ color: colors.orange }}>
                 {t('rewarded.paragraph_3.text_3')}
@@ -307,11 +314,11 @@ const Rewarded = (): Node => {
               onSelect={handleSelect}
             />
 
-            <View style={styles.rewardedExp}>
-              <Text style={styles.rewardedExpText}>
+            <View style={rewardedStyle.rewardedExp}>
+              <Text style={rewardedStyle.rewardedExpText}>
                 {t('rewarded.paragraph_1')}
               </Text>
-              <Text style={styles.rewardedExp2Text}>
+              <Text style={rewardedStyle.rewardedExp2Text}>
                 {t('rewarded.paragraph_2.text_1')}
                 <Text style={{ color: colors.orange }}>{t('rewarded.paragraph_2.text_2')}</Text>
                 {t('rewarded.paragraph_2.text_3')}<Text style={{ color: colors.orange }}>{t('rewarded.paragraph_2.text_4')}</Text>{t('rewarded.paragraph_2.text_5')}
@@ -321,17 +328,17 @@ const Rewarded = (): Node => {
         )}
         <TouchableOpacity
           activeOpacity={1}
-          style={loadRewarded ? styles.rewardedDisabled : styles.rewardedStart}
-          disabled={loadRewarded || openSelect}
-          // onPress={() => requestReward()}
+          style={adLoading ? rewardedStyle.rewardedDisabled : rewardedStyle.rewardedStart}
+          disabled={adLoading || openSelect}
+          onPress={requestReward}
         >
-          {loadRewarded ? (
+          {adLoading ? (
             <ActivityIndicator size="large" color={colors.grayLight} />
           ) : (
-            <Text style={styles.rewardedStartText}>{t('rewarded.cta')}</Text>
+            <Text style={rewardedStyle.rewardedStartText}>{t('rewarded.cta')}</Text>
           )}
         </TouchableOpacity>
-        <Text style={styles.rewardedDisc}>{t('rewarded.disclamer')}</Text>
+        <Text style={rewardedStyle.rewardedDisc}>{t('rewarded.disclamer')}</Text>
       </View>
     </SafeAreaView>
   );

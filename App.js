@@ -4,12 +4,13 @@ import SplashScreen from 'react-native-splash-screen';
 import Body from './app/components/Body';
 import PortalProvider from './app/components/blocks/portal/PortalProvider';
 import beats from './app/sound/beats';
-import useSelectLists from './app/utils/lists';
+import { t } from './app/locales';
+import { getSamples, getTimeSignatures } from './app/utils/lists';
 import { configureStore } from './app/store';
 import type { ReduxState } from './app/types';
 
-// eslint-disable-next-line react-hooks/rules-of-hooks
-const { samples, timeSignatures } = useSelectLists();
+const samples = getSamples();
+const timeSignatures = getTimeSignatures(t);
 const initialState: ReduxState = {
   static: {
     sliderMin: 0,
@@ -36,6 +37,7 @@ const initialState: ReduxState = {
       kick: 0,
     },
     ui: {
+      personalisedAds: true,
       showBanner: true,
       isPlaying: false,
       isRecording: false,

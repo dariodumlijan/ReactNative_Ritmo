@@ -1,9 +1,10 @@
 // @flow
 import { StyleSheet } from 'react-native';
 import colors from './colors';
-import { deviceWidth } from '../utils';
+import { deviceHeight, deviceWidth } from '../utils';
 
 type Style = {
+  overlay: Object,
   background: Object,
   nav: Object,
   top: Object,
@@ -17,6 +18,15 @@ type Style = {
 };
 
 const navigationStyle: Style = StyleSheet.create({
+  overlay: {
+    backgroundColor: colors.blackTransparent,
+    height: deviceHeight,
+    left: 0,
+    position: 'absolute',
+    top: 0,
+    width: deviceWidth,
+    zIndex: 1,
+  },
   background: {
     alignItems: 'flex-start',
     backgroundColor: colors.primaryTransparent,

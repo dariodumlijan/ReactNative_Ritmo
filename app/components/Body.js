@@ -4,11 +4,7 @@ import type { Node } from 'react';
 import { StatusBar, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { NativeRouter, Routes, Route } from 'react-router-native';
-// import {
-//   BannerAd,
-//   // requestPermissionsAsync,
-//   // getPermissionsAsync,
-// } from '@react-native-firebase/admob';
+import Admob, { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 import { getTrackingStatus, requestTrackingPermission } from 'react-native-tracking-transparency';
 import {
   get, isEqual, every, has,
@@ -22,22 +18,22 @@ import Announcement from './screens/Announcement';
 import Loading from './screens/Loading';
 import Navigation from './blocks/navigation/Navigation';
 import Backgrounds from './elements/backgrounds/Backgrounds';
-import { actions as cmsActions } from '../store/cmsStore';
+import { actions as cmsActions, selectors } from '../store/cmsStore';
 import { actions as globalActions } from '../store/globalStore';
 import { isRealDevice } from '../utils';
-import { useAdmobIds } from '../utils/hooks';
 import { appKeys } from '../tokens';
 import mainStyle from '../styles/main';
+import type { State as StateCMS } from '../store/cmsStore';
+import type { State as StateGlobal } from '../store/globalStore';
 
 function Body(): Node {
   const dispatch = useDispatch();
   const initLoad = useRef(true);
-  const cms = useSelector((state) => state.cms, isEqual);
-  const global = useSelector((state) => state.global, isEqual);
-  const admobId = useAdmobIds(get(cms, 'master.adIds', null)).banner;
+  const cms: StateCMS = useSelector(selectors.getCMS, isEqual);
+  const global: StateGlobal = useSelector((state) => state.global, isEqual);
+  const { banner } = useSelector(selectors.getAdmobIds, isEqual);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
-  const [ads, setAds] = useState(false);
-  // const [personalised, setPersonalised] = useState(false);
+  const [adsReady, setAdsReady] = useState(false);
 
   const localTimestamps = get(cms, 'timestamps.local', 0);
   const onlineTimestamps = get(cms, 'timestamps.online', null);
@@ -50,18 +46,23 @@ function Body(): Node {
     ? get(cms, 'master.ads', false)
     : get(cms, 'master.adsStaging', false);
 
+  const startAds = () => {
+    Admob().initialize().then(() => {
+      setAdsReady(true);
+    });
+  };
+
   const askForPermission = async () => {
     const status = await getTrackingStatus();
     if (status === 'authorized' || status === 'unavailable') {
-      // setPersonalised(true);
-      setAds(true);
+      dispatch(globalActions.showPersonalisedAds(true));
     } else {
       const newStatus = await requestTrackingPermission();
       if (newStatus === 'authorized' || newStatus === 'unavailable') {
-        // setPersonalised(true);
+        dispatch(globalActions.showPersonalisedAds(true));
       }
-      setAds(true);
     }
+    startAds();
   };
 
   useEffect(() => {
@@ -106,13 +107,14 @@ function Body(): Node {
       </NativeRouter>
 
       <View style={mainStyle.ads}>
-        {ads && displayAds && admobId && global.showBanner && (
-          <></>
-          // <BannerAd
-          //   size="smartBannerPortrait"
-          //   unitId={admobId}
-          //   // servePersonalizedAds={personalised}
-          // />
+        {adsReady && displayAds && banner && global.ui.showBanner && (
+          <BannerAd
+            unitId={banner}
+            size={BannerAdSize.FLUID}
+            requestOptions={{
+              requestNonPersonalizedAdsOnly: !global.ui.personalisedAds,
+            }}
+          />
         )}
       </View>
     </View>

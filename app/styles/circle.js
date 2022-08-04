@@ -5,7 +5,19 @@ import colors from './colors';
 
 const circleRad = deviceWidth / 2;
 
-const circleStyle: Object = StyleSheet.create({
+type CircleStyle = {
+  wrapper: Object,
+  circle: Object,
+  hihat: Object,
+  snare: Object,
+  kick: Object,
+  beatline: Object,
+  btnWrapper: Object,
+  btnAnimated: Object,
+  btnIcon: Object,
+};
+
+const circleStyle: CircleStyle = StyleSheet.create({
   wrapper: {
     alignItems: 'center',
     aspectRatio: 1 / 1,

@@ -1,4 +1,5 @@
 // @flow
+/* eslint-disable no-undef */
 import { Dimensions, Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import {
@@ -7,7 +8,9 @@ import {
 import type { Sample } from './lists';
 import type { Beats } from '../sound/beats';
 
-export const isRealDevice: boolean = !DeviceInfo.isEmulator();
+// $FlowFixMe
+export const isDevelopment: boolean = __DEV__;
+export const isRealDevice: boolean = !DeviceInfo.isEmulator() && isDevelopment;
 export const isApple: boolean = Platform.OS === 'ios';
 export const isTablet: boolean = DeviceInfo.isTablet();
 export const isiPhone: boolean = isApple && !isTablet;

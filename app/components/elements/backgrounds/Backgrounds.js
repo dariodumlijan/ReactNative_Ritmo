@@ -8,10 +8,10 @@ import { useLocationInfo } from '../../../utils/hooks';
 
 const Backgrounds = (): Node => {
   const locationInfo = useLocationInfo();
+  if (locationInfo.isHome) return <SplitBackground />;
   if (locationInfo.isRewarded) return <DarkBackground />;
-  if (locationInfo.isSettings || locationInfo.isGuide) return <LightBackground />;
 
-  return <SplitBackground />;
+  return <LightBackground />;
 };
 
 export default Backgrounds;

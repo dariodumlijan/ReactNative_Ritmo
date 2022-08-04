@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import useLocale from '../../../locales';
 import { useTeleport } from '../../../utils/hooks';
 import { actions } from '../../../store/globalStore';
-import styles from '../../../styles';
+import modalsStyle from '../../../styles/modals';
 
 type Props = {
   presetKey: string,
@@ -26,22 +26,22 @@ function ClearPresetModal(props: Props): Node {
 
   return (
     <Modal animationType="fade" transparent visible>
-      <View style={styles.modalView}>
-        <Text style={styles.modalExp}>{t('modal.preset.title')}</Text>
-        <View style={styles.modalBtnCont}>
+      <View style={modalsStyle.modalView}>
+        <Text style={modalsStyle.modalExp}>{t('modal.preset.title')}</Text>
+        <View style={modalsStyle.modalBtnCont}>
           <TouchableOpacity
             activeOpacity={0.8}
-            style={styles.modalBtn}
+            style={modalsStyle.modalBtn}
             onPress={handleClear}
           >
-            <Text style={styles.modalBtnTxt}>{t('modal.preset.yes')}</Text>
+            <Text style={modalsStyle.modalBtnTxt}>{t('modal.preset.yes')}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.8}
-            style={styles.modalBtn}
+            style={modalsStyle.modalBtn}
             onPress={() => close()}
           >
-            <Text style={styles.modalBtnTxt}>{t('modal.preset.no')}</Text>
+            <Text style={modalsStyle.modalBtnTxt}>{t('modal.preset.no')}</Text>
           </TouchableOpacity>
         </View>
       </View>

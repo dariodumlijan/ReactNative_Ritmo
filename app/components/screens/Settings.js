@@ -23,8 +23,9 @@ import useLocale from '../../locales';
 import useSelectLists from '../../utils/lists';
 import { useTeleport } from '../../utils/hooks';
 import { actions, selectors } from '../../store/globalStore';
-import styles from '../../styles';
 import mainStyle from '../../styles/main';
+import settingsStyle from '../../styles/settings';
+import notificationsStyle from '../../styles/notifications';
 import colors from '../../styles/colors';
 import type { Sample } from '../../utils/lists';
 import type { State } from '../../store/globalStore';
@@ -129,7 +130,7 @@ const Settings = (): Node => {
     if (shouldShowAlert) {
       teleport(
         <Alert clearDelayMS={5000}>
-          <Text style={[styles.alertText, { fontSize: 14 }]}>
+          <Text style={[notificationsStyle.alertText, { fontSize: 14 }]}>
             {t('settings.modal.text_1')}
             <Text style={{ color: colors.green }}>6h</Text>
             {t('settings.modal.text_2')}
@@ -151,24 +152,24 @@ const Settings = (): Node => {
   return (
     <DismissKeyboard>
       <SafeAreaView style={mainStyle.safe}>
-        <View style={styles.navigationMenu}>
+        <View style={settingsStyle.navigation}>
           <Link
             to="/"
             underlayColor={null}
             disabled={openSelect}
             onPress={handleCloseSettings}
           >
-            <Animated.View style={styles.menuCloseW}>
-              <Close style={styles.menuClose} />
+            <Animated.View style={settingsStyle.closeIconWrapper}>
+              <Close style={settingsStyle.closeIcon} />
             </Animated.View>
           </Link>
         </View>
 
-        <View style={styles.menuWrapper}>
-          <View style={styles.bpmWrapper}>
-            <Text style={styles.menuTitle}>{t('settings.bpm')}</Text>
+        <View style={settingsStyle.menuWrapper}>
+          <View style={settingsStyle.bpmWrapper}>
+            <Text style={settingsStyle.menuTitle}>{t('settings.bpm')}</Text>
             <TextInput
-              style={styles.inputBPM}
+              style={settingsStyle.inputBPM}
               maxLength={3}
               onChangeText={(val) => setBpm(String(Math.trunc(Number(val))))}
               onSubmitEditing={() => bpmCheck(bpm)}
@@ -181,18 +182,18 @@ const Settings = (): Node => {
             />
           </View>
 
-          <View style={styles.radioWrapper}>
-            <Text style={styles.menuTitle}>{t('settings.time_sig')}</Text>
+          <View style={settingsStyle.radioWrapper}>
+            <Text style={settingsStyle.menuTitle}>{t('settings.time_sig')}</Text>
             {map(timeSignatures, (sig) => (
               <TouchableOpacity
                 key={sig.value}
                 activeOpacity={0.6}
                 onPress={() => dispatch(actions.updateTimeSig(sig.value))}
               >
-                <View style={styles.radioCont}>
-                  <Text style={styles.radioText}>{sig.label}</Text>
+                <View style={settingsStyle.radioCont}>
+                  <Text style={settingsStyle.radioText}>{sig.label}</Text>
                   <View
-                    style={global.ui.useTimeSig === sig.value ? styles.radioSelected : styles.radioNotSelected}
+                    style={global.ui.useTimeSig === sig.value ? settingsStyle.radioSelected : settingsStyle.radioNotSelected}
                   />
                 </View>
               </TouchableOpacity>
@@ -214,9 +215,9 @@ const Settings = (): Node => {
             onPress={handleRewardedOpen}
             disabled={openSelect || shouldShowAlert}
             underlayColor={colors.grayBlue}
-            style={shouldShowAlert ? styles.btnRewardScreenDisabled : styles.btnRewardScreen}
+            style={shouldShowAlert ? settingsStyle.btnRewardScreenDisabled : settingsStyle.btnRewardScreen}
           >
-            <Text style={shouldShowAlert ? styles.btnRewardScreenTextDisabled : styles.btnRewardScreenText}>
+            <Text style={shouldShowAlert ? settingsStyle.btnRewardScreenTextDisabled : settingsStyle.btnRewardScreenText}>
               {t(rewardedBtnIsDisabled ? 'settings.keep_rewards' : 'settings.more_samples')}
             </Text>
           </Link>

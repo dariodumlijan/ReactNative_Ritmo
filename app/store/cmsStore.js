@@ -1,8 +1,9 @@
 // @flow
 import { get, merge } from 'lodash';
 import * as API from '../api';
+import { isApple, isRealDevice } from '../utils';
 import { setItem } from '../utils/hooks';
-import { localStorageKeys } from '../tokens';
+import { admob, localStorageKeys } from '../tokens';
 import type { InitialCMSResponse } from '../api';
 import type { ReduxAction, ReduxActionWithPayload, ReduxState } from '../types';
 
@@ -20,9 +21,57 @@ export const types = {
   CMS_FETCH_APP_FULFILLED: 'CMS/FETCH_APP_FULFILLED',
 };
 
+type AdmobIds = {
+  banner: string|null,
+  rewarded: string|null,
+}
+
+export const getAdmobIds = (adIds: ?{
+  banner: {
+    android: string,
+    ios: string,
+  },
+  rewarded: {
+    android: string,
+    ios: string,
+  }
+}): AdmobIds => {
+  let adId = null;
+
+  const getBannerID = (): string|null => {
+    if (!adIds) return null;
+
+    if (isApple) {
+      adId = isRealDevice ? adIds.banner.ios : admob.banner.ios_test;
+    } else {
+      adId = isRealDevice ? adIds.banner.android : admob.banner.android_test;
+    }
+
+    return adId;
+  };
+
+  const getRewardedID = (): string|null => {
+    if (!adIds) return null;
+
+    if (isApple) {
+      adId = isRealDevice ? adIds.rewarded.ios : admob.rewarded.ios_test;
+    } else {
+      adId = isRealDevice ? adIds.rewarded.android : admob.rewarded.android_test;
+    }
+
+    return adId;
+  };
+
+  return {
+    banner: getBannerID(),
+    rewarded: getRewardedID(),
+  };
+};
+
 export const selectors = {
   getCMS: (state: ReduxState): State => state.cms,
   getTimestamps: (state: ReduxState): Object => state.cms.timestamps,
+  getAdmobIds: (state: ReduxState): AdmobIds => getAdmobIds(get(state.cms, 'master.adIds')),
 };
 
 export const actions = {
@@ -36,7 +85,10 @@ const buildStore = (state: State, payload: InitialCMSResponse): State => {
   const newState = {};
 
   if (payload.isLocal) {
-    return merge(newState, state, payload);
+    return merge(newState, state, {
+      ...payload.data,
+      isLocal: payload.isLocal,
+    });
   }
 
   merge(newState, state, {

@@ -29,18 +29,18 @@ function Select(props: Props): Node {
 
   return (
     <>
-      <View style={locationInfo.isRewarded ? selectStyle.inputWrapper : selectStyle.inputWrapper}>
+      <View style={locationInfo.isRewarded ? selectStyle.inputWrapperRewarded : selectStyle.inputWrapper}>
         {props.title && (
           <Text style={selectStyle.label}>{props.title}</Text>
         )}
         <TouchableOpacity
           disabled={props.isOpen}
           activeOpacity={0.6}
-          style={selectStyle.input}
+          style={locationInfo.isRewarded ? selectStyle.inputRewarded : selectStyle.input}
           onPress={() => props.onOpen()}
         >
           <Text style={selectStyle.inputText}>{props.value}</Text>
-          <Arrow style={selectStyle.inputIcon} />
+          <Arrow style={locationInfo.isRewarded ? selectStyle.inputIconRewarded : selectStyle.inputIcon} />
         </TouchableOpacity>
       </View>
 

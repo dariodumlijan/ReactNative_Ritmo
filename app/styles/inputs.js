@@ -1,6 +1,6 @@
 // @flow
-import { Platform, StyleSheet } from 'react-native';
-import { deviceWidth, isTablet } from '../utils';
+import { StyleSheet } from 'react-native';
+import { deviceWidth, isApple, isTablet } from '../utils';
 import colors from './colors';
 
 type CheckboxStyle = {
@@ -45,10 +45,13 @@ export const checkboxStyle: CheckboxStyle = StyleSheet.create({
 
 type SelectStyle = {
   inputWrapper: Object,
+  inputWrapperRewarded: Object,
   label: Object,
   input: Object,
+  inputRewarded: Object,
   inputText: Object,
   inputIcon: Object,
+  inputIconRewarded: Object,
   listWrapper: Object,
   list: Object,
   listItem: Object,
@@ -59,79 +62,100 @@ type SelectStyle = {
 
 export const selectStyle: SelectStyle = StyleSheet.create({
   inputWrapper: {
-    flexShrink: 1,
-    display: 'flex',
-    justifyContent: 'space-between',
     alignItems: 'flex-end',
+    display: 'flex',
+    flexShrink: 1,
+    justifyContent: 'space-between',
+  },
+  inputWrapperRewarded: {
+    alignItems: 'center',
+    display: 'flex',
+    flexShrink: 1,
+    justifyContent: 'space-between',
   },
   label: {
-    fontFamily: 'Montserrat-SemiBold',
-    textTransform: 'uppercase',
-    fontSize: 20,
-    textAlign: 'left',
     color: colors.primaryDark,
-    marginRight: 10,
+    fontFamily: 'Montserrat-SemiBold',
+    fontSize: 20,
     marginBottom: 10,
+    marginRight: 10,
+    textAlign: 'left',
+    textTransform: 'uppercase',
   },
   input: {
-    display: 'flex',
-    justifyContent: 'center',
     alignItems: 'flex-end',
-    width: 200,
-    height: 40,
     backgroundColor: colors.grayLight,
     borderRadius: 15,
+    display: 'flex',
+    height: 40,
+    justifyContent: 'center',
+    width: 200,
+  },
+  inputRewarded: {
+    alignItems: 'center',
+    backgroundColor: colors.grayLight,
+    borderRadius: 15,
+    display: 'flex',
+    height: 40,
+    justifyContent: 'center',
+    width: 250,
   },
   inputText: {
-    fontFamily: 'Montserrat-SemiBold',
     color: colors.grayBlue,
-    textAlign: 'right',
+    fontFamily: 'Montserrat-SemiBold',
     fontSize: 24,
     marginRight: 10,
+    textAlign: 'right',
   },
   inputIcon: {
-    position: 'absolute',
-    left: 10,
-    width: 20,
     aspectRatio: 1 / 1,
+    left: 10,
+    position: 'absolute',
+    width: 20,
+  },
+  inputIconRewarded: {
+    aspectRatio: 1 / 1,
+    position: 'absolute',
+    right: 10,
+    width: 20,
   },
   listWrapper: {
-    width: !isTablet ? '90%' : '72%',
-    maxHeight: '60%',
     borderRadius: 30,
-    overflow: Platform.OS === 'ios' ? 'scroll' : 'hidden',
-    marginVertical: '30%',
     marginHorizontal: !isTablet ? '5%' : '14%',
+    marginVertical: '30%',
+    maxHeight: '60%',
+    overflow: isApple ? 'scroll' : 'hidden',
+    width: !isTablet ? '90%' : '72%',
   },
   list: {
     backgroundColor: colors.gray,
+    borderColor: colors.grayBlue,
     borderRadius: 30,
     borderWidth: 2,
-    borderColor: colors.grayBlue,
-    width: '100%',
     flexGrow: 1,
+    width: '100%',
   },
   listItem: {
-    width: '100%',
     borderBottomColor: colors.disabledList,
     borderBottomWidth: 1,
+    width: '100%',
   },
   listItemNoBorder: {
     borderBottomWidth: 0,
   },
   listText: {
-    fontFamily: 'Montserrat-SemiBold',
     color: colors.black,
-    textAlign: 'center',
+    fontFamily: 'Montserrat-SemiBold',
     fontSize: 18,
     marginVertical: 10,
+    textAlign: 'center',
   },
   listDisabledText: {
-    fontFamily: 'Montserrat-SemiBold',
     color: colors.disabledList,
-    textAlign: 'center',
+    fontFamily: 'Montserrat-SemiBold',
     fontSize: 18,
     marginVertical: 10,
+    textAlign: 'center',
   },
 });
 

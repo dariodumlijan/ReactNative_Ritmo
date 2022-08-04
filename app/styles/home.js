@@ -1,11 +1,18 @@
 // @flow
 import { StyleSheet } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
+import { isTablet } from '../utils';
 import colors from './colors';
 
-const isTablet = DeviceInfo.isTablet();
+type HomeStyle = {
+  wrapper: Object,
+  topWrapper: Object,
+  topWrapperBG: Object,
+  navigation: Object,
+  logo: Object,
+  menu: Object,
+};
 
-const homeStyle: Object = StyleSheet.create({
+const homeStyle: HomeStyle = StyleSheet.create({
   wrapper: {
     alignItems: 'center',
     display: 'flex',
@@ -36,6 +43,14 @@ const homeStyle: Object = StyleSheet.create({
     height: !isTablet ? '14%' : '12%',
     justifyContent: 'space-between',
     width: !isTablet ? '100%' : '80%',
+  },
+  logo: {
+    aspectRatio: 2 / 1,
+    height: '100%',
+  },
+  menu: {
+    aspectRatio: 1 / 2,
+    height: '120%',
   },
 });
 

@@ -25,42 +25,42 @@ const contentfulToReactNative = (): any => ({
     [BLOCKS.EMBEDDED_ASSET]: () => null,
     [BLOCKS.HEADING_1]: (_node, children) => (
       <Text
-        style={[announcementStyle.heading, { fontFamily: 'Montserrat-SemiBold', fontSize: 26 }]}
+        style={[announcementStyle.title, { fontFamily: 'Montserrat-SemiBold', fontSize: 26 }]}
       >
         {children}
       </Text>
     ),
     [BLOCKS.HEADING_2]: (_node, children) => (
       <Text
-        style={[announcementStyle.heading, { fontFamily: 'Montserrat-SemiBold', fontSize: 24 }]}
+        style={[announcementStyle.title, { fontFamily: 'Montserrat-SemiBold', fontSize: 24 }]}
       >
         {children}
       </Text>
     ),
     [BLOCKS.HEADING_3]: (_node, children) => (
       <Text
-        style={[announcementStyle.heading, { fontFamily: 'Montserrat-SemiBold', fontSize: 22 }]}
+        style={[announcementStyle.title, { fontFamily: 'Montserrat-SemiBold', fontSize: 22 }]}
       >
         {children}
       </Text>
     ),
     [BLOCKS.HEADING_4]: (_node, children) => (
       <Text
-        style={[announcementStyle.heading, { fontFamily: 'Montserrat-SemiBold', fontSize: 20 }]}
+        style={[announcementStyle.title, { fontFamily: 'Montserrat-SemiBold', fontSize: 20 }]}
       >
         {children}
       </Text>
     ),
     [BLOCKS.HEADING_5]: (_node, children) => (
       <Text
-        style={[announcementStyle.heading, { fontFamily: 'Montserrat-SemiBold', fontSize: 18 }]}
+        style={[announcementStyle.title, { fontFamily: 'Montserrat-SemiBold', fontSize: 18 }]}
       >
         {children}
       </Text>
     ),
     [BLOCKS.HEADING_6]: (_node, children) => (
       <Text
-        style={[announcementStyle.heading, { fontFamily: 'Montserrat-SemiBold', fontSize: 15 }]}
+        style={[announcementStyle.title, { fontFamily: 'Montserrat-SemiBold', fontSize: 15 }]}
       >
         {children}
       </Text>

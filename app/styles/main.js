@@ -1,5 +1,5 @@
 // @flow
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { isApple, isiPhone } from '../utils';
 import colors from './colors';
 
@@ -62,15 +62,17 @@ const mainStyle: MainStyles = StyleSheet.create({
     aspectRatio: 1 / 1,
     position: 'absolute',
     right: 0,
-    top: 0,
+    top: isApple ? '8%' : 0,
     width: 25,
+    zIndex: 1,
   },
   exitDisabled: {
     aspectRatio: 1 / 1,
     position: 'absolute',
     right: 0,
-    top: 0,
+    top: isApple ? '8%' : 0,
     width: 25,
+    zIndex: 1,
   },
   ads: {
     alignItems: 'center',
@@ -83,9 +85,9 @@ const mainStyle: MainStyles = StyleSheet.create({
     zIndex: 999,
   },
   adSpace: {
+    // backgroundColor: colors.black,
+    height: isApple ? '10%' : '14%',
     width: '100%',
-    height: Platform.OS === 'ios' ? '10%' : '14%',
-    backgroundColor: colors.black,
   },
 });
 

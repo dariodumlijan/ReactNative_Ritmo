@@ -4,7 +4,6 @@ import type { Node } from 'react';
 import {
   Animated,
   Easing,
-  Modal,
   Text,
   TouchableOpacity,
   View,
@@ -101,8 +100,10 @@ function Navigation(): Node {
     } else fadeNavAlert();
   };
 
+  if (!navigationOpen) return null;
+
   return (
-    <Modal animationType="slide" visible={navigationOpen || false} transparent>
+    <View style={navigationStyle.overlay}>
       <View style={navigationStyle.background}>
         <View style={navigationStyle.nav}>
           <View style={navigationStyle.top}>
@@ -146,7 +147,7 @@ function Navigation(): Node {
           </View>
         </View>
       </View>
-    </Modal>
+    </View>
   );
 }
 

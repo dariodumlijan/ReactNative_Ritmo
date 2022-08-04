@@ -28,6 +28,7 @@
     "react-native": "0.66.1",
     "react-native-device-info": "^8.4.1",
     "react-native-fs": "^2.18.0",
+    "react-native-google-mobile-ads": "^7.0.1",
     "react-native-in-app-review": "^3.2.3",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-share": "^7.2.0",
