@@ -22,6 +22,7 @@ type Props = {
   onSelect: Function,
   onOpen: Function,
   compareSamples?: string[],
+  isDisabled?: boolean,
 };
 
 function Select(props: Props): Node {
@@ -34,7 +35,7 @@ function Select(props: Props): Node {
           <Text style={selectStyle.label}>{props.title}</Text>
         )}
         <TouchableOpacity
-          disabled={props.isOpen}
+          disabled={props.isOpen || props.isDisabled}
           activeOpacity={0.6}
           style={locationInfo.isRewarded ? selectStyle.inputRewarded : selectStyle.input}
           onPress={() => props.onOpen()}

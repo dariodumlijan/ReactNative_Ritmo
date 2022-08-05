@@ -10,11 +10,14 @@ import {
 } from 'react-native';
 import { Link, useNavigate } from 'react-router-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { RewardedAd, RewardedAdEventType } from 'react-native-google-mobile-ads';
-import { get, isEqual } from 'lodash';
+import { RewardedAdEventType } from 'react-native-google-mobile-ads';
+import { get, isEmpty, isEqual } from 'lodash';
+import { hoursToMilliseconds } from 'date-fns';
 import Select from '../elements/inputs/Select';
 import Exit from '../../assets/icons/Exit';
+import CountdownTimer from '../elements/misc/CountdownTimer';
 import useLocale from '../../locales';
+import { useRewardedAd } from '../../utils/hooks';
 import { actions, selectors } from '../../store/globalStore';
 import { selectors as selectorsCMS } from '../../store/cmsStore';
 import mainStyle from '../../styles/main';
@@ -22,137 +25,66 @@ import rewardedStyle from '../../styles/rewarded';
 import colors from '../../styles/colors';
 import type { Sample } from '../../utils/lists';
 import type { ReduxState } from '../../types';
+import { isRealDevice } from '../../utils';
 
 const Rewarded = (): Node => {
   const { t } = useLocale();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const unlockableSamples = useSelector(selectors.getUnlockableSamples, isEqual);
-  const personalisedAds = useSelector((state: ReduxState) => state.global.ui.personalisedAds, isEqual);
+  const unlockableSamples = useSelector(selectors.getLockedSamples, isEqual);
+  const {
+    personalisedAds, selectedReward, resetRewards, keepRewards, rewardedAt,
+  }: {
+    personalisedAds: boolean,
+    selectedReward: Sample,
+    resetRewards: number,
+    keepRewards: number,
+    rewardedAt: number|null,
+  } = useSelector((state: ReduxState) => ({
+    personalisedAds: state.global.ui.personalisedAds,
+    selectedReward: state.global.ui.selectedReward,
+    resetRewards: get(state.cms, isRealDevice ? 'master.resetRewards' : 'master.resetRewardsStaging', 0),
+    keepRewards: get(state.cms, isRealDevice ? 'master.keepRewards' : 'master.keepRewardsStaging', 0),
+    rewardedAt: state.global.rewardedAt,
+  }), isEqual);
   const { rewarded } = useSelector(selectorsCMS.getAdmobIds, isEqual);
-  const [selectedReward, setSelectedReward] = useState(get(unlockableSamples, [0], null));
   const [openSelect, setOpenSelect] = useState(false);
-  const [adLoading, setAdLoading] = useState(false);
-  const [rewardEarned, setRewardEarned] = useState(false);
-  const [isInCountdown, setIsInCountdown] = useState(false);
-  const [refresh, setRefresh] = useState(false);
-  const rewardedAd = RewardedAd.createForAdRequest(rewarded, {
-    requestNonPersonalizedAdsOnly: personalisedAds,
-    keywords: ['music'],
-  });
+  const [adLoading, setAdLoading] = useState(true);
+  const [rewardsAreRefreshable, setRewardsAreRefreshable] = useState(false);
+  const rewardedAd = useRewardedAd(rewarded, personalisedAds);
+  const hasAllRewards = isEmpty(unlockableSamples);
 
   useEffect(() => {
-    const unsubscribeLoaded = rewardedAd.addAdEventListener(
-      RewardedAdEventType.LOADED, () => {
-        setAdLoading(false);
-        rewardedAd.show();
-      });
+    if (rewardedAd) {
+      rewardedAd.addAdEventListener(
+        RewardedAdEventType.LOADED, () => {
+          setAdLoading(false);
+        });
 
-    const unsubscribeEarned = rewardedAd.addAdEventListener(
-      RewardedAdEventType.EARNED_REWARD, (reward) => {
-        // console.log('User earned reward of ', reward);
-        dispatch(actions.unlockSample(selectedReward.label));
-        setRewardEarned(true);
-      },
-    );
+      // rewardedAd.addAdEventListener(
+      //   RewardedAdEventType.CLOSED, () => {
+      //     navigate('/settings');
+      //   });
+
+      rewardedAd.addAdEventListener(
+        RewardedAdEventType.EARNED_REWARD, () => {
+          if (hasAllRewards) {
+            dispatch(actions.refreshRewards());
+          } else {
+            dispatch(actions.unlockReward());
+          }
+          navigate('/settings');
+        },
+      );
+
+      rewardedAd.load();
+    }
 
     return () => {
-      unsubscribeLoaded();
-      unsubscribeEarned();
+      rewardedAd?.removeAllListeners();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (rewardEarned) navigate('/settings');
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rewardEarned]);
-
-  // /* Register Reward Variables */
-  // const rewardList = [];
-  // let rewardEarned = false;
-  // let disableList = false;
-
-  // /* Create Rewards List */
-  // forEach(soundList, (sound) => {
-  //   if (sound.disabled === true) {
-  //     rewardList.push(sound);
-  //   }
-  // });
-
-  // /* Check if Rewards List Empty */
-  // if (rewardList.length === undefined || rewardList.length === 0) {
-  //   rewardListName = 'N/A';
-  //   disableList = true;
-  // } else {
-  //   rewardListName = rewardList[0].name;
-  // }
-
-  /* Rewarded Screen onLoad */
-  // useEffect(() => {
-  //   setHrs(('0' + timerUpdate.hours).slice(-2));
-  //   setMins(('0' + timerUpdate.minutes).slice(-2));
-  //   setSecs(('0' + timerUpdate.seconds).slice(-2));
-  //   checkTimerStart();
-  //   setSelectedRewardName(rewardListName);
-  //   rewardIndex = soundList.findIndex((obj) => obj.name === rewardListName);
-  // }, []);
-
-  /* Check if Timer is Null - Function */
-  // async function checkTimerStart() {
-  //   timerStart = await AsyncStorage.getItem('timerStart');
-
-  //   if (timerStart !== null) {
-  //     timerStart = true;
-  //     setCountdownStart(timerStart);
-  //     checkRewardCountdown();
-  //   } else {
-  //     timerStart = false;
-  //     setCountdownStart(timerStart);
-  //   }
-  //   checkSoundList();
-  // }
-
-  /* Check Countdown time - Function */
-  // async function checkRewardCountdown() {
-  //   const countdownDate = JSON.parse(await AsyncStorage.getItem('countdownTime'));
-
-  //   const currentDate = new Date().valueOf();
-  //   const timeDiff = countdownDate - currentDate;
-  //   ms2Time(timeDiff);
-
-  //   if (timeDiff <= 0) {
-  //     lockRewards();
-  //   } else {
-  //     tickVariable = setInterval(() => tick(), 1000);
-  //   }
-  // }
-
-  /* Countdown tick Interval - Function */
-  // function tick() {
-  //   if (timerUpdate.hours === 0 && timerUpdate.minutes === 0 && timerUpdate.seconds === 0) {
-  //     lockRewards();
-  //   } else if (timerUpdate.hours <= -1 || timerUpdate.minutes <= -1 || timerUpdate.seconds <= -1) {
-  //     clearInterval(tickVariable);
-  //     checkRewardCountdown();
-  //   } else if (timerUpdate.minutes === 0 && timerUpdate.seconds === 0) {
-  //     const calcTime = timerUpdate.hours - 1;
-  //     timerUpdate.hours = calcTime;
-  //     timerUpdate.minutes = 59;
-  //     timerUpdate.seconds = 59;
-  //   } else if (timerUpdate.seconds === 0) {
-  //     const calcTime = timerUpdate.minutes - 1;
-  //     timerUpdate.minutes = calcTime;
-  //     timerUpdate.seconds = 59;
-  //   } else {
-  //     const calcTime = timerUpdate.seconds - 1;
-  //     timerUpdate.seconds = calcTime;
-  //   }
-
-  //   setHrs(('0' + timerUpdate.hours).slice(-2));
-  //   setMins(('0' + timerUpdate.minutes).slice(-2));
-  //   setSecs(('0' + timerUpdate.seconds).slice(-2));
-  // }
+  }, [rewardedAd]);
 
   /* Reset/Lock Rewards & Timer - Function */
   // async function lockRewards() {
@@ -193,75 +125,24 @@ const Rewarded = (): Node => {
   //   rewardIndex = soundList.findIndex((obj) => obj.name === rewardListName);
   // }
 
-  /* Check what Reward Content to Show - Function */
-  // function checkSoundList() {
-  //   for (let i = 0; i < soundList.length; i++) {
-  //     if (soundList[i].disabled === true) {
-  //       rewardDisabled = false;
-  //       break;
-  //     } else {
-  //       rewardDisabled = true;
-  //     }
-  //   }
-  //   if (rewardDisabled) {
-  //     refreshEnabled = true;
-  //     setRefresh(refreshEnabled);
-  //   }
-  // }
-
   const requestReward = () => {
-    setAdLoading(true);
-    rewardedAd.load();
+    rewardedAd?.show();
   };
 
-  /* Reset Rewarded Loading Animation - Function */
-  // function resetRewarded() {
-  //   if (adLoading && !rewardEarned) {
-  //     setTimeout(() => {
-  //       setLoadRewarded(false);
-  //     }, 10000);
-  //   }
-  // }
-
   const handleSelect = (sample: Sample) => {
-    setSelectedReward(sample);
+    dispatch(actions.updateSelectedReward(sample));
     setOpenSelect(false);
   };
 
-  /* Give Sound Reward - Function */
-  // async function unlockSamples() {
-  //   await AsyncStorage.removeItem('timerStart');
-  //   await AsyncStorage.removeItem('countdownTime');
-  //   await AsyncStorage.removeItem('unlockedRewards');
+  const handleCountdown = (currentTime: number) => {
+    const isBelowThreshold = currentTime <= hoursToMilliseconds(keepRewards);
+    if (currentTime === 0) {
+      dispatch(actions.lockRewards());
 
-  //   const countdownDate = new Date().valueOf() + countdownHours * 36e5;
-  //   await AsyncStorage.setItem('countdownTime', JSON.stringify(countdownDate));
-
-  //   timerStart = true;
-  //   await AsyncStorage.setItem('timerStart', JSON.stringify(timerStart));
-
-  //   soundList[rewardIndex].disabled = false;
-  //   unlockedSamples = soundList.map(({ disabled }) => disabled);
-  //   await AsyncStorage.setItem('unlockedRewards', JSON.stringify(unlockedSamples));
-
-  //   rewardEarned = true;
-  //   rewardedCallback(false);
-  // }
-
-  // /* Refresh Reward Timer - Function */
-  // async function refreshCount() {
-  //   await AsyncStorage.removeItem('timerStart');
-  //   await AsyncStorage.removeItem('countdownTime');
-
-  //   const countdownDate = new Date().valueOf() + countdownHours * 36e5;
-  //   await AsyncStorage.setItem('countdownTime', JSON.stringify(countdownDate));
-
-  //   timerStart = true;
-  //   await AsyncStorage.setItem('timerStart', JSON.stringify(timerStart));
-
-  //   rewardEarned = true;
-  //   rewardedCallback(false);
-  // }
+      return;
+    }
+    if (isBelowThreshold && !rewardsAreRefreshable) setRewardsAreRefreshable(true);
+  };
 
   return (
     <SafeAreaView style={mainStyle.safe}>
@@ -269,20 +150,24 @@ const Rewarded = (): Node => {
         to="/settings"
         style={mainStyle.exit}
         underlayColor={null}
-        disabled={adLoading || openSelect}
+        disabled={openSelect}
       >
-        <Exit fill={!adLoading ? colors.gray : colors.grayBlue} />
+        <Exit fill={colors.gray} />
       </Link>
 
-      {isInCountdown && (
+      {hasAllRewards && (
         <View style={rewardedStyle.countdownWrapper}>
-          <Text style={rewardedStyle.countdownTimer}>12:00:00</Text>
+          <CountdownTimer
+            style={rewardedStyle.countdownTimer}
+            countdownFrom={rewardedAt ? rewardedAt + hoursToMilliseconds(resetRewards) : null}
+            onChange={handleCountdown}
+          />
           <Text style={rewardedStyle.countdownTxt}>{t('rewarded.countdown')}</Text>
         </View>
       )}
 
       <View style={rewardedStyle.rewardedCon}>
-        {refresh ? (
+        {hasAllRewards ? (
           <View style={rewardedStyle.rewardedExp}>
             <Text style={rewardedStyle.rewardedExpText}>
               {t('rewarded.paragraph_3.text_1')}
@@ -328,8 +213,8 @@ const Rewarded = (): Node => {
         )}
         <TouchableOpacity
           activeOpacity={1}
-          style={adLoading ? rewardedStyle.rewardedDisabled : rewardedStyle.rewardedStart}
-          disabled={adLoading || openSelect}
+          style={adLoading || (hasAllRewards && !rewardsAreRefreshable) ? rewardedStyle.rewardedDisabled : rewardedStyle.rewardedStart}
+          disabled={adLoading || openSelect || (hasAllRewards && !rewardsAreRefreshable)}
           onPress={requestReward}
         >
           {adLoading ? (

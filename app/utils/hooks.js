@@ -1,10 +1,12 @@
 // @flow
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import InAppReview from 'react-native-in-app-review';
+import { RewardedAd } from 'react-native-google-mobile-ads';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { localStorageKeys } from '../tokens';
 import { PortalContext } from '../context';
+import { isPromise } from '.';
 import type { PortalProps } from '../context';
 
 export const getItem = async (key: string): any => {
@@ -86,3 +88,24 @@ export const useLocationInfo = (): {
 };
 
 export const useTeleport = (): PortalProps => useContext(PortalContext);
+
+export const useRewardedAd = (
+  rewardedId: string,
+  showPersonalisedAds: boolean,
+): Object|null => {
+  const [rewardedAd, setRewardedAd] = useState(null);
+
+  useEffect(() => {
+    const handleNewAd = async (): Object => {
+      const response = await RewardedAd.createForAdRequest(rewardedId, {
+        requestNonPersonalizedAdsOnly: !showPersonalisedAds,
+      });
+      setRewardedAd(response);
+    };
+
+    if (!rewardedAd || !isPromise(rewardedAd)) handleNewAd();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return rewardedAd;
+};

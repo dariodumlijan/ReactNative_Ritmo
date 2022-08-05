@@ -20,6 +20,7 @@ const rewardedStyle: RewardedStyle = StyleSheet.create({
   countdownWrapper: {
     backgroundColor: colors.primary,
     borderRadius: 20,
+    marginHorizontal: '15%',
     marginTop: '2%',
     paddingVertical: 10,
     width: '70%',

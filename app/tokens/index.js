@@ -20,8 +20,7 @@ export const localStorageKeys = {
     two: 'preset2',
     three: 'preset3',
   },
-  countdownTime: 'countdownTime',
-  timerStart: 'timerStart',
+  rewardedAt: 'rewardedAt',
   unlockedRewards: 'unlockedRewards',
 };
 

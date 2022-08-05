@@ -1,6 +1,6 @@
 // @flow
 import {
-  merge, get, keys, reject, omit,
+  merge, get, keys, reject, omit, uniq,
 } from 'lodash';
 import { isRealDevice, isSampleUnlocked } from '../utils';
 import * as LocalStorage from '../utils/localStorage';
@@ -12,6 +12,11 @@ import type { Beats } from '../sound/beats';
 import type { BuildMidi, BuildPromise } from '../midi';
 import type { Sample } from '../utils/lists';
 import type { InitialCMSResponse } from '../api';
+import type {
+  FetchResponse,
+  SaveRewardsResponse,
+  WriteResponse,
+} from '../utils/localStorage';
 import type { ReduxAction, ReduxActionWithPayload, ReduxState } from '../types';
 
 export type Sliders = {
@@ -30,6 +35,7 @@ export type UI = {
   useBPM: number,
   useSample: Sample,
   useTimeSig: string,
+  selectedReward: Sample|null,
 };
 export type Preset = {
   beat: Beats,
@@ -45,21 +51,22 @@ export type State = {
   sliders: Sliders,
   ui: UI,
   unlockedSamples: string[],
+  rewardedAt: number|null,
 };
 
 export const types = {
   GB_SHOW_PERSONALISED_ADS: 'GB/SHOW_PERSONALISED_ADS',
   GB_SHOW_BANNER: 'GB/SHOW_BANNER',
-  GB_UNLOCK_REWARD: 'GB/UNLOCK_REWARD',
   GB_TOGGLE_NAVIGATION: 'GB/TOGGLE_NAVIGATION',
   GB_UPDATE_BPM: 'GB/UPDATE_BPM',
   GB_UPDATE_TIME_SIG: 'GB/UPDATE_TIME_SIG',
   GB_UPDATE_SELECTED_SAMPLE: 'GB/UPDATE_SELECTED_SAMPLE',
+  GB_UPDATE_SELECTED_REWARD: 'GB/UPDATE_SELECTED_REWARD',
 
-  GB_FETCH_PRESET_AND_SAMPLES: 'GB/GB_FETCH_PRESET_AND_SAMPLES',
-  GB_FETCH_PRESET_AND_SAMPLES_PENDING: 'GB/GB_FETCH_PRESET_AND_SAMPLES_PENDING',
-  GB_FETCH_PRESET_AND_SAMPLES_REJECTED: 'GB/GB_FETCH_PRESET_AND_SAMPLES_REJECTED',
-  GB_FETCH_PRESET_AND_SAMPLES_FULFILLED: 'GB/GB_FETCH_PRESET_AND_SAMPLES_FULFILLED',
+  GB_FETCH_PRESET_AND_SAMPLES: 'GB/FETCH_PRESET_AND_SAMPLES',
+  GB_FETCH_PRESET_AND_SAMPLES_PENDING: 'GB/FETCH_PRESET_AND_SAMPLES_PENDING',
+  GB_FETCH_PRESET_AND_SAMPLES_REJECTED: 'GB/FETCH_PRESET_AND_SAMPLES_REJECTED',
+  GB_FETCH_PRESET_AND_SAMPLES_FULFILLED: 'GB/FETCH_PRESET_AND_SAMPLES_FULFILLED',
 
   GB_WRITE_PRESET: 'GB/WRITE_PRESET',
   GB_WRITE_PRESET_PENDING: 'GB/WRITE_PRESET_PENDING',
@@ -73,6 +80,18 @@ export const types = {
 
   GB_LOAD_PRESET: 'GB/LOAD_PRESET',
 
+  GB_UNLOCK_REWARD: 'GB/UNLOCK_REWARD',
+
+  GB_REFRESH_REWARDS: 'GB/REFRESH_REWARDS',
+  GB_REFRESH_REWARDS_PENDING: 'GB/REFRESH_REWARDS_PENDING',
+  GB_REFRESH_REWARDS_REJECTED: 'GB/REFRESH_REWARDS_REJECTED',
+  GB_REFRESH_REWARDS_FULFILLED: 'GB/REFRESH_REWARDS_FULFILLED',
+
+  GB_LOCK_REWARDS: 'GB/LOCK_REWARDS',
+  GB_LOCK_REWARDS_PENDING: 'GB/LOCK_REWARDS_PENDING',
+  GB_LOCK_REWARDS_REJECTED: 'GB/LOCK_REWARDS_REJECTED',
+  GB_LOCK_REWARDS_FULFILLED: 'GB/LOCK_REWARDS_FULFILLED',
+
   GB_EXPORT_MIDI: 'GB/EXPORT_MIDI',
   GB_EXPORT_MIDI_PENDING: 'GB/EXPORT_MIDI_PENDING',
   GB_EXPORT_MIDI_REJECTED: 'GB/EXPORT_MIDI_REJECTED',
@@ -85,7 +104,7 @@ export const selectors = {
   getGlobal: (state: ReduxState): State => state.global,
   getUI: (state: ReduxState): UI => state.global.ui,
   getUnlockedSamples: (state: ReduxState): string[] => state.global.unlockedSamples,
-  getUnlockableSamples: (state: ReduxState): Sample[] => {
+  getLockedSamples: (state: ReduxState): Sample[] => {
     const samples = getSamples();
 
     return reject(samples, (sample: Sample) => isSampleUnlocked(state.global.unlockedSamples, sample));
@@ -101,9 +120,17 @@ export const actions = {
     type: types.GB_SHOW_BANNER,
     payload: { showBanner: bool },
   }),
-  unlockSample: (key: string): ReduxAction => ({
+  unlockReward: (key?: string): ReduxAction => ({
     type: types.GB_UNLOCK_REWARD,
     payload: key,
+  }),
+  refreshRewards: (): ReduxAction => ({
+    type: types.GB_REFRESH_REWARDS,
+    payload: LocalStorage.saveRewards(Date.now()),
+  }),
+  lockRewards: (): ReduxAction => ({
+    type: types.GB_LOCK_REWARDS,
+    payload: LocalStorage.clearRewards(),
   }),
   toggleNavigation: (bool: boolean): ReduxAction => ({
     type: types.GB_TOGGLE_NAVIGATION,
@@ -145,11 +172,41 @@ export const actions = {
     type: types.GB_UPDATE_SELECTED_SAMPLE,
     payload: { useSample: sample },
   }),
+  updateSelectedReward: (sample: Sample): ReduxAction => ({
+    type: types.GB_UPDATE_SELECTED_REWARD,
+    payload: { selectedReward: sample },
+  }),
 };
 
-const unlockReward = (state: State, key: string): State => merge({}, state, {
-  ui: { showBanner: true },
-  unlockedSamples: [...state.unlockedSamples, key],
+const unlockReward = (state: State, key?: string): State => {
+  const samples = getSamples();
+  const reward = key || state.ui.selectedReward?.label;
+  const newUnlockedSamples = uniq(reward ? [...state.unlockedSamples, reward] : [...state.unlockedSamples]);
+  const lockedSamples = reject(samples, (sample: Sample) => isSampleUnlocked(newUnlockedSamples, sample));
+  const rewardedAt = Date.now();
+  LocalStorage.saveRewards(rewardedAt, newUnlockedSamples);
+
+  return {
+    ...state,
+    ui: {
+      ...state.ui,
+      showBanner: true,
+      selectedReward: get(lockedSamples, [0], null),
+    },
+    unlockedSamples: newUnlockedSamples,
+    rewardedAt,
+  };
+};
+
+const refreshRewards = (state: State, payload: SaveRewardsResponse): State => ({
+  ...state,
+  rewardedAt: payload.rewardedAt,
+});
+
+const lockRewards = (state: State): State => ({
+  ...state,
+  unlockedSamples: [],
+  rewardedAt: null,
 });
 
 const checkUnlockedRewards = (state: State, payload: InitialCMSResponse): State => {
@@ -192,29 +249,36 @@ const resetBeat = (state: State): State => {
   });
 };
 
-const fetchPresetAndSamples = (state: State, payload: Object) => ({
-  ...state,
-  ...{
+const fetchPresetAndSamples = (state: State, payload: FetchResponse) => {
+  const samples = getSamples();
+  const newUnlockedSamples = uniq([...state.unlockedSamples, ...payload.unlockedSamples]);
+  const lockedSamples = reject(samples, (sample: Sample) => isSampleUnlocked(newUnlockedSamples, sample));
+
+  return {
+    ...state,
     presets: payload.presets,
-    unlockedSamples: [...state.unlockedSamples, ...payload.unlockedSamples],
-  },
-});
+    unlockedSamples: newUnlockedSamples,
+    rewardedAt: payload.rewardedAt,
+    ui: {
+      ...state.ui,
+      selectedReward: get(lockedSamples, [0], null),
+    },
+  };
+};
 
 const loadPreset = (state: State, preset: Preset): State => ({
   ...state,
-  ...{
-    ui: {
-      ...state.ui,
-      isPlaying: false,
-      isRecording: false,
-      useBPM: preset.useBPM,
-      useTimeSig: preset.useTimeSig,
-    },
-    sliders: preset.sliders,
+  ui: {
+    ...state.ui,
+    isPlaying: false,
+    isRecording: false,
+    useBPM: preset.useBPM,
+    useTimeSig: preset.useTimeSig,
   },
+  sliders: preset.sliders,
 });
 
-const writePreset = (state: State, payload: {key: string, preset: Preset}): State => (
+const writePreset = (state: State, payload: WriteResponse): State => (
   {
     ...state,
     // $FlowFixMe
@@ -230,6 +294,7 @@ export const reducer = (state: State, action: ReduxActionWithPayload): State => 
       return checkUnlockedRewards(state, action.payload);
 
     case types.GB_FETCH_PRESET_AND_SAMPLES_FULFILLED:
+      // $FlowFixMe
       return fetchPresetAndSamples(state, action.payload);
 
     case types.GB_LOAD_PRESET:
@@ -247,6 +312,12 @@ export const reducer = (state: State, action: ReduxActionWithPayload): State => 
 
     case types.GB_UNLOCK_REWARD:
       return unlockReward(state, action.payload);
+
+    case types.GB_REFRESH_REWARDS_FULFILLED:
+      return refreshRewards(state, action.payload);
+
+    case types.GB_LOCK_REWARDS_FULFILLED:
+      return lockRewards(state);
 
     case beatTypes.BT_ROTATE_BEAT:
       return rotateBeat(state, action.payload);
@@ -273,6 +344,7 @@ export const reducer = (state: State, action: ReduxActionWithPayload): State => 
     case types.GB_UPDATE_BPM:
     case types.GB_UPDATE_TIME_SIG:
     case types.GB_UPDATE_SELECTED_SAMPLE:
+    case types.GB_UPDATE_SELECTED_REWARD:
       return merge({}, state, { ui: action.payload });
 
     default:

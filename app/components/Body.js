@@ -4,7 +4,7 @@ import type { Node } from 'react';
 import { StatusBar, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { NativeRouter, Routes, Route } from 'react-router-native';
-import Admob, { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
+import Admob from 'react-native-google-mobile-ads';
 import { getTrackingStatus, requestTrackingPermission } from 'react-native-tracking-transparency';
 import {
   get, isEqual, every, has,
@@ -18,23 +18,21 @@ import Announcement from './screens/Announcement';
 import Loading from './screens/Loading';
 import Navigation from './blocks/navigation/Navigation';
 import Backgrounds from './elements/backgrounds/Backgrounds';
+import AdmobBanner from './elements/misc/AdmobBanner';
 import { actions as cmsActions, selectors } from '../store/cmsStore';
 import { actions as globalActions } from '../store/globalStore';
 import { isRealDevice } from '../utils';
 import { appKeys } from '../tokens';
 import mainStyle from '../styles/main';
 import type { State as StateCMS } from '../store/cmsStore';
-import type { State as StateGlobal } from '../store/globalStore';
 
 function Body(): Node {
   const dispatch = useDispatch();
   const initLoad = useRef(true);
   const cms: StateCMS = useSelector(selectors.getCMS, isEqual);
-  const global: StateGlobal = useSelector((state) => state.global, isEqual);
   const { banner } = useSelector(selectors.getAdmobIds, isEqual);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const [adsReady, setAdsReady] = useState(false);
-
   const localTimestamps = get(cms, 'timestamps.local', 0);
   const onlineTimestamps = get(cms, 'timestamps.online', null);
   const hasAnnouncement = get(cms, 'announcement.content');
@@ -104,19 +102,9 @@ function Body(): Node {
           <Route path="/guide" element={(<Guide />)} />
           <Route path="/rewarded" element={<Rewarded />} />
         </Routes>
-      </NativeRouter>
 
-      <View style={mainStyle.ads}>
-        {adsReady && displayAds && banner && global.ui.showBanner && (
-          <BannerAd
-            unitId={banner}
-            size={BannerAdSize.FLUID}
-            requestOptions={{
-              requestNonPersonalizedAdsOnly: !global.ui.personalisedAds,
-            }}
-          />
-        )}
-      </View>
+        <AdmobBanner bannerId={banner} showAd={adsReady && displayAds && banner} />
+      </NativeRouter>
     </View>
   );
 }
