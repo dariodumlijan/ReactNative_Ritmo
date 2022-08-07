@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 import { Dimensions, Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
+import { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
 import {
   every, flatten, floor, includes, values,
 } from 'lodash';
@@ -39,4 +40,49 @@ export const calcSoundDelay = (initAngle: number, sliderVal?: number, useBPM?: n
   const beatDelay = delayDegree * initAngle + calcDelay;
 
   return floor(beatDelay > bpmInterval ? beatDelay - bpmInterval : beatDelay);
+};
+
+export const checkAdsConsent = async (): Promise<{
+  showAds: boolean,
+  personalisedAds: boolean,
+}> => {
+  const { selectPersonalisedAds, storeAndAccessInformationOnDevice } = await AdsConsent.getUserChoices();
+
+  return {
+    showAds: storeAndAccessInformationOnDevice,
+    personalisedAds: selectPersonalisedAds,
+  };
+};
+
+export const handleAdsConsent = async (): Promise<{
+  showAds: boolean,
+  personalisedAds: boolean,
+}> => {
+  const consentInfo = await AdsConsent.requestInfoUpdate();
+  const consentObtained = consentInfo.status === AdsConsentStatus.OBTAINED;
+  const consentRequired = consentInfo.status === AdsConsentStatus.REQUIRED;
+
+  if (consentObtained) {
+    const { showAds, personalisedAds } = await checkAdsConsent();
+
+    return {
+      showAds,
+      personalisedAds,
+    };
+  }
+
+  if (consentInfo.isConsentFormAvailable && consentRequired) {
+    await AdsConsent.showForm();
+    const { showAds, personalisedAds } = await checkAdsConsent();
+
+    return {
+      showAds,
+      personalisedAds,
+    };
+  }
+
+  return {
+    showAds: true,
+    personalisedAds: true,
+  };
 };

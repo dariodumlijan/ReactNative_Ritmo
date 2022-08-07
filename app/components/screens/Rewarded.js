@@ -31,7 +31,7 @@ const Rewarded = (): Node => {
   const { t } = useLocale();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const unlockableSamples = useSelector(selectors.getLockedSamples, isEqual);
+  const lockedSamples = useSelector(selectors.getLockedSamples, isEqual);
   const {
     personalisedAds, selectedReward, resetRewards, keepRewards, rewardedAt,
   }: {
@@ -43,8 +43,8 @@ const Rewarded = (): Node => {
   } = useSelector((state: ReduxState) => ({
     personalisedAds: state.global.ui.personalisedAds,
     selectedReward: state.global.ui.selectedReward,
-    resetRewards: get(state.cms, isRealDevice ? 'master.resetRewards' : 'master.resetRewardsStaging', 0),
-    keepRewards: get(state.cms, isRealDevice ? 'master.keepRewards' : 'master.keepRewardsStaging', 0),
+    resetRewards: get(state.cms, isRealDevice ? 'master.resetRewards' : 'master.resetRewardsStaging', 24),
+    keepRewards: get(state.cms, isRealDevice ? 'master.keepRewards' : 'master.keepRewardsStaging', 6),
     rewardedAt: state.global.rewardedAt,
   }), isEqual);
   const { rewarded } = useSelector(selectorsCMS.getAdmobIds, isEqual);
@@ -52,7 +52,7 @@ const Rewarded = (): Node => {
   const [adLoading, setAdLoading] = useState(true);
   const [rewardsAreRefreshable, setRewardsAreRefreshable] = useState(false);
   const rewardedAd = useRewardedAd(rewarded, personalisedAds);
-  const hasAllRewards = isEmpty(unlockableSamples);
+  const hasAllRewards = isEmpty(lockedSamples);
 
   useEffect(() => {
     if (rewardedAd) {
@@ -60,11 +60,6 @@ const Rewarded = (): Node => {
         RewardedAdEventType.LOADED, () => {
           setAdLoading(false);
         });
-
-      // rewardedAd.addAdEventListener(
-      //   RewardedAdEventType.CLOSED, () => {
-      //     navigate('/settings');
-      //   });
 
       rewardedAd.addAdEventListener(
         RewardedAdEventType.EARNED_REWARD, () => {
@@ -86,45 +81,6 @@ const Rewarded = (): Node => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rewardedAd]);
 
-  /* Reset/Lock Rewards & Timer - Function */
-  // async function lockRewards() {
-  //   clearInterval(tickVariable);
-  //   timerUpdate.hours = 0;
-  //   timerUpdate.minutes = 0;
-  //   timerUpdate.seconds = 0;
-
-  //   await AsyncStorage.removeItem('timerStart');
-  //   await AsyncStorage.removeItem('countdownTime');
-  //   await AsyncStorage.removeItem('unlockedRewards');
-  //   timerStart = false;
-  //   setCountdownStart(timerStart);
-
-  //   for (let i = 0; i < soundList.length; i++) {
-  //     if (i <= 2) {
-  //       soundList[i].disabled = false;
-  //     } else {
-  //       soundList[i].disabled = true;
-  //     }
-  //   }
-  //   unlockedSamples = soundList.map(({ disabled }) => disabled);
-
-  //   rewardList = [];
-  //   for (let i = 0; i < soundList.length; i++) {
-  //     if (soundList[i].disabled === true) {
-  //       rewardList.push(soundList[i]);
-  //     }
-  //   }
-
-  //   if (rewardList.length === undefined || rewardList.length === 0) {
-  //     rewardListName = 'N/A';
-  //     disableList = true;
-  //   } else {
-  //     rewardListName = rewardList[0].name;
-  //   }
-  //   setSelectedRewardName(rewardListName);
-  //   rewardIndex = soundList.findIndex((obj) => obj.name === rewardListName);
-  // }
-
   const requestReward = () => {
     rewardedAd?.show();
   };
@@ -136,11 +92,6 @@ const Rewarded = (): Node => {
 
   const handleCountdown = (currentTime: number) => {
     const isBelowThreshold = currentTime <= hoursToMilliseconds(keepRewards);
-    if (currentTime === 0) {
-      dispatch(actions.lockRewards());
-
-      return;
-    }
     if (isBelowThreshold && !rewardsAreRefreshable) setRewardsAreRefreshable(true);
   };
 
@@ -193,7 +144,7 @@ const Rewarded = (): Node => {
             <Select
               title={t('rewarded.select_cta')}
               value={selectedReward?.label}
-              options={unlockableSamples}
+              options={lockedSamples}
               isOpen={openSelect}
               onOpen={() => setOpenSelect(true)}
               onSelect={handleSelect}

@@ -27,7 +27,7 @@ const notificationsStyle: NotificationsStyle = StyleSheet.create({
     color: colors.gray,
     fontFamily: 'Montserrat-SemiBold',
     fontSize: 12,
-    marginVertical: 10,
+    margin: 10,
     textAlign: 'center',
   },
 });

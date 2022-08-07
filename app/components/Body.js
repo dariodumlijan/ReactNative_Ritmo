@@ -5,7 +5,6 @@ import { StatusBar, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { NativeRouter, Routes, Route } from 'react-router-native';
 import Admob from 'react-native-google-mobile-ads';
-import { getTrackingStatus, requestTrackingPermission } from 'react-native-tracking-transparency';
 import {
   get, isEqual, every, has,
 } from 'lodash';
@@ -18,10 +17,11 @@ import Announcement from './screens/Announcement';
 import Loading from './screens/Loading';
 import Navigation from './blocks/navigation/Navigation';
 import Backgrounds from './elements/backgrounds/Backgrounds';
+import RewardsCountdown from './elements/misc/RewardsCountdown';
 import AdmobBanner from './elements/misc/AdmobBanner';
 import { actions as cmsActions, selectors } from '../store/cmsStore';
 import { actions as globalActions } from '../store/globalStore';
-import { isRealDevice } from '../utils';
+import { handleAdsConsent, isRealDevice } from '../utils';
 import { appKeys } from '../tokens';
 import mainStyle from '../styles/main';
 import type { State as StateCMS } from '../store/cmsStore';
@@ -51,15 +51,15 @@ function Body(): Node {
   };
 
   const askForPermission = async () => {
-    const status = await getTrackingStatus();
-    if (status === 'authorized' || status === 'unavailable') {
-      dispatch(globalActions.showPersonalisedAds(true));
-    } else {
-      const newStatus = await requestTrackingPermission();
-      if (newStatus === 'authorized' || newStatus === 'unavailable') {
-        dispatch(globalActions.showPersonalisedAds(true));
-      }
+    const { personalisedAds, showAds } = await handleAdsConsent();
+
+    if (!showAds) {
+      dispatch(globalActions.showAds(false));
+
+      return;
     }
+
+    dispatch(globalActions.showPersonalisedAds(personalisedAds));
     startAds();
   };
 
@@ -91,6 +91,7 @@ function Body(): Node {
   return (
     <View style={mainStyle.container}>
       <StatusBar hidden />
+      <RewardsCountdown />
 
       <NativeRouter>
         <Backgrounds />

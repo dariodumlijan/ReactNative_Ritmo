@@ -33,11 +33,7 @@
     },
     "sound": "Sound",
     "more_samples": "Get more samples",
-    "keep_rewards": "Keep rewards",
-    "modal": {
-      "text_1": "This will become available ",
-      "text_2": " before the timer runs out."
-    }
+    "keep_rewards": "Keep rewards"
   },
   "rewarded": {
     "countdown": "till unlocked samples are locked",
@@ -77,7 +73,12 @@
       "title": "Are you sure you want to clear the saved beat?",
       "yes": "Yes",
       "no": "No"
-    }
+    },
+    "keep_rewards": {
+      "text_1": "This will become available ",
+      "text_2": " before the timer runs out."
+    },
+    "no_ads": "In order to unlock more samples you need to enable basic ads..."
   },
   "alert": {
     "no_beat": "Tap on a circle to add a beat.",

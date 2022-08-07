@@ -40,12 +40,15 @@ const circleStyle: CircleStyle = StyleSheet.create({
   },
   hihat: {
     width: '100%',
+    zIndex: 1,
   },
   snare: {
     width: '78%',
+    zIndex: 2,
   },
   kick: {
     width: '56%',
+    zIndex: 3,
   },
   beatline: {
     backgroundColor: colors.primary,
@@ -61,7 +64,7 @@ const circleStyle: CircleStyle = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     width: '25%',
-    zIndex: 2,
+    zIndex: 4,
   },
   btnAnimated: {
     alignItems: 'center',

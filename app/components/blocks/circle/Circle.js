@@ -22,7 +22,7 @@ import {
   calcPulseInterval,
   isBeatEmpty,
 } from '../../../utils';
-import { useTeleport } from '../../../utils/hooks';
+import { useReview, useTeleport } from '../../../utils/hooks';
 import circleStyle from '../../../styles/circle';
 import { checkboxStyle } from '../../../styles/inputs';
 import notificationsStyle from '../../../styles/notifications';
@@ -34,6 +34,7 @@ function Circle(): Node {
   const { t } = useLocale();
   const { teleport } = useTeleport();
   const dispatch = useDispatch();
+  const reviewApp = useReview();
   const global: UI = useSelector(globalSelectors.getUI, isEqual);
   const beats: Beats = useSelector(beatSelectors.getBeats, isEqual);
   const [circleRadius, setCircleRadius] = useState({ hihat: 0, snare: 0, kick: 0 });
@@ -118,6 +119,12 @@ function Circle(): Node {
     beatlineAnimation.setValue(0);
     pulseAnimation.stopAnimation();
     pulseAnimation.setValue(1);
+
+    reviewApp();
+  };
+
+  const handleCheckbox = (key: string, index: number, checked: boolean) => {
+    dispatch(beatActions.toggleCheckbox({ key, index, checked }));
   };
 
   return (
@@ -135,42 +142,41 @@ function Circle(): Node {
       />
 
       {map(circleRadius, (val, key) => (
+        map(beats[key], (beat: Beat, beatKey: number) => (
+          <React.Fragment key={beatKey}>
+            {beat.visible && (
+              <TouchableOpacity
+                activeOpacity={1}
+                style={[
+                  checkboxStyle.wrapper,
+                  {
+                    transform: [
+                      { rotate: beat.angle + 'deg' },
+                      { translateY: -circleRadius[key] },
+                    ],
+                    zIndex: 5,
+                  },
+                ]}
+                onPress={() => handleCheckbox(key, beatKey, !beat.checked)}
+              >
+                <View
+                  style={[
+                    checkboxStyle.checkbox,
+                    beat.checked ? checkboxStyle[key] : checkboxStyle.default,
+                  ]}
+                />
+              </TouchableOpacity>
+            )}
+          </React.Fragment>
+        ))),
+      )}
+
+      {map(circleRadius, (val, key) => (
         <View
           key={key}
           style={{ ...circleStyle.circle, ...circleStyle[key] }}
           onLayout={(e) => getDimensions(e, key)}
-        >
-          {map(beats[key], (beat: Beat, beatKey: number) => (
-            <React.Fragment key={beatKey}>
-              {beat.visible && (
-                <TouchableOpacity
-                  activeOpacity={1}
-                  style={[
-                    checkboxStyle.wrapper,
-                    {
-                      transform: [{ rotate: beat.angle + 'deg' }, { translateY: -circleRadius[key] }],
-                    },
-                  ]}
-                  onPress={() => dispatch(
-                    beatActions.toggleCheckbox({
-                      key,
-                      index: beatKey,
-                      bool: !beat.checked,
-                    }),
-                  )
-                  }
-                >
-                  <View
-                    style={[
-                      checkboxStyle.checkbox,
-                      beat.checked ? checkboxStyle[key] : checkboxStyle.default,
-                    ]}
-                  />
-                </TouchableOpacity>
-              )}
-            </React.Fragment>
-          ))}
-        </View>
+        />
       ))}
 
       {global.isPlaying ? (

@@ -8,7 +8,8 @@ import { floor } from 'lodash';
 type Props = {
   style?: Object,
   countdownFrom: number|null,
-  onChange: Function,
+  onChange?: Function,
+  isHidden?: boolean,
 };
 
 function CountdownTimer(props: Props): Node {
@@ -32,7 +33,7 @@ function CountdownTimer(props: Props): Node {
         clearInterval(timerId);
       } else {
         setTime(timerRef.current);
-        props.onChange(timerRef.current);
+        if (props.onChange) props.onChange(timerRef.current);
       }
     }, secondsToMilliseconds(1));
 
@@ -41,6 +42,8 @@ function CountdownTimer(props: Props): Node {
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (props.isHidden) return null;
 
   return (
     <Text style={props.style}>{handleTime()}</Text>

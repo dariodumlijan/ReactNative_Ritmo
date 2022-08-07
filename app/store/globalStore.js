@@ -7,7 +7,7 @@ import * as LocalStorage from '../utils/localStorage';
 import { types as cmsTypes } from './cmsStore';
 import * as MIDI from '../midi';
 import { types as beatTypes } from './beatsStore';
-import { getSamples } from '../utils/lists';
+import { getSamples, getUnlockedSamples } from '../utils/lists';
 import type { Beats } from '../sound/beats';
 import type { BuildMidi, BuildPromise } from '../midi';
 import type { Sample } from '../utils/lists';
@@ -30,6 +30,7 @@ export type UI = {
   isPlaying: boolean,
   isRecording: boolean,
   navigationOpen: boolean,
+  showAds: boolean,
   showBanner: boolean,
   personalisedAds: boolean,
   useBPM: number,
@@ -56,6 +57,7 @@ export type State = {
 
 export const types = {
   GB_SHOW_PERSONALISED_ADS: 'GB/SHOW_PERSONALISED_ADS',
+  GB_SHOW_ADS: 'GB/SHOW_ADS',
   GB_SHOW_BANNER: 'GB/SHOW_BANNER',
   GB_TOGGLE_NAVIGATION: 'GB/TOGGLE_NAVIGATION',
   GB_UPDATE_BPM: 'GB/UPDATE_BPM',
@@ -109,6 +111,11 @@ export const selectors = {
 
     return reject(samples, (sample: Sample) => isSampleUnlocked(state.global.unlockedSamples, sample));
   },
+  hasUnlockedSample: (state: ReduxState): boolean => {
+    const defaultUnlockedSamples = getUnlockedSamples();
+
+    return state.global.unlockedSamples.length > defaultUnlockedSamples.length;
+  },
 };
 
 export const actions = {
@@ -116,13 +123,17 @@ export const actions = {
     type: types.GB_SHOW_PERSONALISED_ADS,
     payload: { personalisedAds: bool },
   }),
-  showBanner: (bool: boolean): ReduxAction => ({
-    type: types.GB_SHOW_BANNER,
-    payload: { showBanner: bool },
+  showAds: (showAds: boolean): ReduxAction => ({
+    type: types.GB_SHOW_ADS,
+    payload: { showAds },
   }),
-  unlockReward: (key?: string): ReduxAction => ({
+  showBanner: (showBanner: boolean): ReduxAction => ({
+    type: types.GB_SHOW_BANNER,
+    payload: { showBanner },
+  }),
+  unlockReward: (sampleLabel?: string): ReduxAction => ({
     type: types.GB_UNLOCK_REWARD,
-    payload: key,
+    payload: sampleLabel,
   }),
   refreshRewards: (): ReduxAction => ({
     type: types.GB_REFRESH_REWARDS,
@@ -178,9 +189,9 @@ export const actions = {
   }),
 };
 
-const unlockReward = (state: State, key?: string): State => {
+const unlockReward = (state: State, sampleLabel?: string): State => {
   const samples = getSamples();
-  const reward = key || state.ui.selectedReward?.label;
+  const reward = sampleLabel || state.ui.selectedReward?.label;
   const newUnlockedSamples = uniq(reward ? [...state.unlockedSamples, reward] : [...state.unlockedSamples]);
   const lockedSamples = reject(samples, (sample: Sample) => isSampleUnlocked(newUnlockedSamples, sample));
   const rewardedAt = Date.now();
@@ -203,11 +214,21 @@ const refreshRewards = (state: State, payload: SaveRewardsResponse): State => ({
   rewardedAt: payload.rewardedAt,
 });
 
-const lockRewards = (state: State): State => ({
-  ...state,
-  unlockedSamples: [],
-  rewardedAt: null,
-});
+const lockRewards = (state: State): State => {
+  const samples = getSamples();
+  const unlockedSamples = getUnlockedSamples();
+  const lockedSamples = reject(samples, (sample: Sample) => isSampleUnlocked(unlockedSamples, sample));
+
+  return {
+    ...state,
+    unlockedSamples,
+    rewardedAt: null,
+    ui: {
+      ...state.ui,
+      selectedReward: get(lockedSamples, [0], null),
+    },
+  };
+};
 
 const checkUnlockedRewards = (state: State, payload: InitialCMSResponse): State => {
   const samples = getSamples();
@@ -339,6 +360,7 @@ export const reducer = (state: State, action: ReduxActionWithPayload): State => 
       return omit(state, 'ui.fileUri');
 
     case types.GB_SHOW_PERSONALISED_ADS:
+    case types.GB_SHOW_ADS:
     case types.GB_SHOW_BANNER:
     case types.GB_TOGGLE_NAVIGATION:
     case types.GB_UPDATE_BPM:

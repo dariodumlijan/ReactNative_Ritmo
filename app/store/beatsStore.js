@@ -14,9 +14,9 @@ type PayloadRotate = {
 };
 
 type PayloadCheckbox = {
-  bool: boolean,
   key: string,
   index: number,
+  checked: boolean,
 };
 
 type PayloadPlay = {
@@ -117,7 +117,7 @@ const toggleCheckbox = (state: State, payload: PayloadCheckbox): State => {
     if (index === payload.index) {
       return {
         ...beat,
-        checked: payload.bool,
+        checked: payload.checked,
       };
     }
 

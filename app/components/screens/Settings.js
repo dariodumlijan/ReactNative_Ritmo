@@ -7,19 +7,23 @@ import {
   SafeAreaView,
   Text,
   TextInput,
+  TouchableHighlight,
   TouchableOpacity,
   View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-native';
+import { Link, useNavigate } from 'react-router-native';
 import {
-  every, get, includes, isEmpty, isEqual, isNumber, map,
+  get, isEmpty, isEqual, isNumber, map,
 } from 'lodash';
+import { hoursToMilliseconds } from 'date-fns';
 import DismissKeyboard from '../elements/misc/DismissKeyboard';
+import CountdownTimer from '../elements/misc/CountdownTimer';
 import Select from '../elements/inputs/Select';
 import Alert from '../elements/misc/Alert';
 import Close from '../../assets/icons/Close';
 import useLocale from '../../locales';
+import { isRealDevice } from '../../utils';
 import useSelectLists from '../../utils/lists';
 import { useTeleport } from '../../utils/hooks';
 import { actions, selectors } from '../../store/globalStore';
@@ -29,111 +33,64 @@ import notificationsStyle from '../../styles/notifications';
 import colors from '../../styles/colors';
 import type { Sample } from '../../utils/lists';
 import type { State } from '../../store/globalStore';
+import type { ReduxState } from '../../types';
 
 const Settings = (): Node => {
   const { t } = useLocale();
   const { teleport } = useTeleport();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { samples, timeSignatures } = useSelectLists();
+  const lockedSamples = useSelector(selectors.getLockedSamples, isEqual);
   const global: State = useSelector(selectors.getGlobal, isEqual);
+  const { resetRewards, keepRewards }: { resetRewards: number, keepRewards: number } = useSelector((state: ReduxState) => ({
+    resetRewards: get(state.cms, isRealDevice ? 'master.resetRewards' : 'master.resetRewardsStaging', 24),
+    keepRewards: get(state.cms, isRealDevice ? 'master.keepRewards' : 'master.keepRewardsStaging', 6),
+  }), isEqual);
   const [bpm, setBpm] = useState<string>(String(global.ui.useBPM));
   const [openSelect, setOpenSelect] = useState(false);
-  const rewardedBtnIsDisabled = every(samples, (s) => includes(global.unlockedSamples, s.name));
-  const shouldRefresh = false;
-  const shouldShowAlert = rewardedBtnIsDisabled && !shouldRefresh;
+  const hasAllRewards = isEmpty(lockedSamples);
+  const [rewardsAreRefreshable, setRewardsAreRefreshable] = useState(false);
+  const shouldShowAlert = hasAllRewards && !rewardsAreRefreshable;
 
   const onSampleChange = (sample: Sample) => {
     setOpenSelect(false);
     dispatch(actions.updateSelectedSample(sample));
   };
 
-  /* Check Reward Reset Time - Function */
-  // async function checkCountdown() {
-  //   const countdownDate = JSON.parse(await AsyncStorage.getItem('countdownTime'));
-
-  //   if (countdownDate) {
-  //     const currentDate = new Date().valueOf();
-  //     const timeDiff = countdownDate - currentDate;
-  //     ms2Time(timeDiff);
-
-  //     if (timeDiff <= 0) {
-  //       lockRewards();
-  //     } else {
-  //       checkUnlocked();
-  //     }
-  //   }
-  // }
-
-  /* Lock Rewards - Function */
-  // async function lockRewards() {
-  //   timerUpdate.hours = 0;
-  //   timerUpdate.minutes = 0;
-  //   timerUpdate.seconds = 0;
-
-  //   await AsyncStorage.removeItem('timerStart');
-  //   await AsyncStorage.removeItem('countdownTime');
-  //   await AsyncStorage.removeItem('unlockedRewards');
-  //   timerStart = false;
-
-  //   for (let i = 0; i < soundList.length; i++) {
-  //     if (i <= 2) {
-  //       soundList[i].disabled = false;
-  //     } else {
-  //       soundList[i].disabled = true;
-  //     }
-  //   }
-  //   checkUnlocked();
-  // }
-
-  /* Check Reward Call Button - Function */
-  // function checkSoundList() {
-  //   for (let i = 0; i < soundList.length; i++) {
-  //     if (soundList[i].disabled === true) {
-  //       rewardDisabled = false;
-  //       setDisabled(rewardDisabled);
-  //       break;
-  //     } else {
-  //       rewardDisabled = true;
-  //       setDisabled(rewardDisabled);
-  //     }
-  //   }
-  //   if (rewardDisabled && timerUpdate.hours <= refreshHours) {
-  //     refreshEnabled = true;
-  //     setRefresh(refreshEnabled);
-  //   } else {
-  //     refreshEnabled = false;
-  //     setRefresh(refreshEnabled);
-  //   }
-  // }
-
-  const bpmCheck = (val: string) => {
+  const handleBPM = (val: string) => {
     let newBPM = Number(val);
     if (newBPM < 1 || (isEmpty(newBPM) && !isNumber(newBPM))) newBPM = 1;
     if (newBPM > 300) newBPM = 300;
 
     setBpm(String(newBPM));
     dispatch(actions.updateBPM(newBPM));
-    // calcSoundDelay();
   };
-
-  /* Pause Playback - Function */
-  // const pause = () => {
-  //   props.pauseCallback();
-  // };
 
   const handleCloseSettings = () => {
     Keyboard.dismiss();
-    // rotateEffect();
   };
 
   const handleRewardedOpen = () => {
+    if (!global.ui.showAds) {
+      teleport(
+        <Alert clearDelayMS={5000}>
+          <Text style={[notificationsStyle.alertText, { fontSize: 14 }]}>
+            {t('modal.no_ads')}
+          </Text>
+        </Alert>,
+      );
+
+      return;
+    }
+
     if (shouldShowAlert) {
       teleport(
         <Alert clearDelayMS={5000}>
           <Text style={[notificationsStyle.alertText, { fontSize: 14 }]}>
-            {t('settings.modal.text_1')}
-            <Text style={{ color: colors.green }}>6h</Text>
-            {t('settings.modal.text_2')}
+            {t('modal.keep_rewards.text_1')}
+            <Text style={{ color: colors.green }}>{keepRewards}h</Text>
+            {t('modal.keep_rewards.text_2')}
           </Text>
         </Alert>,
       );
@@ -142,16 +99,22 @@ const Settings = (): Node => {
     }
 
     Keyboard.dismiss();
-    // pause();
+    navigate('/rewarded');
   };
 
-  // useEffect(() => {
-  //   checkCountdown();
-  // }, []);
+  const handleCountdown = (currentTime: number) => {
+    const isBelowThreshold = currentTime <= hoursToMilliseconds(keepRewards);
+    if (isBelowThreshold && !rewardsAreRefreshable) setRewardsAreRefreshable(true);
+  };
 
   return (
     <DismissKeyboard>
       <SafeAreaView style={mainStyle.safe}>
+        <CountdownTimer
+          countdownFrom={global.rewardedAt ? global.rewardedAt + hoursToMilliseconds(resetRewards) : null}
+          onChange={handleCountdown}
+          isHidden
+        />
         <View style={settingsStyle.navigation}>
           <Link
             to="/"
@@ -172,9 +135,8 @@ const Settings = (): Node => {
               style={settingsStyle.inputBPM}
               maxLength={3}
               onChangeText={(val) => setBpm(String(Math.trunc(Number(val))))}
-              onSubmitEditing={() => bpmCheck(bpm)}
-              onBlur={() => bpmCheck(bpm)}
-              // onFocus={pause}
+              onSubmitEditing={() => handleBPM(bpm)}
+              onBlur={() => handleBPM(bpm)}
               value={bpm}
               placeholderTextColor={colors.grayBlue}
               keyboardType="numeric"
@@ -210,17 +172,16 @@ const Settings = (): Node => {
             compareSamples={global.unlockedSamples}
           />
 
-          <Link
-            to="/rewarded"
+          <TouchableHighlight
             onPress={handleRewardedOpen}
-            disabled={openSelect || shouldShowAlert}
+            disabled={openSelect}
             underlayColor={colors.grayBlue}
-            style={shouldShowAlert ? settingsStyle.btnRewardScreenDisabled : settingsStyle.btnRewardScreen}
+            style={shouldShowAlert || !global.ui.showAds ? settingsStyle.btnRewardScreenDisabled : settingsStyle.btnRewardScreen}
           >
-            <Text style={shouldShowAlert ? settingsStyle.btnRewardScreenTextDisabled : settingsStyle.btnRewardScreenText}>
-              {t(rewardedBtnIsDisabled ? 'settings.keep_rewards' : 'settings.more_samples')}
+            <Text style={shouldShowAlert || !global.ui.showAds ? settingsStyle.btnRewardScreenTextDisabled : settingsStyle.btnRewardScreenText}>
+              {t(hasAllRewards ? 'settings.keep_rewards' : 'settings.more_samples')}
             </Text>
-          </Link>
+          </TouchableHighlight>
         </View>
 
         <View style={mainStyle.adSpace} />

@@ -5,11 +5,12 @@ import Body from './app/components/Body';
 import PortalProvider from './app/components/blocks/portal/PortalProvider';
 import beats from './app/sound/beats';
 import { t } from './app/locales';
-import { getSamples, getTimeSignatures } from './app/utils/lists';
+import { getSamples, getTimeSignatures, getUnlockedSamples } from './app/utils/lists';
 import { configureStore } from './app/store';
 import type { ReduxState } from './app/types';
 
 const samples = getSamples();
+const unlockedSamples = getUnlockedSamples();
 const timeSignatures = getTimeSignatures(t);
 const initialState: ReduxState = {
   static: {
@@ -20,8 +21,6 @@ const initialState: ReduxState = {
     midiNoteMin: 8,
     midiNoteMax: 64,
     midiBarTicks: 512,
-    countdownHours: 24,
-    refreshHours: 5,
     reviewMinutes: 2,
     loadTime: Date.now(),
   },
@@ -37,8 +36,9 @@ const initialState: ReduxState = {
       kick: 0,
     },
     ui: {
-      personalisedAds: true,
+      showAds: true,
       showBanner: true,
+      personalisedAds: true,
       isPlaying: false,
       isRecording: false,
       hihatSliderVal: 0,
@@ -48,7 +48,7 @@ const initialState: ReduxState = {
       useTimeSig: timeSignatures[0].value,
       useSample: samples[0],
     },
-    unlockedSamples: [samples[0].label, samples[1].label],
+    unlockedSamples,
   },
   beats: {
     hihat: beats.hihat,

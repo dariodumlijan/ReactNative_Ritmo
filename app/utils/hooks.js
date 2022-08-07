@@ -4,10 +4,15 @@ import { useLocation } from 'react-router-dom';
 import InAppReview from 'react-native-in-app-review';
 import { RewardedAd } from 'react-native-google-mobile-ads';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { addMonths, minutesToMilliseconds } from 'date-fns';
+import { useSelector } from 'react-redux';
+import { isEqual } from 'lodash';
 import { localStorageKeys } from '../tokens';
 import { PortalContext } from '../context';
 import { isPromise } from '.';
 import type { PortalProps } from '../context';
+import type { ReduxState } from '../types';
+import { selectors } from '../store/globalStore';
 
 export const getItem = async (key: string): any => {
   try {
@@ -45,24 +50,40 @@ export const useLocalStorage = (): {
   removeItem,
 });
 
-export const useReview = (unlocked: boolean, reviewDelay: Date) => {
+export const useReview = (): Function => {
+  const { loadTime, reviewMinutes, hasUnlockedSample }: {
+    loadTime: number,
+    reviewMinutes: number,
+    hasUnlockedSample: boolean,
+  } = useSelector((state: ReduxState) => ({
+    loadTime: state.static.loadTime,
+    reviewMinutes: state.static.reviewMinutes,
+    hasUnlockedSample: selectors.hasUnlockedSample(state),
+  }), isEqual);
   const localStorage = useLocalStorage();
-  const available = InAppReview.isAvailable();
-  const date = Date.now();
-  if (unlocked && reviewDelay <= date) {
-    const timestamp = localStorage.getItem(localStorageKeys.reviewTimestamp);
+  const isAvailable = InAppReview.isAvailable();
 
-    if (Number(timestamp) <= date || Number(timestamp) === 0) {
-      if (available) {
-        InAppReview.RequestInAppReview().then((hasFlowFinishedSuccessfully) => {
-          if (hasFlowFinishedSuccessfully) {
-            const newTimestamp = new Date(date).setMonth(new Date(date).getMonth() + 1).valueOf();
+  const handleReview = async () => {
+    const currentTime = Date.now();
+    const reviewEnabled = (loadTime + minutesToMilliseconds(reviewMinutes)) <= currentTime;
+
+    if (!isAvailable) return;
+
+    if (hasUnlockedSample && reviewEnabled) {
+      const reviewTimestamp = await localStorage.getItem(localStorageKeys.reviewTimestamp);
+
+      if (!reviewTimestamp || Number(reviewTimestamp) <= currentTime) {
+        InAppReview.RequestInAppReview().then((successful) => {
+          if (successful) {
+            const newTimestamp = addMonths(currentTime, 1).valueOf();
             localStorage.setItem(localStorageKeys.reviewTimestamp, JSON.stringify(newTimestamp));
           }
         });
       }
     }
-  }
+  };
+
+  return handleReview;
 };
 
 export const useLocationInfo = (): {
