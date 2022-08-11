@@ -14,7 +14,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-native';
 import {
-  get, isEmpty, isEqual, isNumber, map,
+  get, isEmpty, isEqual, isNaN, isNumber, map,
 } from 'lodash';
 import { hoursToMilliseconds } from 'date-fns';
 import DismissKeyboard from '../elements/misc/DismissKeyboard';
@@ -59,8 +59,8 @@ const Settings = (): Node => {
   };
 
   const handleBPM = (val: string) => {
-    let newBPM = Number(val);
-    if (newBPM < 1 || (isEmpty(newBPM) && !isNumber(newBPM))) newBPM = 1;
+    let newBPM = Math.trunc(Number(val));
+    if (newBPM < 1 || (isEmpty(newBPM) && !isNumber(newBPM)) || isNaN(newBPM)) newBPM = 1;
     if (newBPM > 300) newBPM = 300;
 
     setBpm(String(newBPM));
@@ -134,7 +134,7 @@ const Settings = (): Node => {
             <TextInput
               style={settingsStyle.inputBPM}
               maxLength={3}
-              onChangeText={(val) => setBpm(String(Math.trunc(Number(val))))}
+              onChangeText={(val) => setBpm(val)}
               onSubmitEditing={() => handleBPM(bpm)}
               onBlur={() => handleBPM(bpm)}
               value={bpm}

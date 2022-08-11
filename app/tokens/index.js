@@ -10,6 +10,11 @@ export const admob = {
   },
 };
 
+export const codepush = {
+  production: 'O04Aw3YIpvD_ihYX4qO0faqD6R3uCyzorw4Yf',
+  staging: '0e_fCwBomxPBperEcePzVV7hpBCXdgISY7vEQ',
+};
+
 export const localStorageKeys = {
   appContent: 'appContent',
   contentTimestamps: 'contentTimestamps',

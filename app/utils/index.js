@@ -6,6 +6,7 @@ import { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
 import {
   every, flatten, floor, includes, values,
 } from 'lodash';
+import ENV from '../../env.json';
 import type { Sample } from './lists';
 import type { Beats } from '../sound/beats';
 
@@ -15,6 +16,7 @@ export const isRealDevice: boolean = !DeviceInfo.isEmulator() && isDevelopment;
 export const isApple: boolean = Platform.OS === 'ios';
 export const isTablet: boolean = DeviceInfo.isTablet();
 export const isiPhone: boolean = isApple && !isTablet;
+export const showAppVersioning: boolean = !isRealDevice || includes(ENV.ADMIN_DEVICE_IDS, DeviceInfo.getDeviceId());
 
 export const deviceWidth: number = Dimensions.get('screen').width;
 export const deviceHeight: number = Dimensions.get('screen').height;

@@ -28,7 +28,7 @@ export const playBeat = (props: Props) => {
             sound.setVolume(0.8);
             sound.play((success) => {
               if (success) sound.release();
-              else /* console.log('Playback Fail') */;
+              else /* Playback Fail */;
             });
           });
         }, beat.soundDelay);

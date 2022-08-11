@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import codePush from 'react-native-code-push';
 import { Provider } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import Body from './app/components/Body';
@@ -7,6 +8,7 @@ import beats from './app/sound/beats';
 import { t } from './app/locales';
 import { getSamples, getTimeSignatures, getUnlockedSamples } from './app/utils/lists';
 import { configureStore } from './app/store';
+import { codepush } from './app/tokens';
 import type { ReduxState } from './app/types';
 
 const samples = getSamples();
@@ -25,6 +27,7 @@ const initialState: ReduxState = {
     loadTime: Date.now(),
   },
   global: {
+    codepushKey: codepush.production,
     presets: {
       one: null,
       two: null,
@@ -72,4 +75,4 @@ function App() {
   );
 }
 
-export default App;
+export default codePush(App);

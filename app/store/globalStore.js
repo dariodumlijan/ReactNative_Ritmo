@@ -46,6 +46,7 @@ export type Preset = {
 };
 
 export type State = {
+  codepushKey: string,
   presets: {
     [string]: Preset|null,
   }|null,
@@ -56,6 +57,7 @@ export type State = {
 };
 
 export const types = {
+  GB_TOGGLE_APP_VERSION: 'GB/TOGGLE_APP_VERSION',
   GB_SHOW_PERSONALISED_ADS: 'GB/SHOW_PERSONALISED_ADS',
   GB_SHOW_ADS: 'GB/SHOW_ADS',
   GB_SHOW_BANNER: 'GB/SHOW_BANNER',
@@ -103,6 +105,7 @@ export const types = {
 };
 
 export const selectors = {
+  getCodepushKey: (state: ReduxState): string => state.global.codepushKey,
   getGlobal: (state: ReduxState): State => state.global,
   getUI: (state: ReduxState): UI => state.global.ui,
   getUnlockedSamples: (state: ReduxState): string[] => state.global.unlockedSamples,
@@ -119,6 +122,10 @@ export const selectors = {
 };
 
 export const actions = {
+  toggleAppVersion: (key: string): ReduxAction => ({
+    type: types.GB_TOGGLE_APP_VERSION,
+    payload: key,
+  }),
   showPersonalisedAds: (bool: boolean): ReduxAction => ({
     type: types.GB_SHOW_PERSONALISED_ADS,
     payload: { personalisedAds: bool },
@@ -368,6 +375,9 @@ export const reducer = (state: State, action: ReduxActionWithPayload): State => 
     case types.GB_UPDATE_SELECTED_SAMPLE:
     case types.GB_UPDATE_SELECTED_REWARD:
       return merge({}, state, { ui: action.payload });
+
+    case types.GB_TOGGLE_APP_VERSION:
+      return merge({}, state, { codepushKey: action.payload });
 
     default:
       return state || {};

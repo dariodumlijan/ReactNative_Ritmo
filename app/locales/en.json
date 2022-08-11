@@ -1,4 +1,9 @@
 {
+  "app_version": {
+    "production": "Production",
+    "staging": "Staging"
+  },
+  "loading": "Loading...",
   "navigation": {
     "title": "Redefine Beatmaking",
     "alert": "Nothing to export!",

@@ -1,5 +1,5 @@
 // @flow
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import type { Node } from 'react';
 import {
   Animated,
@@ -38,8 +38,8 @@ function Circle(): Node {
   const global: UI = useSelector(globalSelectors.getUI, isEqual);
   const beats: Beats = useSelector(beatSelectors.getBeats, isEqual);
   const [circleRadius, setCircleRadius] = useState({ hihat: 0, snare: 0, kick: 0 });
-  const beatlineAnimation = useState(new Animated.Value(0))[0];
-  const pulseAnimation = useState(new Animated.Value(1))[0];
+  const beatlineAnimation = useRef(new Animated.Value(0)).current;
+  const pulseAnimation = useRef(new Animated.Value(1)).current;
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => () => dispatch(beatActions.pauseBeat()), []);

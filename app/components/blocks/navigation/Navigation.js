@@ -1,5 +1,5 @@
 // @flow
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import type { Node } from 'react';
 import {
   Animated,
@@ -13,7 +13,7 @@ import { Link } from 'react-router-native';
 import { isEqual, map } from 'lodash';
 import ExportMidiModal from '../../elements/modals/ExportMidiModal';
 import Exit from '../../../assets/icons/Exit';
-import Recordings from '../../../assets/icons/Recordings';
+// import Recordings from '../../../assets/icons/Recordings';
 import Guide from '../../../assets/icons/Guide';
 import Export from '../../../assets/icons/Export';
 import Settings from '../../../assets/icons/Settings';
@@ -33,8 +33,8 @@ function Navigation(): Node {
   const dispatch = useDispatch();
   const navigationOpen: boolean = useSelector((state : ReduxState) => state.global.ui.navigationOpen, isEqual);
   const beats: Beats = useSelector(selectors.getBeats, isEqual);
-  const opacityTag = useState(new Animated.Value(1))[0];
-  const opacityAlert = useState(new Animated.Value(0))[0];
+  const opacityTag = useRef(new Animated.Value(1)).current;
+  const opacityAlert = useRef(new Animated.Value(0)).current;
   const beatExists = !isBeatEmpty(beats);
 
   const links = [
@@ -43,11 +43,11 @@ function Navigation(): Node {
       label: t('navigation.settings'),
       icon: <Settings style={navigationStyle.icon} />,
     },
-    {
-      path: 'library',
-      label: t('navigation.library'),
-      icon: <Recordings style={navigationStyle.icon} />,
-    },
+    // {
+    //   path: 'library',
+    //   label: t('navigation.library'),
+    //   icon: <Recordings style={navigationStyle.icon} />,
+    // },
     {
       path: 'guide',
       label: t('navigation.guide'),
@@ -110,11 +110,9 @@ function Navigation(): Node {
             <Animated.Text style={[navigationStyle.tagline, { opacity: opacityTag }]}>
               {t('navigation.title')}
             </Animated.Text>
-
             <Animated.Text style={[navigationStyle.tagline, { opacity: opacityAlert }]}>
               {t('navigation.alert')}
             </Animated.Text>
-
             <TouchableOpacity
               style={navigationStyle.close}
               activeOpacity={0.6}

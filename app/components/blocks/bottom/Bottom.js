@@ -89,7 +89,7 @@ function Bottom(): Node {
     stopBeat(beats);
   };
 
-  const handleRecording = () => {};
+  // const handleRecording = () => {};
 
   /* Recording Functions - START */
   /*
@@ -229,7 +229,7 @@ function Bottom(): Node {
           >
             <Text style={bottomStyle.btnPrimaryText}>{t('bottom.actions.reset')}</Text>
           </TouchableHighlight>
-          <TouchableHighlight
+          {/* <TouchableHighlight
             underlayColor={colors.grayBlue}
             style={[bottomStyle.btnPrimary, bottomStyle.btnRecording]}
             onPress={handleRecording}
@@ -239,7 +239,7 @@ function Bottom(): Node {
                 backgroundColor: global.ui.isRecording ? colors.white : colors.red,
               }]}
             />
-          </TouchableHighlight>
+          </TouchableHighlight> */}
         </View>
       </View>
     </View>

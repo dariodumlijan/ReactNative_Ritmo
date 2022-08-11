@@ -10,6 +10,8 @@ type HomeStyle = {
   navigation: Object,
   logo: Object,
   menu: Object,
+  appVersion: Object,
+  appVersionText: Object,
 };
 
 const homeStyle: HomeStyle = StyleSheet.create({
@@ -51,6 +53,20 @@ const homeStyle: HomeStyle = StyleSheet.create({
   menu: {
     aspectRatio: 1 / 2,
     height: '120%',
+  },
+  appVersion: {
+    alignItems: 'center',
+    backgroundColor: colors.gray,
+    borderRadius: 15,
+    display: 'flex',
+    height: 30,
+    justifyContent: 'center',
+    marginVertical: 20,
+    paddingHorizontal: 10,
+  },
+  appVersionText: {
+    fontFamily: 'Montserrat-SemiBold',
+    fontSize: 12,
   },
 });
 

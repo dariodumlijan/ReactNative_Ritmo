@@ -44,7 +44,8 @@ const navigationStyle: Style = StyleSheet.create({
   nav: {
     display: 'flex',
     flexShrink: 1,
-    marginBottom: 50,
+    // marginBottom: 50,
+    marginBottom: 100,
     paddingHorizontal: '5%',
     width: deviceWidth,
   },

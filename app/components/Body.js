@@ -8,6 +8,7 @@ import Admob from 'react-native-google-mobile-ads';
 import {
   get, isEqual, every, has,
 } from 'lodash';
+import { secondsToMilliseconds } from 'date-fns';
 import Home from './screens/Home';
 import Settings from './screens/Settings';
 import Library from './screens/Library';
@@ -33,6 +34,7 @@ function Body(): Node {
   const { banner } = useSelector(selectors.getAdmobIds, isEqual);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const [adsReady, setAdsReady] = useState(false);
+  const [loadingAnimationDone, setLoadingAnimationDone] = useState(false);
   const localTimestamps = get(cms, 'timestamps.local', 0);
   const onlineTimestamps = get(cms, 'timestamps.online', null);
   const hasAnnouncement = get(cms, 'announcement.content');
@@ -67,9 +69,15 @@ function Body(): Node {
     if (initLoad.current) {
       dispatch(cmsActions.fetchCMS());
       dispatch(globalActions.fetchPresetAndSamples());
-      setTimeout(askForPermission, 1000);
+
+      setTimeout(askForPermission, secondsToMilliseconds(1));
+      setTimeout(() => {
+        setLoadingAnimationDone(true);
+      }, secondsToMilliseconds(3));
       initLoad.current = false;
     }
+
+    return () => clearTimeout();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -86,7 +94,7 @@ function Body(): Node {
     );
   }
 
-  if (isLoading) return <Loading />;
+  if (isLoading || !loadingAnimationDone) return <Loading />;
 
   return (
     <View style={mainStyle.container}>
