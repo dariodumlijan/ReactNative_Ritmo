@@ -24,6 +24,7 @@ import colors from '../../../styles/colors';
 import type { Beats } from '../../../sound/beats';
 import type { State as StaticState } from '../../../store/staticStore';
 import type { Preset, State as GlobalState } from '../../../store/globalStore';
+import { secondsToMilliseconds } from 'date-fns';
 
 function Bottom(): Node {
   const { t } = useLocale();
@@ -54,7 +55,7 @@ function Bottom(): Node {
       }));
     } else {
       teleport(
-        <Alert clearDelayMS={3300}>
+        <Alert clearDelayMS={secondsToMilliseconds(3.3)}>
           <Text style={notificationsStyle.alertText}>
             {t('alert.no_beat')}
           </Text>
@@ -66,7 +67,7 @@ function Bottom(): Node {
   const handleModalCall = (key: string) => {
     if (!global.presets || isEmpty(global.presets[key])) {
       teleport(
-        <Alert clearDelayMS={3300}>
+        <Alert clearDelayMS={secondsToMilliseconds(3.3)}>
           <Text style={notificationsStyle.alertText}>
             {t('alert.no_preset')}
           </Text>

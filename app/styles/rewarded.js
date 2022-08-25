@@ -10,10 +10,14 @@ type RewardedStyle = {
   rewardedExp: Object,
   rewardedExpText: Object,
   rewardedExp2Text: Object,
+  rewardedExp3Text: Object,
   rewardedStart: Object,
   rewardedDisabled: Object,
   rewardedStartText: Object,
   rewardedDisc: Object,
+  listItem: Object,
+  listBullet: Object,
+  listText: Object,
 }
 
 const rewardedStyle: RewardedStyle = StyleSheet.create({
@@ -60,7 +64,15 @@ const rewardedStyle: RewardedStyle = StyleSheet.create({
     color: colors.gray,
     fontFamily: 'Montserrat-SemiBold',
     fontSize: 14,
-    marginVertical: '20%',
+    marginTop: '20%',
+    textAlign: 'center',
+  },
+  rewardedExp3Text: {
+    color: colors.gray,
+    fontFamily: 'Montserrat-SemiBold',
+    fontSize: 18,
+    marginBottom: 20,
+    marginTop: '10%',
     textAlign: 'center',
   },
   rewardedStart: {
@@ -77,6 +89,7 @@ const rewardedStyle: RewardedStyle = StyleSheet.create({
     height: 50,
     justifyContent: 'center',
     marginBottom: 20,
+    marginTop: '20%',
     width: 240,
   },
   rewardedDisabled: {
@@ -93,6 +106,7 @@ const rewardedStyle: RewardedStyle = StyleSheet.create({
     height: 50,
     justifyContent: 'center',
     marginBottom: 20,
+    marginTop: '20%',
     width: 240,
   },
   rewardedStartText: {
@@ -106,6 +120,24 @@ const rewardedStyle: RewardedStyle = StyleSheet.create({
     fontFamily: 'Montserrat-SemiBold',
     fontSize: 12,
     textAlign: 'center',
+  },
+  listItem: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  listBullet: {
+    backgroundColor: colors.orange,
+    borderRadius: 5,
+    height: 10,
+    marginRight: 10,
+    width: 10,
+  },
+  listText: {
+    color: colors.gray,
+    fontFamily: 'Montserrat-SemiBold',
+    fontSize: 14,
   },
 });
 

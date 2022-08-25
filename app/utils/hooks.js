@@ -1,10 +1,10 @@
 // @flow
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import InAppReview from 'react-native-in-app-review';
 import { RewardedAd } from 'react-native-google-mobile-ads';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { addMonths, minutesToMilliseconds } from 'date-fns';
+import { addMonths, hoursToMilliseconds, minutesToMilliseconds, secondsToMilliseconds } from 'date-fns';
 import { useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
 import { localStorageKeys } from '../tokens';
@@ -95,7 +95,7 @@ export const useLocationInfo = (): {
 } => {
   const location = useLocation();
   const pathHome = location.pathname === '/';
-  const pathRewarded = location.pathname === '/rewarded';
+  const pathRewarded = location.pathname.includes('/rewarded');
   const pathSettings = location.pathname === '/settings';
   const pathGuide = location.pathname === '/guide';
 
@@ -129,4 +129,33 @@ export const useRewardedAd = (
   }, []);
 
   return rewardedAd;
+};
+
+export const useCountdown = (onTimeEnd: Function, countdownFrom: ?number) => {
+  const [time, setTime] = useState(countdownFrom || 0);
+  const timerRef = useRef(time);
+
+  useEffect(() => {
+    if (countdownFrom) {
+      timerRef.current = countdownFrom;
+      setTime(timerRef.current);
+    }
+  }, [countdownFrom]);
+
+  useEffect(() => {
+    if (!countdownFrom) return;
+
+    const timerId = setInterval(() => {
+      timerRef.current -= secondsToMilliseconds(1);
+      
+      if (timerRef.current < 0 && countdownFrom) {
+        onTimeEnd();
+        clearInterval(timerId);
+      } else {
+        setTime(timerRef.current);
+      }
+    }, secondsToMilliseconds(1));
+
+    return () => clearInterval(timerId);
+  }, []);
 };

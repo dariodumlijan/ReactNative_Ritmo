@@ -4,7 +4,7 @@ import get from 'lodash/get';
 import en from './en.json';
 
 type AvailabeLanguages = {
-  en: JSON,
+  en: Object,
 };
 
 const availabeLanguages: AvailabeLanguages = {

@@ -48,7 +48,11 @@ const initialState: ReduxState = {
       snareSliderVal: 0,
       kickSliderVal: 0,
       useBPM: 100,
-      useTimeSig: timeSignatures[0].value,
+      useTimeSig: {
+        hihat: timeSignatures[0].value,
+        snare: timeSignatures[0].value,
+        kick: timeSignatures[0].value,
+      },
       useSample: samples[0],
     },
     unlockedSamples,

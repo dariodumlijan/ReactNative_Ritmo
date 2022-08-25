@@ -61,3 +61,6 @@ buck-out/
 
 # Secrets
 env.json
+
+cache/
+coverage/

@@ -5,6 +5,7 @@ import { calcSoundDelay } from '../utils';
 import * as Sound from '../sound';
 import type { Sample } from '../utils/lists';
 import type { Beats, Beat } from '../sound/beats';
+import type { TimeSignaturePayload } from './globalStore';
 import type { ReduxAction, ReduxActionWithPayload, ReduxState } from '../types';
 
 type PayloadRotate = {
@@ -130,20 +131,22 @@ const toggleCheckbox = (state: State, payload: PayloadCheckbox): State => {
   };
 };
 
-const handleTimeSigUpdate = (state: State, payload: { useTimeSig: string }): State => {
-  const { useTimeSig } = payload;
+const handleTimeSigUpdate = (state: State, payload: TimeSignaturePayload): State => {
+  const toggleVisibility = (beats: Beat[], circleKey: 'hihat'|'snare'|'kick') => {
+    if (payload.key === 'all' || payload.key === circleKey) {
+      return map(beats, (beat: Beat) => ({
+        ...beat,
+        visible: beat.timeSig === payload.value || beat.timeSig === 'Free' || payload.value === 'Free',
+      }));
+    }
 
-  const toggleVisibility = (beats: Beat[]) => (
-    map(beats, (beat: Beat) => ({
-      ...beat,
-      visible: beat.timeSig === useTimeSig || beat.timeSig === 'Free' || useTimeSig === 'Free',
-    }))
-  );
+    return beats;
+  };
 
   return {
-    hihat: toggleVisibility(state.hihat),
-    snare: toggleVisibility(state.snare),
-    kick: toggleVisibility(state.kick),
+    hihat: toggleVisibility(state.hihat, 'hihat'),
+    snare: toggleVisibility(state.snare, 'snare'),
+    kick: toggleVisibility(state.kick, 'kick'),
   };
 };
 

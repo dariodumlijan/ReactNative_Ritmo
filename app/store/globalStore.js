@@ -1,13 +1,14 @@
 // @flow
 import {
-  merge, get, keys, reject, omit, uniq,
+  merge, get, keys, reject, omit, uniq, isNil,
 } from 'lodash';
+import { t } from '../locales';
 import { isRealDevice, isSampleUnlocked } from '../utils';
 import * as LocalStorage from '../utils/localStorage';
-import { types as cmsTypes } from './cmsStore';
 import * as MIDI from '../midi';
+import { types as cmsTypes } from './cmsStore';
 import { types as beatTypes } from './beatsStore';
-import { getSamples, getUnlockedSamples } from '../utils/lists';
+import { getSamples, getTimeSignatures, getUnlockedSamples } from '../utils/lists';
 import type { Beats } from '../sound/beats';
 import type { BuildMidi, BuildPromise } from '../midi';
 import type { Sample } from '../utils/lists';
@@ -15,14 +16,31 @@ import type { InitialCMSResponse } from '../api';
 import type {
   FetchResponse,
   SaveRewardsResponse,
+  UnlockProFeaturesResponse,
   WriteResponse,
-} from '../utils/localStorage';
+} from "../utils/localStorage";
 import type { ReduxAction, ReduxActionWithPayload, ReduxState } from '../types';
+
+export type RewardedAt = {
+  samples?: number|null,
+  pro?: number|null,
+};
+
+export type TimeSignaturePayload = {
+  key: 'all'|'hihat'|'snare'|'kick',
+  value: string,
+};
 
 export type Sliders = {
   hihat: number,
   snare: number,
   kick: number,
+};
+
+export type TimeSignature = {
+  hihat: string,
+  snare: string,
+  kick: string,
 };
 
 export type UI = {
@@ -31,18 +49,17 @@ export type UI = {
   isRecording: boolean,
   navigationOpen: boolean,
   showAds: boolean,
-  showBanner: boolean,
   personalisedAds: boolean,
   useBPM: number,
   useSample: Sample,
-  useTimeSig: string,
+  useTimeSig: TimeSignature,
   selectedReward: Sample|null,
 };
 export type Preset = {
   beat: Beats,
   sliders: Sliders,
   useBPM: number,
-  useTimeSig: string,
+  useTimeSig: TimeSignature,
 };
 
 export type State = {
@@ -53,14 +70,14 @@ export type State = {
   sliders: Sliders,
   ui: UI,
   unlockedSamples: string[],
-  rewardedAt: number|null,
+  unlockedPro: boolean,
+  rewardedAt: ?RewardedAt,
 };
 
 export const types = {
   GB_TOGGLE_APP_VERSION: 'GB/TOGGLE_APP_VERSION',
   GB_SHOW_PERSONALISED_ADS: 'GB/SHOW_PERSONALISED_ADS',
   GB_SHOW_ADS: 'GB/SHOW_ADS',
-  GB_SHOW_BANNER: 'GB/SHOW_BANNER',
   GB_TOGGLE_NAVIGATION: 'GB/TOGGLE_NAVIGATION',
   GB_UPDATE_BPM: 'GB/UPDATE_BPM',
   GB_UPDATE_TIME_SIG: 'GB/UPDATE_TIME_SIG',
@@ -84,6 +101,16 @@ export const types = {
 
   GB_LOAD_PRESET: 'GB/LOAD_PRESET',
 
+  GB_UNLOCK_PRO_FEATURES: 'GB/UNLOCK_PRO_FEATURES',
+  GB_UNLOCK_PRO_FEATURES_PENDING: 'GB/UNLOCK_PRO_FEATURES_PENDING',
+  GB_UNLOCK_PRO_FEATURES_REJECTED: 'GB/UNLOCK_PRO_FEATURES_REJECTED',
+  GB_UNLOCK_PRO_FEATURES_FULFILLED: 'GB/UNLOCK_PRO_FEATURES_FULFILLED',
+
+  GB_LOCK_PRO_FEATURES: 'GB/LOCK_PRO_FEATURES',
+  GB_LOCK_PRO_FEATURES_PENDING: 'GB/LOCK_PRO_FEATURES_PENDING',
+  GB_LOCK_PRO_FEATURES_REJECTED: 'GB/LOCK_PRO_FEATURES_REJECTED',
+  GB_LOCK_PRO_FEATURES_FULFILLED: 'GB/LOCK_PRO_FEATURES_FULFILLED',
+  
   GB_UNLOCK_REWARD: 'GB/UNLOCK_REWARD',
 
   GB_REFRESH_REWARDS: 'GB/REFRESH_REWARDS',
@@ -134,13 +161,13 @@ export const actions = {
     type: types.GB_SHOW_ADS,
     payload: { showAds },
   }),
-  showBanner: (showBanner: boolean): ReduxAction => ({
-    type: types.GB_SHOW_BANNER,
-    payload: { showBanner },
-  }),
   unlockReward: (sampleLabel?: string): ReduxAction => ({
     type: types.GB_UNLOCK_REWARD,
     payload: sampleLabel,
+  }),
+  unlockProFeatures: (): ReduxAction => ({
+    type: types.GB_UNLOCK_PRO_FEATURES,
+    payload: LocalStorage.unlockProFeatures(),
   }),
   refreshRewards: (): ReduxAction => ({
     type: types.GB_REFRESH_REWARDS,
@@ -149,6 +176,10 @@ export const actions = {
   lockRewards: (): ReduxAction => ({
     type: types.GB_LOCK_REWARDS,
     payload: LocalStorage.clearRewards(),
+  }),
+  lockProFeatures: (): ReduxAction => ({
+    type: types.GB_LOCK_PRO_FEATURES,
+    payload: LocalStorage.lockProFeatures(),
   }),
   toggleNavigation: (bool: boolean): ReduxAction => ({
     type: types.GB_TOGGLE_NAVIGATION,
@@ -182,9 +213,9 @@ export const actions = {
     type: types.GB_UPDATE_BPM,
     payload: { useBPM: bpm },
   }),
-  updateTimeSig: (sig: string): ReduxAction => ({
+  updateTimeSig: (payload: TimeSignaturePayload): ReduxAction => ({
     type: types.GB_UPDATE_TIME_SIG,
-    payload: { useTimeSig: sig },
+    payload,
   }),
   updateSelectedSample: (sample: Sample): ReduxAction => ({
     type: types.GB_UPDATE_SELECTED_SAMPLE,
@@ -208,17 +239,22 @@ const unlockReward = (state: State, sampleLabel?: string): State => {
     ...state,
     ui: {
       ...state.ui,
-      showBanner: true,
       selectedReward: get(lockedSamples, [0], null),
     },
     unlockedSamples: newUnlockedSamples,
-    rewardedAt,
+    rewardedAt: {
+      ...state.rewardedAt,
+      samples: rewardedAt,
+    },
   };
 };
 
 const refreshRewards = (state: State, payload: SaveRewardsResponse): State => ({
   ...state,
-  rewardedAt: payload.rewardedAt,
+  rewardedAt: {
+    ...state.rewardedAt,
+    samples: payload.rewardedAt,
+  },
 });
 
 const lockRewards = (state: State): State => {
@@ -229,13 +265,25 @@ const lockRewards = (state: State): State => {
   return {
     ...state,
     unlockedSamples,
-    rewardedAt: null,
+    rewardedAt: {
+      ...state.rewardedAt,
+      samples: null,
+    },
     ui: {
       ...state.ui,
       selectedReward: get(lockedSamples, [0], null),
     },
   };
 };
+
+const lockProFeatures = (state: State): State => ({
+  ...state,
+  unlockedPro: false,
+  rewardedAt: {
+    ...state.rewardedAt,
+    pro: null,
+  },
+});
 
 const checkUnlockedRewards = (state: State, payload: InitialCMSResponse): State => {
   const samples = getSamples();
@@ -260,13 +308,18 @@ const rotateBeat = (
 
 const resetBeat = (state: State): State => {
   const samples = getSamples();
+  const timeSignatures = getTimeSignatures(t);
 
   return merge({}, state, {
     ui: {
       isPlaying: false,
       isRecording: false,
       useBPM: 100,
-      useTimeSig: 'Free',
+      useTimeSig: {
+        hihat: timeSignatures[0].value,
+        snare: timeSignatures[0].value,
+        kick: timeSignatures[0].value,
+      },
       useSample: samples[0],
     },
     sliders: {
@@ -286,6 +339,7 @@ const fetchPresetAndSamples = (state: State, payload: FetchResponse) => {
     ...state,
     presets: payload.presets,
     unlockedSamples: newUnlockedSamples,
+    unlockedPro: !isNil(payload.rewardedAt.pro),
     rewardedAt: payload.rewardedAt,
     ui: {
       ...state.ui,
@@ -316,6 +370,52 @@ const writePreset = (state: State, payload: WriteResponse): State => (
     },
   });
 
+const setTimeSig = (state: State, payload: TimeSignaturePayload): State => {
+  if (payload.key === 'all') {
+    return {
+      ...state,
+      ...{
+        ui: {
+          ...state.ui,
+          useTimeSig: {
+            hihat: payload.value,
+            snare: payload.value,
+            kick: payload.value,
+          },
+        },
+      },
+    };
+  }
+
+  return {
+    ...state,
+    ...{
+      ui: {
+        ...state.ui,
+        // $FlowFixMe
+        useTimeSig: {
+          ...state.ui.useTimeSig,
+          // $FlowFixMe
+          [payload.key]: payload.value,
+        },
+      },
+    },
+  };
+};
+
+const unlockProFeatures = (state: State, payload: UnlockProFeaturesResponse): State => {
+  const rewardedAt = Date.now();
+
+  return {
+    ...state,
+    unlockedPro: true,
+    rewardedAt: {
+      ...state.rewardedAt,
+      pro: payload,
+    },
+  };
+};
+
 export const reducer = (state: State, action: ReduxActionWithPayload): State => {
   switch (action.type) {
     case cmsTypes.CMS_FETCH_APP_FULFILLED:
@@ -341,11 +441,17 @@ export const reducer = (state: State, action: ReduxActionWithPayload): State => 
     case types.GB_UNLOCK_REWARD:
       return unlockReward(state, action.payload);
 
+    case types.GB_UNLOCK_PRO_FEATURES_FULFILLED:
+      return unlockProFeatures(state, action.payload);
+
     case types.GB_REFRESH_REWARDS_FULFILLED:
       return refreshRewards(state, action.payload);
 
     case types.GB_LOCK_REWARDS_FULFILLED:
       return lockRewards(state);
+
+    case types.GB_LOCK_PRO_FEATURES_FULFILLED:
+      return lockProFeatures(state);
 
     case beatTypes.BT_ROTATE_BEAT:
       return rotateBeat(state, action.payload);
@@ -366,12 +472,13 @@ export const reducer = (state: State, action: ReduxActionWithPayload): State => 
     case types.GB_DELETE_MIDI_FILE:
       return omit(state, 'ui.fileUri');
 
+    case types.GB_UPDATE_TIME_SIG:
+      return setTimeSig(state, action.payload);
+
     case types.GB_SHOW_PERSONALISED_ADS:
     case types.GB_SHOW_ADS:
-    case types.GB_SHOW_BANNER:
     case types.GB_TOGGLE_NAVIGATION:
     case types.GB_UPDATE_BPM:
-    case types.GB_UPDATE_TIME_SIG:
     case types.GB_UPDATE_SELECTED_SAMPLE:
     case types.GB_UPDATE_SELECTED_REWARD:
       return merge({}, state, { ui: action.payload });

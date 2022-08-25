@@ -109,7 +109,7 @@ function Body(): Node {
           <Route path="/settings" element={<Settings />} />
           <Route path="/library" element={<Library />} />
           <Route path="/guide" element={(<Guide />)} />
-          <Route path="/rewarded" element={<Rewarded />} />
+          <Route path="/rewarded/:section" element={<Rewarded />} />
         </Routes>
 
         <AdmobBanner bannerId={banner} showAd={adsReady && displayAds && banner} />

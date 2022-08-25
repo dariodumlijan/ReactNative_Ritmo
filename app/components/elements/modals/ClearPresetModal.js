@@ -2,7 +2,7 @@
 import React from 'react';
 import type { Node } from 'react';
 import {
-  Modal, Text, TouchableOpacity, View,
+  Modal, Text, TouchableOpacity, TouchableWithoutFeedback, View,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import useLocale from '../../../locales';
@@ -25,8 +25,11 @@ function ClearPresetModal(props: Props): Node {
   };
 
   return (
-    <Modal animationType="fade" transparent visible>
-      <View style={modalsStyle.modalView}>
+    <Modal animationType="fade" onRequestClose={() => close()} transparent visible>
+      <TouchableWithoutFeedback onPress={() => close()}>
+        <View style={modalsStyle.modalOverlay} />
+      </TouchableWithoutFeedback>
+      <View style={modalsStyle.modalWrapper}>
         <Text style={modalsStyle.modalExp}>{t('modal.preset.title')}</Text>
         <View style={modalsStyle.modalBtnCont}>
           <TouchableOpacity

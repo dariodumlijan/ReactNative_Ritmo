@@ -25,7 +25,8 @@ export const localStorageKeys = {
     two: 'preset2',
     three: 'preset3',
   },
-  rewardedAt: 'rewardedAt',
+  rewardedAtSamples: 'rewardedAtSamples',
+  rewardedAtPro: 'rewardedAtPro',
   unlockedRewards: 'unlockedRewards',
 };
 

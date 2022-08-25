@@ -4,6 +4,7 @@ import RNFS from 'react-native-fs';
 import * as MidiWriter from 'midi-writer-js';
 import { filter, forEach, times } from 'lodash';
 import type { Beat, Beats } from '../sound/beats';
+import type { TimeSignature } from '../store/globalStore';
 
 type MidiLayout = Array<'KSH'|'KS'|'KH'|'SH'|'K'|'S'|'H'>
 type NotesLayout = Array<'KSH'|'KS'|'KH'|'SH'|'K'|'S'|'H'|'R'>
@@ -17,7 +18,7 @@ export type BuildMidi = {
   sliderStep: number,
   stepsInBar: number,
   useBPM: number,
-  useTimeSig: string,
+  useTimeSig: TimeSignature,
 };
 
 export type BuildPromise = {
@@ -176,9 +177,9 @@ export const exportMIDI = async ({
   });
   track.addEvent(notesMIDI, () => ({ sequential: false }));
   track.setTempo(useBPM);
-  if (useTimeSig === '4/4') {
+  if (useTimeSig.kick === '4/4') {
     track.setTimeSignature(4, 4);
-  } else if (useTimeSig === '3/4') {
+  } else if (useTimeSig.kick === '3/4') {
     track.setTimeSignature(3, 4);
   }
 

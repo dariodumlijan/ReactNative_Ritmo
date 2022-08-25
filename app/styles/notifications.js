@@ -6,6 +6,7 @@ import colors from './colors';
 type NotificationsStyle = {
   alertWrapper: Object,
   alertText: Object,
+  alertTimerText: Object,
 }
 
 const notificationsStyle: NotificationsStyle = StyleSheet.create({
@@ -28,6 +29,14 @@ const notificationsStyle: NotificationsStyle = StyleSheet.create({
     fontFamily: 'Montserrat-SemiBold',
     fontSize: 12,
     margin: 10,
+    textAlign: 'center',
+  },
+  alertTimerText: {
+    color: colors.green,
+    fontFamily: 'Montserrat-SemiBold',
+    fontSize: 18,
+    marginTop: -5,
+    marginBottom: 10,
     textAlign: 'center',
   },
 });

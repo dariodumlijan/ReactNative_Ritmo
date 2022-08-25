@@ -8,18 +8,18 @@ import {
   Text,
   TextInput,
   TouchableHighlight,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-native';
 import {
-  get, isEmpty, isEqual, isNaN, isNumber, map,
+  get, isEmpty, isEqual, isNaN, isNumber,
 } from 'lodash';
-import { hoursToMilliseconds } from 'date-fns';
+import { hoursToMilliseconds, secondsToMilliseconds } from 'date-fns';
 import DismissKeyboard from '../elements/misc/DismissKeyboard';
 import CountdownTimer from '../elements/misc/CountdownTimer';
 import Select from '../elements/inputs/Select';
+import TimeSignatureSelect from '../elements/inputs/TimeSignatureSelect';
 import Alert from '../elements/misc/Alert';
 import Close from '../../assets/icons/Close';
 import useLocale from '../../locales';
@@ -30,9 +30,10 @@ import { actions, selectors } from '../../store/globalStore';
 import mainStyle from '../../styles/main';
 import settingsStyle from '../../styles/settings';
 import notificationsStyle from '../../styles/notifications';
+import { textInputStyle } from '../../styles/inputs';
 import colors from '../../styles/colors';
 import type { Sample } from '../../utils/lists';
-import type { State } from '../../store/globalStore';
+import type { State, TimeSignaturePayload } from '../../store/globalStore';
 import type { ReduxState } from '../../types';
 
 const Settings = (): Node => {
@@ -40,21 +41,28 @@ const Settings = (): Node => {
   const { teleport } = useTeleport();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { samples, timeSignatures } = useSelectLists();
+  const { samples } = useSelectLists();
   const lockedSamples = useSelector(selectors.getLockedSamples, isEqual);
   const global: State = useSelector(selectors.getGlobal, isEqual);
   const { resetRewards, keepRewards }: { resetRewards: number, keepRewards: number } = useSelector((state: ReduxState) => ({
-    resetRewards: get(state.cms, isRealDevice ? 'master.resetRewards' : 'master.resetRewardsStaging', 24),
+    resetRewards: hoursToMilliseconds(get(state.cms, isRealDevice ? 'master.resetRewards' : 'master.resetRewardsStaging', 24)),
     keepRewards: get(state.cms, isRealDevice ? 'master.keepRewards' : 'master.keepRewardsStaging', 6),
   }), isEqual);
   const [bpm, setBpm] = useState<string>(String(global.ui.useBPM));
-  const [openSelect, setOpenSelect] = useState(false);
+  const [openTimeSigSelect, setTimeSigSelect] = useState(false);
+  const [openSoundSelect, setOpenSoundSelect] = useState(false);
   const hasAllRewards = isEmpty(lockedSamples);
   const [rewardsAreRefreshable, setRewardsAreRefreshable] = useState(false);
   const shouldShowAlert = hasAllRewards && !rewardsAreRefreshable;
+  const countdownFrom = global.rewardedAt?.samples ? global.rewardedAt.samples + resetRewards : null;
+
+  const onTimeSigChange = (timeSig: TimeSignaturePayload) => {
+    setTimeSigSelect(false);
+    dispatch(actions.updateTimeSig(timeSig));
+  };
 
   const onSampleChange = (sample: Sample) => {
-    setOpenSelect(false);
+    setOpenSoundSelect(false);
     dispatch(actions.updateSelectedSample(sample));
   };
 
@@ -74,7 +82,7 @@ const Settings = (): Node => {
   const handleRewardedOpen = () => {
     if (!global.ui.showAds) {
       teleport(
-        <Alert clearDelayMS={5000}>
+        <Alert clearDelayMS={secondsToMilliseconds(5)}>
           <Text style={[notificationsStyle.alertText, { fontSize: 14 }]}>
             {t('modal.no_ads')}
           </Text>
@@ -85,13 +93,14 @@ const Settings = (): Node => {
     }
 
     if (shouldShowAlert) {
+      const refreshAvailableIn = countdownFrom ? countdownFrom - hoursToMilliseconds(keepRewards) : null;
+
       teleport(
-        <Alert clearDelayMS={5000}>
+        <Alert clearDelayMS={secondsToMilliseconds(5)}>
           <Text style={[notificationsStyle.alertText, { fontSize: 14 }]}>
-            {t('modal.keep_rewards.text_1')}
-            <Text style={{ color: colors.green }}>{keepRewards}h</Text>
-            {t('modal.keep_rewards.text_2')}
+            {t('modal.keep_rewards')}
           </Text>
+          <CountdownTimer countdownFrom={refreshAvailableIn} style={notificationsStyle.alertTimerText} />
         </Alert>,
       );
 
@@ -99,7 +108,7 @@ const Settings = (): Node => {
     }
 
     Keyboard.dismiss();
-    navigate('/rewarded');
+    navigate('/rewarded/samples');
   };
 
   const handleCountdown = (currentTime: number) => {
@@ -111,7 +120,7 @@ const Settings = (): Node => {
     <DismissKeyboard>
       <SafeAreaView style={mainStyle.safe}>
         <CountdownTimer
-          countdownFrom={global.rewardedAt ? global.rewardedAt + hoursToMilliseconds(resetRewards) : null}
+          countdownFrom={countdownFrom}
           onChange={handleCountdown}
           isHidden
         />
@@ -119,7 +128,7 @@ const Settings = (): Node => {
           <Link
             to="/"
             underlayColor={null}
-            disabled={openSelect}
+            disabled={openSoundSelect}
             onPress={handleCloseSettings}
           >
             <Animated.View style={settingsStyle.closeIconWrapper}>
@@ -132,7 +141,7 @@ const Settings = (): Node => {
           <View style={settingsStyle.bpmWrapper}>
             <Text style={settingsStyle.menuTitle}>{t('settings.bpm')}</Text>
             <TextInput
-              style={settingsStyle.inputBPM}
+              style={textInputStyle.input}
               maxLength={3}
               onChangeText={(val) => setBpm(val)}
               onSubmitEditing={() => handleBPM(bpm)}
@@ -144,44 +153,41 @@ const Settings = (): Node => {
             />
           </View>
 
-          <View style={settingsStyle.radioWrapper}>
-            <Text style={settingsStyle.menuTitle}>{t('settings.time_sig')}</Text>
-            {map(timeSignatures, (sig) => (
-              <TouchableOpacity
-                key={sig.value}
-                activeOpacity={0.6}
-                onPress={() => dispatch(actions.updateTimeSig(sig.value))}
-              >
-                <View style={settingsStyle.radioCont}>
-                  <Text style={settingsStyle.radioText}>{sig.label}</Text>
-                  <View
-                    style={global.ui.useTimeSig === sig.value ? settingsStyle.radioSelected : settingsStyle.radioNotSelected}
-                  />
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
-
-          <Select
-            title={t('settings.sound')}
-            value={get(global.ui.useSample, 'label', 'Acoustic')}
-            options={samples}
-            isOpen={openSelect}
-            onOpen={() => setOpenSelect(true)}
-            onSelect={onSampleChange}
-            compareSamples={global.unlockedSamples}
+          <TimeSignatureSelect
+            value={global.ui.useTimeSig || {
+              hihat: 'Free',
+              snare: 'Free',
+              kick: 'Free',
+            }}
+            isOpen={openTimeSigSelect}
+            onOpen={() => setTimeSigSelect(true)}
+            onClose={() => setTimeSigSelect(false)}
+            onSelect={onTimeSigChange}
+            unlockedPro={global.unlockedPro}
           />
 
-          <TouchableHighlight
-            onPress={handleRewardedOpen}
-            disabled={openSelect}
-            underlayColor={colors.grayBlue}
-            style={shouldShowAlert || !global.ui.showAds ? settingsStyle.btnRewardScreenDisabled : settingsStyle.btnRewardScreen}
-          >
-            <Text style={shouldShowAlert || !global.ui.showAds ? settingsStyle.btnRewardScreenTextDisabled : settingsStyle.btnRewardScreenText}>
-              {t(hasAllRewards ? 'settings.keep_rewards' : 'settings.more_samples')}
-            </Text>
-          </TouchableHighlight>
+          <View style={settingsStyle.soundWrapper}>
+            <Select
+              title={t('settings.sound')}
+              value={get(global.ui.useSample, 'label', 'Acoustic')}
+              options={samples}
+              isOpen={openSoundSelect}
+              onOpen={() => setOpenSoundSelect(true)}
+              onClose={() => setOpenSoundSelect(false)}
+              onSelect={onSampleChange}
+              compareSamples={global.unlockedSamples}
+            />
+            <TouchableHighlight
+              onPress={handleRewardedOpen}
+              disabled={openTimeSigSelect || openSoundSelect}
+              underlayColor={colors.grayBlue}
+              style={settingsStyle.btnRewardScreen}
+            >
+              <Text style={settingsStyle.btnRewardScreenText}>
+                {t(hasAllRewards ? 'settings.keep_rewards' : 'settings.more_samples')}
+              </Text>
+            </TouchableHighlight>
+          </View>
         </View>
 
         <View style={mainStyle.adSpace} />

@@ -23,7 +23,7 @@ function AdmobBanner(props: Props): Node {
 
   return (
     <View style={mainStyle.ads}>
-      {props.showAd && ui.showAds && ui.showBanner && (
+      {props.showAd && ui.showAds && (
         <BannerAd
           unitId={props.bannerId}
           size={BannerAdSize.FLUID}

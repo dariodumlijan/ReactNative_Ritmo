@@ -2,7 +2,7 @@
 import React from 'react';
 import type { Node } from 'react';
 import {
-  Modal, ScrollView, Text, TouchableOpacity, View,
+  Modal, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View,
 } from 'react-native';
 import { map } from 'lodash';
 import Arrow from '../../../assets/icons/Arrow';
@@ -10,17 +10,19 @@ import { isSampleUnlocked } from '../../../utils';
 import { useLocationInfo } from '../../../utils/hooks';
 import { selectStyle } from '../../../styles/inputs';
 
-type Option = {
+export type Option = {
+  ...Object,
   label: string,
 };
 
 type Props = {
   title?: string,
   value: string,
-  options: Array<Option&Object>,
+  options: Option[],
   isOpen: boolean,
   onSelect: Function,
   onOpen: Function,
+  onClose: Function,
   compareSamples?: string[],
   isDisabled?: boolean,
 };
@@ -45,14 +47,17 @@ function Select(props: Props): Node {
         </TouchableOpacity>
       </View>
 
-      <Modal animationType="fade" transparent visible={props.isOpen}>
+      <Modal animationType="fade" visible={props.isOpen} onRequestClose={props.onClose} transparent>
+        <TouchableWithoutFeedback onPress={props.onClose}>
+          <View style={selectStyle.listOverlay} />
+        </TouchableWithoutFeedback>
         <View style={selectStyle.listWrapper}>
           <ScrollView
             showsVerticalScrollIndicator={false}
             style={selectStyle.list}
             centerContent
           >
-            {map(props.options, (option: Option&Object, key: number) => (
+            {map(props.options, (option: Option, key: number) => (
               <TouchableOpacity
                 key={key}
                 activeOpacity={0.6}

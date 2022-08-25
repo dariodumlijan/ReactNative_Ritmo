@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import type { Node } from 'react';
 import {
-  Keyboard, Modal, Text, TextInput, TouchableOpacity, View,
+  Keyboard, Modal, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
@@ -55,8 +55,11 @@ function ExportMidiModal(): Node {
   }, [globalUI.fileUri]);
 
   return (
-    <Modal animationType="fade" transparent>
-      <View style={modalsStyle.modalView}>
+    <Modal animationType="fade" onRequestClose={() => close()} transparent>
+      <TouchableWithoutFeedback onPress={() => close()}>
+        <View style={modalsStyle.modalOverlay} />
+      </TouchableWithoutFeedback>
+      <View style={modalsStyle.modalWrapper}>
         <Text style={modalsStyle.modalTxt}>{t('modal.midi.label')}</Text>
         <TextInput
           style={modalsStyle.inputMidi}

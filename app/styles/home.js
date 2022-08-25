@@ -53,6 +53,7 @@ const homeStyle: HomeStyle = StyleSheet.create({
   menu: {
     aspectRatio: 1 / 2,
     height: '120%',
+    marginTop: -2,
   },
   appVersion: {
     alignItems: 'center',

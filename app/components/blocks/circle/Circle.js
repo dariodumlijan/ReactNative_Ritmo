@@ -29,6 +29,7 @@ import notificationsStyle from '../../../styles/notifications';
 import colors from '../../../styles/colors';
 import type { UI } from '../../../store/globalStore';
 import type { Beat, Beats } from '../../../sound/beats';
+import { secondsToMilliseconds } from 'date-fns';
 
 function Circle(): Node {
   const { t } = useLocale();
@@ -96,7 +97,7 @@ function Circle(): Node {
   const handleStart = () => {
     if (isBeatEmpty(beats)) {
       teleport(
-        <Alert clearDelayMS={3300}>
+        <Alert clearDelayMS={secondsToMilliseconds(3.3)}>
           <Text style={notificationsStyle.alertText}>{t('alert.no_beat')}</Text>
         </Alert>,
       );

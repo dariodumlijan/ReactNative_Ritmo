@@ -4,42 +4,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import { hoursToMilliseconds, secondsToMilliseconds } from 'date-fns';
 import { get, isEqual } from 'lodash';
 import { isRealDevice } from '../../../utils';
+import { useCountdown } from '../../../utils/hooks';
 import { actions } from '../../../store/globalStore';
 import type { ReduxState } from '../../../types';
+import type { RewardedAt } from "../../../store/globalStore";
 
 function RewardsCountdown(): null {
   const dispatch = useDispatch();
-  const { resetRewards, rewardedAt }: {resetRewards: number, rewardedAt: number|null} = useSelector((state: ReduxState) => ({
-    resetRewards: get(state.cms, isRealDevice ? 'master.resetRewards' : 'master.resetRewardsStaging', 24),
-    rewardedAt: state.global.rewardedAt,
+  const reduxStates = useSelector((state: ReduxState) => ({
+    loadTime: state.static.loadTime,
+    resetRewards: hoursToMilliseconds(get(state.cms, isRealDevice ? 'master.resetRewards' : 'master.resetRewardsStaging', 24)),
+    rewardedAtSamples: state.global.rewardedAt?.samples,
+    rewardedAtPro: state.global.rewardedAt?.pro,
   }), isEqual);
-  const [time, setTime] = useState(rewardedAt ? rewardedAt + hoursToMilliseconds(resetRewards) - Date.now() : 0);
-  const timerRef = useRef(time);
+  const startCountdownSamples = reduxStates.rewardedAtSamples ? reduxStates.rewardedAtSamples + reduxStates.resetRewards - reduxStates.loadTime : null;
+  const startCountdownPro = reduxStates.rewardedAtPro ? reduxStates.rewardedAtPro + reduxStates.resetRewards - reduxStates.loadTime : null;
 
-  useEffect(() => {
-    if (rewardedAt) {
-      timerRef.current = rewardedAt + hoursToMilliseconds(resetRewards) - Date.now();
-      setTime(timerRef.current);
-    }
-  }, [rewardedAt, resetRewards]);
+  useCountdown(() => {
+    dispatch(actions.lockRewards());
+  }, startCountdownSamples);
 
-  useEffect(() => {
-    const timerId = setInterval(() => {
-      timerRef.current -= secondsToMilliseconds(1);
-
-      if (timerRef.current < 0 && rewardedAt) {
-        dispatch(actions.lockRewards());
-        clearInterval(timerId);
-      } else {
-        setTime(timerRef.current);
-      }
-    }, secondsToMilliseconds(1));
-
-    return () => {
-      clearInterval(timerId);
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useCountdown(() => {
+    dispatch(actions.lockProFeatures());
+  }, startCountdownPro);
 
   return null;
 }
