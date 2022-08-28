@@ -7,13 +7,15 @@ import Exit from '../../assets/icons/Exit';
 import mainStyle from '../../styles/main';
 import colors from '../../styles/colors';
 
-const Library = (): Node => (
-  <SafeAreaView style={mainStyle.safe}>
-    <Link to="/" style={mainStyle.exit} underlayColor={null}>
-      <Exit fill={colors.primaryDark} />
-    </Link>
-    <Text>Recordings</Text>
-  </SafeAreaView>
-);
+function Library(): Node {
+  return (
+    <SafeAreaView style={mainStyle.safe}>
+      <Link to="/" style={mainStyle.exit} underlayColor={null}>
+        <Exit fill={colors.primaryDark} />
+      </Link>
+      <Text>Recordings</Text>
+    </SafeAreaView>
+  );
+}
 
 export default Library;

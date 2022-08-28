@@ -36,7 +36,7 @@ import type { Sample } from '../../utils/lists';
 import type { State, TimeSignaturePayload } from '../../store/globalStore';
 import type { ReduxState } from '../../types';
 
-const Settings = (): Node => {
+function Settings(): Node {
   const { t } = useLocale();
   const { teleport } = useTeleport();
   const dispatch = useDispatch();
@@ -194,6 +194,6 @@ const Settings = (): Node => {
       </SafeAreaView>
     </DismissKeyboard>
   );
-};
+}
 
 export default Settings;

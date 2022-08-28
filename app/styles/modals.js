@@ -1,6 +1,6 @@
 // @flow
 import { StyleSheet } from 'react-native';
-import { deviceHeight, deviceWidth, isTablet } from "../utils";
+import { deviceHeight, deviceWidth, isTablet } from '../utils';
 import colors from './colors';
 
 type ModalsStyle = {
@@ -31,8 +31,8 @@ const modalsStyle: ModalsStyle = StyleSheet.create({
     display: 'flex',
     elevation: 5,
     justifyContent: 'center',
-    marginHorizontal: !isTablet ? '5%' : '15%',
-    marginTop: !isTablet ? '30%' : '20%',
+    marginHorizontal: isTablet ? '15%' : '5%',
+    marginTop: isTablet ? '20%' : '30%',
     paddingHorizontal: 10,
     paddingVertical: 15,
     shadowColor: colors.black,
@@ -42,20 +42,20 @@ const modalsStyle: ModalsStyle = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 5,
-    width: !isTablet ? '90%' : '70%',
+    width: isTablet ? '70%' : '90%',
     zIndex: 5,
   },
   modalTxt: {
     color: colors.grayLight,
     fontFamily: 'Montserrat-SemiBold',
-    fontSize: 14,
+    fontSize: isTablet ? 18 : 14,
     textAlign: 'center',
   },
   modalExp: {
     color: colors.gray,
     fontFamily: 'Montserrat-SemiBold',
-    fontSize: 12,
-    marginBottom: 16,
+    fontSize: isTablet ? 20 : 12,
+    marginBottom: isTablet ? 30 : 16,
     marginHorizontal: 10,
     textAlign: 'center',
   },
@@ -68,9 +68,9 @@ const modalsStyle: ModalsStyle = StyleSheet.create({
   modalBtn: {
     alignItems: 'center',
     backgroundColor: colors.grayLight,
-    borderRadius: 30,
+    borderRadius: isTablet ? 20 : 15,
     display: 'flex',
-    height: 30,
+    height: isTablet ? 40 : 30,
     justifyContent: 'center',
     marginHorizontal: 10,
     width: '30%',
@@ -78,7 +78,7 @@ const modalsStyle: ModalsStyle = StyleSheet.create({
   modalBtnTxt: {
     color: colors.primaryDark,
     fontFamily: 'Montserrat-SemiBold',
-    fontSize: 16,
+    fontSize: isTablet ? 20 : 16,
     textAlign: 'center',
   },
   inputMidi: {

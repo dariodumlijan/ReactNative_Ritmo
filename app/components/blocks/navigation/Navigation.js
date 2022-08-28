@@ -6,6 +6,7 @@ import {
   Easing,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -103,49 +104,51 @@ function Navigation(): Node {
   if (!navigationOpen) return null;
 
   return (
-    <View style={navigationStyle.overlay}>
-      <View style={navigationStyle.background}>
-        <View style={navigationStyle.nav}>
-          <View style={navigationStyle.top}>
-            <Animated.Text style={[navigationStyle.tagline, { opacity: opacityTag }]}>
-              {t('navigation.title')}
-            </Animated.Text>
-            <Animated.Text style={[navigationStyle.tagline, { opacity: opacityAlert }]}>
-              {t('navigation.alert')}
-            </Animated.Text>
-            <TouchableOpacity
-              style={navigationStyle.close}
-              activeOpacity={0.6}
+    <>
+      <TouchableWithoutFeedback onPress={() => handleCloseNav()}>
+        <View style={navigationStyle.overlay} />
+      </TouchableWithoutFeedback>
+      <View style={navigationStyle.background} />
+      <View style={navigationStyle.nav}>
+        <View style={navigationStyle.top}>
+          <Animated.Text style={[navigationStyle.tagline, { opacity: opacityTag }]}>
+            {t('navigation.title')}
+          </Animated.Text>
+          <Animated.Text style={[navigationStyle.tagline, { opacity: opacityAlert }]}>
+            {t('navigation.alert')}
+          </Animated.Text>
+          <TouchableOpacity
+            style={navigationStyle.close}
+            activeOpacity={0.6}
+            onPress={handleCloseNav}
+          >
+            <Exit fill={colors.grayLight} />
+          </TouchableOpacity>
+        </View>
+        <View style={navigationStyle.linksWrapper}>
+          {map(links, (link) => (
+            <Link
+              key={link.path}
+              style={navigationStyle.link}
+              underlayColor={null}
+              to={link.path}
               onPress={handleCloseNav}
             >
-              <Exit fill={colors.grayLight} />
-            </TouchableOpacity>
-          </View>
-          <View style={navigationStyle.linksWrapper}>
-            {map(links, (link) => (
-              <Link
-                key={link.path}
-                style={navigationStyle.link}
-                underlayColor={null}
-                to={link.path}
-                onPress={handleCloseNav}
-              >
-                <View style={navigationStyle.button}>
-                  <Text style={navigationStyle.label}>{link.label}</Text>
-                  {link.icon}
-                </View>
-              </Link>
-            ))}
-            <TouchableOpacity style={navigationStyle.link} activeOpacity={0.6} onPress={openMidiModal}>
               <View style={navigationStyle.button}>
-                <Text style={navigationStyle.label}>{t('navigation.export')}</Text>
-                <Export style={navigationStyle.icon} />
+                <Text style={navigationStyle.label}>{link.label}</Text>
+                {link.icon}
               </View>
-            </TouchableOpacity>
-          </View>
+            </Link>
+          ))}
+          <TouchableOpacity style={navigationStyle.link} activeOpacity={0.6} onPress={openMidiModal}>
+            <View style={navigationStyle.button}>
+              <Text style={navigationStyle.label}>{t('navigation.export')}</Text>
+              <Export style={navigationStyle.icon} />
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </>
   );
 }
 

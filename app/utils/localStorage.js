@@ -63,7 +63,7 @@ export const clearPreset = async (key: string): Promise<ClearResponse> => {
   return key;
 };
 
-export const saveRewards = async (rewardedAt: number,unlockedSamples?: string[]): Promise<SaveRewardsResponse> => {
+export const saveRewards = async (rewardedAt: number, unlockedSamples?: string[]): Promise<SaveRewardsResponse> => {
   if (unlockedSamples) {
     await setItem(localStorageKeys.unlockedRewards, JSON.stringify(unlockedSamples));
   }

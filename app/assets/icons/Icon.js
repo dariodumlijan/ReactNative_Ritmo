@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Icon = (props: Props): Node => {
+function Icon(props: Props): Node {
   const dotAnimation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -72,6 +72,6 @@ const Icon = (props: Props): Node => {
       <View style={styles.dotBig} />
     </Animated.View>
   );
-};
+}
 
 export default Icon;

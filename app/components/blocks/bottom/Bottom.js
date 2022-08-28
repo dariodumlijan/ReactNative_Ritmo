@@ -7,6 +7,7 @@ import { Slider } from '@miblanchard/react-native-slider';
 import {
   map, isEmpty, first, isEqual,
 } from 'lodash';
+import { secondsToMilliseconds } from 'date-fns';
 import SliderThumb from '../../elements/inputs/SliderThumb';
 import ClearPresetModal from '../../elements/modals/ClearPresetModal';
 import Alert from '../../elements/misc/Alert';
@@ -24,7 +25,6 @@ import colors from '../../../styles/colors';
 import type { Beats } from '../../../sound/beats';
 import type { State as StaticState } from '../../../store/staticStore';
 import type { Preset, State as GlobalState } from '../../../store/globalStore';
-import { secondsToMilliseconds } from 'date-fns';
 
 function Bottom(): Node {
   const { t } = useLocale();

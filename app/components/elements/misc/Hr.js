@@ -11,7 +11,7 @@ type Props = {
   paddingX?: number,
 };
 
-const Hr = (props: Props): Node => {
+function Hr(props: Props): Node {
   const height = props.height ? props.height : 2;
   const color = props.color ? props.color : colors.white;
 
@@ -24,15 +24,15 @@ const Hr = (props: Props): Node => {
       }}
     >
       <View
-        style={{
+        style={[{
           backgroundColor: color,
           borderRadius: height / 2,
           height,
           width: '100%',
-        }}
+        }]}
       />
     </View>
   );
-};
+}
 
 export default Hr;

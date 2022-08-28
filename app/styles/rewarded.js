@@ -1,5 +1,6 @@
 // @flow
 import { StyleSheet } from 'react-native';
+import { isTablet } from '../utils';
 import colors from './colors';
 
 type RewardedStyle = {
@@ -46,6 +47,7 @@ const rewardedStyle: RewardedStyle = StyleSheet.create({
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'center',
+    marginTop: isTablet ? '10%' : 0,
   },
   rewardedExp: {
     alignItems: 'center',

@@ -19,7 +19,8 @@ export const playBeat = (props: Props) => {
   soundBeats = props.beats;
 
   const play = (beatArray: Beat[], soundPath: string) => {
-    forEach(beatArray, (beat: Beat) => {
+    for (let index = 0; index < beatArray.length; index++) {
+      const beat: Beat = beatArray[index];
       if (beat.checked) {
         beat.soundKey = setTimeout(() => {
           const sound = new Sound(soundPath, Sound.MAIN_BUNDLE, (error) => {
@@ -33,7 +34,7 @@ export const playBeat = (props: Props) => {
           });
         }, beat.soundDelay);
       }
-    });
+    }
   };
 
   const loopThroughBeats = () => forEach(soundBeats, (beatArray, key: string) => play(beatArray, props.sample[`${key}Sound`]));
@@ -44,9 +45,9 @@ export const playBeat = (props: Props) => {
 
 export const stopBeat = (beats: Beats) => {
   const stop = (beatArray: Beat[]) => {
-    forEach(beatArray, (beat: Beat) => {
-      clearTimeout(beat.soundKey);
-    });
+    for (let index = 0; index < beatArray.length; index++) {
+      clearTimeout(beatArray[index].soundKey);
+    }
   };
 
   clearInterval(intervalID);

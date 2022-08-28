@@ -18,7 +18,7 @@ import type {
   SaveRewardsResponse,
   UnlockProFeaturesResponse,
   WriteResponse,
-} from "../utils/localStorage";
+} from '../utils/localStorage';
 import type { ReduxAction, ReduxActionWithPayload, ReduxState } from '../types';
 
 export type RewardedAt = {
@@ -110,7 +110,7 @@ export const types = {
   GB_LOCK_PRO_FEATURES_PENDING: 'GB/LOCK_PRO_FEATURES_PENDING',
   GB_LOCK_PRO_FEATURES_REJECTED: 'GB/LOCK_PRO_FEATURES_REJECTED',
   GB_LOCK_PRO_FEATURES_FULFILLED: 'GB/LOCK_PRO_FEATURES_FULFILLED',
-  
+
   GB_UNLOCK_REWARD: 'GB/UNLOCK_REWARD',
 
   GB_REFRESH_REWARDS: 'GB/REFRESH_REWARDS',
@@ -403,18 +403,14 @@ const setTimeSig = (state: State, payload: TimeSignaturePayload): State => {
   };
 };
 
-const unlockProFeatures = (state: State, payload: UnlockProFeaturesResponse): State => {
-  const rewardedAt = Date.now();
-
-  return {
-    ...state,
-    unlockedPro: true,
-    rewardedAt: {
-      ...state.rewardedAt,
-      pro: payload,
-    },
-  };
-};
+const unlockProFeatures = (state: State, payload: UnlockProFeaturesResponse): State => ({
+  ...state,
+  unlockedPro: true,
+  rewardedAt: {
+    ...state.rewardedAt,
+    pro: payload,
+  },
+});
 
 export const reducer = (state: State, action: ReduxActionWithPayload): State => {
   switch (action.type) {

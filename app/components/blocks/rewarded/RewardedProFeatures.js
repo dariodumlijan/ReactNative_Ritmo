@@ -23,7 +23,7 @@ import rewardedStyle from '../../../styles/rewarded';
 import colors from '../../../styles/colors';
 import type { ReduxState } from '../../../types';
 
-const RewardedProFeatures = (): Node => {
+function RewardedProFeatures(): Node {
   const { t } = useLocale();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -84,7 +84,7 @@ const RewardedProFeatures = (): Node => {
           </Text>
           <Text style={rewardedStyle.rewardedExp2Text}>
             {t('rewarded.pro.paragraph_2.text_1')}
-            <Text style={{ color: colors.orange }}>
+            <Text style={[{ color: colors.orange }]}>
               {reduxStates.resetRewards}{t('rewarded.pro.paragraph_2.text_2')}
             </Text>
             {t('rewarded.pro.paragraph_2.text_3')}
@@ -117,6 +117,6 @@ const RewardedProFeatures = (): Node => {
       </View>
     </SafeAreaView>
   );
-};
+}
 
 export default RewardedProFeatures;

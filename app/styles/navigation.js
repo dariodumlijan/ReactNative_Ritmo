@@ -1,7 +1,7 @@
 // @flow
 import { StyleSheet } from 'react-native';
+import { deviceHeight, deviceWidth, isTablet } from '../utils';
 import colors from './colors';
-import { deviceHeight, deviceWidth } from '../utils';
 
 type Style = {
   overlay: Object,
@@ -17,6 +17,10 @@ type Style = {
   label: Object,
 };
 
+const navBgMaxSize = 1000;
+const navMaxSize = navBgMaxSize / 2;
+const containNav = deviceWidth * 2 >= navBgMaxSize;
+
 const navigationStyle: Style = StyleSheet.create({
   overlay: {
     backgroundColor: colors.blackTransparent,
@@ -28,26 +32,36 @@ const navigationStyle: Style = StyleSheet.create({
     zIndex: 1,
   },
   background: {
-    alignItems: 'flex-start',
     backgroundColor: colors.primaryTransparent,
     borderColor: colors.grayBlue,
     borderRadius: deviceWidth,
     borderWidth: 2,
-    display: 'flex',
     height: deviceWidth * 2,
-    justifyContent: 'flex-end',
+    maxHeight: navBgMaxSize,
+    maxWidth: navBgMaxSize,
+    position: 'absolute',
+    right: 0,
+    top: 0,
     transform: [
-      { translateY: -deviceWidth },
+      { translateX: containNav ? navMaxSize : deviceWidth },
+      { translateY: containNav ? -navMaxSize : -deviceWidth },
     ],
     width: deviceWidth * 2,
+    zIndex: 2,
   },
   nav: {
     display: 'flex',
-    flexShrink: 1,
-    // marginBottom: 50,
-    marginBottom: 100,
-    paddingHorizontal: '5%',
+    height: deviceWidth,
+    maxHeight: navMaxSize,
+    maxWidth: navMaxSize,
+    paddingLeft: '10%',
+    paddingRight: '5%',
+    paddingVertical: isTablet ? 40 : '12.5%',
+    position: 'absolute',
+    right: 0,
+    top: 0,
     width: deviceWidth,
+    zIndex: 3,
   },
   top: {
     alignItems: 'flex-start',

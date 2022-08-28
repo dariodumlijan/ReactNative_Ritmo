@@ -42,9 +42,10 @@ const homeStyle: HomeStyle = StyleSheet.create({
     alignItems: 'flex-start',
     display: 'flex',
     flexDirection: 'row',
-    height: !isTablet ? '14%' : '12%',
+    height: isTablet ? '12%' : '14%',
     justifyContent: 'space-between',
-    width: !isTablet ? '100%' : '80%',
+    maxWidth: 500,
+    width: isTablet ? '80%' : '100%',
   },
   logo: {
     aspectRatio: 2 / 1,
@@ -60,14 +61,14 @@ const homeStyle: HomeStyle = StyleSheet.create({
     backgroundColor: colors.gray,
     borderRadius: 15,
     display: 'flex',
-    height: 30,
     justifyContent: 'center',
-    marginVertical: 20,
-    paddingHorizontal: 10,
+    marginTop: isTablet ? 40 : 20,
   },
   appVersionText: {
     fontFamily: 'Montserrat-SemiBold',
-    fontSize: 12,
+    fontSize: isTablet ? 14 : 12,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
   },
 });
 

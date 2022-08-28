@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEqual, map } from 'lodash';
+import { secondsToMilliseconds } from 'date-fns';
 import Alert from '../../elements/misc/Alert';
 import Play from '../../../assets/icons/Play';
 import Pause from '../../../assets/icons/Pause';
@@ -29,7 +30,6 @@ import notificationsStyle from '../../../styles/notifications';
 import colors from '../../../styles/colors';
 import type { UI } from '../../../store/globalStore';
 import type { Beat, Beats } from '../../../sound/beats';
-import { secondsToMilliseconds } from 'date-fns';
 
 function Circle(): Node {
   const { t } = useLocale();

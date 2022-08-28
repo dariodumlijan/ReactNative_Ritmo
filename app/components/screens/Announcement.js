@@ -18,7 +18,7 @@ type Props = {
   reload: Function,
 };
 
-const Announcement = (props: Props): Node => {
+function Announcement(props: Props): Node {
   const { t } = useLocale();
   const localStorage = useLocalStorage();
   const { cms } = props;
@@ -42,7 +42,7 @@ const Announcement = (props: Props): Node => {
         <View style={mainStyle.container}>
           <Text style={announcementStyle.title}>{title}</Text>
           <ScrollView
-            style={{ flex: 1 }}
+            style={[{ flex: 1 }]}
             contentContainerStyle={mainStyle.scrollContainer}
             bounces={false}
           >
@@ -63,6 +63,6 @@ const Announcement = (props: Props): Node => {
       </SafeAreaView>
     </View>
   );
-};
+}
 
 export default Announcement;

@@ -17,7 +17,7 @@ import Select from '../../elements/inputs/Select';
 import Exit from '../../../assets/icons/Exit';
 import CountdownTimer from '../../elements/misc/CountdownTimer';
 import useLocale from '../../../locales';
-import { isRealDevice } from '../../../utils';
+import { isRealDevice, isiPhone } from '../../../utils';
 import { useRewardedAd } from '../../../utils/hooks';
 import { actions, selectors } from '../../../store/globalStore';
 import { selectors as selectorsCMS } from '../../../store/cmsStore';
@@ -26,9 +26,8 @@ import rewardedStyle from '../../../styles/rewarded';
 import colors from '../../../styles/colors';
 import type { Sample } from '../../../utils/lists';
 import type { ReduxState } from '../../../types';
-import type { RewardedAt } from "../../../store/globalStore";
 
-const RewardedSamples = (): Node => {
+function RewardedSamples(): Node {
   const { t } = useLocale();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -100,7 +99,10 @@ const RewardedSamples = (): Node => {
       </Link>
 
       {reduxStates.rewardedAt.samples && (
-        <View style={rewardedStyle.countdownWrapper}>
+        <View style={[rewardedStyle.countdownWrapper, {
+          marginBottom: isiPhone ? 0 : '-20%',
+        }]}
+        >
           <CountdownTimer
             style={rewardedStyle.countdownTimer}
             countdownFrom={reduxStates.rewardedAt.samples ? reduxStates.rewardedAt.samples + hoursToMilliseconds(reduxStates.resetRewards) : null}
@@ -110,7 +112,10 @@ const RewardedSamples = (): Node => {
         </View>
       )}
 
-      <View style={rewardedStyle.rewardedCon}>
+      <View style={[rewardedStyle.rewardedCon, {
+        marginTop: isiPhone ? 0 : '20%',
+      }]}
+      >
         {hasAllRewards ? (
           <View style={rewardedStyle.rewardedExp}>
             <Text style={rewardedStyle.rewardedExpText}>
@@ -151,7 +156,8 @@ const RewardedSamples = (): Node => {
               <Text style={rewardedStyle.rewardedExp2Text}>
                 {t('rewarded.samples.paragraph_2.text_1')}
                 <Text style={{ color: colors.orange }}>
-                  {reduxStates.resetRewards}{t('rewarded.samples.paragraph_2.text_2')}</Text>
+                  {reduxStates.resetRewards}{t('rewarded.samples.paragraph_2.text_2')}
+                </Text>
                 {t('rewarded.samples.paragraph_2.text_3')}<Text style={{ color: colors.orange }}>{t('rewarded.samples.paragraph_2.text_4')}</Text>{t('rewarded.samples.paragraph_2.text_5')}
               </Text>
             </View>
@@ -173,6 +179,6 @@ const RewardedSamples = (): Node => {
       </View>
     </SafeAreaView>
   );
-};
+}
 
 export default RewardedSamples;

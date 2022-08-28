@@ -27,7 +27,7 @@ import { sliderStyle } from '../../styles/inputs';
 import colors from '../../styles/colors';
 import type { ReduxState } from '../../types';
 
-export const Guide = (): Node => {
+export function Guide(): Node {
   const { t } = useLocale();
   const config = useSelector((state: ReduxState) => ({
     sliderMin: state.static.sliderMin,
@@ -50,13 +50,13 @@ export const Guide = (): Node => {
         <Text style={guideStyle.guideTxt}>{t('guide.section_1.paragraph_1')}</Text>
         <View style={guideStyle.guideBullet}>
           <View
-            style={{
+            style={[{
               width: 15,
               aspectRatio: 1 / 1,
               borderRadius: 15,
               marginRight: 5,
               backgroundColor: colors.orange,
-            }}
+            }]}
           />
           <Text style={guideStyle.guideTxt}>{t('guide.section_1.bullet_1')}</Text>
         </View>
@@ -274,6 +274,6 @@ export const Guide = (): Node => {
       <View style={mainStyle.adSpace} />
     </SafeAreaView>
   );
-};
+}
 
 export default Guide;

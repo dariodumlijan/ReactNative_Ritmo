@@ -5,6 +5,7 @@ import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 import { isEqual } from 'lodash';
+import { isApple, isTablet } from '../../../utils';
 import { useLocationInfo } from '../../../utils/hooks';
 import { selectors } from '../../../store/globalStore';
 import mainStyle from '../../../styles/main';
@@ -19,6 +20,14 @@ function AdmobBanner(props: Props): Node {
   const ui: UI = useSelector(selectors.getUI, isEqual);
   const locationInfo = useLocationInfo();
 
+  const handleBannerSize = (): string => {
+    if (isApple) return BannerAdSize.FLUID;
+
+    if (isTablet) return BannerAdSize.FULL_BANNER;
+
+    return BannerAdSize.BANNER;
+  };
+
   if (locationInfo.isRewarded) return null;
 
   return (
@@ -26,7 +35,7 @@ function AdmobBanner(props: Props): Node {
       {props.showAd && ui.showAds && (
         <BannerAd
           unitId={props.bannerId}
-          size={BannerAdSize.FLUID}
+          size={handleBannerSize()}
           requestOptions={{
             requestNonPersonalizedAdsOnly: !ui.personalisedAds,
           }}

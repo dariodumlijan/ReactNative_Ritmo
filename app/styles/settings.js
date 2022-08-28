@@ -1,6 +1,6 @@
 // @flow
 import { StyleSheet } from 'react-native';
-import { isTablet } from '../utils';
+import { isiPhone, isTablet } from '../utils';
 import colors from './colors';
 
 type SettingsStyle = {
@@ -17,12 +17,13 @@ type SettingsStyle = {
 
 const settingsStyle: SettingsStyle = StyleSheet.create({
   navigation: {
-    alignItems: 'center',
+    alignItems: 'flex-end',
     display: 'flex',
     flexDirection: 'row',
-    height: !isTablet ? '8%' : '6%',
+    height: isTablet ? '6%' : '8%',
     justifyContent: 'space-between',
-    width: !isTablet ? '100%' : '80%',
+    marginTop: isiPhone ? 0 : '5%',
+    width: isTablet ? '80%' : '100%',
   },
   closeIconWrapper: {
     height: '80%',
@@ -35,9 +36,10 @@ const settingsStyle: SettingsStyle = StyleSheet.create({
   menuWrapper: {
     alignItems: 'flex-end',
     display: 'flex',
-    flex: !isTablet ? 1 : 1 / 1.2,
+    flex: 1,
     justifyContent: 'space-between',
-    width: !isTablet ? '100%' : '80%',
+    maxHeight: 750,
+    width: isTablet ? '80%' : '100%',
   },
   menuTitle: {
     color: colors.primaryDark,

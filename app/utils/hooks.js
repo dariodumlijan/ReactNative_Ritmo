@@ -1,10 +1,14 @@
 // @flow
-import { useContext, useEffect, useRef, useState } from 'react';
+import {
+  useContext, useEffect, useRef, useState,
+} from 'react';
 import { useLocation } from 'react-router-dom';
 import InAppReview from 'react-native-in-app-review';
 import { RewardedAd } from 'react-native-google-mobile-ads';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { addMonths, hoursToMilliseconds, minutesToMilliseconds, secondsToMilliseconds } from 'date-fns';
+import {
+  addMonths, minutesToMilliseconds, secondsToMilliseconds,
+} from 'date-fns';
 import { useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
 import { localStorageKeys } from '../tokens';
@@ -147,7 +151,7 @@ export const useCountdown = (onTimeEnd: Function, countdownFrom: ?number) => {
 
     const timerId = setInterval(() => {
       timerRef.current -= secondsToMilliseconds(1);
-      
+
       if (timerRef.current < 0 && countdownFrom) {
         onTimeEnd();
         clearInterval(timerId);
@@ -157,5 +161,6 @@ export const useCountdown = (onTimeEnd: Function, countdownFrom: ?number) => {
     }, secondsToMilliseconds(1));
 
     return () => clearInterval(timerId);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };

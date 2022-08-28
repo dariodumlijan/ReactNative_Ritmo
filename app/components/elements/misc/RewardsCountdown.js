@@ -1,13 +1,11 @@
 // @flow
-import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { hoursToMilliseconds, secondsToMilliseconds } from 'date-fns';
+import { hoursToMilliseconds } from 'date-fns';
 import { get, isEqual } from 'lodash';
 import { isRealDevice } from '../../../utils';
 import { useCountdown } from '../../../utils/hooks';
 import { actions } from '../../../store/globalStore';
 import type { ReduxState } from '../../../types';
-import type { RewardedAt } from "../../../store/globalStore";
 
 function RewardsCountdown(): null {
   const dispatch = useDispatch();

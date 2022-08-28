@@ -65,11 +65,12 @@ function TimeSignatureSelect(props: Props): Node {
     }
 
     return props.value[option.value] === sig.value;
-  }
+  };
 
   const handleSelect = (option: Option, sig: TimeSig) => {
     if (option.disabled) {
       navigate('/rewarded/pro-features');
+
       return;
     }
 
@@ -77,7 +78,7 @@ function TimeSignatureSelect(props: Props): Node {
       key: option.value,
       value: sig.value,
     });
-  }
+  };
 
   return (
     <>
@@ -158,8 +159,9 @@ function TimeSignatureSelect(props: Props): Node {
                       <Text style={[timeSignatureSelectStyle.listText, {
                         ...(isActive(option, sig) && {
                           color: colors.primary,
-                        })
-                      }]}>
+                        }),
+                      }]}
+                      >
                         {sig.label}
                       </Text>
                     </TouchableOpacity>

@@ -2,6 +2,7 @@
 <PROJECT_ROOT>/__tests__/.*
 <PROJECT_ROOT>/node_modules/resolve.*
 <PROJECT_ROOT>/node_modules/eslint-plugin-import/node_modules
+<PROJECT_ROOT>/node_modules/react-native/Libraries/StyleSheet
 
 [include]
 

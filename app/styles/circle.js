@@ -78,7 +78,7 @@ const circleStyle: CircleStyle = StyleSheet.create({
   },
   btnIcon: {
     aspectRatio: 1 / 1,
-    width: !isTablet ? '100%' : '80%',
+    width: isTablet ? '60%' : '100%',
   },
 });
 

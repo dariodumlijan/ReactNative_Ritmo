@@ -1,6 +1,8 @@
 // @flow
 import { StyleSheet } from 'react-native';
-import { deviceHeight, deviceWidth, isApple, isTablet } from '../utils';
+import {
+  deviceHeight, deviceWidth, isApple, isTablet,
+} from '../utils';
 import colors from './colors';
 
 type CheckboxStyle = {
@@ -16,13 +18,14 @@ export const checkboxStyle: CheckboxStyle = StyleSheet.create({
   wrapper: {
     aspectRatio: 1 / 1,
     position: 'absolute',
-    width: deviceWidth * 0.06,
+    // width: deviceWidth * (isTablet ? 0.04 : 0.06),
+    width: '7%',
     zIndex: 1,
   },
   checkbox: {
     aspectRatio: 1 / 1,
-    borderRadius: deviceWidth * 0.03,
-    borderWidth: 2,
+    borderRadius: deviceWidth * 0.1,
+    borderWidth: isTablet ? 4 : 2,
     width: '100%',
   },
   default: {
@@ -255,7 +258,6 @@ export const timeSignatureSelectStyle: TimeSignatureSelectStyle = StyleSheet.cre
   listWrapper: {
     borderColor: colors.grayBlue,
     borderRadius: 30,
-    borderRadius: 30,
     borderWidth: 2,
     marginHorizontal: isTablet ? '15%' : '5%',
     marginVertical: '30%',
@@ -331,9 +333,11 @@ export const sliderStyle: SliderStyle = StyleSheet.create({
     display: 'flex',
     flexGrow: 1,
     justifyContent: 'space-between',
-    marginHorizontal: !isTablet ? '5%' : '10%',
+    marginHorizontal: isTablet ? '10%' : '5%',
     marginVertical: '5%',
-    width: !isTablet ? '90%' : '80%',
+    maxHeight: 200,
+    maxWidth: 500,
+    width: isTablet ? '80%' : '90%',
   },
   container: {
     flexShrink: 1,
@@ -348,15 +352,15 @@ export const sliderStyle: SliderStyle = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 30,
     display: 'flex',
-    height: 30,
+    height: isTablet ? 40 : 30,
     justifyContent: 'center',
-    width: 70,
+    width: isTablet ? 120 : 70,
   },
   label: {
     color: colors.primaryDark,
     fontFamily: 'Montserrat-SemiBold',
-    fontSize: 14,
-    lineHeight: 16,
+    fontSize: isTablet ? 18 : 14,
+    lineHeight: isTablet ? 20 : 16,
   },
 });
 

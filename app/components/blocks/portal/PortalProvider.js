@@ -14,6 +14,7 @@ function PortalProvider({ children }: Props): Node {
   const close = () => setComponent(null);
 
   return (
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
     <PortalContext.Provider value={{ teleport, close }}>
       {component}
       {children}
