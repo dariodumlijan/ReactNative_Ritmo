@@ -1,7 +1,8 @@
 // @flow
 import axios from 'axios';
-import { get, isEqual } from 'lodash';
-import { localStorageKeys, appKeys } from '../tokens';
+import CodePush from 'react-native-code-push';
+import { get, isEqual, omit } from 'lodash';
+import { localStorageKeys, appKeys, codepush } from '../tokens';
 import cmsHeader from './cms.config';
 import {
   PRODUCTION_QUERY,
@@ -9,7 +10,7 @@ import {
   VALID_PRODUCTION_QUERY,
   VALID_STAGING_QUERY,
 } from './cms.querys';
-import { isRealDevice } from '../utils';
+import { deviceInfo } from '../utils';
 import { getItem } from '../utils/hooks';
 import ENV from '../../env.json';
 
@@ -29,8 +30,8 @@ export type InitialCMSResponse = {
   isLocal: boolean,
 };
 
-const VALID_QUERY = isRealDevice ? VALID_PRODUCTION_QUERY : VALID_STAGING_QUERY;
-const MASTER_QUERY = isRealDevice ? PRODUCTION_QUERY : STAGING_QUERY;
+const VALID_QUERY = deviceInfo.isRealDevice ? VALID_PRODUCTION_QUERY : VALID_STAGING_QUERY;
+const MASTER_QUERY = deviceInfo.isRealDevice ? PRODUCTION_QUERY : STAGING_QUERY;
 
 export const fetchData = async (query: string): Promise<any> => {
   const response = await axios.post(ENV.CMS.GRAPHQL_URL + ENV.CMS.SPACE, { query }, cmsHeader);
@@ -105,4 +106,15 @@ export const fetchCMS = async (): Promise<InitialCMSResponse> => {
 
   // $FlowFixMe
   return { ...dataResponse, timestamps: fullTimestampsResponse };
+};
+
+export const getDeploymentData = async (): Promise<any> => {
+  const response = await CodePush.getUpdateMetadata();
+  const newResponse = omit(response, 'install');
+  const isProduction = get(newResponse, 'deploymentKey', codepush[deviceInfo.isApple ? 'ios' : 'android'].production) === codepush[deviceInfo.isApple ? 'ios' : 'android'].production;
+
+  return {
+    environment: isProduction ? 'Production' : 'Staging',
+    ...newResponse,
+  };
 };

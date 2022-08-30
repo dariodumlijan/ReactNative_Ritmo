@@ -10,8 +10,8 @@ type HomeStyle = {
   navigation: Object,
   logo: Object,
   menu: Object,
-  appVersion: Object,
-  appVersionText: Object,
+  appEnvironment: Object,
+  appEnvironmentText: Object,
 };
 
 const homeStyle: HomeStyle = StyleSheet.create({
@@ -56,7 +56,7 @@ const homeStyle: HomeStyle = StyleSheet.create({
     height: '120%',
     marginTop: -2,
   },
-  appVersion: {
+  appEnvironment: {
     alignItems: 'center',
     backgroundColor: colors.gray,
     borderRadius: 15,
@@ -64,7 +64,7 @@ const homeStyle: HomeStyle = StyleSheet.create({
     justifyContent: 'center',
     marginTop: isTablet ? 40 : 20,
   },
-  appVersionText: {
+  appEnvironmentText: {
     fontFamily: 'Montserrat-SemiBold',
     fontSize: isTablet ? 14 : 12,
     paddingVertical: 8,

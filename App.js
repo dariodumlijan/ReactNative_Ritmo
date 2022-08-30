@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import codePush from 'react-native-code-push';
 import { Provider } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
+import Loading from './app/components/screens/Loading';
 import Body from './app/components/Body';
 import PortalProvider from './app/components/blocks/portal/PortalProvider';
 import beats from './app/sound/beats';
 import { t } from './app/locales';
+import { getDeviceInfo } from './app/utils';
 import { getSamples, getTimeSignatures, getUnlockedSamples } from './app/utils/lists';
 import { configureStore } from './app/store';
-import { codepush } from './app/tokens';
 import type { ReduxState } from './app/types';
 
 const samples = getSamples();
@@ -27,7 +28,7 @@ const initialState: ReduxState = {
     loadTime: Date.now(),
   },
   global: {
-    codepushKey: codepush.production,
+    codepushData: null,
     presets: {
       one: null,
       two: null,
@@ -66,9 +67,19 @@ const initialState: ReduxState = {
 const store = configureStore(initialState);
 
 function App() {
+  const [setupPending, setSetupPending] = useState(true);
+
   useEffect(() => {
-    SplashScreen.hide();
+    const handleDeviceSetup = async () => {
+      await getDeviceInfo();
+      setSetupPending(false);
+      SplashScreen.hide();
+    };
+
+    handleDeviceSetup();
   }, []);
+
+  if (setupPending) return <Loading />;
 
   return (
     <Provider store={store}>

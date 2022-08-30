@@ -17,7 +17,7 @@ import useLocale from '../../../locales';
 import { useRewardedAd } from '../../../utils/hooks';
 import { actions } from '../../../store/globalStore';
 import { selectors as selectorsCMS } from '../../../store/cmsStore';
-import { isRealDevice } from '../../../utils';
+import { deviceInfo } from '../../../utils';
 import mainStyle from '../../../styles/main';
 import rewardedStyle from '../../../styles/rewarded';
 import colors from '../../../styles/colors';
@@ -29,7 +29,7 @@ function RewardedProFeatures(): Node {
   const navigate = useNavigate();
   const reduxStates = useSelector((state: ReduxState) => ({
     personalisedAds: state.global.ui.personalisedAds,
-    resetRewards: get(state.cms, isRealDevice ? 'master.resetRewards' : 'master.resetRewardsStaging', 24),
+    resetRewards: get(state.cms, deviceInfo.isRealDevice ? 'master.resetRewards' : 'master.resetRewardsStaging', 24),
   }), isEqual);
   const { rewarded } = useSelector(selectorsCMS.getAdmobIds, isEqual);
   const [adLoading, setAdLoading] = useState(true);

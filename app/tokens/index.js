@@ -11,8 +11,14 @@ export const admob = {
 };
 
 export const codepush = {
-  production: 'O04Aw3YIpvD_ihYX4qO0faqD6R3uCyzorw4Yf',
-  staging: '0e_fCwBomxPBperEcePzVV7hpBCXdgISY7vEQ',
+  android: {
+    production: '_E6pPExPbuekfs8--1P1KXx0_9PCdp9lfNFHw',
+    staging: 'YQ27CjO73bmeHRZmpoPx_JtAHkyFBn5ZhpoAj',
+  },
+  ios: {
+    production: 'O04Aw3YIpvD_ihYX4qO0faqD6R3uCyzorw4Yf',
+    staging: '0e_fCwBomxPBperEcePzVV7hpBCXdgISY7vEQ',
+  },
 };
 
 export const localStorageKeys = {

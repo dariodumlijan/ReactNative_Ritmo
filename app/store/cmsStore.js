@@ -1,7 +1,7 @@
 // @flow
 import { get, merge } from 'lodash';
 import * as API from '../api';
-import { isApple, isRealDevice } from '../utils';
+import { deviceInfo } from '../utils';
 import { setItem } from '../utils/hooks';
 import { admob, localStorageKeys } from '../tokens';
 import type { InitialCMSResponse } from '../api';
@@ -41,10 +41,10 @@ export const getAdmobIds = (adIds: ?{
   const getBannerID = (): string|null => {
     if (!adIds) return null;
 
-    if (isApple) {
-      adId = isRealDevice ? adIds.banner.ios : admob.banner.ios_test;
+    if (deviceInfo.isApple) {
+      adId = deviceInfo.isRealDevice ? adIds.banner.ios : admob.banner.ios_test;
     } else {
-      adId = isRealDevice ? adIds.banner.android : admob.banner.android_test;
+      adId = deviceInfo.isRealDevice ? adIds.banner.android : admob.banner.android_test;
     }
 
     return adId;
@@ -53,10 +53,10 @@ export const getAdmobIds = (adIds: ?{
   const getRewardedID = (): string|null => {
     if (!adIds) return null;
 
-    if (isApple) {
-      adId = isRealDevice ? adIds.rewarded.ios : admob.rewarded.ios_test;
+    if (deviceInfo.isApple) {
+      adId = deviceInfo.isRealDevice ? adIds.rewarded.ios : admob.rewarded.ios_test;
     } else {
-      adId = isRealDevice ? adIds.rewarded.android : admob.rewarded.android_test;
+      adId = deviceInfo.isRealDevice ? adIds.rewarded.android : admob.rewarded.android_test;
     }
 
     return adId;

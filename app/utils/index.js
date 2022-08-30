@@ -10,16 +10,38 @@ import ENV from '../../env.json';
 import type { Sample } from './lists';
 import type { Beats } from '../sound/beats';
 
-// $FlowFixMe
-export const isDevelopment: boolean = __DEV__;
-export const isRealDevice: boolean = !DeviceInfo.isEmulator() && isDevelopment;
+type DeviceInfoType = {
+  isApple: boolean,
+  isTablet: boolean,
+  isiPhone: boolean,
+  isRealDevice?: boolean,
+  isAdminDevice?: boolean,
+  showAdminActions?: boolean,
+  deviceId?: string,
+};
+
 export const isApple: boolean = Platform.OS === 'ios';
 export const isTablet: boolean = DeviceInfo.isTablet();
 export const isiPhone: boolean = isApple && !isTablet;
-export const showAppVersioning: boolean = !isRealDevice || includes(ENV.ADMIN_DEVICE_IDS, DeviceInfo.getDeviceId());
-
+export const deviceInfo: DeviceInfoType = {
+  isApple,
+  isTablet,
+  isiPhone,
+};
 export const deviceWidth: number = Dimensions.get('screen').width;
 export const deviceHeight: number = Dimensions.get('screen').height;
+
+export const getDeviceInfo = async (): Promise<any> => {
+  const isEmulator = await DeviceInfo.isEmulator();
+  const deviceID = await DeviceInfo.getUniqueId();
+  const isAdminDevice = includes(ENV.ADMIN_DEVICE_IDS, deviceID);
+  const showAdminActions = isEmulator || isAdminDevice;
+
+  deviceInfo.isRealDevice = !isEmulator;
+  deviceInfo.isAdminDevice = isAdminDevice;
+  deviceInfo.showAdminActions = showAdminActions;
+  deviceInfo.deviceId = deviceID;
+};
 
 // $FlowFixMe
 export const isPromise = (p) => !!p && typeof p.then === 'function';

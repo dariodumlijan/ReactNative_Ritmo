@@ -14,12 +14,13 @@ import { Link } from 'react-router-native';
 import { isEqual, map } from 'lodash';
 import ExportMidiModal from '../../elements/modals/ExportMidiModal';
 import Exit from '../../../assets/icons/Exit';
-// import Recordings from '../../../assets/icons/Recordings';
+import Recordings from '../../../assets/icons/Recordings';
 import Guide from '../../../assets/icons/Guide';
 import Export from '../../../assets/icons/Export';
 import Settings from '../../../assets/icons/Settings';
+import StateTree from '../../../assets/icons/StateTree';
 import useLocale from '../../../locales';
-import { isBeatEmpty } from '../../../utils';
+import { isBeatEmpty, deviceInfo } from '../../../utils';
 import { useTeleport } from '../../../utils/hooks';
 import { actions } from '../../../store/globalStore';
 import { selectors } from '../../../store/beatsStore';
@@ -43,16 +44,25 @@ function Navigation(): Node {
       path: 'settings',
       label: t('navigation.settings'),
       icon: <Settings style={navigationStyle.icon} />,
+      visible: true,
     },
-    // {
-    //   path: 'library',
-    //   label: t('navigation.library'),
-    //   icon: <Recordings style={navigationStyle.icon} />,
-    // },
+    {
+      path: 'library',
+      label: t('navigation.library'),
+      icon: <Recordings style={navigationStyle.icon} />,
+      visible: false,
+    },
     {
       path: 'guide',
       label: t('navigation.guide'),
       icon: <Guide style={navigationStyle.icon} />,
+      visible: true,
+    },
+    {
+      path: 'state-tree',
+      label: t('navigation.state_tree'),
+      icon: <StateTree style={navigationStyle.icon} />,
+      visible: deviceInfo.showAdminActions,
     },
   ];
 
@@ -127,18 +137,21 @@ function Navigation(): Node {
         </View>
         <View style={navigationStyle.linksWrapper}>
           {map(links, (link) => (
-            <Link
-              key={link.path}
-              style={navigationStyle.link}
-              underlayColor={null}
-              to={link.path}
-              onPress={handleCloseNav}
-            >
-              <View style={navigationStyle.button}>
-                <Text style={navigationStyle.label}>{link.label}</Text>
-                {link.icon}
-              </View>
-            </Link>
+            <React.Fragment key={link.path}>
+              {link.visible && (
+                <Link
+                  style={navigationStyle.link}
+                  underlayColor={null}
+                  to={link.path}
+                  onPress={handleCloseNav}
+                >
+                  <View style={navigationStyle.button}>
+                    <Text style={navigationStyle.label}>{link.label}</Text>
+                    {link.icon}
+                  </View>
+                </Link>
+              )}
+            </React.Fragment>
           ))}
           <TouchableOpacity style={navigationStyle.link} activeOpacity={0.6} onPress={openMidiModal}>
             <View style={navigationStyle.button}>

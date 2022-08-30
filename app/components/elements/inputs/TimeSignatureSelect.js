@@ -2,10 +2,15 @@
 import React from 'react';
 import type { Node } from 'react';
 import {
-  Modal, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View,
+  Modal,
+  ScrollView,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from 'react-native';
 import { every, map, reject } from 'lodash';
-import { Link, useNavigate } from 'react-router-native';
 import Arrow from '../../../assets/icons/Arrow';
 import useLocale from '../../../locales';
 import useSelectLists from '../../../utils/lists';
@@ -28,12 +33,12 @@ type Props = {
   onSelect: Function,
   onOpen: Function,
   onClose: Function,
+  onRewardedClick: Function,
   isDisabled?: boolean,
 };
 
 function TimeSignatureSelect(props: Props): Node {
   const { t } = useLocale();
-  const navigate = useNavigate();
   const { timeSignatures } = useSelectLists();
 
   const options: Option[] = [
@@ -69,7 +74,7 @@ function TimeSignatureSelect(props: Props): Node {
 
   const handleSelect = (option: Option, sig: TimeSig) => {
     if (option.disabled) {
-      navigate('/rewarded/pro-features');
+      props.onRewardedClick();
 
       return;
     }
@@ -104,17 +109,17 @@ function TimeSignatureSelect(props: Props): Node {
         </TouchableOpacity>
 
         {!props.unlockedPro && (
-          <Link
+          <TouchableHighlight
             style={[settingsStyle.btnRewardScreen, {
               marginBottom: 0,
             }]}
-            to="/rewarded/pro-features"
+            onPress={props.onRewardedClick}
             underlayColor={colors.grayBlue}
           >
             <Text style={settingsStyle.btnRewardScreenText}>
               {t('settings.unlock_advanced')}
             </Text>
-          </Link>
+          </TouchableHighlight>
         )}
       </View>
 
@@ -135,15 +140,15 @@ function TimeSignatureSelect(props: Props): Node {
                     {option.label}
                   </Text>
                   {option.disabled && (
-                    <Link
+                    <TouchableHighlight
                       style={timeSignatureSelectStyle.proWrapper}
-                      to="/rewarded/pro-features"
+                      onPress={props.onRewardedClick}
                       underlayColor={colors.gray}
                     >
                       <Text style={timeSignatureSelectStyle.proText}>
                         {t('settings.advanced')}
                       </Text>
-                    </Link>
+                    </TouchableHighlight>
                   )}
                 </View>
                 <View style={timeSignatureSelectStyle.listSection}>

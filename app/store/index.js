@@ -1,5 +1,5 @@
-/* eslint-disable no-console */
 // @flow
+/* eslint-disable no-console */
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -10,7 +10,7 @@ import { reducer as staticStoreReducer } from './staticStore';
 import { reducer as globalStoreReducer } from './globalStore';
 import { reducer as cmsStoreReducer } from './cmsStore';
 import { reducer as beatsStoreReducer } from './beatsStore';
-import { isPromise, isRealDevice } from '../utils';
+import { isPromise, deviceInfo } from '../utils';
 import ENV from '../../env.json';
 import type {
   ReduxState, ReduxAction, ReduxMiddlewareArgument, ActionChains,
@@ -42,7 +42,7 @@ function promiseMiddleware({ dispatch }: ReduxMiddlewareArgument): any {
     if (action.payload && isPromise(action.payload)) {
       action.payload
         .then((payload) => {
-          if (!isRealDevice) {
+          if (!deviceInfo.isRealDevice) {
             const isObject: boolean = typeof action.payload === 'object';
             const payloadString: string = isObject
               ? JSON.stringify(action.payload)
@@ -53,7 +53,10 @@ function promiseMiddleware({ dispatch }: ReduxMiddlewareArgument): any {
               isObject ? '{...}' : payloadString,
             );
           }
-          dispatch({ type: action.type + '_FULFILLED', payload });
+          dispatch({
+            type: `${action.type}_FULFILLED`,
+            payload,
+          });
         })
         .catch((e) => {
           console.error(
@@ -64,10 +67,14 @@ function promiseMiddleware({ dispatch }: ReduxMiddlewareArgument): any {
             'message = ',
             (e && e.message) || '',
           );
-          // const rejectAction = e
-          //   ? reportErrorAction(`${action.type}_REJECTED`, e)
-          //   : reportErrorActionCustom(`${action.type}_REJECTED`, 'Promise reject error', `${action.type}_REJECTED error`);
-          // dispatch(rejectAction);
+          dispatch({
+            type: `${action.type}_REJECTED`,
+            payload: {
+              statusCode: (e && e.status) || '',
+              name: (e && e.name) || '',
+              message: (e && e.message) || '',
+            },
+          });
         });
 
       return dispatch({ type: `${action.type}_PENDING` });

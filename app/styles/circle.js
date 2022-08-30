@@ -25,7 +25,7 @@ const circleStyle: CircleStyle = StyleSheet.create({
     height: isTablet ? '70%' : null,
     justifyContent: 'center',
     marginBottom: '12%',
-    marginTop: !isTablet ? '4%' : '6%',
+    marginTop: isTablet ? '6%' : '4%',
     width: isTablet ? null : '95%',
   },
   circle: {

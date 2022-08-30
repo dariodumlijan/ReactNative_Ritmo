@@ -10,13 +10,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Slider } from '@miblanchard/react-native-slider';
 import { Link } from 'react-router-native';
 import { useSelector } from 'react-redux';
+import { Slider } from '@miblanchard/react-native-slider';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { isEqual } from 'lodash';
 import SliderThumb from '../elements/inputs/SliderThumb';
 import Exit from '../../assets/icons/Exit';
 import useLocale from '../../locales';
+import { deviceInfo } from '../../utils';
 import MidiFile from '../../assets/img/midiFile.png';
 import MidiFileLogic from '../../assets/img/midiFile_Logic.png';
 import guideStyle from '../../styles/guide';
@@ -34,9 +36,20 @@ export function Guide(): Node {
     sliderMax: state.static.sliderMax,
     sliderStep: state.static.sliderStep,
   }), isEqual);
-  const [beat1, setBeat1] = useState(false);
-  const [beat2, setBeat2] = useState(true);
+  const [beat1, setBeat1] = useState(true);
+  const [beat2, setBeat2] = useState(false);
   const [slider, setSlider] = useState(15);
+  const [secretDeviceIdTap, setSecretDeviceIdTap] = useState(0);
+
+  const handleSecretDeviceId = () => {
+    if (secretDeviceIdTap === 7) {
+      Clipboard.setString(deviceInfo.deviceId);
+
+      return;
+    }
+
+    setSecretDeviceIdTap(secretDeviceIdTap + 1);
+  };
 
   return (
     <SafeAreaView style={mainStyle.safe}>
@@ -257,7 +270,14 @@ export function Guide(): Node {
           <Image style={guideStyle.guideImg} resizeMode="contain" source={MidiFileLogic} />
         </View>
         <Text style={guideStyle.guideTxt}>{t('guide.section_4.paragraph_5')}</Text>
-        <Text style={guideStyle.guideSub}>{t('guide.section_5.title')}</Text>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          onPress={handleSecretDeviceId}
+        >
+          <Text style={guideStyle.guideSub}>
+            {t('guide.section_5.title')}
+          </Text>
+        </TouchableOpacity>
         <Text style={guideStyle.guideTxt}>{t('guide.section_5.paragraph_1')}</Text>
         <Text
           style={{

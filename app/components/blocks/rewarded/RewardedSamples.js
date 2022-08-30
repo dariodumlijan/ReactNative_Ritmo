@@ -17,7 +17,7 @@ import Select from '../../elements/inputs/Select';
 import Exit from '../../../assets/icons/Exit';
 import CountdownTimer from '../../elements/misc/CountdownTimer';
 import useLocale from '../../../locales';
-import { isRealDevice, isiPhone } from '../../../utils';
+import { deviceInfo } from '../../../utils';
 import { useRewardedAd } from '../../../utils/hooks';
 import { actions, selectors } from '../../../store/globalStore';
 import { selectors as selectorsCMS } from '../../../store/cmsStore';
@@ -35,8 +35,8 @@ function RewardedSamples(): Node {
   const reduxStates = useSelector((state: ReduxState) => ({
     personalisedAds: state.global.ui.personalisedAds,
     selectedReward: state.global.ui.selectedReward,
-    resetRewards: get(state.cms, isRealDevice ? 'master.resetRewards' : 'master.resetRewardsStaging', 24),
-    keepRewards: get(state.cms, isRealDevice ? 'master.keepRewards' : 'master.keepRewardsStaging', 6),
+    resetRewards: get(state.cms, deviceInfo.isRealDevice ? 'master.resetRewards' : 'master.resetRewardsStaging', 24),
+    keepRewards: get(state.cms, deviceInfo.isRealDevice ? 'master.keepRewards' : 'master.keepRewardsStaging', 6),
     rewardedAt: state.global.rewardedAt,
   }), isEqual);
   const { rewarded } = useSelector(selectorsCMS.getAdmobIds, isEqual);
@@ -100,7 +100,7 @@ function RewardedSamples(): Node {
 
       {reduxStates.rewardedAt.samples && (
         <View style={[rewardedStyle.countdownWrapper, {
-          marginBottom: isiPhone ? 0 : '-20%',
+          marginBottom: deviceInfo.isiPhone ? 0 : '-20%',
         }]}
         >
           <CountdownTimer
@@ -113,7 +113,7 @@ function RewardedSamples(): Node {
       )}
 
       <View style={[rewardedStyle.rewardedCon, {
-        marginTop: isiPhone ? 0 : '20%',
+        marginTop: deviceInfo.isiPhone ? 0 : '20%',
       }]}
       >
         {hasAllRewards ? (

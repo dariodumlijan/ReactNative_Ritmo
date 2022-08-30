@@ -14,9 +14,9 @@ import { isEqual } from 'lodash';
 import { localStorageKeys } from '../tokens';
 import { PortalContext } from '../context';
 import { isPromise } from '.';
+import { selectors } from '../store/globalStore';
 import type { PortalProps } from '../context';
 import type { ReduxState } from '../types';
-import { selectors } from '../store/globalStore';
 
 export const getItem = async (key: string): any => {
   try {
@@ -90,25 +90,33 @@ export const useReview = (): Function => {
   return handleReview;
 };
 
-export const useLocationInfo = (): {
+export type LocationInfo = {
   current: string,
   isHome: boolean,
   isRewarded: boolean,
   isSettings: boolean,
   isGuide: boolean,
-} => {
+  isLibrary: boolean,
+  isStateTree: boolean,
+}
+
+export const useLocationInfo = (): LocationInfo => {
   const location = useLocation();
-  const pathHome = location.pathname === '/';
-  const pathRewarded = location.pathname.includes('/rewarded');
-  const pathSettings = location.pathname === '/settings';
-  const pathGuide = location.pathname === '/guide';
+  const isHome = location.pathname === '/';
+  const isRewarded = location.pathname.includes('/rewarded');
+  const isSettings = location.pathname === '/settings';
+  const isGuide = location.pathname === '/guide';
+  const isLibrary = location.pathname === '/library';
+  const isStateTree = location.pathname === '/state-tree';
 
   return {
     current: location.pathname,
-    isHome: pathHome,
-    isRewarded: pathRewarded,
-    isSettings: pathSettings,
-    isGuide: pathGuide,
+    isHome,
+    isRewarded,
+    isSettings,
+    isGuide,
+    isLibrary,
+    isStateTree,
   };
 };
 

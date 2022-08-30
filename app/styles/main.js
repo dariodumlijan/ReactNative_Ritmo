@@ -1,12 +1,13 @@
 // @flow
 import { StyleSheet } from 'react-native';
-import { isApple, isiPhone } from '../utils';
+import { deviceHeight, isApple, isiPhone } from '../utils';
 import colors from './colors';
 
 type MainStyles ={
   container: Object,
   safe: Object,
   scrollContainer: Object,
+  scrollDeviceContainer: Object,
   alert: Object,
   alertText: Object,
   exit: Object,
@@ -35,6 +36,11 @@ const mainStyle: MainStyles = StyleSheet.create({
     flexGrow: 1,
     position: 'relative',
     width: '90%',
+  },
+  scrollDeviceContainer: {
+    flexGrow: 1,
+    minHeight: deviceHeight,
+    width: '100%',
   },
   alert: {
     alignItems: 'center',

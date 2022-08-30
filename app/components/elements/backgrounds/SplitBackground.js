@@ -3,7 +3,7 @@ import React from 'react';
 import type { Node } from 'react';
 import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { isiPhone } from '../../../utils';
+import { deviceHeight, deviceWidth, isiPhone } from '../../../utils';
 import colors from '../../../styles/colors';
 
 const styles: Object = StyleSheet.create({
@@ -12,12 +12,11 @@ const styles: Object = StyleSheet.create({
     backgroundColor: colors.bg,
     bottom: 0,
     display: 'flex',
-    height: '120%',
-    left: '-6%',
+    height: deviceHeight * 1.1,
+    left: 0,
     position: 'absolute',
-    right: 0,
     top: 0,
-    width: '112%',
+    width: deviceWidth * 1.1,
   },
 });
 

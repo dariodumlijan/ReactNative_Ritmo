@@ -13,6 +13,7 @@ import Home from './screens/Home';
 import Settings from './screens/Settings';
 import Library from './screens/Library';
 import Guide from './screens/Guide';
+import StateTree from './screens/StateTree';
 import Rewarded from './screens/Rewarded';
 import Announcement from './screens/Announcement';
 import Loading from './screens/Loading';
@@ -22,7 +23,7 @@ import RewardsCountdown from './elements/misc/RewardsCountdown';
 import AdmobBanner from './elements/misc/AdmobBanner';
 import { actions as cmsActions, selectors } from '../store/cmsStore';
 import { actions as globalActions } from '../store/globalStore';
-import { handleAdsConsent, isRealDevice } from '../utils';
+import { handleAdsConsent, deviceInfo } from '../utils';
 import { appKeys } from '../tokens';
 import mainStyle from '../styles/main';
 import type { State as StateCMS } from '../store/cmsStore';
@@ -42,7 +43,7 @@ function Body(): Node {
   const hasOnlineData = !isEqual(onlineTimestamps, appKeys.noConnection);
   const announcementSeen = get(cms, 'timestamps.local.announcement', 0) < get(cms, 'timestamps.announcement', 0);
   const isLoading = every(['master', 'timestamps'], (key) => !has(cms, key));
-  const displayAds = isRealDevice
+  const displayAds = deviceInfo.isRealDevice
     ? get(cms, 'master.ads', false)
     : get(cms, 'master.adsStaging', false);
 
@@ -69,6 +70,7 @@ function Body(): Node {
     if (initLoad.current) {
       dispatch(cmsActions.fetchCMS());
       dispatch(globalActions.fetchPresetAndSamples());
+      dispatch(globalActions.getDeploymentData());
 
       setTimeout(askForPermission, secondsToMilliseconds(1));
       setTimeout(() => {
@@ -109,6 +111,7 @@ function Body(): Node {
           <Route path="/settings" element={<Settings />} />
           <Route path="/library" element={<Library />} />
           <Route path="/guide" element={(<Guide />)} />
+          <Route path="/state-tree" element={<StateTree />} />
           <Route path="/rewarded/:section" element={<Rewarded />} />
         </Routes>
 

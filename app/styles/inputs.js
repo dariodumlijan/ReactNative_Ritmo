@@ -229,8 +229,8 @@ export const timeSignatureSelectStyle: TimeSignatureSelectStyle = StyleSheet.cre
     fontFamily: 'Montserrat-SemiBold',
     fontSize: 20,
     marginRight: 10,
+    minWidth: 55,
     textAlign: 'right',
-    width: 50,
   },
   inputTextLabel: {
     color: colors.grayBlue,

@@ -23,12 +23,24 @@ type Props = {
   onSelect: Function,
   onOpen: Function,
   onClose: Function,
+  onRewardedClick? : Function,
   compareSamples?: string[],
   isDisabled?: boolean,
 };
 
 function Select(props: Props): Node {
   const locationInfo = useLocationInfo();
+
+  const handleSelect = (option: Option) => {
+    const disabled = props.compareSamples ? !isSampleUnlocked(props.compareSamples, option) : false;
+    if (disabled) {
+      if (props.onRewardedClick) props.onRewardedClick();
+
+      return;
+    }
+
+    props.onSelect(option);
+  };
 
   return (
     <>
@@ -64,8 +76,7 @@ function Select(props: Props): Node {
                 style={
                 key === props.options.length - 1 ? selectStyle.listItemNoBorder : selectStyle.listItem
               }
-                disabled={props.compareSamples ? !isSampleUnlocked(props.compareSamples, option) : false}
-                onPress={() => props.onSelect(option)}
+                onPress={() => handleSelect(option)}
               >
                 <Text style={props.compareSamples && !isSampleUnlocked(props.compareSamples, option) ? selectStyle.listDisabledText : selectStyle.listText}>
                   {option.label}

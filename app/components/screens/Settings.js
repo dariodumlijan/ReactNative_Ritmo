@@ -5,6 +5,7 @@ import {
   Animated,
   Keyboard,
   SafeAreaView,
+  ScrollView,
   Text,
   TextInput,
   TouchableHighlight,
@@ -23,7 +24,7 @@ import TimeSignatureSelect from '../elements/inputs/TimeSignatureSelect';
 import Alert from '../elements/misc/Alert';
 import Close from '../../assets/icons/Close';
 import useLocale from '../../locales';
-import { isRealDevice } from '../../utils';
+import { deviceInfo } from '../../utils';
 import useSelectLists from '../../utils/lists';
 import { useTeleport } from '../../utils/hooks';
 import { actions, selectors } from '../../store/globalStore';
@@ -45,11 +46,11 @@ function Settings(): Node {
   const lockedSamples = useSelector(selectors.getLockedSamples, isEqual);
   const global: State = useSelector(selectors.getGlobal, isEqual);
   const { resetRewards, keepRewards }: { resetRewards: number, keepRewards: number } = useSelector((state: ReduxState) => ({
-    resetRewards: hoursToMilliseconds(get(state.cms, isRealDevice ? 'master.resetRewards' : 'master.resetRewardsStaging', 24)),
-    keepRewards: get(state.cms, isRealDevice ? 'master.keepRewards' : 'master.keepRewardsStaging', 6),
+    resetRewards: hoursToMilliseconds(get(state.cms, deviceInfo.isRealDevice ? 'master.resetRewards' : 'master.resetRewardsStaging', 24)),
+    keepRewards: get(state.cms, deviceInfo.isRealDevice ? 'master.keepRewards' : 'master.keepRewardsStaging', 6),
   }), isEqual);
   const [bpm, setBpm] = useState<string>(String(global.ui.useBPM));
-  const [openTimeSigSelect, setTimeSigSelect] = useState(false);
+  const [openTimeSigSelect, setOpenTimeSigSelect] = useState(false);
   const [openSoundSelect, setOpenSoundSelect] = useState(false);
   const hasAllRewards = isEmpty(lockedSamples);
   const [rewardsAreRefreshable, setRewardsAreRefreshable] = useState(false);
@@ -57,7 +58,7 @@ function Settings(): Node {
   const countdownFrom = global.rewardedAt?.samples ? global.rewardedAt.samples + resetRewards : null;
 
   const onTimeSigChange = (timeSig: TimeSignaturePayload) => {
-    setTimeSigSelect(false);
+    setOpenTimeSigSelect(false);
     dispatch(actions.updateTimeSig(timeSig));
   };
 
@@ -79,8 +80,27 @@ function Settings(): Node {
     Keyboard.dismiss();
   };
 
-  const handleRewardedOpen = () => {
+  const handleRewardedProOpen = () => {
     if (!global.ui.showAds) {
+      setOpenTimeSigSelect(false);
+      teleport(
+        <Alert clearDelayMS={secondsToMilliseconds(5)}>
+          <Text style={[notificationsStyle.alertText, { fontSize: 14 }]}>
+            {t('modal.no_ads')}
+          </Text>
+        </Alert>,
+      );
+
+      return;
+    }
+
+    Keyboard.dismiss();
+    navigate('/rewarded/pro-features');
+  };
+
+  const handleRewardedSamplesOpen = () => {
+    if (!global.ui.showAds) {
+      setOpenSoundSelect(false);
       teleport(
         <Alert clearDelayMS={secondsToMilliseconds(5)}>
           <Text style={[notificationsStyle.alertText, { fontSize: 14 }]}>
@@ -118,80 +138,88 @@ function Settings(): Node {
 
   return (
     <DismissKeyboard>
-      <SafeAreaView style={mainStyle.safe}>
-        <CountdownTimer
-          countdownFrom={countdownFrom}
-          onChange={handleCountdown}
-          isHidden
-        />
-        <View style={settingsStyle.navigation}>
-          <Link
-            to="/"
-            underlayColor={null}
-            disabled={openSoundSelect}
-            onPress={handleCloseSettings}
-          >
-            <Animated.View style={settingsStyle.closeIconWrapper}>
-              <Close style={settingsStyle.closeIcon} />
-            </Animated.View>
-          </Link>
-        </View>
-
-        <View style={settingsStyle.menuWrapper}>
-          <View style={settingsStyle.bpmWrapper}>
-            <Text style={settingsStyle.menuTitle}>{t('settings.bpm')}</Text>
-            <TextInput
-              style={textInputStyle.input}
-              maxLength={3}
-              onChangeText={(val) => setBpm(val)}
-              onSubmitEditing={() => handleBPM(bpm)}
-              onBlur={() => handleBPM(bpm)}
-              value={bpm}
-              placeholderTextColor={colors.grayBlue}
-              keyboardType="numeric"
-              multiline={false}
-            />
-          </View>
-
-          <TimeSignatureSelect
-            value={global.ui.useTimeSig || {
-              hihat: 'Free',
-              snare: 'Free',
-              kick: 'Free',
-            }}
-            isOpen={openTimeSigSelect}
-            onOpen={() => setTimeSigSelect(true)}
-            onClose={() => setTimeSigSelect(false)}
-            onSelect={onTimeSigChange}
-            unlockedPro={global.unlockedPro}
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={mainStyle.scrollDeviceContainer}
+        showsVerticalScrollIndicator={false}
+        bounces={false}
+      >
+        <SafeAreaView style={mainStyle.safe}>
+          <CountdownTimer
+            countdownFrom={countdownFrom}
+            onChange={handleCountdown}
+            isHidden
           />
-
-          <View style={settingsStyle.soundWrapper}>
-            <Select
-              title={t('settings.sound')}
-              value={get(global.ui.useSample, 'label', 'Acoustic')}
-              options={samples}
-              isOpen={openSoundSelect}
-              onOpen={() => setOpenSoundSelect(true)}
-              onClose={() => setOpenSoundSelect(false)}
-              onSelect={onSampleChange}
-              compareSamples={global.unlockedSamples}
-            />
-            <TouchableHighlight
-              onPress={handleRewardedOpen}
-              disabled={openTimeSigSelect || openSoundSelect}
-              underlayColor={colors.grayBlue}
-              style={settingsStyle.btnRewardScreen}
+          <View style={settingsStyle.navigation}>
+            <Link
+              to="/"
+              underlayColor={null}
+              disabled={openSoundSelect}
+              onPress={handleCloseSettings}
             >
-              <Text style={settingsStyle.btnRewardScreenText}>
-                {t(hasAllRewards ? 'settings.keep_rewards' : 'settings.more_samples')}
-              </Text>
-            </TouchableHighlight>
+              <Animated.View style={settingsStyle.closeIconWrapper}>
+                <Close style={settingsStyle.closeIcon} />
+              </Animated.View>
+            </Link>
           </View>
-        </View>
 
-        <View style={mainStyle.adSpace} />
-      </SafeAreaView>
+          <View style={settingsStyle.menuWrapper}>
+            <View style={settingsStyle.bpmWrapper}>
+              <Text style={settingsStyle.menuTitle}>{t('settings.bpm')}</Text>
+              <TextInput
+                style={textInputStyle.input}
+                maxLength={3}
+                onChangeText={(val) => setBpm(val)}
+                onSubmitEditing={() => handleBPM(bpm)}
+                onBlur={() => handleBPM(bpm)}
+                value={bpm}
+                placeholderTextColor={colors.grayBlue}
+                keyboardType="numeric"
+                multiline={false}
+              />
+            </View>
+
+            <TimeSignatureSelect
+              value={global.ui.useTimeSig || {
+                hihat: 'Free',
+                snare: 'Free',
+                kick: 'Free',
+              }}
+              isOpen={openTimeSigSelect}
+              onOpen={() => setOpenTimeSigSelect(true)}
+              onClose={() => setOpenTimeSigSelect(false)}
+              onSelect={onTimeSigChange}
+              onRewardedClick={handleRewardedProOpen}
+              unlockedPro={global.unlockedPro}
+            />
+
+            <View style={settingsStyle.soundWrapper}>
+              <Select
+                title={t('settings.sound')}
+                value={get(global.ui.useSample, 'label', 'Acoustic')}
+                options={samples}
+                isOpen={openSoundSelect}
+                onOpen={() => setOpenSoundSelect(true)}
+                onClose={() => setOpenSoundSelect(false)}
+                onSelect={onSampleChange}
+                onRewardedClick={handleRewardedSamplesOpen}
+                compareSamples={global.unlockedSamples}
+              />
+              <TouchableHighlight
+                onPress={handleRewardedSamplesOpen}
+                disabled={openTimeSigSelect || openSoundSelect}
+                underlayColor={colors.grayBlue}
+                style={settingsStyle.btnRewardScreen}
+              >
+                <Text style={settingsStyle.btnRewardScreenText}>
+                  {t(hasAllRewards ? 'settings.keep_rewards' : 'settings.more_samples')}
+                </Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+          <View style={mainStyle.adSpace} />
+        </SafeAreaView>
+      </ScrollView>
     </DismissKeyboard>
   );
 }

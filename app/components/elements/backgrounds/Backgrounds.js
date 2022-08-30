@@ -11,7 +11,7 @@ function Backgrounds(): Node {
   if (locationInfo.isHome) return <SplitBackground />;
   if (locationInfo.isRewarded) return <DarkBackground />;
 
-  return <LightBackground />;
+  return <LightBackground locationInfo={locationInfo} />;
 }
 
 export default Backgrounds;

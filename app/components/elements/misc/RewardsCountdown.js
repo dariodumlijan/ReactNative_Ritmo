@@ -2,7 +2,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { hoursToMilliseconds } from 'date-fns';
 import { get, isEqual } from 'lodash';
-import { isRealDevice } from '../../../utils';
+import { deviceInfo } from '../../../utils';
 import { useCountdown } from '../../../utils/hooks';
 import { actions } from '../../../store/globalStore';
 import type { ReduxState } from '../../../types';
@@ -11,7 +11,7 @@ function RewardsCountdown(): null {
   const dispatch = useDispatch();
   const reduxStates = useSelector((state: ReduxState) => ({
     loadTime: state.static.loadTime,
-    resetRewards: hoursToMilliseconds(get(state.cms, isRealDevice ? 'master.resetRewards' : 'master.resetRewardsStaging', 24)),
+    resetRewards: hoursToMilliseconds(get(state.cms, deviceInfo.isRealDevice ? 'master.resetRewards' : 'master.resetRewardsStaging', 24)),
     rewardedAtSamples: state.global.rewardedAt?.samples,
     rewardedAtPro: state.global.rewardedAt?.pro,
   }), isEqual);

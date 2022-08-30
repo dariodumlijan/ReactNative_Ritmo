@@ -13,28 +13,30 @@ import Circle from '../blocks/circle/Circle';
 import Bottom from '../blocks/bottom/Bottom';
 import Logo from '../../assets/icons/Logo';
 import Menu from '../../assets/icons/Menu';
-import useLocale from '../../locales';
 import { actions, selectors } from '../../store/globalStore';
-import { showAppVersioning } from '../../utils';
+import { deviceInfo } from '../../utils';
 import { codepush } from '../../tokens';
 import mainStyle from '../../styles/main';
 import homeStyle from '../../styles/home';
 import colors from '../../styles/colors';
 
 function Home(): Node {
-  const { t } = useLocale();
   const dispatch = useDispatch();
-  const codepushKey = useSelector(selectors.getCodepushKey);
-  const isProduction = codepushKey === codepush.production;
+  const codepushEnvironment = useSelector(selectors.getCodepushEnvironment);
 
   const handleOpenNav = () => {
     dispatch(actions.toggleNavigation(true));
   };
 
-  const handleAppVersion = () => {
-    const key = isProduction ? codepush.staging : codepush.production;
-    codePush.sync({ deploymentKey: key });
-    dispatch(actions.toggleAppVersion(key));
+  const handleAppEnvironment = () => {
+    const isProduction = codepushEnvironment === 'Production';
+    const key = isProduction ? codepush[deviceInfo.isApple ? 'ios' : 'android'].staging : codepush[deviceInfo.isApple ? 'ios' : 'android'].production;
+
+    codePush.clearUpdates();
+    codePush.sync({
+      deploymentKey: key,
+      installMode: codePush.InstallMode.IMMEDIATE,
+    });
   };
 
   return (
@@ -43,9 +45,9 @@ function Home(): Node {
         <View style={homeStyle.topWrapperBG}>
           <View style={homeStyle.navigation}>
             <Logo style={homeStyle.logo} fill={colors.gray} />
-            {showAppVersioning && (
-              <TouchableOpacity style={homeStyle.appVersion} activeOpacity={0.8} onPress={handleAppVersion}>
-                <Text style={homeStyle.appVersionText}>{t(`app_version.${isProduction ? 'production' : 'staging'}`)}</Text>
+            {deviceInfo.showAdminActions && (
+              <TouchableOpacity style={homeStyle.appEnvironment} activeOpacity={0.8} onPress={handleAppEnvironment}>
+                <Text style={homeStyle.appEnvironmentText}>{codepushEnvironment}</Text>
               </TouchableOpacity>
             )}
             <TouchableOpacity activeOpacity={0.8} onPress={handleOpenNav}>

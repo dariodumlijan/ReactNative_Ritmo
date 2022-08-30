@@ -2,12 +2,13 @@
 import {
   merge, get, keys, reject, omit, uniq, isNil,
 } from 'lodash';
-import { t } from '../locales';
-import { isRealDevice, isSampleUnlocked } from '../utils';
-import * as LocalStorage from '../utils/localStorage';
+import * as API from '../api';
 import * as MIDI from '../midi';
 import { types as cmsTypes } from './cmsStore';
 import { types as beatTypes } from './beatsStore';
+import { t } from '../locales';
+import { deviceInfo, isSampleUnlocked } from '../utils';
+import * as LocalStorage from '../utils/localStorage';
 import { getSamples, getTimeSignatures, getUnlockedSamples } from '../utils/lists';
 import type { Beats } from '../sound/beats';
 import type { BuildMidi, BuildPromise } from '../midi';
@@ -63,7 +64,11 @@ export type Preset = {
 };
 
 export type State = {
-  codepushKey: string,
+  codepushData: ?{
+    environment: 'Production'|'Staging',
+    deploymentKey: string,
+    ...Object,
+  },
   presets: {
     [string]: Preset|null,
   }|null,
@@ -75,7 +80,6 @@ export type State = {
 };
 
 export const types = {
-  GB_TOGGLE_APP_VERSION: 'GB/TOGGLE_APP_VERSION',
   GB_SHOW_PERSONALISED_ADS: 'GB/SHOW_PERSONALISED_ADS',
   GB_SHOW_ADS: 'GB/SHOW_ADS',
   GB_TOGGLE_NAVIGATION: 'GB/TOGGLE_NAVIGATION',
@@ -83,6 +87,11 @@ export const types = {
   GB_UPDATE_TIME_SIG: 'GB/UPDATE_TIME_SIG',
   GB_UPDATE_SELECTED_SAMPLE: 'GB/UPDATE_SELECTED_SAMPLE',
   GB_UPDATE_SELECTED_REWARD: 'GB/UPDATE_SELECTED_REWARD',
+
+  GB_GET_DEPLOYMENT_DATA: 'GB/GET_DEPLOYMENT_DATA',
+  GB_GET_DEPLOYMENT_DATA_PENDING: 'GB/GET_DEPLOYMENT_DATA_PENDING',
+  GB_GET_DEPLOYMENT_DATA_REJECTED: 'GB/GET_DEPLOYMENT_DATA_REJECTED',
+  GB_GET_DEPLOYMENT_DATA_FULFILLED: 'GB/GET_DEPLOYMENT_DATA_FULFILLED',
 
   GB_FETCH_PRESET_AND_SAMPLES: 'GB/FETCH_PRESET_AND_SAMPLES',
   GB_FETCH_PRESET_AND_SAMPLES_PENDING: 'GB/FETCH_PRESET_AND_SAMPLES_PENDING',
@@ -132,7 +141,7 @@ export const types = {
 };
 
 export const selectors = {
-  getCodepushKey: (state: ReduxState): string => state.global.codepushKey,
+  getCodepushEnvironment: (state: ReduxState): 'Production'|'Staging' => get(state.global.codepushData, 'environment', 'Production'),
   getGlobal: (state: ReduxState): State => state.global,
   getUI: (state: ReduxState): UI => state.global.ui,
   getUnlockedSamples: (state: ReduxState): string[] => state.global.unlockedSamples,
@@ -149,9 +158,9 @@ export const selectors = {
 };
 
 export const actions = {
-  toggleAppVersion: (key: string): ReduxAction => ({
-    type: types.GB_TOGGLE_APP_VERSION,
-    payload: key,
+  getDeploymentData: (): ReduxAction => ({
+    type: types.GB_GET_DEPLOYMENT_DATA,
+    payload: API.getDeploymentData(),
   }),
   showPersonalisedAds: (bool: boolean): ReduxAction => ({
     type: types.GB_SHOW_PERSONALISED_ADS,
@@ -287,7 +296,7 @@ const lockProFeatures = (state: State): State => ({
 
 const checkUnlockedRewards = (state: State, payload: InitialCMSResponse): State => {
   const samples = getSamples();
-  const displayAds = isRealDevice
+  const displayAds = deviceInfo.isRealDevice
     ? get(payload.data, 'master.ads', true)
     : get(payload.data, 'master.adsStaging', true);
 
@@ -479,8 +488,8 @@ export const reducer = (state: State, action: ReduxActionWithPayload): State => 
     case types.GB_UPDATE_SELECTED_REWARD:
       return merge({}, state, { ui: action.payload });
 
-    case types.GB_TOGGLE_APP_VERSION:
-      return merge({}, state, { codepushKey: action.payload });
+    case types.GB_GET_DEPLOYMENT_DATA_FULFILLED:
+      return merge({}, state, { codepushData: action.payload });
 
     default:
       return state || {};
