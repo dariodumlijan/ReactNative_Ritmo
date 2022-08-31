@@ -108,7 +108,13 @@
   },
   "alert": {
     "no_beat": "Tap on a circle to add a beat.",
-    "no_preset": "No preset to delete."
+    "no_preset": "No preset to delete.",
+    "codepush_syncing": {
+      "text_1": "Switching to ",
+      "text_2": ", this could take a while...",
+      "Production": "Staging",
+      "Staging": "Production"
+    }
   },
   "error": {
     "title": "Attention!",

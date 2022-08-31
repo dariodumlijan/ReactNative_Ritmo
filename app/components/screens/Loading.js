@@ -3,6 +3,7 @@ import React from 'react';
 import type { Node } from 'react';
 import {
   SafeAreaView,
+  StatusBar,
   StyleSheet,
   Text,
   View,
@@ -49,6 +50,7 @@ function Loading(): Node {
 
   return (
     <SafeAreaView style={styles.wrapper}>
+      <StatusBar hidden />
       <View style={styles.container}>
         <Icon style={styles.icon} />
         <Text style={styles.text}>{t('loading')}</Text>

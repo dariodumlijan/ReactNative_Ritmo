@@ -1,9 +1,10 @@
 // @flow
-import axios from 'axios';
 import CodePush from 'react-native-code-push';
-import { get, isEqual, omit } from 'lodash';
+import {
+  get, has, isEqual, omit,
+} from 'lodash';
 import { localStorageKeys, appKeys, codepush } from '../tokens';
-import cmsHeader from './cms.config';
+import cmsClient from './cms.config';
 import {
   PRODUCTION_QUERY,
   STAGING_QUERY,
@@ -12,7 +13,6 @@ import {
 } from './cms.querys';
 import { deviceInfo } from '../utils';
 import { getItem } from '../utils/hooks';
-import ENV from '../../env.json';
 
 export type InitialCMSResponse = {
   data: Object,
@@ -30,11 +30,8 @@ export type InitialCMSResponse = {
   isLocal: boolean,
 };
 
-const VALID_QUERY = deviceInfo.isRealDevice ? VALID_PRODUCTION_QUERY : VALID_STAGING_QUERY;
-const MASTER_QUERY = deviceInfo.isRealDevice ? PRODUCTION_QUERY : STAGING_QUERY;
-
 export const fetchData = async (query: string): Promise<any> => {
-  const response = await axios.post(ENV.CMS.GRAPHQL_URL + ENV.CMS.SPACE, { query }, cmsHeader);
+  const response = await cmsClient.post('', { query });
 
   if (response.status === 200) {
     return response.data.data;
@@ -53,8 +50,8 @@ export const fetchLocalTimestamps = async (): Promise<{ announcement: any, local
   return { local, announcement };
 };
 
-export const fetchCMSTimestamps = async (): Promise<{ master: any, announcement: any } | any> => {
-  const response = await axios.post(ENV.CMS.GRAPHQL_URL + ENV.CMS.SPACE, { query: VALID_QUERY }, cmsHeader);
+export const fetchCMSTimestamps = async (query: string): Promise<{ master: any, announcement: any } | any> => {
+  const response = await cmsClient.post('', { query });
 
   if (response.status === 200) {
     const master = get(response.data, 'data.appCollection.items[0].sys.publishedAt');
@@ -69,8 +66,10 @@ export const fetchCMSTimestamps = async (): Promise<{ master: any, announcement:
   return appKeys.noConnection;
 };
 
-export const fetchCMS = async (): Promise<InitialCMSResponse> => {
-  const cmsTimestampsResponse = await fetchCMSTimestamps();
+export const fetchCMS = async (deploymentEnvironment: 'Production'|'Staging'): Promise<InitialCMSResponse> => {
+  const VALID_QUERY = deviceInfo.isRealDevice && deploymentEnvironment === 'Production' ? VALID_PRODUCTION_QUERY : VALID_STAGING_QUERY;
+
+  const cmsTimestampsResponse = await fetchCMSTimestamps(VALID_QUERY);
   const localTimestampsResponse = await fetchLocalTimestamps();
 
   const fullTimestampsResponse = {
@@ -96,6 +95,8 @@ export const fetchCMS = async (): Promise<InitialCMSResponse> => {
   }
 
   if (hasOnlineData && (!timestampsAreEqual || !hasLocalData)) {
+    const MASTER_QUERY = deviceInfo.isRealDevice && deploymentEnvironment === 'Production' ? PRODUCTION_QUERY : STAGING_QUERY;
+
     const response = await fetchData(MASTER_QUERY);
 
     dataResponse = {
@@ -110,6 +111,13 @@ export const fetchCMS = async (): Promise<InitialCMSResponse> => {
 
 export const getDeploymentData = async (): Promise<any> => {
   const response = await CodePush.getUpdateMetadata();
+
+  if (!has(response, 'deploymentKey')) {
+    return {
+      environment: 'Production',
+    };
+  }
+
   const newResponse = omit(response, 'install');
   const isProduction = get(newResponse, 'deploymentKey', codepush[deviceInfo.isApple ? 'ios' : 'android'].production) === codepush[deviceInfo.isApple ? 'ios' : 'android'].production;
 

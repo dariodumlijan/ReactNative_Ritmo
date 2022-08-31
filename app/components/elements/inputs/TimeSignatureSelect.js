@@ -11,6 +11,7 @@ import {
   View,
 } from 'react-native';
 import { every, map, reject } from 'lodash';
+import ConditionalAd from '../misc/ConditionalAd';
 import Arrow from '../../../assets/icons/Arrow';
 import useLocale from '../../../locales';
 import useSelectLists from '../../../utils/lists';
@@ -109,17 +110,19 @@ function TimeSignatureSelect(props: Props): Node {
         </TouchableOpacity>
 
         {!props.unlockedPro && (
-          <TouchableHighlight
-            style={[settingsStyle.btnRewardScreen, {
-              marginBottom: 0,
-            }]}
-            onPress={props.onRewardedClick}
-            underlayColor={colors.grayBlue}
-          >
-            <Text style={settingsStyle.btnRewardScreenText}>
-              {t('settings.unlock_advanced')}
-            </Text>
-          </TouchableHighlight>
+          <ConditionalAd>
+            <TouchableHighlight
+              style={[settingsStyle.btnRewardScreen, {
+                marginBottom: 0,
+              }]}
+              onPress={props.onRewardedClick}
+              underlayColor={colors.grayBlue}
+            >
+              <Text style={settingsStyle.btnRewardScreenText}>
+                {t('settings.unlock_advanced')}
+              </Text>
+            </TouchableHighlight>
+          </ConditionalAd>
         )}
       </View>
 

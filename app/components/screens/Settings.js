@@ -22,6 +22,7 @@ import CountdownTimer from '../elements/misc/CountdownTimer';
 import Select from '../elements/inputs/Select';
 import TimeSignatureSelect from '../elements/inputs/TimeSignatureSelect';
 import Alert from '../elements/misc/Alert';
+import ConditionalAd from '../elements/misc/ConditionalAd';
 import Close from '../../assets/icons/Close';
 import useLocale from '../../locales';
 import { deviceInfo } from '../../utils';
@@ -205,16 +206,18 @@ function Settings(): Node {
                 onRewardedClick={handleRewardedSamplesOpen}
                 compareSamples={global.unlockedSamples}
               />
-              <TouchableHighlight
-                onPress={handleRewardedSamplesOpen}
-                disabled={openTimeSigSelect || openSoundSelect}
-                underlayColor={colors.grayBlue}
-                style={settingsStyle.btnRewardScreen}
-              >
-                <Text style={settingsStyle.btnRewardScreenText}>
-                  {t(hasAllRewards ? 'settings.keep_rewards' : 'settings.more_samples')}
-                </Text>
-              </TouchableHighlight>
+              <ConditionalAd>
+                <TouchableHighlight
+                  onPress={handleRewardedSamplesOpen}
+                  disabled={openTimeSigSelect || openSoundSelect}
+                  underlayColor={colors.grayBlue}
+                  style={settingsStyle.btnRewardScreen}
+                >
+                  <Text style={settingsStyle.btnRewardScreenText}>
+                    {t(hasAllRewards ? 'settings.keep_rewards' : 'settings.more_samples')}
+                  </Text>
+                </TouchableHighlight>
+              </ConditionalAd>
             </View>
           </View>
           <View style={mainStyle.adSpace} />

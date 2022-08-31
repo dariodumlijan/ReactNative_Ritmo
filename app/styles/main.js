@@ -82,7 +82,8 @@ const mainStyle: MainStyles = StyleSheet.create({
   },
   ads: {
     alignItems: 'center',
-    bottom: isiPhone ? '4.5%' : 0,
+    // backgroundColor: colors.black,
+    bottom: isiPhone ? '4.5%' : '2%',
     display: 'flex',
     height: '10%',
     justifyContent: 'flex-end',

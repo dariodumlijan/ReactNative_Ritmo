@@ -1,1 +1,1 @@
-import '@testing-library/jest-native/extend-expect';
+/* eslint-disable no-undef -- jest is not defined and cannot be */

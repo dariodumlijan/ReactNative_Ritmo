@@ -7,7 +7,7 @@ import notificationsStyle from '../../../styles/notifications';
 
 type Props = {
   children: Node,
-  clearDelayMS: number,
+  clearDelayMS?: number,
 };
 
 function Alert(props: Props): Node {
@@ -15,6 +15,16 @@ function Alert(props: Props): Node {
   const fadeAlert = useState(new Animated.Value(0))[0];
 
   useEffect(() => {
+    if (!props.clearDelayMS) {
+      Animated.timing(fadeAlert, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+
+      return;
+    }
+
     const timeoutID = setTimeout(() => close(), props.clearDelayMS);
 
     Animated.sequence([
@@ -25,7 +35,7 @@ function Alert(props: Props): Node {
       }),
       Animated.timing(fadeAlert, {
         toValue: 0,
-        delay: props.clearDelayMS - 600,
+        delay: (props.clearDelayMS || 3000) - 600,
         duration: 300,
         useNativeDriver: true,
       }),

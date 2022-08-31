@@ -1,9 +1,8 @@
-import 'react-native';
+/* eslint-disable no-undef -- jest is not defined and cannot be */
 import React from 'react';
 import renderer from 'react-test-renderer';
 import Body from '../app/components/Body';
 
-it('renders correctly', () => {
+test('renders correctly', () => {
   renderer.create(<Body />);
 });
- 

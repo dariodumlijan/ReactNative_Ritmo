@@ -296,11 +296,17 @@ const lockProFeatures = (state: State): State => ({
 
 const checkUnlockedRewards = (state: State, payload: InitialCMSResponse): State => {
   const samples = getSamples();
-  const displayAds = deviceInfo.isRealDevice
-    ? get(payload.data, 'master.ads', true)
-    : get(payload.data, 'master.adsStaging', true);
+  const displayAds = deviceInfo.isRealDevice && state.codepushData?.environment === 'Production'
+    ? get(payload.data, 'master.ads', false)
+    : get(payload.data, 'master.adsStaging', false);
 
-  if (!displayAds) return { ...state, unlockedSamples: keys(samples) };
+  if (!displayAds) {
+    return {
+      ...state,
+      unlockedPro: true,
+      unlockedSamples: keys(samples),
+    };
+  }
 
   return state;
 };

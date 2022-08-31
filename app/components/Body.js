@@ -23,16 +23,17 @@ import RewardsCountdown from './elements/misc/RewardsCountdown';
 import AdmobBanner from './elements/misc/AdmobBanner';
 import { actions as cmsActions, selectors } from '../store/cmsStore';
 import { actions as globalActions } from '../store/globalStore';
-import { handleAdsConsent, deviceInfo } from '../utils';
+import { handleAdsConsent } from '../utils';
 import { appKeys } from '../tokens';
 import mainStyle from '../styles/main';
 import type { State as StateCMS } from '../store/cmsStore';
+import type { ReduxState } from '../types';
 
 function Body(): Node {
   const dispatch = useDispatch();
   const initLoad = useRef(true);
   const cms: StateCMS = useSelector(selectors.getCMS, isEqual);
-  const { banner } = useSelector(selectors.getAdmobIds, isEqual);
+  const deploymentEnvironment = useSelector((state: ReduxState) => state.global.codepushData?.environment || 'Production', isEqual);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const [adsReady, setAdsReady] = useState(false);
   const [loadingAnimationDone, setLoadingAnimationDone] = useState(false);
@@ -43,9 +44,6 @@ function Body(): Node {
   const hasOnlineData = !isEqual(onlineTimestamps, appKeys.noConnection);
   const announcementSeen = get(cms, 'timestamps.local.announcement', 0) < get(cms, 'timestamps.announcement', 0);
   const isLoading = every(['master', 'timestamps'], (key) => !has(cms, key));
-  const displayAds = deviceInfo.isRealDevice
-    ? get(cms, 'master.ads', false)
-    : get(cms, 'master.adsStaging', false);
 
   const startAds = () => {
     Admob().initialize().then(() => {
@@ -68,7 +66,7 @@ function Body(): Node {
 
   useEffect(() => {
     if (initLoad.current) {
-      dispatch(cmsActions.fetchCMS());
+      dispatch(cmsActions.fetchCMS(deploymentEnvironment));
       dispatch(globalActions.fetchPresetAndSamples());
       dispatch(globalActions.getDeploymentData());
 
@@ -89,7 +87,7 @@ function Body(): Node {
   ) {
     return (
       <Announcement
-        reload={() => dispatch(cmsActions.fetchCMS())}
+        reload={() => dispatch(cmsActions.fetchCMS(deploymentEnvironment))}
         dismiss={() => setShowAnnouncement(false)}
         cms={hasAnnouncement}
       />
@@ -115,7 +113,7 @@ function Body(): Node {
           <Route path="/rewarded/:section" element={<Rewarded />} />
         </Routes>
 
-        <AdmobBanner bannerId={banner} showAd={adsReady && displayAds && banner} />
+        <AdmobBanner showAd={adsReady} />
       </NativeRouter>
     </View>
   );

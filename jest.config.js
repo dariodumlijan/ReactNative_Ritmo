@@ -1,22 +1,8 @@
 module.exports = {
-  verbose: true,
-  preset: "react-native",
-  setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
-  moduleFileExtensions: ["js", "jsx"],
-  moduleNameMapper: {
-    "\\.(css|less|scss)$": "identity-obj-proxy"
-  },
+  preset: 'react-native',
   transform: {
-    "^.+\\.(js|jsx)$": "babel-jest",
+    '^.+\\.(js|jsx)$': 'babel-jest',
+    '^.+\\.tsx$': 'ts-jest',
   },
-  setupFilesAfterEnv: ["./setupTests.js"],
-  cacheDirectory: "./cache",
-  coverageThreshold: {
-    global: {
-      statements: 80
-    }
-  },
-  transformIgnorePatterns: [
-    "/node_modules/(?!react-native|react-clone-referenced-element|react-navigation)"
-  ]
+  setupFiles: ['./setupTests.js'],
 };

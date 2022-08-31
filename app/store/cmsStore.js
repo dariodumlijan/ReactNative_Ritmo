@@ -75,9 +75,9 @@ export const selectors = {
 };
 
 export const actions = {
-  fetchCMS: (): ReduxAction => ({
+  fetchCMS: (deploymentEnvironment: 'Production'|'Staging'): ReduxAction => ({
     type: types.CMS_FETCH_APP,
-    payload: API.fetchCMS(),
+    payload: API.fetchCMS(deploymentEnvironment),
   }),
 };
 

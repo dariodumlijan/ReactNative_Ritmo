@@ -4,20 +4,22 @@ import type { Node } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
-import { isEqual } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
+import ConditionalAd from './ConditionalAd';
 import { isApple, isTablet } from '../../../utils';
 import { useLocationInfo } from '../../../utils/hooks';
-import { selectors } from '../../../store/globalStore';
+import { selectors as selectorsGlobal } from '../../../store/globalStore';
+import { selectors as selectorsCMS } from '../../../store/cmsStore';
 import mainStyle from '../../../styles/main';
 import type { UI } from '../../../store/globalStore';
 
 type Props = {
-  bannerId: string,
   showAd: boolean,
 };
 
 function AdmobBanner(props: Props): Node {
-  const ui: UI = useSelector(selectors.getUI, isEqual);
+  const { banner } = useSelector(selectorsCMS.getAdmobIds, isEqual);
+  const ui: UI = useSelector(selectorsGlobal.getUI, isEqual);
   const locationInfo = useLocationInfo();
 
   const handleBannerSize = (): string => {
@@ -32,14 +34,16 @@ function AdmobBanner(props: Props): Node {
 
   return (
     <View style={mainStyle.ads}>
-      {props.showAd && ui.showAds && (
-        <BannerAd
-          unitId={props.bannerId}
-          size={handleBannerSize()}
-          requestOptions={{
-            requestNonPersonalizedAdsOnly: !ui.personalisedAds,
-          }}
-        />
+      {props.showAd && !isEmpty(banner) && ui.showAds && (
+        <ConditionalAd>
+          <BannerAd
+            unitId={banner}
+            size={handleBannerSize()}
+            requestOptions={{
+              requestNonPersonalizedAdsOnly: !ui.personalisedAds,
+            }}
+          />
+        </ConditionalAd>
       )}
     </View>
   );

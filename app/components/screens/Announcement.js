@@ -2,7 +2,7 @@
 import React from 'react';
 import type { Node } from 'react';
 import {
-  SafeAreaView, ScrollView, Text, TouchableOpacity, View,
+  SafeAreaView, ScrollView, StatusBar, Text, TouchableOpacity, View,
 } from 'react-native';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import useLocale from '../../locales';
@@ -38,6 +38,7 @@ function Announcement(props: Props): Node {
 
   return (
     <View style={mainStyle.container}>
+      <StatusBar hidden />
       <SafeAreaView style={mainStyle.safe}>
         <View style={mainStyle.container}>
           <Text style={announcementStyle.title}>{title}</Text>
