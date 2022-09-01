@@ -25,7 +25,6 @@ import Alert from '../elements/misc/Alert';
 import ConditionalAd from '../elements/misc/ConditionalAd';
 import Close from '../../assets/icons/Close';
 import useLocale from '../../locales';
-import { deviceInfo } from '../../utils';
 import useSelectLists from '../../utils/lists';
 import { useTeleport } from '../../utils/hooks';
 import { actions, selectors } from '../../store/globalStore';
@@ -47,8 +46,8 @@ function Settings(): Node {
   const lockedSamples = useSelector(selectors.getLockedSamples, isEqual);
   const global: State = useSelector(selectors.getGlobal, isEqual);
   const { resetRewards, keepRewards }: { resetRewards: number, keepRewards: number } = useSelector((state: ReduxState) => ({
-    resetRewards: hoursToMilliseconds(get(state.cms, deviceInfo.isRealDevice ? 'master.resetRewards' : 'master.resetRewardsStaging', 24)),
-    keepRewards: get(state.cms, deviceInfo.isRealDevice ? 'master.keepRewards' : 'master.keepRewardsStaging', 6),
+    resetRewards: hoursToMilliseconds(get(state.cms, 'master.resetRewards', 24)),
+    keepRewards: get(state.cms, 'master.keepRewards', 6),
   }), isEqual);
   const [bpm, setBpm] = useState<string>(String(global.ui.useBPM));
   const [openTimeSigSelect, setOpenTimeSigSelect] = useState(false);
@@ -191,7 +190,7 @@ function Settings(): Node {
               onClose={() => setOpenTimeSigSelect(false)}
               onSelect={onTimeSigChange}
               onRewardedClick={handleRewardedProOpen}
-              unlockedPro={global.unlockedPro}
+              unlockedPro={global.unlockedPro || false}
             />
 
             <View style={settingsStyle.soundWrapper}>

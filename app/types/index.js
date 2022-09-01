@@ -7,7 +7,7 @@ import type { Beats as BeatsState } from '../sound/beats';
 
 export type ReduxState = {
   static: StaticState,
-  cms: CmsState,
+  cms?: CmsState,
   global: GlobalState,
   beats: BeatsState,
 };

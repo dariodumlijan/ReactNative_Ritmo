@@ -12,6 +12,7 @@ import {
 import { useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
 import { localStorageKeys } from '../tokens';
+import { rewardedKeywords } from '../tokens/keywords';
 import { PortalContext } from '../context';
 import { isPromise } from '.';
 import { selectors } from '../store/globalStore';
@@ -132,6 +133,7 @@ export const useRewardedAd = (
     const handleNewAd = async (): Object => {
       const response = await RewardedAd.createForAdRequest(rewardedId, {
         requestNonPersonalizedAdsOnly: !showPersonalisedAds,
+        keywords: rewardedKeywords,
       });
       setRewardedAd(response);
     };

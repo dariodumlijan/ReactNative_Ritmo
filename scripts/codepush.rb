@@ -19,7 +19,13 @@ if ARGV[0] != '--android' && ARGV[0] != '--ios'
   exit
 end
 
-puts
-puts "Environment: " + " #{DEPLOY_ENVIRONMENT} ".bg_green
-system("appcenter codepush release-react -a #{DEPLOY_PLATFORM} -d #{DEPLOY_ENVIRONMENT}")
-puts
+if ARGV[1] == '--promote'
+  puts
+  system("appcenter codepush promote -a #{DEPLOY_PLATFORM} -s Staging -d Production")
+  puts
+else
+  puts
+  puts "Environment: " + " #{DEPLOY_ENVIRONMENT} ".bg_green
+  system("appcenter codepush release-react -a #{DEPLOY_PLATFORM} -d #{DEPLOY_ENVIRONMENT}")
+  puts
+end

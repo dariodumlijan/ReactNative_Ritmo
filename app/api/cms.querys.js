@@ -15,13 +15,6 @@ export const VALID_PRODUCTION_QUERY = `
         }
       }
     }
-    ritmoCollection(limit: 1, order: sys_publishedAt_DESC, where: {destination: true}) {
-      items {
-        sys {
-          publishedAt
-        }
-      }
-    }
   }
 `;
 
@@ -35,13 +28,6 @@ export const VALID_STAGING_QUERY = `
       }
     }
     announcementCollection(where: {id: "Ritmo - Staging"}) {
-      items {
-        sys {
-          publishedAt
-        }
-      }
-    }
-    ritmoCollection(limit: 1, order: sys_publishedAt_DESC, where: {destination: false}) {
       items {
         sys {
           publishedAt

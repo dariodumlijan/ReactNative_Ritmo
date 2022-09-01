@@ -1,5 +1,5 @@
 // @flow
-import { get, merge } from 'lodash';
+import { get } from 'lodash';
 import * as API from '../api';
 import { deviceInfo } from '../utils';
 import { setItem } from '../utils/hooks';
@@ -7,9 +7,31 @@ import { admob, localStorageKeys } from '../tokens';
 import type { InitialCMSResponse } from '../api';
 import type { ReduxAction, ReduxActionWithPayload, ReduxState } from '../types';
 
+type Timestamps = {
+  local: any,
+  online: any,
+  announcement: any,
+};
+
+type Master = {
+  adIds: {
+    banner: {
+      android: string,
+      ios: string,
+    },
+    rewarded: {
+      android: string,
+      ios: string,
+    },
+  },
+  ads: boolean,
+  resetRewards: number,
+  keepRewards: number,
+};
+
 export type State = {
-  timestamps: Object,
-  master: Object,
+  timestamps: Timestamps,
+  master: Master,
   announcement?: Object,
   isLocal: boolean,
 };
@@ -69,8 +91,8 @@ export const getAdmobIds = (adIds: ?{
 };
 
 export const selectors = {
-  getCMS: (state: ReduxState): State => state.cms,
-  getTimestamps: (state: ReduxState): Object => state.cms.timestamps,
+  getCMS: (state: ReduxState): ?State => state.cms,
+  getTimestamps: (state: ReduxState): ?Timestamps => state.cms?.timestamps,
   getAdmobIds: (state: ReduxState): AdmobIds => getAdmobIds(get(state.cms, 'master.adIds')),
 };
 
@@ -82,32 +104,37 @@ export const actions = {
 };
 
 const buildStore = (state: State, payload: InitialCMSResponse): State => {
-  const newState = {};
-
   if (payload.isLocal) {
-    return merge(newState, state, {
-      ...payload.data,
+    return {
+      ...state,
+      master: payload.data.master,
       isLocal: payload.isLocal,
-    });
+      timestamps: payload.timestamps,
+    };
   }
-
-  merge(newState, state, {
-    master: get(payload.data, 'appCollection.items[0]', null),
-    announcement: get(payload.data, 'announcementCollection.items[0]', null),
-    isLocal: payload.isLocal,
-  });
 
   const storeState = {
     master: get(payload.data, 'appCollection.items[0]', null),
   };
 
   setItem(
+    localStorageKeys.appContent,
+    JSON.stringify(storeState),
+  );
+  setItem(
     localStorageKeys.contentTimestamps,
     JSON.stringify(payload.timestamps.online),
   );
-  setItem(localStorageKeys.appContent, JSON.stringify(storeState));
 
-  return newState;
+  return {
+    ...state,
+    ...{
+      ...storeState,
+      isLocal: payload.isLocal || false,
+      timestamps: payload.timestamps,
+      announcement: get(payload.data, 'announcementCollection.items[0]', null),
+    },
+  };
 };
 
 export const reducer = (state: State, action: ReduxActionWithPayload): State => {

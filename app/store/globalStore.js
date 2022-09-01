@@ -1,13 +1,13 @@
 // @flow
 import {
-  merge, get, keys, reject, omit, uniq, isNil,
+  merge, get, reject, omit, uniq, isNil, map,
 } from 'lodash';
 import * as API from '../api';
 import * as MIDI from '../midi';
 import { types as cmsTypes } from './cmsStore';
 import { types as beatTypes } from './beatsStore';
 import { t } from '../locales';
-import { deviceInfo, isSampleUnlocked } from '../utils';
+import { isSampleUnlocked } from '../utils';
 import * as LocalStorage from '../utils/localStorage';
 import { getSamples, getTimeSignatures, getUnlockedSamples } from '../utils/lists';
 import type { Beats } from '../sound/beats';
@@ -45,16 +45,16 @@ export type TimeSignature = {
 };
 
 export type UI = {
-  fileUri: string,
+  fileUri?: string,
   isPlaying: boolean,
   isRecording: boolean,
-  navigationOpen: boolean,
+  navigationOpen?: boolean,
+  personalisedAds?: boolean,
+  selectedReward?: Sample|null,
   showAds: boolean,
-  personalisedAds: boolean,
   useBPM: number,
   useSample: Sample,
   useTimeSig: TimeSignature,
-  selectedReward: Sample|null,
 };
 export type Preset = {
   beat: Beats,
@@ -64,19 +64,19 @@ export type Preset = {
 };
 
 export type State = {
-  codepushData: ?{
+  codepushData?: {
     environment: 'Production'|'Staging',
     deploymentKey: string,
     ...Object,
   },
-  presets: {
+  presets?: {
     [string]: Preset|null,
-  }|null,
+  },
   sliders: Sliders,
   ui: UI,
   unlockedSamples: string[],
-  unlockedPro: boolean,
-  rewardedAt: ?RewardedAt,
+  unlockedPro?: boolean,
+  rewardedAt?: RewardedAt,
 };
 
 export const types = {
@@ -266,7 +266,7 @@ const refreshRewards = (state: State, payload: SaveRewardsResponse): State => ({
   },
 });
 
-const lockRewards = (state: State): State => {
+const lockSamples = (state: State): State => {
   const samples = getSamples();
   const unlockedSamples = getUnlockedSamples();
   const lockedSamples = reject(samples, (sample: Sample) => isSampleUnlocked(unlockedSamples, sample));
@@ -296,15 +296,14 @@ const lockProFeatures = (state: State): State => ({
 
 const checkUnlockedRewards = (state: State, payload: InitialCMSResponse): State => {
   const samples = getSamples();
-  const displayAds = deviceInfo.isRealDevice && state.codepushData?.environment === 'Production'
-    ? get(payload.data, 'master.ads', false)
-    : get(payload.data, 'master.adsStaging', false);
+  const payloadPath = payload.isLocal ? 'master.ads' : 'appCollection.items[0].ads';
+  const displayAds = get(payload.data, payloadPath, false);
 
   if (!displayAds) {
     return {
       ...state,
       unlockedPro: true,
-      unlockedSamples: keys(samples),
+      unlockedSamples: map(samples, 'label'),
     };
   }
 
@@ -459,7 +458,7 @@ export const reducer = (state: State, action: ReduxActionWithPayload): State => 
       return refreshRewards(state, action.payload);
 
     case types.GB_LOCK_REWARDS_FULFILLED:
-      return lockRewards(state);
+      return lockSamples(state);
 
     case types.GB_LOCK_PRO_FEATURES_FULFILLED:
       return lockProFeatures(state);

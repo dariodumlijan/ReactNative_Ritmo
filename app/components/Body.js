@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NativeRouter, Routes, Route } from 'react-router-native';
 import Admob from 'react-native-google-mobile-ads';
 import {
-  get, isEqual, every, has,
+  get, isEmpty, isEqual, some, has,
 } from 'lodash';
 import { secondsToMilliseconds } from 'date-fns';
 import Home from './screens/Home';
@@ -33,7 +33,7 @@ function Body(): Node {
   const dispatch = useDispatch();
   const initLoad = useRef(true);
   const cms: StateCMS = useSelector(selectors.getCMS, isEqual);
-  const deploymentEnvironment = useSelector((state: ReduxState) => state.global.codepushData?.environment || 'Production', isEqual);
+  const deploymentEnvironment = useSelector((state: ReduxState) => state.global.codepushData?.environment, isEqual);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const [adsReady, setAdsReady] = useState(false);
   const [loadingAnimationDone, setLoadingAnimationDone] = useState(false);
@@ -43,7 +43,7 @@ function Body(): Node {
   const hasLocalData = !isEqual(localTimestamps, appKeys.noLocalData);
   const hasOnlineData = !isEqual(onlineTimestamps, appKeys.noConnection);
   const announcementSeen = get(cms, 'timestamps.local.announcement', 0) < get(cms, 'timestamps.announcement', 0);
-  const isLoading = every(['master', 'timestamps'], (key) => !has(cms, key));
+  const isLoading = some(['master', 'timestamps'], (key) => !has(cms, key));
 
   const startAds = () => {
     Admob().initialize().then(() => {
@@ -66,20 +66,26 @@ function Body(): Node {
 
   useEffect(() => {
     if (initLoad.current) {
-      dispatch(cmsActions.fetchCMS(deploymentEnvironment));
-      dispatch(globalActions.fetchPresetAndSamples());
+      initLoad.current = false;
       dispatch(globalActions.getDeploymentData());
 
-      setTimeout(askForPermission, secondsToMilliseconds(1));
       setTimeout(() => {
+        askForPermission();
         setLoadingAnimationDone(true);
       }, secondsToMilliseconds(3));
-      initLoad.current = false;
     }
 
     return () => clearTimeout();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!isEmpty(deploymentEnvironment)) {
+      dispatch(cmsActions.fetchCMS(deploymentEnvironment));
+      dispatch(globalActions.fetchPresetAndSamples());
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deploymentEnvironment]);
 
   if (
     (!hasLocalData && !hasOnlineData)

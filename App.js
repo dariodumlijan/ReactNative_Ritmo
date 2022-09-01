@@ -1,8 +1,8 @@
+// @flow
 import React, { useEffect, useState } from 'react';
 import codePush from 'react-native-code-push';
 import { Provider } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
-import Loading from './app/components/screens/Loading';
 import Body from './app/components/Body';
 import PortalProvider from './app/components/blocks/portal/PortalProvider';
 import beats from './app/sound/beats';
@@ -25,15 +25,10 @@ const initialState: ReduxState = {
     midiNoteMax: 64,
     midiBarTicks: 512,
     reviewMinutes: 2,
+    // $FlowFixMe
     loadTime: Date.now(),
   },
   global: {
-    codepushData: null,
-    presets: {
-      one: null,
-      two: null,
-      three: null,
-    },
     sliders: {
       hihat: 0,
       snare: 0,
@@ -42,7 +37,6 @@ const initialState: ReduxState = {
     ui: {
       showAds: true,
       showBanner: true,
-      personalisedAds: true,
       isPlaying: false,
       isRecording: false,
       hihatSliderVal: 0,
@@ -79,7 +73,7 @@ function App() {
     handleDeviceSetup();
   }, []);
 
-  if (setupPending) return <Loading />;
+  if (setupPending) return null;
 
   return (
     <Provider store={store}>
@@ -90,4 +84,4 @@ function App() {
   );
 }
 
-export default codePush(App);
+export default (codePush(App): any);

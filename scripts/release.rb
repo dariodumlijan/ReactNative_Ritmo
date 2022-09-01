@@ -26,7 +26,11 @@ if ARGV[0] == '--android'
   # Remove created assets that break the build
   system("rm -rf android/app/src/main/res/drawable-*")
 
-  system("cd android && ./gradlew assembleRelease && cd ..")
+  if ARGV[1] == '--apk'
+    system("cd android && ./gradlew assembleRelease && cd ..")
+  else
+    system("cd android && ./gradlew bundleRelease && cd ..")
+  end
   puts
   exit
 end

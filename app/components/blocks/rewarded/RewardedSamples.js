@@ -35,8 +35,8 @@ function RewardedSamples(): Node {
   const reduxStates = useSelector((state: ReduxState) => ({
     personalisedAds: state.global.ui.personalisedAds,
     selectedReward: state.global.ui.selectedReward,
-    resetRewards: get(state.cms, deviceInfo.isRealDevice ? 'master.resetRewards' : 'master.resetRewardsStaging', 24),
-    keepRewards: get(state.cms, deviceInfo.isRealDevice ? 'master.keepRewards' : 'master.keepRewardsStaging', 6),
+    resetRewards: get(state.cms, 'master.resetRewards', 24),
+    keepRewards: get(state.cms, 'master.keepRewards', 6),
     rewardedAt: state.global.rewardedAt,
   }), isEqual);
   const { rewarded } = useSelector(selectorsCMS.getAdmobIds, isEqual);

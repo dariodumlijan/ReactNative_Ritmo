@@ -15,19 +15,21 @@ import { deviceInfo } from '../utils';
 import { getItem } from '../utils/hooks';
 
 export type InitialCMSResponse = {
-  data: Object,
+  data: {
+    master: Object,
+  } | Object,
   timestamps: {
-    announcement: number,
+    announcement: number|string,
     local: {
       master: number,
       announcement: number,
-    },
+    } | string,
     online: {
-      master: number,
-      announcement: number,
-    },
+      master: ?number,
+      announcement: ?number,
+    } | string,
   },
-  isLocal: boolean,
+  isLocal?: boolean,
 };
 
 export const fetchData = async (query: string): Promise<any> => {
@@ -38,7 +40,7 @@ export const fetchData = async (query: string): Promise<any> => {
   }
 };
 
-export const fetchLocalTimestamps = async (): Promise<{ announcement: any, local: any }> => {
+export const fetchLocalTimestamps = async (): Promise<{ announcement: Object|string, local: Object|string }> => {
   const contentTimestamps = await getItem(localStorageKeys.contentTimestamps);
   const announcementTimestamp = await getItem(localStorageKeys.announcementTimestamp);
 
@@ -50,7 +52,7 @@ export const fetchLocalTimestamps = async (): Promise<{ announcement: any, local
   return { local, announcement };
 };
 
-export const fetchCMSTimestamps = async (query: string): Promise<{ master: any, announcement: any } | any> => {
+export const fetchCMSTimestamps = async (query: string): Promise<{ master: ?number, announcement: ?number } | string> => {
   const response = await cmsClient.post('', { query });
 
   if (response.status === 200) {
@@ -67,9 +69,9 @@ export const fetchCMSTimestamps = async (query: string): Promise<{ master: any, 
 };
 
 export const fetchCMS = async (deploymentEnvironment: 'Production'|'Staging'): Promise<InitialCMSResponse> => {
-  const VALID_QUERY = deviceInfo.isRealDevice && deploymentEnvironment === 'Production' ? VALID_PRODUCTION_QUERY : VALID_STAGING_QUERY;
+  const isProduction = deviceInfo.isRealDevice && deploymentEnvironment === 'Production';
 
-  const cmsTimestampsResponse = await fetchCMSTimestamps(VALID_QUERY);
+  const cmsTimestampsResponse = await fetchCMSTimestamps(isProduction ? VALID_PRODUCTION_QUERY : VALID_STAGING_QUERY);
   const localTimestampsResponse = await fetchLocalTimestamps();
 
   const fullTimestampsResponse = {
@@ -85,7 +87,6 @@ export const fetchCMS = async (deploymentEnvironment: 'Production'|'Staging'): P
 
   let dataResponse = {};
   if (hasLocalData && (timestampsAreEqual || !hasOnlineData)) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const response = await getItem(localStorageKeys.appContent);
 
     dataResponse = {
@@ -95,12 +96,25 @@ export const fetchCMS = async (deploymentEnvironment: 'Production'|'Staging'): P
   }
 
   if (hasOnlineData && (!timestampsAreEqual || !hasLocalData)) {
-    const MASTER_QUERY = deviceInfo.isRealDevice && deploymentEnvironment === 'Production' ? PRODUCTION_QUERY : STAGING_QUERY;
-
-    const response = await fetchData(MASTER_QUERY);
+    let cmsResponse = await fetchData(isProduction ? PRODUCTION_QUERY : STAGING_QUERY);
+    if (!isProduction) {
+      cmsResponse = {
+        appCollection: {
+          items: [
+            {
+              adIds: get(cmsResponse, 'appCollection.items[0].adIds'),
+              ads: get(cmsResponse, 'appCollection.items[0].adsStaging', false),
+              resetRewards: get(cmsResponse, 'appCollection.items[0].resetRewardsStaging', 24),
+              keepRewards: get(cmsResponse, 'appCollection.items[0].keepRewardsStaging', 6),
+            },
+          ],
+        },
+        announcementCollection: get(cmsResponse, 'announcementCollection'),
+      };
+    }
 
     dataResponse = {
-      data: response,
+      data: cmsResponse,
       isLocal: false,
     };
   }
