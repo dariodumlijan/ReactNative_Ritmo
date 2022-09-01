@@ -6,6 +6,7 @@ import { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
 import {
   every, flatten, floor, includes, values,
 } from 'lodash';
+// $FlowFixMe[cannot-resolve-module] (Git Ignored)
 import ENV from '../../env.json';
 import type { Sample } from './lists';
 import type { Beats } from '../sound/beats';

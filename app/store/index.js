@@ -11,6 +11,7 @@ import { reducer as globalStoreReducer } from './globalStore';
 import { reducer as cmsStoreReducer } from './cmsStore';
 import { reducer as beatsStoreReducer } from './beatsStore';
 import { isPromise, deviceInfo } from '../utils';
+// $FlowFixMe[cannot-resolve-module] (Git Ignored)
 import ENV from '../../env.json';
 import type {
   ReduxState, ReduxAction, ReduxMiddlewareArgument, ActionChains,

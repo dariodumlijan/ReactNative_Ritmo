@@ -1,5 +1,6 @@
 // @flow
 import axios from 'axios';
+// $FlowFixMe[cannot-resolve-module] (Git Ignored)
 import ENV from '../../env.json';
 
 export const requestTimeoutMs: number = 120000;

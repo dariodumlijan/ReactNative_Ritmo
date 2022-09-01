@@ -10,6 +10,7 @@ import Exit from '../../assets/icons/Exit';
 import * as utils from '../../utils';
 import mainStyle from '../../styles/main';
 import colors from '../../styles/colors';
+// $FlowFixMe[cannot-resolve-module] (Git Ignored)
 import ENV from '../../../env.json';
 import type { ReduxState } from '../../types';
 

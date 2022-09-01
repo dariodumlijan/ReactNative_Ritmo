@@ -24,4 +24,5 @@ module.name_mapper.extension='jpeg' -> 'empty/object'
 module.name_mapper.extension='jpg' -> 'empty/object'
 module.name_mapper.extension='png' -> 'empty/object'
 module.name_mapper.extension='json' -> 'empty/object'
+
 [strict]
