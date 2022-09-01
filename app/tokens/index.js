@@ -1,16 +1,42 @@
-const admob = {
+// @flow
+export const admob = {
   banner: {
-    android_test: "ca-app-pub-3940256099942544/6300978111",
-    android: "ca-app-pub-6627549364207364/2449317174",
-    ios_test: "ca-app-pub-3940256099942544/2934735716",
-    ios: "ca-app-pub-6627549364207364/2825823719",
+    android_test: 'ca-app-pub-3940256099942544/6300978111',
+    ios_test: 'ca-app-pub-3940256099942544/2934735716',
   },
   rewarded: {
-    android_test: "ca-app-pub-3940256099942544/5224354917",
-    android: "ca-app-pub-6627549364207364/2449206773",
-    ios_test: "ca-app-pub-3940256099942544/1712485313",
-    ios: "ca-app-pub-6627549364207364/2502405996",
+    android_test: 'ca-app-pub-3940256099942544/5224354917',
+    ios_test: 'ca-app-pub-3940256099942544/1712485313',
   },
 };
 
-export default admob;
+export const codepush = {
+  android: {
+    production: '_E6pPExPbuekfs8--1P1KXx0_9PCdp9lfNFHw',
+    staging: 'YQ27CjO73bmeHRZmpoPx_JtAHkyFBn5ZhpoAj',
+  },
+  ios: {
+    production: 'O04Aw3YIpvD_ihYX4qO0faqD6R3uCyzorw4Yf',
+    staging: '0e_fCwBomxPBperEcePzVV7hpBCXdgISY7vEQ',
+  },
+};
+
+export const localStorageKeys = {
+  appContent: 'appContent',
+  contentTimestamps: 'contentTimestamps',
+  announcementTimestamp: 'announcementTimestamp',
+  reviewTimestamp: 'reviewTimestamp',
+  presets: {
+    one: 'preset1',
+    two: 'preset2',
+    three: 'preset3',
+  },
+  rewardedAtSamples: 'rewardedAtSamples',
+  rewardedAtPro: 'rewardedAtPro',
+  unlockedRewards: 'unlockedRewards',
+};
+
+export const appKeys = {
+  noConnection: 'noConnection',
+  noLocalData: 'noLocalData',
+};

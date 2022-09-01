@@ -1,7 +1,13 @@
+// @flow
 import React from 'react';
+import type { Node } from 'react';
 import { Svg, Path } from 'react-native-svg';
 
-const Pause = (props) => {
+type Props = {
+  style?: Object,
+};
+
+function Pause(props: Props): Node {
   return (
     <Svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" style={props.style}>
       <Path
@@ -14,6 +20,6 @@ const Pause = (props) => {
       />
     </Svg>
   );
-};
+}
 
 export default Pause;

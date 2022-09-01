@@ -1,7 +1,14 @@
+// @flow
 import React from 'react';
+import type { Node } from 'react';
 import { Svg, Path, Rect } from 'react-native-svg';
 
-const Logo = (props) => {
+type Props = {
+  style?: Object,
+  fill: string,
+};
+
+function Logo(props: Props): Node {
   return (
     <Svg
       id="Recreated"
@@ -41,6 +48,6 @@ const Logo = (props) => {
       />
     </Svg>
   );
-};
+}
 
 export default Logo;

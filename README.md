@@ -14,7 +14,7 @@
 Easy to use, user-friendly interface:
 
 -   10 different sound library (Acoustic, Trap, Lofi and more) - more to come
--   3 time signatures
+-   3 time signatures (adjustable for each sound "kick/snare/hi-hat")
 -   An adjustable BPM
 -   Presets
 -   Export as MIDI
@@ -27,16 +27,12 @@ The app has an adjustable BPM, a selection of different time signatures and mult
 
 ### New features and updates
 
--   [x] Rewards available for 24h
--   [x] Countdown timer for locking rewards
--   [x] Keep rewards for another 24h
--   [x] Presets
--   [x] Export as MIDI
+-   [x] Individual time signatures for each sound
 -   [ ] Record audio
 
 ## The Chimera Team
 
--   [Dario Dumlijan - Developer](https://linktr.ee/DarioDumlijan)
+-   [Dario Dumlijan - Full-stack Developer](https://dariodumlijan.com/design/business-card)
 -   [Boris Vida - UI/UX Designer](https://behance.net/lemondesignuk)
 -   [Damjan Gazibaric - Assets Designer](https://behance.net/gazdadesigns)
 
@@ -46,4 +42,4 @@ The app has an adjustable BPM, a selection of different time signatures and mult
 
 ###### Copyright
 
-© 2021 Chimera Studio
+© 2022 Chimera Studio

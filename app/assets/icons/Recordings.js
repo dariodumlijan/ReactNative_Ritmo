@@ -1,7 +1,13 @@
+// @flow
 import React from 'react';
+import type { Node } from 'react';
 import { Svg, Path } from 'react-native-svg';
 
-const Recordings = (props) => {
+type Props = {
+  style?: Object,
+};
+
+function Recordings(props: Props): Node {
   return (
     <Svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={props.style}>
       <Path
@@ -10,6 +16,6 @@ const Recordings = (props) => {
       />
     </Svg>
   );
-};
+}
 
 export default Recordings;

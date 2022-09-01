@@ -1,7 +1,13 @@
+// @flow
 import React from 'react';
+import type { Node } from 'react';
 import { Svg, Path } from 'react-native-svg';
 
-const Guide = (props) => {
+type Props = {
+  style?: Object,
+};
+
+function Guide(props: Props): Node {
   return (
     <Svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style={props.style}>
       <Path
@@ -10,6 +16,6 @@ const Guide = (props) => {
       />
     </Svg>
   );
-};
+}
 
 export default Guide;
