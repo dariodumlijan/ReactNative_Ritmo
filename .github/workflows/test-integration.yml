@@ -32,6 +32,6 @@ jobs:
         run: yarn install --frozen-lockfile
 
       # Run tests
-      # - run: yarn test
+      - run: yarn test
       - run: yarn lint
       - run: yarn flow

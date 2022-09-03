@@ -13,6 +13,7 @@ const availabeLanguages: AvailabeLanguages = {
 
 type Props = {
   t: Function,
+  setLanguage: Function,
 };
 
 export const t = (key: string, lng: string = 'en'): string => get(availabeLanguages[lng], key, key.toString());

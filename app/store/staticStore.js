@@ -2,7 +2,7 @@
 import type { ReduxActionWithPayload, ReduxState } from '../types';
 
 export type State = {
-  loadTime: Date,
+  loadTime: number,
   midiBarTicks: number,
   midiNoteMax: number,
   midiNoteMin: number,

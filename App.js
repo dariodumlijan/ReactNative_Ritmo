@@ -25,7 +25,6 @@ const initialState: ReduxState = {
     midiNoteMax: 64,
     midiBarTicks: 512,
     reviewMinutes: 2,
-    // $FlowFixMe
     loadTime: Date.now(),
   },
   global: {
@@ -36,12 +35,8 @@ const initialState: ReduxState = {
     },
     ui: {
       showAds: true,
-      showBanner: true,
       isPlaying: false,
       isRecording: false,
-      hihatSliderVal: 0,
-      snareSliderVal: 0,
-      kickSliderVal: 0,
       useBPM: 100,
       useTimeSig: {
         hihat: timeSignatures[0].value,

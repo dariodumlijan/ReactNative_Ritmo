@@ -10,6 +10,13 @@ if ARGV.length < 1
   exit
 end
 
+if ARGV[0] != '--android' && ARGV[0] != '--ios'
+  puts
+  puts 'Wrong platform argument, acceptable "--android / --ios"'
+  puts
+  exit
+end
+
 if ARGV[0] == '--android'
   ENV["RELEASE_KEYSTORE_PASSWORD"] = SECRETS['RELEASE_SECRETS']['RELEASE_KEYSTORE_PASSWORD']
   ENV["RELEASE_KEYSTORE_KEY_PASSWORD"] = SECRETS['RELEASE_SECRETS']['RELEASE_KEYSTORE_KEY_PASSWORD']
