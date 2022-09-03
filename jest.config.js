@@ -1,14 +1,22 @@
+const esModules = [
+  'react-native',
+  '@react-native',
+  'react-router-native',
+].join('|');
+
 module.exports = {
   preset: 'react-native',
-  testEnvironment: 'node',
   setupFilesAfterEnv: [
     '@testing-library/jest-native/extend-expect',
     './jest.setup.js',
   ],
   transform: {
-    'node_modules/.+\\.(js|jsx)?$': 'babel-jest',
+    '^.+\\.js$': 'babel-jest',
   },
   transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native|@react-native(-community)?)/)',
+    `node_modules/(?!((jest-)?${esModules}(-community)?)/)`,
   ],
+  moduleNameMapper: {
+    'env.json': '<rootDir>/__mocks__/env.json',
+  },
 };

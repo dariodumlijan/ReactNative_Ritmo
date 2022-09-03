@@ -74,14 +74,12 @@ function Navigation(): Node {
         toValue: 0,
         duration: 300,
         useNativeDriver: true,
-        // $FlowFixMe
         easing: Easing.linear,
       }),
       Animated.timing(opacityAlert, {
         toValue: 1,
         duration: 300,
         useNativeDriver: true,
-        // $FlowFixMe
         easing: Easing.linear,
       }),
     ]).start();
@@ -91,14 +89,12 @@ function Navigation(): Node {
         toValue: 0,
         duration: 300,
         useNativeDriver: true,
-        // $FlowFixMe
         easing: Easing.linear,
       }),
       Animated.timing(opacityTag, {
         toValue: 1,
         duration: 300,
         useNativeDriver: true,
-        // $FlowFixMe
         easing: Easing.linear,
       }),
     ]).start();

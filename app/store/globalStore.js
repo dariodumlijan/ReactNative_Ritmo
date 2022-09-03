@@ -406,7 +406,6 @@ const setTimeSig = (state: State, payload: TimeSignaturePayload): State => {
     ...{
       ui: {
         ...state.ui,
-        // $FlowFixMe
         useTimeSig: {
           ...state.ui.useTimeSig,
           // $FlowFixMe
@@ -432,7 +431,6 @@ export const reducer = (state: State, action: ReduxActionWithPayload): State => 
       return checkUnlockedRewards(state, action.payload);
 
     case types.GB_FETCH_PRESET_AND_SAMPLES_FULFILLED:
-      // $FlowFixMe
       return fetchPresetAndSamples(state, action.payload);
 
     case types.GB_LOAD_PRESET:

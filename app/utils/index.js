@@ -44,8 +44,7 @@ export const getDeviceInfo = async (): Promise<any> => {
   deviceInfo.deviceId = deviceID;
 };
 
-// $FlowFixMe
-export const isPromise = (p) => !!p && typeof p.then === 'function';
+export const isPromise = (p: any): boolean => !!p && typeof p.then === 'function';
 
 export const isSampleUnlocked = (unlockedSamples: string[], sample: Sample): boolean => includes(unlockedSamples, sample.label);
 

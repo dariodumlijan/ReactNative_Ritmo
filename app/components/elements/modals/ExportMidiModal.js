@@ -61,7 +61,6 @@ function ExportMidiModal(): Node {
       </TouchableWithoutFeedback>
       <View style={modalsStyle.modalWrapper}>
         <Text style={modalsStyle.modalTxt}>{t('modal.midi.label')}</Text>
-        {/* $FlowFixMe */}
         <TextInput
           style={modalsStyle.inputMidi}
           onChangeText={(val) => nameMidiFile(val)}

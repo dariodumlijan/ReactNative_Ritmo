@@ -64,14 +64,12 @@ function Circle(): Node {
             toValue: 0.9,
             duration: pulseInterval,
             useNativeDriver: true,
-            // $FlowFixMe
             easing: Easing.linear,
           }),
           Animated.timing(pulseAnimation, {
             toValue: 1,
             duration: pulseInterval,
             useNativeDriver: true,
-            // $FlowFixMe
             easing: Easing.linear,
           }),
         ]),
@@ -84,7 +82,6 @@ function Circle(): Node {
           toValue: 1,
           duration: bpmInterval,
           useNativeDriver: true,
-          // $FlowFixMe
           easing: Easing.linear,
         }),
       ).start();
