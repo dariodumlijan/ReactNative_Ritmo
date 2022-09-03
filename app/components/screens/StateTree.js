@@ -11,7 +11,7 @@ import * as utils from '../../utils';
 import mainStyle from '../../styles/main';
 import colors from '../../styles/colors';
 // $FlowFixMe[cannot-resolve-module] (Git Ignored)
-import ENV from '../../../env.json';
+import ENV from '../../../env.json'; /* eslint-disable-line import/no-unresolved */
 import type { ReduxState } from '../../types';
 
 function StateTree(): Node {

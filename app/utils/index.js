@@ -7,7 +7,7 @@ import {
   every, flatten, floor, includes, values,
 } from 'lodash';
 // $FlowFixMe[cannot-resolve-module] (Git Ignored)
-import ENV from '../../env.json';
+import ENV from '../../env.json'; /* eslint-disable-line import/no-unresolved */
 import type { Sample } from './lists';
 import type { Beats } from '../sound/beats';
 

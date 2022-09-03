@@ -1,7 +1,7 @@
 // @flow
 import axios from 'axios';
 // $FlowFixMe[cannot-resolve-module] (Git Ignored)
-import ENV from '../../env.json';
+import ENV from '../../env.json'; /* eslint-disable-line import/no-unresolved */
 
 export const requestTimeoutMs: number = 120000;
 

@@ -12,7 +12,7 @@ import { reducer as cmsStoreReducer } from './cmsStore';
 import { reducer as beatsStoreReducer } from './beatsStore';
 import { isPromise, deviceInfo } from '../utils';
 // $FlowFixMe[cannot-resolve-module] (Git Ignored)
-import ENV from '../../env.json';
+import ENV from '../../env.json'; /* eslint-disable-line import/no-unresolved */
 import type {
   ReduxState, ReduxAction, ReduxMiddlewareArgument, ActionChains,
 } from '../types';
