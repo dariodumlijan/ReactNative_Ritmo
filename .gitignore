@@ -61,6 +61,7 @@ buck-out/
 
 # Secrets
 env.json
+!/__mocks__/env.json
 
 cache/
 coverage/

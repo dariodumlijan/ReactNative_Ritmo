@@ -108,7 +108,7 @@ export function Guide(): Node {
           maximumTrackTintColor={colors.grayLight}
           containerStyle={[sliderStyle.container, { marginVertical: 10 }]}
           trackStyle={sliderStyle.track}
-          renderThumbComponent={() => <SliderThumb label={t('hihat')} color={colors.orange} />}
+          renderThumbComponent={() => <SliderThumb label={t('hihat')} />}
           thumbTouchSize={{ width: 65, height: 25 }}
           onValueChange={(val) => setSlider(val)}
         />

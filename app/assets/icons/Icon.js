@@ -45,7 +45,6 @@ function Icon(props: Props): Node {
         toValue: 1,
         duration: secondsToMilliseconds(3),
         useNativeDriver: true,
-        // $FlowFixMe
         easing: Easing.inOut(Easing.quad),
       }),
     ).start();

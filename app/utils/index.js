@@ -7,7 +7,7 @@ import {
   every, flatten, floor, includes, values,
 } from 'lodash';
 // $FlowFixMe[cannot-resolve-module] (Git Ignored)
-import ENV from '../../env.json';
+import ENV from '../../env.json'; /* eslint-disable-line import/no-unresolved */
 import type { Sample } from './lists';
 import type { Beats } from '../sound/beats';
 
@@ -44,8 +44,7 @@ export const getDeviceInfo = async (): Promise<any> => {
   deviceInfo.deviceId = deviceID;
 };
 
-// $FlowFixMe
-export const isPromise = (p) => !!p && typeof p.then === 'function';
+export const isPromise = (p: any): boolean => !!p && typeof p.then === 'function';
 
 export const isSampleUnlocked = (unlockedSamples: string[], sample: Sample): boolean => includes(unlockedSamples, sample.label);
 
