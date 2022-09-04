@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 import { isEmpty, isEqual } from 'lodash';
 import ConditionalAd from './ConditionalAd';
-import { isApple, isTablet } from '../../../utils';
+import { isTablet } from '../../../utils';
 import { useLocationInfo } from '../../../utils/hooks';
 import { selectors as selectorsGlobal } from '../../../store/globalStore';
 import { selectors as selectorsCMS } from '../../../store/cmsStore';
@@ -23,8 +23,6 @@ function AdmobBanner(props: Props): Node {
   const locationInfo = useLocationInfo();
 
   const handleBannerSize = (): string => {
-    if (isApple) return BannerAdSize.FLUID;
-
     if (isTablet) return BannerAdSize.FULL_BANNER;
 
     return BannerAdSize.BANNER;
