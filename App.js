@@ -2,9 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import codePush from 'react-native-code-push';
 import { Provider } from 'react-redux';
+import Sound from 'react-native-sound';
 import SplashScreen from 'react-native-splash-screen';
-import Body from './app/components/Body';
+import ErrorBoundary from './app/components/blocks/errors/ErrorBoundary';
 import PortalProvider from './app/components/blocks/portal/PortalProvider';
+import Body from './app/components/Body';
 import beats from './app/sound/beats';
 import { t } from './app/locales';
 import { getDeviceInfo } from './app/utils';
@@ -47,15 +49,12 @@ const initialState: ReduxState = {
     },
     unlockedSamples,
   },
-  beats: {
-    hihat: beats.hihat,
-    snare: beats.snare,
-    kick: beats.kick,
-  },
+  beats,
 };
 const store = configureStore(initialState);
 
 function App() {
+  Sound.setCategory('Playback');
   const [setupPending, setSetupPending] = useState(true);
 
   useEffect(() => {
@@ -71,11 +70,13 @@ function App() {
   if (setupPending) return null;
 
   return (
-    <Provider store={store}>
-      <PortalProvider>
-        <Body />
-      </PortalProvider>
-    </Provider>
+    <ErrorBoundary store={store}>
+      <Provider store={store}>
+        <PortalProvider>
+          <Body />
+        </PortalProvider>
+      </Provider>
+    </ErrorBoundary>
   );
 }
 

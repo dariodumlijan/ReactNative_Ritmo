@@ -45,6 +45,16 @@ function Circle(): Node {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => () => dispatch(beatActions.pauseBeat()), []);
 
+  useEffect(() => {
+    if (!global.isPlaying) {
+      beatlineAnimation.stopAnimation();
+      beatlineAnimation.setValue(0);
+      pulseAnimation.stopAnimation();
+      pulseAnimation.setValue(1);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [global.isPlaying]);
+
   const getDimensions = (e: Object, key: string) => setCircleRadius({ ...circleRadius, ...{ [key]: e.nativeEvent.layout.width / 2 - 2.5 } });
 
   const beatlineAngle = beatlineAnimation.interpolate({
@@ -112,12 +122,6 @@ function Circle(): Node {
 
   const handlePause = () => {
     dispatch(beatActions.pauseBeat());
-
-    beatlineAnimation.stopAnimation();
-    beatlineAnimation.setValue(0);
-    pulseAnimation.stopAnimation();
-    pulseAnimation.setValue(1);
-
     reviewApp();
   };
 

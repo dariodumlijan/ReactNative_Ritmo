@@ -8,7 +8,7 @@ import colors from '../../../styles/colors';
 import type { LocationInfo } from '../../../utils/hooks';
 
 type Props = {
-  locationInfo: LocationInfo
+  locationInfo?: LocationInfo
 }
 
 const styles: Object = StyleSheet.create({
@@ -45,7 +45,7 @@ const styles: Object = StyleSheet.create({
 function LightBackground(props: Props): Node {
   return (
     <View style={styles.backgroundWrapper}>
-      {!props.locationInfo.isStateTree && (
+      {!props.locationInfo?.isStateTree && (
         <Logo style={styles.menuLogo} fill={colors.grayBlue} />
       )}
     </View>

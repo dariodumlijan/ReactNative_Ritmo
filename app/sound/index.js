@@ -10,13 +10,11 @@ type Props = {
   beats: Beats,
 }
 
-Sound.setCategory('Playback');
-
 let intervalID = null;
 let soundBeats = null;
 
 export const playBeat = (props: Props) => {
-  soundBeats = props.beats;
+  soundBeats = { ...props.beats };
 
   const play = (beatArray: Beat[], soundPath: string) => {
     for (let index = 0; index < beatArray.length; index++) {
@@ -43,17 +41,18 @@ export const playBeat = (props: Props) => {
   intervalID = setInterval(loopThroughBeats, props.bpmInterval);
 };
 
-export const stopBeat = (beats: Beats) => {
+export const stopBeat = () => {
   const stop = (beatArray: Beat[]) => {
-    for (let index = 0; index < beatArray.length; index++) {
-      clearTimeout(beatArray[index].soundKey);
-    }
+    forEach(beatArray, (beat: Beat) => {
+      clearTimeout(beat.soundKey);
+      beat.soundKey = null;
+    });
   };
 
   clearInterval(intervalID);
-  forEach(beats, (beatArray) => stop(beatArray));
+  forEach(soundBeats, (beatArray) => stop(beatArray));
 };
 
 export const updateBeat = (beats: Beats) => {
-  soundBeats = beats;
+  soundBeats = { ...beats };
 };

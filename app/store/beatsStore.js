@@ -3,6 +3,7 @@ import { get, map } from 'lodash';
 import { types as globalTypes } from './globalStore';
 import { calcSoundDelay } from '../utils';
 import * as Sound from '../sound';
+import initBeats from '../sound/beats';
 import type { Sample } from '../utils/lists';
 import type { Beats, Beat } from '../sound/beats';
 import type { TimeSignaturePayload } from './globalStore';
@@ -95,21 +96,10 @@ const clearBeat = (state: State): State => {
   };
 };
 
-const resetBeat = (state: State): State => {
-  const resetKey = (beats: Beat[]) => (
-    map(beats, (beat: Beat) => ({
-      ...beat,
-      angle: beat.initAngle,
-      checked: false,
-      visible: true,
-    }))
-  );
+const resetBeat = (): State => {
+  Sound.stopBeat();
 
-  return {
-    hihat: resetKey(state.hihat),
-    snare: resetKey(state.snare),
-    kick: resetKey(state.kick),
-  };
+  return initBeats;
 };
 
 const toggleCheckbox = (state: State, payload: PayloadCheckbox): State => {
@@ -161,7 +151,7 @@ const playBeat = (state: State, payload: PayloadPlay): State => {
 };
 
 const pauseBeat = (state: State): State => {
-  Sound.stopBeat(state);
+  Sound.stopBeat();
 
   return state;
 };
@@ -172,8 +162,6 @@ const handleBeatUpdate = (state: State, action: ReduxActionWithPayload): State =
       return rotateBeat(state, action.payload);
     case types.BT_CLEAR_BEAT:
       return clearBeat(state);
-    case types.BT_RESET_BEAT:
-      return resetBeat(state);
     case types.BT_TOGGLE_CHECKBOX:
       return toggleCheckbox(state, action.payload);
     case globalTypes.GB_LOAD_PRESET:
@@ -190,7 +178,6 @@ export const reducer = (state: State, action: ReduxActionWithPayload): State => 
   switch (action.type) {
     case types.BT_ROTATE_BEAT:
     case types.BT_CLEAR_BEAT:
-    case types.BT_RESET_BEAT:
     case types.BT_TOGGLE_CHECKBOX:
     case globalTypes.GB_LOAD_PRESET:
     case globalTypes.GB_UPDATE_TIME_SIG:
@@ -199,6 +186,8 @@ export const reducer = (state: State, action: ReduxActionWithPayload): State => 
 
       return newState;
 
+    case types.BT_RESET_BEAT:
+      return resetBeat();
     case types.BT_PLAY_BEAT:
       return playBeat(state, action.payload);
     case types.BT_PAUSE_BEAT:

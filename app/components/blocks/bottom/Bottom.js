@@ -17,7 +17,6 @@ import { actions as globalActions, selectors as globalSelectors } from '../../..
 import { actions as beatActions, selectors as beatSelectors } from '../../../store/beatsStore';
 import { isBeatEmpty } from '../../../utils';
 import { useTeleport } from '../../../utils/hooks';
-import { stopBeat } from '../../../sound';
 import bottomStyle from '../../../styles/bottom';
 import notificationsStyle from '../../../styles/notifications';
 import { sliderStyle } from '../../../styles/inputs';
@@ -82,12 +81,10 @@ function Bottom(): Node {
 
   const handleClearBeat = () => {
     dispatch(beatActions.clearBeat());
-    stopBeat(beats);
   };
 
   const handleResetBeat = () => {
     dispatch(beatActions.resetBeat());
-    stopBeat(beats);
   };
 
   // const handleRecording = () => {};

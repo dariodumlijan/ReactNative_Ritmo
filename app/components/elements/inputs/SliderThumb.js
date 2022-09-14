@@ -15,8 +15,8 @@ function SliderThumb(props: Props): Node {
 
   const handleColor = (): string | null => {
     if (props.label === 'hihat') return colors.orange;
-    if (props.label === 'snare') return colors.cyan;
-    if (props.label === 'kick') return colors.green;
+    if (props.label === 'snare') return colors.green;
+    if (props.label === 'kick') return colors.cyan;
 
     return null;
   };
