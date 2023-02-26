@@ -11,26 +11,31 @@ import {
   View,
 } from 'react-native';
 import { Link } from 'react-router-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Slider } from '@miblanchard/react-native-slider';
-import Clipboard from '@react-native-clipboard/clipboard';
 import { isEqual } from 'lodash';
+import { secondsToMilliseconds } from 'date-fns';
+import Alert from '../elements/misc/Alert';
 import SliderThumb from '../elements/inputs/SliderThumb';
 import Exit from '../../assets/icons/Exit';
 import useLocale from '../../locales';
-import { deviceInfo } from '../../utils';
+import { actions } from '../../store/globalStore';
+import { useTeleport } from '../../utils/hooks';
 import MidiFile from '../../assets/img/midiFile.png';
 import MidiFileLogic from '../../assets/img/midiFile_Logic.png';
 import guideStyle from '../../styles/guide';
 import bottomStyle from '../../styles/bottom';
 import mainStyle from '../../styles/main';
 import modalsStyle from '../../styles/modals';
+import notificationsStyle from '../../styles/notifications';
 import { sliderStyle } from '../../styles/inputs';
 import colors from '../../styles/colors';
 import type { ReduxState } from '../../types';
 
 export function Guide(): Node {
   const { t } = useLocale();
+  const dispatch = useDispatch();
+  const { teleport } = useTeleport();
   const config = useSelector((state: ReduxState) => ({
     sliderMin: state.static.sliderMin,
     sliderMax: state.static.sliderMax,
@@ -41,9 +46,16 @@ export function Guide(): Node {
   const [slider, setSlider] = useState(15);
   const [secretDeviceIdTap, setSecretDeviceIdTap] = useState(0);
 
-  const handleSecretDeviceId = () => {
+  const handleDeveloperModeToggle = () => {
     if (secretDeviceIdTap === 7) {
-      Clipboard.setString(deviceInfo.deviceId);
+      dispatch(actions.toggleDeveloperMode(true));
+      teleport(
+        <Alert clearDelayMS={secondsToMilliseconds(5)}>
+          <Text style={[notificationsStyle.alertText, { fontSize: 14 }]}>
+            {t('alert.developer')}
+          </Text>
+        </Alert>,
+      );
 
       return;
     }
@@ -272,7 +284,7 @@ export function Guide(): Node {
         <Text style={guideStyle.guideTxt}>{t('guide.section_4.paragraph_5')}</Text>
         <TouchableOpacity
           activeOpacity={0.6}
-          onPress={handleSecretDeviceId}
+          onPress={handleDeveloperModeToggle}
         >
           <Text style={guideStyle.guideSub}>
             {t('guide.section_5.title')}

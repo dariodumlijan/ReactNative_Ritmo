@@ -48,40 +48,37 @@ type AdmobIds = {
   rewarded: string|null,
 }
 
-export const getAdmobIds = (adIds: ?{
-  banner: {
-    android: string,
-    ios: string,
-  },
-  rewarded: {
-    android: string,
-    ios: string,
-  }
-}): AdmobIds => {
-  let adId = null;
+export const getAdmobIds = (state: ReduxState): AdmobIds => {
+  const adIds: ?{
+    banner: {
+      android: string,
+      ios: string,
+    },
+    rewarded: {
+      android: string,
+      ios: string,
+    }
+  } = get(state.cms, 'master.adIds');
+  const showTestAds = state.global.developerMode;
 
   const getBannerID = (): string|null => {
     if (!adIds) return null;
 
     if (deviceInfo.isApple) {
-      adId = deviceInfo.isRealDevice ? adIds.banner.ios : admob.banner.ios_test;
+      return showTestAds ? admob.banner.ios_test : adIds.banner.ios;
     } else {
-      adId = deviceInfo.isRealDevice ? adIds.banner.android : admob.banner.android_test;
+      return showTestAds ? admob.banner.android_test : adIds.banner.android;
     }
-
-    return adId;
   };
 
   const getRewardedID = (): string|null => {
     if (!adIds) return null;
 
     if (deviceInfo.isApple) {
-      adId = deviceInfo.isRealDevice ? adIds.rewarded.ios : admob.rewarded.ios_test;
+      return showTestAds ? admob.rewarded.ios_test : adIds.rewarded.ios;
     } else {
-      adId = deviceInfo.isRealDevice ? adIds.rewarded.android : admob.rewarded.android_test;
+      return showTestAds ? admob.rewarded.android_test : adIds.rewarded.android;
     }
-
-    return adId;
   };
 
   return {
@@ -93,7 +90,7 @@ export const getAdmobIds = (adIds: ?{
 export const selectors = {
   getCMS: (state: ReduxState): ?State => state.cms,
   getTimestamps: (state: ReduxState): ?Timestamps => state.cms?.timestamps,
-  getAdmobIds: (state: ReduxState): AdmobIds => getAdmobIds(get(state.cms, 'master.adIds')),
+  getAdmobIds: (state: ReduxState): AdmobIds => getAdmobIds(state),
 };
 
 export const actions = {

@@ -69,6 +69,7 @@ export type State = {
     deploymentKey: string,
     ...Object,
   },
+  developerMode: boolean,
   presets?: {
     [string]: Preset|null,
   },
@@ -83,6 +84,7 @@ export const types = {
   GB_SHOW_PERSONALISED_ADS: 'GB/SHOW_PERSONALISED_ADS',
   GB_SHOW_ADS: 'GB/SHOW_ADS',
   GB_TOGGLE_NAVIGATION: 'GB/TOGGLE_NAVIGATION',
+  GB_TOGGLE_DEVELOPER_MODE: 'GB/TOGGLE_DEVELOPER_MODE',
   GB_UPDATE_BPM: 'GB/UPDATE_BPM',
   GB_UPDATE_TIME_SIG: 'GB/UPDATE_TIME_SIG',
   GB_UPDATE_SELECTED_SAMPLE: 'GB/UPDATE_SELECTED_SAMPLE',
@@ -193,6 +195,10 @@ export const actions = {
   toggleNavigation: (bool: boolean): ReduxAction => ({
     type: types.GB_TOGGLE_NAVIGATION,
     payload: { navigationOpen: bool },
+  }),
+  toggleDeveloperMode: (bool: boolean): ReduxAction => ({
+    type: types.GB_TOGGLE_DEVELOPER_MODE,
+    payload: bool,
   }),
   exportMIDI: (buildMIDI: BuildMidi): ReduxAction => ({
     type: types.GB_EXPORT_MIDI,
@@ -493,6 +499,9 @@ export const reducer = (state: State, action: ReduxActionWithPayload): State => 
 
     case types.GB_GET_DEPLOYMENT_DATA_FULFILLED:
       return merge({}, state, { codepushData: action.payload });
+
+    case types.GB_TOGGLE_DEVELOPER_MODE:
+      return merge({}, state, { developerMode: action.payload });
 
     default:
       return state || {};

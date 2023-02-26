@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import codePush from 'react-native-code-push';
+import { isEqual } from 'lodash';
 import Circle from '../blocks/circle/Circle';
 import Bottom from '../blocks/bottom/Bottom';
 import Logo from '../../assets/icons/Logo';
@@ -23,11 +24,13 @@ import mainStyle from '../../styles/main';
 import homeStyle from '../../styles/home';
 import notificationsStyle from '../../styles/notifications';
 import colors from '../../styles/colors';
+import type { ReduxState } from '../../types';
 
 function Home(): Node {
   const { t } = useLocale();
   const dispatch = useDispatch();
-  const codepushEnvironment = useSelector(selectors.getCodepushEnvironment);
+  const developerMode: boolean = useSelector((state: ReduxState) => state.global.developerMode, isEqual);
+  const codepushEnvironment = useSelector(selectors.getCodepushEnvironment, isEqual);
   const [codepushSyncing, setCodepushSyncing] = useState(false);
   const isProduction = codepushEnvironment === 'Production';
 
@@ -52,7 +55,7 @@ function Home(): Node {
         <View style={homeStyle.topWrapperBG}>
           <View style={homeStyle.navigation}>
             <Logo style={homeStyle.logo} fill={colors.gray} />
-            {deviceInfo.showAdminActions && (
+            {developerMode && (
               <TouchableOpacity style={homeStyle.appEnvironment} activeOpacity={0.8} onPress={handleAppEnvironment}>
                 <Text style={homeStyle.appEnvironmentText}>{codepushEnvironment}</Text>
               </TouchableOpacity>

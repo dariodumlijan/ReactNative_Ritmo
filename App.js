@@ -12,6 +12,7 @@ import { t } from './app/locales';
 import { getDeviceInfo } from './app/utils';
 import { getSamples, getTimeSignatures, getUnlockedSamples } from './app/utils/lists';
 import { configureStore } from './app/store';
+import { actions } from './app/store/globalStore';
 import type { ReduxState } from './app/types';
 
 const samples = getSamples();
@@ -30,6 +31,7 @@ const initialState: ReduxState = {
     loadTime: Date.now(),
   },
   global: {
+    developerMode: false,
     sliders: {
       hihat: 0,
       snare: 0,
@@ -58,25 +60,24 @@ function App() {
   const [setupPending, setSetupPending] = useState(true);
 
   useEffect(() => {
-    const handleDeviceSetup = async () => {
-      await getDeviceInfo();
+    getDeviceInfo().then((res) => {
+      store.dispatch(actions.toggleDeveloperMode(!res.isRealDevice));
+    }).finally(() => {
       setSetupPending(false);
       SplashScreen.hide();
-    };
-
-    handleDeviceSetup();
+    });
   }, []);
 
   if (setupPending) return null;
 
   return (
-    <ErrorBoundary store={store}>
-      <Provider store={store}>
+    <Provider store={store}>
+      <ErrorBoundary store={store}>
         <PortalProvider>
           <Body />
         </PortalProvider>
-      </Provider>
-    </ErrorBoundary>
+      </ErrorBoundary>
+    </Provider>
   );
 }
 

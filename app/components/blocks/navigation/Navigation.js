@@ -20,7 +20,7 @@ import Export from '../../../assets/icons/Export';
 import Settings from '../../../assets/icons/Settings';
 import StateTree from '../../../assets/icons/StateTree';
 import useLocale from '../../../locales';
-import { isBeatEmpty, deviceInfo } from '../../../utils';
+import { isBeatEmpty } from '../../../utils';
 import { useTeleport } from '../../../utils/hooks';
 import { actions } from '../../../store/globalStore';
 import { selectors } from '../../../store/beatsStore';
@@ -33,7 +33,8 @@ function Navigation(): Node {
   const { t } = useLocale();
   const { teleport } = useTeleport();
   const dispatch = useDispatch();
-  const navigationOpen: boolean = useSelector((state : ReduxState) => state.global.ui.navigationOpen, isEqual);
+  const developerMode: boolean = useSelector((state: ReduxState) => state.global.developerMode, isEqual);
+  const navigationOpen: boolean = useSelector((state: ReduxState) => state.global.ui.navigationOpen, isEqual);
   const beats: Beats = useSelector(selectors.getBeats, isEqual);
   const opacityTag = useRef(new Animated.Value(1)).current;
   const opacityAlert = useRef(new Animated.Value(0)).current;
@@ -62,7 +63,7 @@ function Navigation(): Node {
       path: 'state-tree',
       label: t('navigation.state_tree'),
       icon: <StateTree style={navigationStyle.icon} />,
-      visible: deviceInfo.showAdminActions,
+      visible: developerMode,
     },
   ];
 

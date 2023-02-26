@@ -114,7 +114,8 @@
       "text_2": ", this could take a while...",
       "Production": "Staging",
       "Staging": "Production"
-    }
+    },
+    "developer": "Developer mode turned on!"
   },
   "error": {
     "title": "Attention!",

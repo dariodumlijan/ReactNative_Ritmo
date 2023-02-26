@@ -38,8 +38,8 @@ The app has an adjustable BPM, a selection of different time signatures and mult
 
 [More by Chimera Studio](https://linktr.ee/chimerastudiotm)
 
-[Privacy Policy](https://sites.google.com/view/chimerastudio/home)
+[Privacy Policy](https://chimerastudio.co.uk/privacy-policy)
 
 ###### Copyright
 
-© 2022 Chimera Studio
+© 2023 Chimera Studio
