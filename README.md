@@ -25,11 +25,6 @@ The app allows the user to create a simple beat and then start rotating (offsett
 
 The app has an adjustable BPM, a selection of different time signatures and multiple sound libraries that give the user all of the freedom to create whatever they want.
 
-### New features and updates
-
--   [x] Individual time signatures for each sound
--   [ ] Record audio
-
 ## The Chimera Team
 
 -   [Dario Dumlijan - Full-stack Developer](https://dariodumlijan.com/design/business-card)
