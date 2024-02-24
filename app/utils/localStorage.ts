@@ -1,13 +1,12 @@
-// @flow
 import { getItem, removeItem, setItem } from './hooks';
 import { localStorageKeys } from '../tokens';
 import type { Preset, RewardedAt } from '../store/globalStore';
 
 export type FetchResponse = {
   presets: {
-    one: Preset|null,
-    two: Preset|null,
-    three: Preset|null,
+    one: Preset | null,
+    two: Preset | null,
+    three: Preset | null,
   },
   unlockedSamples: string[],
   rewardedAt: RewardedAt,

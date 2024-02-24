@@ -1,25 +1,22 @@
-// @flow
 /* eslint-disable no-console */
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import {
   concat, forEach, get, includes, isString,
 } from 'lodash';
-import { reducer as staticStoreReducer } from './staticStore';
-import { reducer as globalStoreReducer } from './globalStore';
+import { applyMiddleware, combineReducers, createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
 import { reducer as beatsStoreReducer } from './beatsStore';
-import { isPromise } from '../utils';
+import { reducer as globalStoreReducer } from './globalStore';
+import { reducer as staticStoreReducer } from './staticStore';
 import ENV from '../../env.json';
-import type {
-  ReduxState, ReduxAction, ReduxMiddlewareArgument, ActionChains,
-} from '../types';
+import { isPromise } from '../utils';
+import type { ReduxState } from '../types';
 
-const sanitizedActions = get(ENV, 'REDUX.SANITIZEDLIST', []);
-const actionsDenyList = get(ENV, 'REDUX.DENYLIST', []);
+const sanitizedActions = get(ENV, 'REDUX.SANITIZED_LIST', []);
+const actionsDenylist = get(ENV, 'REDUX.DENY_LIST', []);
 
 const sanitizedPayload = 'Set REACT_APP_REDUX_SANITIZER=false';
-const actionSanitizer = (action: ReduxAction): ReduxAction => {
+const actionSanitizer = (action) => {
   if (!action.payload) return action;
 
   return includes(sanitizedActions, action.type)
@@ -27,7 +24,7 @@ const actionSanitizer = (action: ReduxAction): ReduxAction => {
     : action;
 };
 
-const stateSanitizer = (state: ReduxState): any => {
+const stateSanitizer = (state) => {
   if (get(ENV, 'REDUX.STATE_LOG')) console.log(state);
   if (!state) return state;
 
@@ -36,7 +33,7 @@ const stateSanitizer = (state: ReduxState): any => {
   };
 };
 
-function promiseMiddleware({ dispatch }: ReduxMiddlewareArgument): any {
+function promiseMiddleware({ dispatch }) {
   return (next) => (action) => {
     if (action.payload && isPromise(action.payload)) {
       action.payload
@@ -72,8 +69,8 @@ function promiseMiddleware({ dispatch }: ReduxMiddlewareArgument): any {
   };
 }
 
-export function chainActionsMiddleware(chainedActions: ActionChains): any {
-  return ({ dispatch }: ReduxMiddlewareArgument) => (next) => (action) => {
+export function chainActionsMiddleware(chainedActions) {
+  return ({ dispatch }) => (next) => (action) => {
     let nextActions = chainedActions[action.type];
     if (nextActions) {
       nextActions = concat(nextActions);
@@ -92,36 +89,12 @@ export function chainActionsMiddleware(chainedActions: ActionChains): any {
   };
 }
 
-function dispatchRecorder(dispatchedActions: ?Array<string>): any {
-  return () => (next) => (action) => {
-    if (dispatchedActions && !actionsDenyList.includes(action.type)) {
-      dispatchedActions.push(action.type);
-    }
-
-    return next(action);
-  };
-}
-
-export const configureStore = (
-  initialState: {} | ReduxState,
-  actionChains: ?ActionChains,
-  dispatchedActions: ?Array<string>,
-): Function => {
+export const configureStore = (initialState: {} | Partial<ReduxState>) => {
   const middleware = [thunk];
-  if (dispatchedActions) {
-    middleware.push(dispatchRecorder(dispatchedActions));
-  }
-  middleware.push(promiseMiddleware);
-  if (actionChains) {
-    middleware.push(chainActionsMiddleware(actionChains));
-  }
-
+  middleware.push(promiseMiddleware as any);
   const sanitizers = get(ENV, 'REDUX.SANITIZER') !== false && { actionSanitizer, stateSanitizer };
-  const composeEnhancers = composeWithDevTools({
-    ...sanitizers,
-    actionsDenylist: actionsDenyList,
-  });
-  const middlewareApplier = composeEnhancers(applyMiddleware(...middleware));
+  const composeEnhancers = composeWithDevTools({ ...sanitizers, actionsDenylist } as any);
+  const middlewareApplier = composeEnhancers(applyMiddleware(...middleware as any) as any);
 
   return createStore(
     combineReducers({
@@ -129,7 +102,7 @@ export const configureStore = (
       global: globalStoreReducer,
       beats: beatsStoreReducer,
     }),
-    initialState,
-    middlewareApplier,
+    initialState as any,
+    middlewareApplier as any,
   );
 };

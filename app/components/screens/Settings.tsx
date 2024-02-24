@@ -1,6 +1,4 @@
-// @flow
 import React, { useState } from 'react';
-import type { Node } from 'react';
 import {
   Animated,
   Keyboard,
@@ -13,31 +11,31 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-native';
+import { hoursToMilliseconds, secondsToMilliseconds } from 'date-fns';
 import {
   get, isEmpty, isEqual, isNaN, isNumber,
 } from 'lodash';
-import { hoursToMilliseconds, secondsToMilliseconds } from 'date-fns';
-import DismissKeyboard from '../elements/misc/DismissKeyboard';
-import CountdownTimer from '../elements/misc/CountdownTimer';
+import Close from '../../assets/icons/Close';
+import useLocale from '../../locales';
+import { actions, selectors } from '../../store/globalStore';
+import colors from '../../styles/colors';
+import { textInputStyle } from '../../styles/inputs';
+import mainStyle from '../../styles/main';
+import notificationsStyle from '../../styles/notifications';
+import settingsStyle from '../../styles/settings';
+import { config } from '../../tokens';
+import { useTeleport } from '../../utils/hooks';
+import useSelectLists from '../../utils/lists';
 import Select from '../elements/inputs/Select';
 import TimeSignatureSelect from '../elements/inputs/TimeSignatureSelect';
 import Alert from '../elements/misc/Alert';
 import ConditionalAd from '../elements/misc/ConditionalAd';
-import Close from '../../assets/icons/Close';
-import useLocale from '../../locales';
-import useSelectLists from '../../utils/lists';
-import { useTeleport } from '../../utils/hooks';
-import { actions, selectors } from '../../store/globalStore';
-import mainStyle from '../../styles/main';
-import settingsStyle from '../../styles/settings';
-import notificationsStyle from '../../styles/notifications';
-import { textInputStyle } from '../../styles/inputs';
-import { config } from '../../tokens';
-import colors from '../../styles/colors';
-import type { Sample } from '../../utils/lists';
+import CountdownTimer from '../elements/misc/CountdownTimer';
+import DismissKeyboard from '../elements/misc/DismissKeyboard';
 import type { State, TimeSignaturePayload } from '../../store/globalStore';
+import type { Sample } from '../../utils/lists';
 
-function Settings(): Node {
+function Settings() {
   const { t } = useLocale();
   const { teleport } = useTeleport();
   const dispatch = useDispatch();
@@ -151,7 +149,7 @@ function Settings(): Node {
           <View style={settingsStyle.navigation}>
             <Link
               to="/"
-              underlayColor={null}
+              underlayColor={colors.transparent}
               disabled={openSoundSelect}
               onPress={handleCloseSettings}
             >
@@ -167,7 +165,7 @@ function Settings(): Node {
               <TextInput
                 style={textInputStyle.input}
                 maxLength={3}
-                onChangeText={(val) => setBpm(val)}
+                onChangeText={(val: any) => setBpm(val)}
                 onSubmitEditing={() => handleBPM(bpm)}
                 onBlur={() => handleBPM(bpm)}
                 value={bpm}

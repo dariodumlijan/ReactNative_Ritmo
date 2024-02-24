@@ -1,31 +1,29 @@
-// @flow
 import React from 'react';
-import type { Node } from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Slider } from '@miblanchard/react-native-slider';
-import {
-  map, isEmpty, first, isEqual,
-} from 'lodash';
 import { secondsToMilliseconds } from 'date-fns';
-import SliderThumb from '../../elements/inputs/SliderThumb';
-import ClearPresetModal from '../../elements/modals/ClearPresetModal';
-import Alert from '../../elements/misc/Alert';
+import {
+  first, isEmpty, isEqual, map,
+} from 'lodash';
 import useLocale from '../../../locales';
-import { selectors as staticSelectors } from '../../../store/staticStore';
-import { actions as globalActions, selectors as globalSelectors } from '../../../store/globalStore';
 import { actions as beatActions, selectors as beatSelectors } from '../../../store/beatsStore';
+import { actions as globalActions, selectors as globalSelectors } from '../../../store/globalStore';
+import { selectors as staticSelectors } from '../../../store/staticStore';
+import bottomStyle from '../../../styles/bottom';
+import colors from '../../../styles/colors';
+import { sliderStyle } from '../../../styles/inputs';
+import notificationsStyle from '../../../styles/notifications';
 import { isBeatEmpty } from '../../../utils';
 import { useTeleport } from '../../../utils/hooks';
-import bottomStyle from '../../../styles/bottom';
-import notificationsStyle from '../../../styles/notifications';
-import { sliderStyle } from '../../../styles/inputs';
-import colors from '../../../styles/colors';
+import SliderThumb from '../../elements/inputs/SliderThumb';
+import Alert from '../../elements/misc/Alert';
+import ClearPresetModal from '../../elements/modals/ClearPresetModal';
 import type { Beats } from '../../../sound/beats';
+import type { State as GlobalState, Preset } from '../../../store/globalStore';
 import type { State as StaticState } from '../../../store/staticStore';
-import type { Preset, State as GlobalState } from '../../../store/globalStore';
 
-function Bottom(): Node {
+function Bottom() {
   const { t } = useLocale();
   const { teleport } = useTeleport();
   const dispatch = useDispatch();
@@ -38,7 +36,7 @@ function Bottom(): Node {
     if (global.sliders[key] !== degree) dispatch(beatActions.rotateBeat({ key, degree, useBPM: global.ui.useBPM }));
   };
 
-  const handlePreset = (preset: Object, key: string) => {
+  const handlePreset = (preset: Preset, key: string) => {
     if (!isEmpty(preset)) {
       dispatch(globalActions.loadPreset(preset));
 
@@ -208,7 +206,7 @@ function Bottom(): Node {
               trackStyle={sliderStyle.track}
               renderThumbComponent={() => <SliderThumb label={key} />}
               thumbTouchSize={{ width: 65, height: 25 }}
-              onValueChange={(targetVal) => handleSliderChange(first(targetVal), key)}
+              onValueChange={(targetVal) => handleSliderChange(first(targetVal) as number, key)}
             />
           ))}
         </View>

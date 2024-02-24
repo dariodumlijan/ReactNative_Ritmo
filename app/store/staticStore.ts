@@ -1,4 +1,3 @@
-// @flow
 import type { ReduxActionWithPayload, ReduxState } from '../types';
 
 export type State = {

@@ -4,7 +4,7 @@
 
 #### Node.js & yarn
 
-Node version `16.10.0` and up needed to run the React scripts. And yarn to run the scripts and handle dependencies.
+Node version `>=18` and up needed to run the React scripts. And yarn to run the scripts and handle dependencies.
 
 This project was bootstrapped with [Create React Native App](https://github.com/expo/create-react-native-app).
 
@@ -55,8 +55,8 @@ Add `env.json` file to root directory
         "RELEASE_KEYSTORE_KEY_ALIAS": "<secret>"
     },
     "REDUX": {
-        "DENYLIST": [],
-        "SANITIZEDLIST": [],
+        "DENY_LIST": [],
+        "SANITIZED_LIST": [],
         "SANITIZER": true,
         "STATE_LOG": false
     },

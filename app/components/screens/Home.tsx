@@ -1,32 +1,30 @@
-// @flow
 import React, { useState } from 'react';
-import type { Node } from 'react';
 import {
-  View,
-  TouchableOpacity,
+  Modal,
   SafeAreaView,
   Text,
-  Modal,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import codePush from 'react-native-code-push';
+import { useDispatch, useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
-import Circle from '../blocks/circle/Circle';
-import Bottom from '../blocks/bottom/Bottom';
 import Logo from '../../assets/icons/Logo';
 import Menu from '../../assets/icons/Menu';
-import Alert from '../elements/misc/Alert';
-import { actions, selectors } from '../../store/globalStore';
 import useLocale from '../../locales';
-import { deviceInfo } from '../../utils';
-import { codepush } from '../../tokens';
-import mainStyle from '../../styles/main';
-import homeStyle from '../../styles/home';
-import notificationsStyle from '../../styles/notifications';
+import { actions, selectors } from '../../store/globalStore';
 import colors from '../../styles/colors';
+import homeStyle from '../../styles/home';
+import mainStyle from '../../styles/main';
+import notificationsStyle from '../../styles/notifications';
+import { codepush } from '../../tokens';
+import { deviceInfo } from '../../utils';
+import Bottom from '../blocks/bottom/Bottom';
+import Circle from '../blocks/circle/Circle';
+import Alert from '../elements/misc/Alert';
 import type { ReduxState } from '../../types';
 
-function Home(): Node {
+function Home() {
   const { t } = useLocale();
   const dispatch = useDispatch();
   const developerMode: boolean = useSelector((state: ReduxState) => state.global.developerMode, isEqual);

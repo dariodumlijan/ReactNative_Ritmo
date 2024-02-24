@@ -1,14 +1,12 @@
-// @flow
 import React from 'react';
-import type { Node } from 'react';
 import {
   Modal, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View,
 } from 'react-native';
 import { map } from 'lodash';
 import Arrow from '../../../assets/icons/Arrow';
+import { selectStyle } from '../../../styles/inputs';
 import { isSampleUnlocked } from '../../../utils';
 import { useLocationInfo } from '../../../utils/hooks';
-import { selectStyle } from '../../../styles/inputs';
 
 export type Option = Object & {
   label: string,
@@ -19,15 +17,15 @@ type Props = {
   value: string,
   options: Option[],
   isOpen: boolean,
-  onSelect: Function,
-  onOpen: Function,
-  onClose: Function,
-  onRewardedClick? : Function,
+  onSelect: (option: any) => void,
+  onOpen: () => void,
+  onClose: () => void,
+  onRewardedClick? : () => void,
   compareSamples?: string[],
   isDisabled?: boolean,
 };
 
-function Select(props: Props): Node {
+function Select(props: Props) {
   const locationInfo = useLocationInfo();
 
   const handleSelect = (option: Option) => {

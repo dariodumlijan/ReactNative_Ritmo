@@ -1,23 +1,9 @@
-// @flow
 import { StyleSheet } from 'react-native';
-import { deviceWidth, isTablet } from '../utils';
 import colors from './colors';
+import { deviceWidth, isTablet } from '../utils';
 
 const circleRad = deviceWidth / 2;
-
-type CircleStyle = {
-  wrapper: Object,
-  circle: Object,
-  hihat: Object,
-  snare: Object,
-  kick: Object,
-  beatline: Object,
-  btnWrapper: Object,
-  btnAnimated: Object,
-  btnIcon: Object,
-};
-
-const circleStyle: CircleStyle = StyleSheet.create({
+const circleStyle = StyleSheet.create({
   wrapper: {
     alignItems: 'center',
     aspectRatio: 1 / 1,

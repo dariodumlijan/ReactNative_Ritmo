@@ -1,18 +1,14 @@
-// @flow
 import React from 'react';
-import type { Node } from 'react';
-import { Svg, Path, Rect } from 'react-native-svg';
+import { Path, Rect, Svg } from 'react-native-svg';
 
 type Props = {
   style?: Object,
   fill: string,
 };
 
-function Logo(props: Props): Node {
+function Logo(props: Props) {
   return (
     <Svg
-      id="Recreated"
-      xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 1042.8 285.54"
       style={props.style}
     >

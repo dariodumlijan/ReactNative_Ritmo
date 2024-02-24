@@ -1,12 +1,10 @@
-// @flow
 import React from 'react';
-import type { Node } from 'react';
 import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { deviceHeight, deviceWidth, isiPhone } from '../../../utils';
 import colors from '../../../styles/colors';
+import { deviceHeight, deviceWidth, isiPhone } from '../../../utils';
 
-const styles: Object = StyleSheet.create({
+const styles = StyleSheet.create({
   backgroundWrapper: {
     ...(isiPhone && { flex: 1 }),
     backgroundColor: colors.bg,
@@ -20,7 +18,7 @@ const styles: Object = StyleSheet.create({
   },
 });
 
-function SplitBackground(): Node {
+function SplitBackground() {
   return (
     <LinearGradient
       style={styles.backgroundWrapper}

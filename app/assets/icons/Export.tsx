@@ -1,15 +1,13 @@
-// @flow
 import React from 'react';
-import type { Node } from 'react';
-import { Svg, Path } from 'react-native-svg';
+import { Path, Svg } from 'react-native-svg';
 
 type Props = {
   style?: Object,
 };
 
-function Export(props: Props): Node {
+function Export(props: Props) {
   return (
-    <Svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 22.67" style={props.style}>
+    <Svg viewBox="0 0 24 22.67" style={props.style}>
       <Path
         fill="#c7cde1"
         d="M5.33,17.33V18c2.26-3.44,4.8-5.27,8-5.33v4A1.44,1.44,0,0,0,14.86,18,1.55,1.55,0,0,0,16,17.48c2.58-2.71,8-8.15,8-8.15s-5.39-5.44-8-8.18A1.68,1.68,0,0,0,14.86.67,1.43,1.43,0,0,0,13.33,2V6C7.12,6,5.33,12.49,5.33,17.33Z"

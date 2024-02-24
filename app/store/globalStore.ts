@@ -1,33 +1,32 @@
-// @flow
 import {
-  merge, get, reject, omit, uniq, isNil, map,
+  get, isNil, map, merge, omit, reject, uniq,
 } from 'lodash';
-import * as API from '../api';
-import * as MIDI from '../midi';
 import { types as beatTypes } from './beatsStore';
+import * as API from '../api';
 import { t } from '../locales';
+import * as MIDI from '../midi';
+import { admob, config } from '../tokens';
 import { deviceInfo, isSampleUnlocked } from '../utils';
-import * as LocalStorage from '../utils/localStorage';
 import { getSamples, getTimeSignatures, getUnlockedSamples } from '../utils/lists';
-import type { Beats } from '../sound/beats';
+import * as LocalStorage from '../utils/localStorage';
 import type { BuildMidi, BuildPromise } from '../midi';
-import type { Sample } from '../utils/lists';
+import type { Beats } from '../sound/beats';
+import type { ReduxActionWithPayload, ReduxState } from '../types';
+import type { Sample, TimeSig } from '../utils/lists';
 import type {
   FetchResponse,
   SaveRewardsResponse,
   UnlockProFeaturesResponse,
   WriteResponse,
 } from '../utils/localStorage';
-import type { ReduxAction, ReduxActionWithPayload, ReduxState } from '../types';
-import { admob, config } from '../tokens';
 
 export type RewardedAt = {
-  samples?: number|null,
-  pro?: number|null,
+  samples?: number | null,
+  pro?: number | null,
 };
 
 export type TimeSignaturePayload = {
-  key: 'all'|'hihat'|'snare'|'kick',
+  key: 'all' | 'hihat' | 'snare' | 'kick',
   value: string,
 };
 
@@ -49,7 +48,7 @@ export type UI = {
   isRecording: boolean,
   navigationOpen?: boolean,
   personalisedAds?: boolean,
-  selectedReward?: Sample|null,
+  selectedReward?: Sample | null,
   showAds: boolean,
   useBPM: number,
   useSample: Sample,
@@ -63,34 +62,24 @@ export type Preset = {
 };
 
 type AdmobIds = {
-  banner: string|null,
-  rewarded: string|null,
-}
+  banner: string,
+  rewarded: string,
+};
 
 export type State = {
   codepushData?: Object & {
-    environment: 'Production'|'Staging',
+    environment: 'Production' | 'Staging',
     deploymentKey: string,
   },
   developerMode: boolean,
   presets?: {
-    [key: string]: Preset|null,
+    [key: string]: Preset | null,
   },
   sliders: Sliders,
   ui: UI,
   unlockedSamples: string[],
   unlockedPro?: boolean,
   rewardedAt?: RewardedAt,
-  adIds: {
-    banner: {
-      android: string,
-      ios: string,
-    },
-    rewarded: {
-      android: string,
-      ios: string,
-    },
-  },
 };
 
 export const types = {
@@ -158,20 +147,20 @@ export const types = {
 export const getAdmobIds = (state: ReduxState): AdmobIds => {
   const showTestAds = state.global.developerMode;
 
-  const getBannerID = (): string|null => {
+  const getBannerID = (): string => {
     if (deviceInfo.isApple) {
       return showTestAds ? admob.banner.ios_test : admob.banner.ios;
-    } else {
-      return showTestAds ? admob.banner.android_test : admob.banner.android;
     }
+
+    return showTestAds ? admob.banner.android_test : admob.banner.android;
   };
 
-  const getRewardedID = (): string|null => {
+  const getRewardedID = (): string => {
     if (deviceInfo.isApple) {
       return showTestAds ? admob.rewarded.ios_test : admob.rewarded.ios;
-    } else {
-      return showTestAds ? admob.rewarded.android_test : admob.rewarded.android;
     }
+
+    return showTestAds ? admob.rewarded.android_test : admob.rewarded.android;
   };
 
   return {
@@ -181,7 +170,7 @@ export const getAdmobIds = (state: ReduxState): AdmobIds => {
 };
 
 export const selectors = {
-  getCodepushEnvironment: (state: ReduxState): 'Production'|'Staging' => get(state.global.codepushData, 'environment', 'Production'),
+  getCodepushEnvironment: (state: ReduxState): 'Production' | 'Staging' => get(state.global.codepushData, 'environment', 'Production'),
   getAdmobIds: (state: ReduxState): AdmobIds => getAdmobIds(state),
   getGlobal: (state: ReduxState): State => state.global,
   getUI: (state: ReduxState): UI => state.global.ui,
@@ -199,83 +188,83 @@ export const selectors = {
 };
 
 export const actions = {
-  getDeploymentData: (): ReduxAction => ({
+  getDeploymentData: () => ({
     type: types.GB_GET_DEPLOYMENT_DATA,
     payload: API.getDeploymentData(),
   }),
-  showPersonalisedAds: (bool: boolean): ReduxAction => ({
+  showPersonalisedAds: (bool: boolean) => ({
     type: types.GB_SHOW_PERSONALISED_ADS,
     payload: { personalisedAds: bool },
   }),
-  showAds: (showAds: boolean): ReduxAction => ({
+  showAds: (showAds: boolean) => ({
     type: types.GB_SHOW_ADS,
     payload: { showAds },
   }),
-  unlockReward: (sampleLabel?: string): ReduxAction => ({
+  unlockReward: (sampleLabel?: string) => ({
     type: types.GB_UNLOCK_REWARD,
     payload: sampleLabel,
   }),
-  unlockProFeatures: (): ReduxAction => ({
+  unlockProFeatures: () => ({
     type: types.GB_UNLOCK_PRO_FEATURES,
     payload: LocalStorage.unlockProFeatures(),
   }),
-  refreshRewards: (): ReduxAction => ({
+  refreshRewards: () => ({
     type: types.GB_REFRESH_REWARDS,
     payload: LocalStorage.saveRewards(Date.now()),
   }),
-  lockRewards: (): ReduxAction => ({
+  lockRewards: () => ({
     type: types.GB_LOCK_REWARDS,
     payload: LocalStorage.clearRewards(),
   }),
-  lockProFeatures: (): ReduxAction => ({
+  lockProFeatures: () => ({
     type: types.GB_LOCK_PRO_FEATURES,
     payload: LocalStorage.lockProFeatures(),
   }),
-  toggleNavigation: (bool: boolean): ReduxAction => ({
+  toggleNavigation: (bool: boolean) => ({
     type: types.GB_TOGGLE_NAVIGATION,
     payload: { navigationOpen: bool },
   }),
-  toggleDeveloperMode: (bool: boolean): ReduxAction => ({
+  toggleDeveloperMode: (bool: boolean) => ({
     type: types.GB_TOGGLE_DEVELOPER_MODE,
     payload: bool,
   }),
-  exportMIDI: (buildMIDI: BuildMidi): ReduxAction => ({
+  exportMIDI: (buildMIDI: BuildMidi) => ({
     type: types.GB_EXPORT_MIDI,
     payload: MIDI.exportMIDI(buildMIDI),
   }),
-  deleteMIDIFile: (fileUri: string): ReduxAction => ({
+  deleteMIDIFile: (fileUri: string) => ({
     type: types.GB_DELETE_MIDI_FILE,
     payload: MIDI.deleteMIDIFile(fileUri),
   }),
-  fetchPresetAndSamples: (): ReduxAction => ({
+  fetchPresetAndSamples: () => ({
     type: types.GB_FETCH_PRESET_AND_SAMPLES,
     payload: LocalStorage.fetchPresetAndSamples(),
   }),
-  loadPreset: (preset: Preset): ReduxAction => ({
+  loadPreset: (preset: Preset) => ({
     type: types.GB_LOAD_PRESET,
     payload: preset,
   }),
-  writePreset: (key: string, preset: Preset): ReduxAction => ({
+  writePreset: (key: string, preset: Preset) => ({
     type: types.GB_WRITE_PRESET,
     payload: LocalStorage.writePreset(key, preset),
   }),
-  clearPreset: (key: string): ReduxAction => ({
+  clearPreset: (key: string) => ({
     type: types.GB_CLEAR_PRESET,
     payload: LocalStorage.clearPreset(key),
   }),
-  updateBPM: (bpm: number): ReduxAction => ({
+  updateBPM: (bpm: number) => ({
     type: types.GB_UPDATE_BPM,
     payload: { useBPM: bpm },
   }),
-  updateTimeSig: (payload: TimeSignaturePayload): ReduxAction => ({
+  updateTimeSig: (payload: TimeSignaturePayload) => ({
     type: types.GB_UPDATE_TIME_SIG,
     payload,
   }),
-  updateSelectedSample: (sample: Sample): ReduxAction => ({
+  updateSelectedSample: (sample: Sample) => ({
     type: types.GB_UPDATE_SELECTED_SAMPLE,
     payload: { useSample: sample },
   }),
-  updateSelectedReward: (sample: Sample): ReduxAction => ({
+  updateSelectedReward: (sample: Sample) => ({
     type: types.GB_UPDATE_SELECTED_REWARD,
     payload: { selectedReward: sample },
   }),
@@ -366,6 +355,7 @@ const rotateBeat = (
 const resetBeat = (state: State): State => {
   const samples = getSamples();
   const timeSignatures = getTimeSignatures(t);
+  const timeSig: TimeSig = timeSignatures[0] as TimeSig;
 
   return merge({}, state, {
     ui: {
@@ -373,9 +363,9 @@ const resetBeat = (state: State): State => {
       isRecording: false,
       useBPM: 100,
       useTimeSig: {
-        hihat: timeSignatures[0].value,
-        snare: timeSignatures[0].value,
-        kick: timeSignatures[0].value,
+        hihat: timeSig.value,
+        snare: timeSig.value,
+        kick: timeSig.value,
       },
       useSample: samples[0],
     },
@@ -420,7 +410,6 @@ const loadPreset = (state: State, preset: Preset): State => ({
 const writePreset = (state: State, payload: WriteResponse): State => (
   {
     ...state,
-    // $FlowFixMe
     presets: {
       ...state.presets,
       [payload.key]: payload.preset,
@@ -451,7 +440,6 @@ const setTimeSig = (state: State, payload: TimeSignaturePayload): State => {
         ...state.ui,
         useTimeSig: {
           ...state.ui.useTimeSig,
-          // $FlowFixMe
           [payload.key]: payload.value,
         },
       },

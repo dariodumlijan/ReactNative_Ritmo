@@ -1,19 +1,7 @@
-// @flow
 import { StyleSheet } from 'react-native';
 import colors from './colors';
 
-type AnnouncementStyle = {
-  title: Object,
-  text: Object,
-  list: Object,
-  listItem: Object,
-  listCount: Object,
-  listBullet: Object,
-  button: Object,
-  buttonText: Object,
-};
-
-const announcementStyle: AnnouncementStyle = StyleSheet.create({
+const announcementStyle = StyleSheet.create({
   title: {
     color: colors.black,
     fontFamily: 'Montserrat-SemiBold',

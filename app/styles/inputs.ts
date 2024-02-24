@@ -1,20 +1,10 @@
-// @flow
 import { StyleSheet } from 'react-native';
+import colors from './colors';
 import {
   deviceHeight, deviceWidth, isApple, isTablet,
 } from '../utils';
-import colors from './colors';
 
-type CheckboxStyle = {
-  wrapper: Object,
-  checkbox: Object,
-  default: Object,
-  hihat: Object,
-  snare: Object,
-  kick: Object,
-}
-
-export const checkboxStyle: CheckboxStyle = StyleSheet.create({
+export const checkboxStyle = StyleSheet.create({
   wrapper: {
     aspectRatio: 1 / 1,
     position: 'absolute',
@@ -46,25 +36,7 @@ export const checkboxStyle: CheckboxStyle = StyleSheet.create({
   },
 });
 
-type SelectStyle = {
-  inputWrapper: Object,
-  inputWrapperRewarded: Object,
-  label: Object,
-  input: Object,
-  inputRewarded: Object,
-  inputText: Object,
-  inputIcon: Object,
-  inputIconRewarded: Object,
-  listOverlay: Object,
-  listWrapper: Object,
-  list: Object,
-  listItem: Object,
-  listItemNoBorder: Object,
-  listText: Object,
-  listDisabledText: Object,
-}
-
-export const selectStyle: SelectStyle = StyleSheet.create({
+export const selectStyle = StyleSheet.create({
   inputWrapper: {
     alignItems: 'flex-end',
     display: 'flex',
@@ -172,28 +144,7 @@ export const selectStyle: SelectStyle = StyleSheet.create({
   },
 });
 
-type TimeSignatureSelectStyle = {
-  inputWrapper: Object,
-  label: Object,
-  input: Object,
-  valueItem: Object,
-  inputText: Object,
-  inputTextLabel: Object,
-  inputIcon: Object,
-  listOverlay: Object,
-  listWrapper: Object,
-  list: Object,
-  listLabelWrapper: Object,
-  proWrapper: Object,
-  proText: Object,
-  listSection: Object,
-  listLabel: Object,
-  listItem: Object,
-  listItemNoBorder: Object,
-  listText: Object,
-}
-
-export const timeSignatureSelectStyle: TimeSignatureSelectStyle = StyleSheet.create({
+export const timeSignatureSelectStyle = StyleSheet.create({
   inputWrapper: {
     alignItems: 'flex-end',
     display: 'flex',
@@ -319,15 +270,7 @@ export const timeSignatureSelectStyle: TimeSignatureSelectStyle = StyleSheet.cre
   },
 });
 
-type SliderStyle = {
-  wrapper: Object,
-  container: Object,
-  track: Object,
-  thumb: Object,
-  label: Object,
-}
-
-export const sliderStyle: SliderStyle = StyleSheet.create({
+export const sliderStyle = StyleSheet.create({
   wrapper: {
     alignItems: 'center',
     display: 'flex',
@@ -364,15 +307,7 @@ export const sliderStyle: SliderStyle = StyleSheet.create({
   },
 });
 
-type RadioStyle = {
-  wrapper: Object,
-  container: Object,
-  text: Object,
-  selected: Object,
-  notSelected: Object,
-}
-
-export const radioStyle: RadioStyle = StyleSheet.create({
+export const radioStyle = StyleSheet.create({
   wrapper: {
     alignItems: 'flex-end',
     display: 'flex',
@@ -405,11 +340,7 @@ export const radioStyle: RadioStyle = StyleSheet.create({
   },
 });
 
-type TextInputStyle = {
-  input: Object,
-}
-
-export const textInputStyle: TextInputStyle = StyleSheet.create({
+export const textInputStyle = StyleSheet.create({
   input: {
     backgroundColor: colors.grayLight,
     borderRadius: 15,

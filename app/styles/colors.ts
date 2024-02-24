@@ -1,4 +1,3 @@
-// @flow
 const colors = {
   bg: '#0e123c',
   black: '#000000',

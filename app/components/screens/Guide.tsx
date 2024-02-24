@@ -1,6 +1,5 @@
-// @flow
 import React, { useState } from 'react';
-import type { Node } from 'react';
+import type { ViewStyle } from 'react-native';
 import {
   Image,
   SafeAreaView,
@@ -10,29 +9,29 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Link } from 'react-router-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-native';
 import { Slider } from '@miblanchard/react-native-slider';
-import { isEqual } from 'lodash';
 import { secondsToMilliseconds } from 'date-fns';
-import Alert from '../elements/misc/Alert';
-import SliderThumb from '../elements/inputs/SliderThumb';
+import { isEqual } from 'lodash';
 import Exit from '../../assets/icons/Exit';
-import useLocale from '../../locales';
-import { actions } from '../../store/globalStore';
-import { useTeleport } from '../../utils/hooks';
 import MidiFile from '../../assets/img/midiFile.png';
 import MidiFileLogic from '../../assets/img/midiFile_Logic.png';
-import guideStyle from '../../styles/guide';
+import useLocale from '../../locales';
+import { actions } from '../../store/globalStore';
 import bottomStyle from '../../styles/bottom';
+import colors from '../../styles/colors';
+import guideStyle from '../../styles/guide';
+import { sliderStyle } from '../../styles/inputs';
 import mainStyle from '../../styles/main';
 import modalsStyle from '../../styles/modals';
 import notificationsStyle from '../../styles/notifications';
-import { sliderStyle } from '../../styles/inputs';
-import colors from '../../styles/colors';
+import { useTeleport } from '../../utils/hooks';
+import SliderThumb from '../elements/inputs/SliderThumb';
+import Alert from '../elements/misc/Alert';
 import type { ReduxState } from '../../types';
 
-export function Guide(): Node {
+export function Guide() {
   const { t } = useLocale();
   const dispatch = useDispatch();
   const { teleport } = useTeleport();
@@ -43,7 +42,7 @@ export function Guide(): Node {
   }), isEqual);
   const [beat1, setBeat1] = useState(true);
   const [beat2, setBeat2] = useState(false);
-  const [slider, setSlider] = useState(15);
+  const [slider, setSlider] = useState([15]);
   const [secretDeviceIdTap, setSecretDeviceIdTap] = useState(0);
 
   const handleDeveloperModeToggle = () => {
@@ -65,7 +64,7 @@ export function Guide(): Node {
 
   return (
     <SafeAreaView style={mainStyle.safe}>
-      <Link to="/" style={mainStyle.exit} underlayColor={null}>
+      <Link to="/" style={mainStyle.exit} underlayColor={colors.transparent}>
         <Exit fill={colors.primaryDark} />
       </Link>
 
@@ -118,7 +117,7 @@ export function Guide(): Node {
           step={config.sliderStep}
           minimumTrackTintColor={colors.grayLight}
           maximumTrackTintColor={colors.grayLight}
-          containerStyle={[sliderStyle.container, { marginVertical: 10 }]}
+          containerStyle={[sliderStyle.container, { marginVertical: 10 }] as ViewStyle}
           trackStyle={sliderStyle.track}
           renderThumbComponent={() => <SliderThumb label={t('hihat')} />}
           thumbTouchSize={{ width: 65, height: 25 }}

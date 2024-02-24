@@ -1,7 +1,6 @@
-// @flow
-import type { State as StaticState } from '../store/staticStore';
-import type { State as GlobalState } from '../store/globalStore';
 import type { Beats as BeatsState } from '../sound/beats';
+import type { State as GlobalState } from '../store/globalStore';
+import type { State as StaticState } from '../store/staticStore';
 
 export type ReduxState = {
   static: StaticState,
@@ -34,9 +33,9 @@ export type ReduxMiddlewareArgument = {
 };
 
 export type ErrorContent = {
-  message: ?string,
-  statusCode?: ?(string | number),
-  name?: ?string,
+  message?: string,
+  statusCode?: string | number,
+  name?: string,
 };
 
 export type ErrorAction = {
@@ -49,9 +48,7 @@ type CauseActionType = string;
 type NextAction = (() => ReduxAction) | string;
 
 export type ActionChains = {
-  [CauseActionType]: Array<NextAction> | NextAction,
+  [key: CauseActionType]: Array<NextAction> | NextAction,
 };
-
-export type DispatchFn = (BaseReduxAction | PayloadReduxAction) => void;
 
 export type AsyncCallback = (...any) => void;

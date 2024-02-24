@@ -1,20 +1,18 @@
-// @flow
 import React from 'react';
-import type { Node } from 'react';
 import {
   Modal, Text, TouchableOpacity, TouchableWithoutFeedback, View,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import useLocale from '../../../locales';
-import { useTeleport } from '../../../utils/hooks';
 import { actions } from '../../../store/globalStore';
 import modalsStyle from '../../../styles/modals';
+import { useTeleport } from '../../../utils/hooks';
 
 type Props = {
   presetKey: string,
 };
 
-function ClearPresetModal(props: Props): Node {
+function ClearPresetModal(props: Props) {
   const { t } = useLocale();
   const { close } = useTeleport();
   const dispatch = useDispatch();

@@ -1,15 +1,8 @@
-// @flow
 import { StyleSheet } from 'react-native';
-import { isTablet } from '../utils';
 import colors from './colors';
+import { isTablet } from '../utils';
 
-type NotificationsStyle = {
-  alertWrapper: Object,
-  alertText: Object,
-  alertTimerText: Object,
-}
-
-const notificationsStyle: NotificationsStyle = StyleSheet.create({
+const notificationsStyle = StyleSheet.create({
   alertWrapper: {
     backgroundColor: colors.primary,
     borderRadius: 22,

@@ -1,12 +1,10 @@
-// @flow
 import React from 'react';
-import type { Node } from 'react';
-import SplitBackground from './SplitBackground';
-import LightBackground from './LightBackground';
 import DarkBackground from './DarkBackground';
+import LightBackground from './LightBackground';
+import SplitBackground from './SplitBackground';
 import { useLocationInfo } from '../../../utils/hooks';
 
-function Backgrounds(): Node {
+function Backgrounds() {
   const locationInfo = useLocationInfo();
   if (locationInfo.isHome) return <SplitBackground />;
   if (locationInfo.isRewarded) return <DarkBackground />;

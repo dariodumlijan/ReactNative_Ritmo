@@ -1,20 +1,8 @@
-// @flow
 import { StyleSheet } from 'react-native';
-import { deviceHeight, deviceWidth, isTablet } from '../utils';
 import colors from './colors';
+import { deviceHeight, deviceWidth, isTablet } from '../utils';
 
-type ModalsStyle = {
-  modalOverlay: Object,
-  modalWrapper: Object,
-  modalTxt: Object,
-  modalExp: Object,
-  modalBtnCont: Object,
-  modalBtn: Object,
-  modalBtnTxt: Object,
-  inputMidi: Object,
-}
-
-const modalsStyle: ModalsStyle = StyleSheet.create({
+const modalsStyle = StyleSheet.create({
   modalOverlay: {
     backgroundColor: colors.blackTransparent,
     height: deviceHeight,

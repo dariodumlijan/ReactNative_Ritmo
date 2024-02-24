@@ -1,4 +1,3 @@
-// @flow
 import { useState } from 'react';
 import get from 'lodash/get';
 import en from './en.json';
@@ -23,7 +22,7 @@ const useLocale = (): Props => {
 
   return {
     t: (key: string) => t(key, lng),
-    setLanguage: (key) => setLng(key),
+    setLanguage: (key: any) => setLng(key),
   };
 };
 

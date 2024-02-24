@@ -1,11 +1,10 @@
-// @flow
 import { Dimensions, Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import Admob, { AdsConsent, AdsConsentStatus, MaxAdContentRating } from 'react-native-google-mobile-ads';
 import {
   every, flatten, floor, includes, values,
 } from 'lodash';
-import type { Sample } from './lists';
+import type { Option } from '../components/elements/inputs/Select';
 import type { Beats } from '../sound/beats';
 
 type DeviceInfoType = {
@@ -35,7 +34,7 @@ export const getDeviceInfo = async (): Promise<DeviceInfoType> => {
 
 export const isPromise = (p: any): boolean => !!p && typeof p.then === 'function';
 
-export const isSampleUnlocked = (unlockedSamples: string[], sample: Sample): boolean => includes(unlockedSamples, sample.label);
+export const isSampleUnlocked = (unlockedSamples: string[], sample: Option): boolean => includes(unlockedSamples, sample.label);
 
 export const isBeatEmpty = (beats: Beats): boolean => every(flatten(values(beats)), ['checked', false]);
 

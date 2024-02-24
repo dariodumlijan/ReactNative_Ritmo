@@ -1,22 +1,8 @@
-// @flow
 import { StyleSheet } from 'react-native';
-import { deviceHeight, isApple, isiPhone } from '../utils';
 import colors from './colors';
+import { deviceHeight, isApple, isiPhone } from '../utils';
 
-type MainStyles ={
-  container: Object,
-  safe: Object,
-  scrollContainer: Object,
-  scrollDeviceContainer: Object,
-  alert: Object,
-  alertText: Object,
-  exit: Object,
-  exitDisabled: Object,
-  ads: Object,
-  adSpace: Object,
-}
-
-const mainStyle: MainStyles = StyleSheet.create({
+const mainStyle = StyleSheet.create({
   container: {
     backgroundColor: colors.white,
     flex: 1,

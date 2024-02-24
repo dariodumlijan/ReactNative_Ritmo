@@ -1,21 +1,8 @@
-// @flow
 import { StyleSheet } from 'react-native';
-import { isiPhone, isTablet } from '../utils';
 import colors from './colors';
+import { isTablet, isiPhone } from '../utils';
 
-type SettingsStyle = {
-  navigation: Object,
-  closeIconWrapper: Object,
-  closeIcon: Object,
-  menuWrapper: Object,
-  menuTitle: Object,
-  bpmWrapper: Object,
-  soundWrapper: Object,
-  btnRewardScreen: Object,
-  btnRewardScreenText: Object,
-}
-
-const settingsStyle: SettingsStyle = StyleSheet.create({
+const settingsStyle = StyleSheet.create({
   navigation: {
     alignItems: 'flex-end',
     display: 'flex',

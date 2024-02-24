@@ -1,5 +1,3 @@
-// @flow
-/* eslint-disable quote-props */
 import { calcSoundDelay } from '../utils';
 
 export type Beat = {
@@ -7,7 +5,7 @@ export type Beat = {
   checked: boolean,
   initAngle: number,
   soundDelay: number,
-  soundKey: Object|null,
+  soundKey: NodeJS.Timeout | null,
   timeSig: string,
   visible: boolean,
 };
@@ -19,22 +17,22 @@ export type Beats = {
 };
 
 const initDelays = {
-  '0': calcSoundDelay(0),
-  '30': calcSoundDelay(30),
-  '45': calcSoundDelay(45),
-  '60': calcSoundDelay(60),
-  '90': calcSoundDelay(90),
-  '120': calcSoundDelay(120),
-  '135': calcSoundDelay(135),
-  '150': calcSoundDelay(150),
-  '180': calcSoundDelay(180),
-  '210': calcSoundDelay(210),
-  '225': calcSoundDelay(225),
-  '240': calcSoundDelay(240),
-  '270': calcSoundDelay(270),
-  '300': calcSoundDelay(300),
-  '315': calcSoundDelay(315),
-  '330': calcSoundDelay(330),
+  0: calcSoundDelay(0),
+  30: calcSoundDelay(30),
+  45: calcSoundDelay(45),
+  60: calcSoundDelay(60),
+  90: calcSoundDelay(90),
+  120: calcSoundDelay(120),
+  135: calcSoundDelay(135),
+  150: calcSoundDelay(150),
+  180: calcSoundDelay(180),
+  210: calcSoundDelay(210),
+  225: calcSoundDelay(225),
+  240: calcSoundDelay(240),
+  270: calcSoundDelay(270),
+  300: calcSoundDelay(300),
+  315: calcSoundDelay(315),
+  330: calcSoundDelay(330),
 };
 
 const initBeat: Beat[] = [

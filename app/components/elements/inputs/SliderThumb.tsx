@@ -1,16 +1,15 @@
-// @flow
 import React from 'react';
-import type { Node } from 'react';
+import type { ViewStyle } from 'react-native';
 import { Text, View } from 'react-native';
 import useLocale from '../../../locales';
-import { sliderStyle } from '../../../styles/inputs';
 import colors from '../../../styles/colors';
+import { sliderStyle } from '../../../styles/inputs';
 
 type Props = {
   label: string,
 };
 
-function SliderThumb(props: Props): Node {
+function SliderThumb(props: Props) {
   const { t } = useLocale();
 
   const handleColor = (): string | null => {
@@ -22,7 +21,7 @@ function SliderThumb(props: Props): Node {
   };
 
   return (
-    <View style={[sliderStyle.thumb, { backgroundColor: handleColor() }]}>
+    <View style={[sliderStyle.thumb, { backgroundColor: handleColor() }] as ViewStyle}>
       <Text style={sliderStyle.label}>{t(`bottom.slider.${props.label}`)}</Text>
     </View>
   );

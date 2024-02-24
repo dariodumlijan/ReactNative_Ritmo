@@ -1,23 +1,8 @@
-// @flow
 import { StyleSheet } from 'react-native';
-import { isiPhone, isTablet } from '../utils';
 import colors from './colors';
+import { isTablet, isiPhone } from '../utils';
 
-type GuideStyle = {
-  guideTitle: Object,
-  guideScroll: Object,
-  guideSub: Object,
-  guideBullet: Object,
-  guidePresetWrapper: Object,
-  guidePresetCont: Object,
-  guideTxt: Object,
-  guideModalView: Object,
-  guideImgCont: Object,
-  guideImgCont2: Object,
-  guideImg: Object,
-};
-
-const guideStyle: GuideStyle = StyleSheet.create({
+const guideStyle = StyleSheet.create({
   guideTitle: {
     color: colors.primaryDark,
     fontFamily: 'Montserrat-SemiBold',

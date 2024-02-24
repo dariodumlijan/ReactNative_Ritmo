@@ -1,19 +1,16 @@
-// @flow
 import React from 'react';
-import type { Node } from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
+import JSONTree from 'react-native-json-tree';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-native';
-import JSONTree from 'react-native-json-tree';
 import { includes, isEqual } from 'lodash';
 import Exit from '../../assets/icons/Exit';
-import * as utils from '../../utils';
-import mainStyle from '../../styles/main';
 import colors from '../../styles/colors';
-// $FlowFixMe[cannot-resolve-module] (Git Ignored)
+import mainStyle from '../../styles/main';
+import * as utils from '../../utils';
 import type { ReduxState } from '../../types';
 
-function StateTree(): Node {
+function StateTree() {
   const store = useSelector((state: ReduxState) => state, isEqual);
 
   const theme = {
@@ -37,7 +34,7 @@ function StateTree(): Node {
 
   return (
     <SafeAreaView style={mainStyle.safe}>
-      <Link to="/" style={mainStyle.exit} underlayColor={null}>
+      <Link to="/" style={mainStyle.exit} underlayColor={colors.transparent}>
         <Exit fill={colors.primaryDark} />
       </Link>
       <ScrollView

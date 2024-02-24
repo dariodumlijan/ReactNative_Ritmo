@@ -1,13 +1,11 @@
-// @flow
 import React from 'react';
-import type { Node } from 'react';
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 
 type Props = {
-  children: Node,
+  children: any,
 };
 
-function DismissKeyboard(props: Props): Node {
+function DismissKeyboard(props: Props) {
   const { children } = props;
 
   return (

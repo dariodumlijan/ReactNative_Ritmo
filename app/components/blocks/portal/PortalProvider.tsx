@@ -1,16 +1,14 @@
-// @flow
 import React, { useState } from 'react';
-import type { Node } from 'react';
 import { PortalContext } from '../../../context';
 
 type Props = {
-  children: Node,
-}
+  children: any,
+};
 
-function PortalProvider({ children }: Props): Node {
-  const [component, setComponent] = useState(null);
+function PortalProvider({ children }: Props) {
+  const [component, setComponent] = useState<any>(null);
 
-  const teleport = (element: Node) => setComponent(element);
+  const teleport = (element: any) => setComponent(element);
   const close = () => setComponent(null);
 
   return (

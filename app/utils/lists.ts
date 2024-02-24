@@ -1,4 +1,3 @@
-// @flow
 import { includes, reduce } from 'lodash';
 import useLocale from '../locales';
 

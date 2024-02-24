@@ -1,6 +1,4 @@
-// @flow
 import React, { useRef } from 'react';
-import type { Node } from 'react';
 import {
   Animated,
   Easing,
@@ -12,29 +10,29 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-native';
 import { isEqual, map } from 'lodash';
-import ExportMidiModal from '../../elements/modals/ExportMidiModal';
 import Exit from '../../../assets/icons/Exit';
-import Recordings from '../../../assets/icons/Recordings';
-import Guide from '../../../assets/icons/Guide';
 import Export from '../../../assets/icons/Export';
+import Guide from '../../../assets/icons/Guide';
+import Recordings from '../../../assets/icons/Recordings';
 import Settings from '../../../assets/icons/Settings';
 import StateTree from '../../../assets/icons/StateTree';
 import useLocale from '../../../locales';
+import { selectors } from '../../../store/beatsStore';
+import { actions } from '../../../store/globalStore';
+import colors from '../../../styles/colors';
+import navigationStyle from '../../../styles/navigation';
 import { isBeatEmpty } from '../../../utils';
 import { useTeleport } from '../../../utils/hooks';
-import { actions } from '../../../store/globalStore';
-import { selectors } from '../../../store/beatsStore';
-import navigationStyle from '../../../styles/navigation';
-import colors from '../../../styles/colors';
+import ExportMidiModal from '../../elements/modals/ExportMidiModal';
 import type { Beats } from '../../../sound/beats';
 import type { ReduxState } from '../../../types';
 
-function Navigation(): Node {
+function Navigation() {
   const { t } = useLocale();
   const { teleport } = useTeleport();
   const dispatch = useDispatch();
-  const developerMode: boolean = useSelector((state: ReduxState) => state.global.developerMode, isEqual);
-  const navigationOpen: boolean = useSelector((state: ReduxState) => state.global.ui.navigationOpen, isEqual);
+  const developerMode = useSelector((state: ReduxState) => state.global.developerMode, isEqual);
+  const navigationOpen = useSelector((state: ReduxState) => state.global.ui.navigationOpen, isEqual);
   const beats: Beats = useSelector(selectors.getBeats, isEqual);
   const opacityTag = useRef(new Animated.Value(1)).current;
   const opacityAlert = useRef(new Animated.Value(0)).current;
@@ -138,7 +136,7 @@ function Navigation(): Node {
               {link.visible && (
                 <Link
                   style={navigationStyle.link}
-                  underlayColor={null}
+                  underlayColor={colors.transparent}
                   to={link.path}
                   onPress={handleCloseNav}
                 >

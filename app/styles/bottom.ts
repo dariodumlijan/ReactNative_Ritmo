@@ -1,22 +1,8 @@
-// @flow
 import { StyleSheet } from 'react-native';
-import { isTablet } from '../utils';
 import colors from './colors';
+import { isTablet } from '../utils';
 
-type BottomStyle = {
-  wrapper: Object,
-  wrapperBG: Object,
-  presetWrapper: Object,
-  presetBtn: Object,
-  presetText: Object,
-  btnWrapper: Object,
-  btnPrimary: Object,
-  btnPrimaryText: Object,
-  btnRecording: Object,
-  iconRecording: Object,
-};
-
-const bottomStyle: BottomStyle = StyleSheet.create({
+const bottomStyle = StyleSheet.create({
   wrapper: {
     alignItems: 'center',
     backgroundColor: colors.bg,

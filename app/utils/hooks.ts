@@ -1,25 +1,23 @@
-// @flow
 import {
   useContext, useEffect, useRef, useState,
 } from 'react';
-import { useLocation } from 'react-router-dom';
-import InAppReview from 'react-native-in-app-review';
 import { RewardedAd } from 'react-native-google-mobile-ads';
+import InAppReview from 'react-native-in-app-review';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   addMonths, minutesToMilliseconds, secondsToMilliseconds,
 } from 'date-fns';
-import { useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
+import { isPromise } from '.';
+import { PortalContext } from '../context';
+import { selectors } from '../store/globalStore';
 import { localStorageKeys } from '../tokens';
 import { rewardedKeywords } from '../tokens/keywords';
-import { PortalContext } from '../context';
-import { isPromise } from '.';
-import { selectors } from '../store/globalStore';
-import type { PortalProps } from '../context';
 import type { ReduxState } from '../types';
 
-export const getItem = async (key: string): any => {
+export const getItem = async (key: string): Promise<any> => {
   try {
     const response = await AsyncStorage.getItem(key);
 
@@ -55,7 +53,7 @@ export const useLocalStorage = (): {
   removeItem,
 });
 
-export const useReview = (): Function => {
+export const useReview = () => {
   const { loadTime, reviewMinutes, hasUnlockedSample }: {
     loadTime: number,
     reviewMinutes: number,
@@ -99,7 +97,7 @@ export type LocationInfo = {
   isGuide: boolean,
   isLibrary: boolean,
   isStateTree: boolean,
-}
+};
 
 export const useLocationInfo = (): LocationInfo => {
   const location = useLocation();
@@ -121,16 +119,16 @@ export const useLocationInfo = (): LocationInfo => {
   };
 };
 
-export const useTeleport = (): PortalProps => useContext(PortalContext);
+export const useTeleport = () => useContext(PortalContext);
 
 export const useRewardedAd = (
   rewardedId: string,
-  showPersonalisedAds: boolean,
-): Object|null => {
-  const [rewardedAd, setRewardedAd] = useState(null);
+  showPersonalisedAds?: boolean,
+) => {
+  const [rewardedAd, setRewardedAd] = useState<RewardedAd | null>(null);
 
   useEffect(() => {
-    const handleNewAd = async (): Object => {
+    const handleNewAd = async () => {
       const response = await RewardedAd.createForAdRequest(rewardedId, {
         requestNonPersonalizedAdsOnly: !showPersonalisedAds,
         keywords: rewardedKeywords,
@@ -145,7 +143,7 @@ export const useRewardedAd = (
   return rewardedAd;
 };
 
-export const useCountdown = (onTimeEnd: Function, countdownFrom: ?number) => {
+export const useCountdown = (onTimeEnd: Function, countdownFrom?: number) => {
   const [time, setTime] = useState(countdownFrom || 0);
   const timerRef = useRef(time);
 

@@ -1,13 +1,14 @@
-// @flow
-import Share from 'react-native-share';
 import RNFS from 'react-native-fs';
-import * as MidiWriter from 'midi-writer-js';
+import Share from 'react-native-share';
 import { filter, forEach, times } from 'lodash';
+import MidiWriter from 'midi-writer-js';
 import type { Beat, Beats } from '../sound/beats';
 import type { TimeSignature } from '../store/globalStore';
 
-type MidiLayout = Array<'KSH'|'KS'|'KH'|'SH'|'K'|'S'|'H'>
-type NotesLayout = Array<'KSH'|'KS'|'KH'|'SH'|'K'|'S'|'H'|'R'>
+type MidiNote = 'KSH' | 'KS' | 'KH' | 'SH' | 'K' | 'S' | 'H';
+type Note = MidiNote | 'R';
+type MidiLayout = MidiNote[];
+type NotesLayout = Note[];
 
 export type BuildMidi = {
   beats: Beats,
@@ -94,83 +95,87 @@ export const exportMIDI = async ({
     } else {
       countStart++;
     }
-    shiftLayout.push(shiftLayout.shift());
+    shiftLayout.push(shiftLayout.shift() as Note);
   });
 
   /* Calc note duration */
   let prevNote = midiBarTicks;
   const notesTicks: string[] = [];
   for (let i = startTicks.length - 1; i >= 0; i--) {
-    let calcNoteTick = prevNote - startTicks[i];
+    const startTick = startTicks[i] as number;
+    let calcNoteTick = prevNote - startTick;
     if (calcNoteTick > midiNoteMax) {
       calcNoteTick = midiNoteMax;
     }
     const noteTick = 'T' + calcNoteTick;
     notesTicks.unshift(noteTick);
-    prevNote = startTicks[i];
+    prevNote = startTick as number;
   }
 
   /* Create midi note layout array without rests (R) */
-  const midiLayout: MidiLayout = filter(notesLayout, (key: 'KSH'|'KS'|'KH'|'SH'|'K'|'S'|'H'|'R') => key !== 'R');
+  const midiLayout: MidiLayout = filter(notesLayout, (key) => key !== 'R') as MidiLayout;
 
   /* Write midi sequance */
   const track = new MidiWriter.Track();
   const notesMIDI: any[] = [];
   times(midiLayout.length, (i) => {
+    const startTick = startTicks[i] as number;
+    const noteTick = notesTicks[i] as string;
+
     if (midiLayout[i] === 'KSH') {
       notesMIDI.push(
         new MidiWriter.NoteEvent({
           pitch: ['C2', 'D2', 'F#2'],
-          duration: notesTicks[i],
-          startTick: startTicks[i],
+          duration: noteTick,
+          startTick,
         }),
       );
     } else if (midiLayout[i] === 'KS') {
       notesMIDI.push(
         new MidiWriter.NoteEvent({
           pitch: ['C2', 'D2'],
-          duration: notesTicks[i],
-          startTick: startTicks[i],
+          duration: noteTick,
+          startTick,
         }),
       );
     } else if (midiLayout[i] === 'KH') {
       notesMIDI.push(
         new MidiWriter.NoteEvent({
           pitch: ['C2', 'F#2'],
-          duration: notesTicks[i],
-          startTick: startTicks[i],
+          duration: noteTick,
+          startTick,
         }),
       );
     } else if (midiLayout[i] === 'SH') {
       notesMIDI.push(
         new MidiWriter.NoteEvent({
           pitch: ['D2', 'F#2'],
-          duration: notesTicks[i],
-          startTick: startTicks[i],
+          duration: noteTick,
+          startTick,
         }),
       );
     } else if (midiLayout[i] === 'K') {
       notesMIDI.push(
         new MidiWriter.NoteEvent({
           pitch: ['C2'],
-          duration: notesTicks[i],
-          startTick: startTicks[i],
+          duration: noteTick,
+          startTick,
         }),
       );
     } else if (midiLayout[i] === 'S') {
       notesMIDI.push(
         new MidiWriter.NoteEvent({
           pitch: ['D2'],
-          duration: notesTicks[i],
-          startTick: startTicks[i],
+          duration: noteTick,
+          startTick,
         }),
       );
     } else if (midiLayout[i] === 'H') {
       notesMIDI.push(
         new MidiWriter.NoteEvent({
           pitch: ['F#2'],
-          duration: notesTicks[i],
-          startTick: startTicks[i],
+          duration: noteTick,
+          startTick,
         }),
       );
     }
@@ -178,9 +183,9 @@ export const exportMIDI = async ({
   track.addEvent(notesMIDI, () => ({ sequential: false }));
   track.setTempo(useBPM);
   if (useTimeSig.kick === '4/4') {
-    track.setTimeSignature(4, 4);
+    track.setTimeSignature(4, 4, 24, 8);
   } else if (useTimeSig.kick === '3/4') {
-    track.setTimeSignature(3, 4);
+    track.setTimeSignature(3, 4, 24, 8);
   }
 
   /* Write .mid file to app storage */

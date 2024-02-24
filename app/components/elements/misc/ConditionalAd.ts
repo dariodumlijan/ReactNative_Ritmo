@@ -1,9 +1,7 @@
-// @flow
-import type { Node } from 'react';
 import { config } from '../../../tokens';
 
 type Props = {
-  children: Node,
+  children: any,
 };
 
 function ConditionalAd(props: Props): any {

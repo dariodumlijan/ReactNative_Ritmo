@@ -1,17 +1,15 @@
-// @flow
 import React from 'react';
-import type { Node } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Logo from '../../../assets/icons/Logo';
-import { deviceHeight, deviceWidth, isiPhone } from '../../../utils';
 import colors from '../../../styles/colors';
+import { deviceHeight, deviceWidth, isiPhone } from '../../../utils';
 import type { LocationInfo } from '../../../utils/hooks';
 
 type Props = {
   locationInfo?: LocationInfo
-}
+};
 
-const styles: Object = StyleSheet.create({
+const styles = StyleSheet.create({
   backgroundWrapper: {
     ...(isiPhone && { flex: 1 }),
     alignItems: 'flex-end',
@@ -42,11 +40,11 @@ const styles: Object = StyleSheet.create({
   },
 });
 
-function LightBackground(props: Props): Node {
+function LightBackground(props: Props) {
   return (
     <View style={styles.backgroundWrapper}>
       {!props.locationInfo?.isStateTree && (
-        <Logo style={styles.menuLogo} fill={colors.grayBlue} />
+      <Logo style={styles.menuLogo} fill={colors.grayBlue} />
       )}
     </View>
   );

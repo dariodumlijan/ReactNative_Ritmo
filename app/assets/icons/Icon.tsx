@@ -1,12 +1,10 @@
-// @flow
 import React, { useEffect, useRef } from 'react';
-import type { Node } from 'react';
 import {
   Animated, Easing, StyleSheet, View,
 } from 'react-native';
 import { secondsToMilliseconds } from 'date-fns';
-import { deviceWidth } from '../../utils';
 import colors from '../../styles/colors';
+import { deviceWidth } from '../../utils';
 
 type Props = {
   style?: Object,
@@ -36,7 +34,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function Icon(props: Props): Node {
+function Icon(props: Props) {
   const dotAnimation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -52,7 +50,6 @@ function Icon(props: Props): Node {
 
   const rotation = dotAnimation.interpolate({
     inputRange: [0, 1],
-    // $FlowFixMe
     outputRange: ['0deg', '360deg'],
   });
 

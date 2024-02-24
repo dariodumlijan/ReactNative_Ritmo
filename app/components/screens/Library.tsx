@@ -1,16 +1,14 @@
-// @flow
 import React from 'react';
-import type { Node } from 'react';
 import { SafeAreaView, Text } from 'react-native';
 import { Link } from 'react-router-native';
 import Exit from '../../assets/icons/Exit';
-import mainStyle from '../../styles/main';
 import colors from '../../styles/colors';
+import mainStyle from '../../styles/main';
 
-function Library(): Node {
+function Library() {
   return (
     <SafeAreaView style={mainStyle.safe}>
-      <Link to="/" style={mainStyle.exit} underlayColor={null}>
+      <Link to="/" style={mainStyle.exit} underlayColor={colors.transparent}>
         <Exit fill={colors.primaryDark} />
       </Link>
       <Text>Recordings</Text>

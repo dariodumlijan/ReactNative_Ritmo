@@ -1,6 +1,4 @@
-// @flow
 import React from 'react';
-import type { Node } from 'react';
 import {
   Modal,
   ScrollView,
@@ -11,15 +9,15 @@ import {
   View,
 } from 'react-native';
 import { every, map, reject } from 'lodash';
-import ConditionalAd from '../misc/ConditionalAd';
 import Arrow from '../../../assets/icons/Arrow';
 import useLocale from '../../../locales';
-import useSelectLists from '../../../utils/lists';
-import settingsStyle from '../../../styles/settings';
-import { timeSignatureSelectStyle } from '../../../styles/inputs';
 import colors from '../../../styles/colors';
-import type { TimeSig } from '../../../utils/lists';
+import { timeSignatureSelectStyle } from '../../../styles/inputs';
+import settingsStyle from '../../../styles/settings';
+import useSelectLists from '../../../utils/lists';
+import ConditionalAd from '../misc/ConditionalAd';
 import type { TimeSignature } from '../../../store/globalStore';
+import type { TimeSig } from '../../../utils/lists';
 
 type Option = {
   label: string,
@@ -31,14 +29,14 @@ type Props = {
   value: TimeSignature,
   isOpen: boolean,
   unlockedPro: boolean,
-  onSelect: Function,
-  onOpen: Function,
-  onClose: Function,
-  onRewardedClick: Function,
+  onSelect: (option: any) => void,
+  onOpen: () => void,
+  onClose: () => void,
+  onRewardedClick: () => void,
   isDisabled?: boolean,
 };
 
-function TimeSignatureSelect(props: Props): Node {
+function TimeSignatureSelect(props: Props) {
   const { t } = useLocale();
   const { timeSignatures } = useSelectLists();
 

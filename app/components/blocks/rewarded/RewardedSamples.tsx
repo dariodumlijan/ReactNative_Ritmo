@@ -1,6 +1,4 @@
-// @flow
 import React, { useEffect, useState } from 'react';
-import type { Node } from 'react';
 import {
   ActivityIndicator,
   SafeAreaView,
@@ -8,26 +6,26 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Link, useNavigate } from 'react-router-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { RewardedAdEventType } from 'react-native-google-mobile-ads';
-import { isEmpty, isEqual } from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-native';
 import { hoursToMilliseconds } from 'date-fns';
-import Select from '../../elements/inputs/Select';
+import { isEmpty, isEqual } from 'lodash';
 import Exit from '../../../assets/icons/Exit';
-import CountdownTimer from '../../elements/misc/CountdownTimer';
 import useLocale from '../../../locales';
-import { deviceInfo } from '../../../utils';
-import { useRewardedAd } from '../../../utils/hooks';
 import { actions, selectors } from '../../../store/globalStore';
+import colors from '../../../styles/colors';
 import mainStyle from '../../../styles/main';
 import rewardedStyle from '../../../styles/rewarded';
-import colors from '../../../styles/colors';
-import type { Sample } from '../../../utils/lists';
-import type { ReduxState } from '../../../types';
 import { config } from '../../../tokens';
+import { deviceInfo } from '../../../utils';
+import { useRewardedAd } from '../../../utils/hooks';
+import Select from '../../elements/inputs/Select';
+import CountdownTimer from '../../elements/misc/CountdownTimer';
+import type { ReduxState } from '../../../types';
+import type { Sample } from '../../../utils/lists';
 
-function RewardedSamples(): Node {
+function RewardedSamples() {
   const { t } = useLocale();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -91,24 +89,24 @@ function RewardedSamples(): Node {
       <Link
         to="/settings"
         style={mainStyle.exit}
-        underlayColor={null}
+        underlayColor={colors.transparent}
         disabled={openSelect}
       >
         <Exit fill={colors.gray} />
       </Link>
 
-      {reduxStates.rewardedAt.samples && (
-        <View style={[rewardedStyle.countdownWrapper, {
-          marginBottom: deviceInfo.isiPhone ? 0 : '-20%',
-        }]}
-        >
-          <CountdownTimer
-            style={rewardedStyle.countdownTimer}
-            countdownFrom={reduxStates.rewardedAt.samples ? reduxStates.rewardedAt.samples + hoursToMilliseconds(resetRewards) : null}
-            onChange={handleCountdown}
-          />
-          <Text style={rewardedStyle.countdownTxt}>{t('rewarded.samples.countdown')}</Text>
-        </View>
+      {reduxStates.rewardedAt?.samples && (
+      <View style={[rewardedStyle.countdownWrapper, {
+        marginBottom: deviceInfo.isiPhone ? 0 : '-20%',
+      }]}
+      >
+        <CountdownTimer
+          style={rewardedStyle.countdownTimer}
+          countdownFrom={reduxStates.rewardedAt.samples ? reduxStates.rewardedAt.samples + hoursToMilliseconds(resetRewards) : null}
+          onChange={handleCountdown}
+        />
+        <Text style={rewardedStyle.countdownTxt}>{t('rewarded.samples.countdown')}</Text>
+      </View>
       )}
 
       <View style={[rewardedStyle.rewardedCon, {
@@ -140,7 +138,7 @@ function RewardedSamples(): Node {
           <>
             <Select
               title={t('rewarded.samples.select_cta')}
-              value={reduxStates.selectedReward?.label}
+              value={reduxStates.selectedReward?.label || ''}
               options={lockedSamples}
               isOpen={openSelect}
               onOpen={() => setOpenSelect(true)}

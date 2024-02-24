@@ -1,13 +1,12 @@
-// @flow
 import { get, map } from 'lodash';
 import { types as globalTypes } from './globalStore';
-import { calcSoundDelay } from '../utils';
 import * as Sound from '../sound';
 import initBeats from '../sound/beats';
-import type { Sample } from '../utils/lists';
-import type { Beats, Beat } from '../sound/beats';
+import { calcSoundDelay } from '../utils';
 import type { TimeSignaturePayload } from './globalStore';
+import type { Beat, Beats } from '../sound/beats';
 import type { ReduxAction, ReduxActionWithPayload, ReduxState } from '../types';
+import type { Sample } from '../utils/lists';
 
 type PayloadRotate = {
   key: string,
@@ -122,7 +121,7 @@ const toggleCheckbox = (state: State, payload: PayloadCheckbox): State => {
 };
 
 const handleTimeSigUpdate = (state: State, payload: TimeSignaturePayload): State => {
-  const toggleVisibility = (beats: Beat[], circleKey: 'hihat'|'snare'|'kick') => {
+  const toggleVisibility = (beats: Beat[], circleKey: 'hihat' | 'snare' | 'kick') => {
     if (payload.key === 'all' || payload.key === circleKey) {
       return map(beats, (beat: Beat) => ({
         ...beat,

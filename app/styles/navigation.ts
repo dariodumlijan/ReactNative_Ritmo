@@ -1,27 +1,12 @@
-// @flow
 import { StyleSheet } from 'react-native';
-import { deviceHeight, deviceWidth, isTablet } from '../utils';
 import colors from './colors';
-
-type Style = {
-  overlay: Object,
-  background: Object,
-  nav: Object,
-  top: Object,
-  tagline: Object,
-  close: Object,
-  linksWrapper: Object,
-  link: Object,
-  button: Object,
-  icon: Object,
-  label: Object,
-};
+import { deviceHeight, deviceWidth, isTablet } from '../utils';
 
 const navBgMaxSize = 1000;
 const navMaxSize = navBgMaxSize / 2;
 const containNav = deviceWidth * 2 >= navBgMaxSize;
 
-const navigationStyle: Style = StyleSheet.create({
+const navigationStyle = StyleSheet.create({
   overlay: {
     backgroundColor: colors.blackTransparent,
     height: deviceHeight,

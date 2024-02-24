@@ -1,27 +1,8 @@
-// @flow
 import { StyleSheet } from 'react-native';
-import { isTablet } from '../utils';
 import colors from './colors';
+import { isTablet } from '../utils';
 
-type RewardedStyle = {
-  countdownWrapper: Object,
-  countdownTimer: Object,
-  countdownTxt: Object,
-  rewardedCon: Object,
-  rewardedExp: Object,
-  rewardedExpText: Object,
-  rewardedExp2Text: Object,
-  rewardedExp3Text: Object,
-  rewardedStart: Object,
-  rewardedDisabled: Object,
-  rewardedStartText: Object,
-  rewardedDisc: Object,
-  listItem: Object,
-  listBullet: Object,
-  listText: Object,
-}
-
-const rewardedStyle: RewardedStyle = StyleSheet.create({
+const rewardedStyle = StyleSheet.create({
   countdownWrapper: {
     backgroundColor: colors.primary,
     borderRadius: 20,

@@ -1,20 +1,8 @@
-// @flow
 import { StyleSheet } from 'react-native';
-import { isTablet } from '../utils';
 import colors from './colors';
+import { isTablet } from '../utils';
 
-type HomeStyle = {
-  wrapper: Object,
-  topWrapper: Object,
-  topWrapperBG: Object,
-  navigation: Object,
-  logo: Object,
-  menu: Object,
-  appEnvironment: Object,
-  appEnvironmentText: Object,
-};
-
-const homeStyle: HomeStyle = StyleSheet.create({
+const homeStyle = StyleSheet.create({
   wrapper: {
     alignItems: 'center',
     display: 'flex',

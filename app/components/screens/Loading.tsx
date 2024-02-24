@@ -1,6 +1,4 @@
-// @flow
 import React from 'react';
-import type { Node } from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -45,7 +43,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function Loading(): Node {
+function Loading() {
   const { t } = useLocale();
 
   return (

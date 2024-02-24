@@ -1,23 +1,21 @@
-// @flow
 import React, { useEffect, useState } from 'react';
-import type { Node } from 'react';
 import {
   Keyboard, Modal, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
 import useLocale from '../../../locales';
-import { selectors as staticSelectors } from '../../../store/staticStore';
-import { actions, selectors as globalSelectors } from '../../../store/globalStore';
 import { selectors as beatSelectors } from '../../../store/beatsStore';
-import { useTeleport } from '../../../utils/hooks';
-import modalsStyle from '../../../styles/modals';
+import { actions, selectors as globalSelectors } from '../../../store/globalStore';
+import { selectors as staticSelectors } from '../../../store/staticStore';
 import colors from '../../../styles/colors';
-import type { State as StaticState } from '../../../store/staticStore';
-import type { UI } from '../../../store/globalStore';
+import modalsStyle from '../../../styles/modals';
+import { useTeleport } from '../../../utils/hooks';
 import type { Beats } from '../../../sound/beats';
+import type { UI } from '../../../store/globalStore';
+import type { State as StaticState } from '../../../store/staticStore';
 
-function ExportMidiModal(): Node {
+function ExportMidiModal() {
   const { t } = useLocale();
   const { close } = useTeleport();
   const dispatch = useDispatch();
@@ -26,7 +24,7 @@ function ExportMidiModal(): Node {
   const beats: Beats = useSelector(beatSelectors.getBeats, isEqual);
   const [fileName, setFileName] = useState('Ritmo_MIDI');
 
-  const nameMidiFile = (value) => setFileName(value.toString());
+  const nameMidiFile = (value: any) => setFileName(value.toString());
 
   const handleExportMIDI = () => {
     Keyboard.dismiss();
@@ -63,7 +61,7 @@ function ExportMidiModal(): Node {
         <Text style={modalsStyle.modalTxt}>{t('modal.midi.label')}</Text>
         <TextInput
           style={modalsStyle.inputMidi}
-          onChangeText={(val) => nameMidiFile(val)}
+          onChangeText={(val: any) => nameMidiFile(val)}
           onSubmitEditing={() => nameMidiFile(fileName)}
           value={fileName}
           placeholder="Ritmo_MIDI"

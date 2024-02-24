@@ -1,18 +1,16 @@
-// @flow
 import React from 'react';
-import type { Node } from 'react';
 import { View } from 'react-native';
-import { useSelector } from 'react-redux';
 import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
-import { isEmpty, isEqual } from 'lodash';
+import { useSelector } from 'react-redux';
+import { isEqual } from 'lodash';
 import ConditionalAd from './ConditionalAd';
-import { isTablet } from '../../../utils';
-import { useLocationInfo } from '../../../utils/hooks';
 import { selectors } from '../../../store/globalStore';
 import mainStyle from '../../../styles/main';
+import { isTablet } from '../../../utils';
+import { useLocationInfo } from '../../../utils/hooks';
 import type { ReduxState } from '../../../types';
 
-function AdmobBanner(): Node {
+function AdmobBanner() {
   const locationInfo = useLocationInfo();
   const { banner, showAds, personalisedAds } = useSelector((state: ReduxState) => ({
     banner: selectors.getAdmobIds(state).banner,
@@ -30,7 +28,7 @@ function AdmobBanner(): Node {
 
   return (
     <View style={mainStyle.ads}>
-      {!isEmpty(banner) && showAds && (
+      {banner && showAds && (
         <ConditionalAd>
           <BannerAd
             unitId={banner}

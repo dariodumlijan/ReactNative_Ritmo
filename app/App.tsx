@@ -1,24 +1,33 @@
-// @flow
 import React, { useEffect, useState } from 'react';
-import codePush from 'react-native-code-push';
-import { Provider } from 'react-redux';
+import CodePush from 'react-native-code-push';
 import Sound from 'react-native-sound';
 import SplashScreen from 'react-native-splash-screen';
-import ErrorBoundary from './app/components/blocks/errors/ErrorBoundary';
-import PortalProvider from './app/components/blocks/portal/PortalProvider';
-import Body from './app/components/Body';
-import beats from './app/sound/beats';
-import { t } from './app/locales';
-import { getDeviceInfo } from './app/utils';
-import { getSamples, getTimeSignatures, getUnlockedSamples } from './app/utils/lists';
-import { configureStore } from './app/store';
-import { actions } from './app/store/globalStore';
-import type { ReduxState } from './app/types';
+import { Provider } from 'react-redux';
+import ErrorBoundary from './components/blocks/errors/ErrorBoundary';
+import PortalProvider from './components/blocks/portal/PortalProvider';
+import Body from './components/Body';
+import { t } from './locales';
+import beats from './sound/beats';
+import { configureStore } from './store';
+import { actions } from './store/globalStore';
+import { getDeviceInfo } from './utils';
+import { getSamples, getTimeSignatures, getUnlockedSamples } from './utils/lists';
+import type { ReduxState } from './types';
+import type { Sample, TimeSig } from './utils/lists';
+
+const codePushOptions = {
+  checkFrequency: CodePush.CheckFrequency.ON_APP_START,
+  installMode: CodePush.InstallMode.IMMEDIATE,
+  mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
+};
 
 const samples = getSamples();
 const unlockedSamples = getUnlockedSamples();
 const timeSignatures = getTimeSignatures(t);
+const sample: Sample = samples[0] as Sample;
+const timeSig: TimeSig = timeSignatures[0] as TimeSig;
 const initialState: ReduxState = {
+  beats,
   static: {
     sliderMin: 0,
     sliderMax: 90,
@@ -32,6 +41,7 @@ const initialState: ReduxState = {
   },
   global: {
     developerMode: false,
+    unlockedSamples,
     sliders: {
       hihat: 0,
       snare: 0,
@@ -42,16 +52,14 @@ const initialState: ReduxState = {
       isPlaying: false,
       isRecording: false,
       useBPM: 100,
+      useSample: sample,
       useTimeSig: {
-        hihat: timeSignatures[0].value,
-        snare: timeSignatures[0].value,
-        kick: timeSignatures[0].value,
+        hihat: timeSig.value,
+        snare: timeSig.value,
+        kick: timeSig.value,
       },
-      useSample: samples[0],
     },
-    unlockedSamples,
   },
-  beats,
 };
 const store = configureStore(initialState);
 
@@ -61,7 +69,7 @@ function App() {
 
   useEffect(() => {
     getDeviceInfo().then((res) => {
-      store.dispatch(actions.toggleDeveloperMode(!res.isRealDevice));
+      store.dispatch(actions.toggleDeveloperMode(!res.isRealDevice as boolean));
     }).finally(() => {
       setSetupPending(false);
       SplashScreen.hide();
@@ -72,7 +80,7 @@ function App() {
 
   return (
     <Provider store={store}>
-      <ErrorBoundary store={store}>
+      <ErrorBoundary>
         <PortalProvider>
           <Body />
         </PortalProvider>
@@ -81,4 +89,4 @@ function App() {
   );
 }
 
-export default (codePush(App): any);
+export default CodePush(codePushOptions)(App);

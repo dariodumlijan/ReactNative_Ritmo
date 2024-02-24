@@ -1,11 +1,9 @@
-// @flow
 import React from 'react';
-import type { Node } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { deviceHeight, deviceWidth, isiPhone } from '../../../utils';
 import colors from '../../../styles/colors';
+import { deviceHeight, deviceWidth, isiPhone } from '../../../utils';
 
-const styles: Object = StyleSheet.create({
+const styles = StyleSheet.create({
   backgroundWrapper: {
     ...(isiPhone && { flex: 1 }),
     alignItems: 'flex-end',
@@ -22,7 +20,7 @@ const styles: Object = StyleSheet.create({
   },
 });
 
-function DarkBackground(): Node {
+function DarkBackground() {
   return <View style={styles.backgroundWrapper} />;
 }
 

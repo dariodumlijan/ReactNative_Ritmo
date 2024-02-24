@@ -1,6 +1,4 @@
-// @flow
 import React, { useEffect, useState } from 'react';
-import type { Node } from 'react';
 import {
   ActivityIndicator,
   SafeAreaView,
@@ -8,21 +6,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Link, useNavigate } from 'react-router-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { RewardedAdEventType } from 'react-native-google-mobile-ads';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-native';
 import { isEqual, map } from 'lodash';
 import Exit from '../../../assets/icons/Exit';
 import useLocale from '../../../locales';
-import { useRewardedAd } from '../../../utils/hooks';
 import { actions, selectors } from '../../../store/globalStore';
+import colors from '../../../styles/colors';
 import mainStyle from '../../../styles/main';
 import rewardedStyle from '../../../styles/rewarded';
-import colors from '../../../styles/colors';
 import { config } from '../../../tokens';
+import { useRewardedAd } from '../../../utils/hooks';
 import type { ReduxState } from '../../../types';
 
-function RewardedProFeatures(): Node {
+function RewardedProFeatures() {
   const { t } = useLocale();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -69,7 +67,7 @@ function RewardedProFeatures(): Node {
       <Link
         to="/settings"
         style={mainStyle.exit}
-        underlayColor={null}
+        underlayColor={colors.transparent}
       >
         <Exit fill={colors.gray} />
       </Link>
