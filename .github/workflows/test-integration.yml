@@ -10,7 +10,7 @@ on:
       - main
 
 env:
-  NODE_VERSION: 16.10.0
+  NODE_VERSION: 18.0
 
 jobs:
   run_tests:
