@@ -1,12 +1,10 @@
 // @flow
-/* eslint-disable no-undef */
 import { Dimensions, Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
+import Admob, { AdsConsent, AdsConsentStatus, MaxAdContentRating } from 'react-native-google-mobile-ads';
 import {
   every, flatten, floor, includes, values,
 } from 'lodash';
-// $FlowFixMe[cannot-resolve-module] (Git Ignored)
 import type { Sample } from './lists';
 import type { Beats } from '../sound/beats';
 
@@ -57,10 +55,12 @@ export const calcSoundDelay = (initAngle: number, sliderVal?: number, useBPM?: n
   return floor(beatDelay > bpmInterval ? beatDelay - bpmInterval : beatDelay);
 };
 
-export const checkAdsConsent = async (): Promise<{
+type AdsResponse = {
   showAds: boolean,
   personalisedAds: boolean,
-}> => {
+};
+
+export const checkAdsConsent = async (): Promise<AdsResponse> => {
   const { selectPersonalisedAds, storeAndAccessInformationOnDevice } = await AdsConsent.getUserChoices();
 
   return {
@@ -69,10 +69,7 @@ export const checkAdsConsent = async (): Promise<{
   };
 };
 
-export const handleAdsConsent = async (): Promise<{
-  showAds: boolean,
-  personalisedAds: boolean,
-}> => {
+export const handleAdsConsent = async (): Promise<AdsResponse> => {
   const consentInfo = await AdsConsent.requestInfoUpdate();
   const consentObtained = consentInfo.status === AdsConsentStatus.OBTAINED;
   const consentRequired = consentInfo.status === AdsConsentStatus.REQUIRED;
@@ -100,4 +97,22 @@ export const handleAdsConsent = async (): Promise<{
     showAds: true,
     personalisedAds: true,
   };
+};
+
+export const initializeAds = async (): Promise<AdsResponse> => {
+  try {
+    await Admob().setRequestConfiguration({
+      maxAdContentRating: MaxAdContentRating.G,
+      tagForUnderAgeOfConsent: true,
+    });
+    await Admob().initialize();
+    const response = await handleAdsConsent();
+
+    return response;
+  } catch {
+    return {
+      showAds: false,
+      personalisedAds: false,
+    };
+  }
 };

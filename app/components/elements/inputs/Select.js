@@ -10,8 +10,7 @@ import { isSampleUnlocked } from '../../../utils';
 import { useLocationInfo } from '../../../utils/hooks';
 import { selectStyle } from '../../../styles/inputs';
 
-export type Option = {
-  ...Object,
+export type Option = Object & {
   label: string,
 };
 

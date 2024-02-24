@@ -1,12 +1,25 @@
 // @flow
+import { get } from 'lodash';
+import ENV from '../../env.json';
+
+export const config = {
+  ads: get(ENV, 'CONFIG.ADS', true),
+  keepRewards: get(ENV, 'CONFIG.KEEP_REWARDS', 6),
+  resetRewards: get(ENV, 'CONFIG.RESET_REWARDS', 24),
+};
+
 export const admob = {
   banner: {
     android_test: 'ca-app-pub-3940256099942544/6300978111',
     ios_test: 'ca-app-pub-3940256099942544/2934735716',
+    android: (get(ENV, 'CONFIG.AD_IDS.BANNER.ANDROID', ''): string),
+    ios: (get(ENV, 'ENV.CONFIG.AD_IDS.BANNER.IOS', ''): string),
   },
   rewarded: {
     android_test: 'ca-app-pub-3940256099942544/5224354917',
     ios_test: 'ca-app-pub-3940256099942544/1712485313',
+    android: (get(ENV, 'CONFIG.AD_IDS.REWARDED.ANDROID', ''): string),
+    ios: (get(ENV, 'CONFIG.AD_IDS.REWARDED.IOS', ''): string),
   },
 };
 
@@ -22,21 +35,13 @@ export const codepush = {
 };
 
 export const localStorageKeys = {
-  appContent: 'appContent',
-  contentTimestamps: 'contentTimestamps',
-  announcementTimestamp: 'announcementTimestamp',
-  reviewTimestamp: 'reviewTimestamp',
   presets: {
     one: 'preset1',
     two: 'preset2',
     three: 'preset3',
   },
+  reviewTimestamp: 'reviewTimestamp',
   rewardedAtSamples: 'rewardedAtSamples',
   rewardedAtPro: 'rewardedAtPro',
   unlockedRewards: 'unlockedRewards',
-};
-
-export const appKeys = {
-  noConnection: 'noConnection',
-  noLocalData: 'noLocalData',
 };

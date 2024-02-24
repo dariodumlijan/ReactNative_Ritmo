@@ -4,16 +4,14 @@ import {
 } from 'lodash';
 import * as API from '../api';
 import * as MIDI from '../midi';
-import { types as cmsTypes } from './cmsStore';
 import { types as beatTypes } from './beatsStore';
 import { t } from '../locales';
-import { isSampleUnlocked } from '../utils';
+import { deviceInfo, isSampleUnlocked } from '../utils';
 import * as LocalStorage from '../utils/localStorage';
 import { getSamples, getTimeSignatures, getUnlockedSamples } from '../utils/lists';
 import type { Beats } from '../sound/beats';
 import type { BuildMidi, BuildPromise } from '../midi';
 import type { Sample } from '../utils/lists';
-import type { InitialCMSResponse } from '../api';
 import type {
   FetchResponse,
   SaveRewardsResponse,
@@ -21,6 +19,7 @@ import type {
   WriteResponse,
 } from '../utils/localStorage';
 import type { ReduxAction, ReduxActionWithPayload, ReduxState } from '../types';
+import { admob, config } from '../tokens';
 
 export type RewardedAt = {
   samples?: number|null,
@@ -63,21 +62,35 @@ export type Preset = {
   useTimeSig: TimeSignature,
 };
 
+type AdmobIds = {
+  banner: string|null,
+  rewarded: string|null,
+}
+
 export type State = {
-  codepushData?: {
+  codepushData?: Object & {
     environment: 'Production'|'Staging',
     deploymentKey: string,
-    ...Object,
   },
   developerMode: boolean,
   presets?: {
-    [string]: Preset|null,
+    [key: string]: Preset|null,
   },
   sliders: Sliders,
   ui: UI,
   unlockedSamples: string[],
   unlockedPro?: boolean,
   rewardedAt?: RewardedAt,
+  adIds: {
+    banner: {
+      android: string,
+      ios: string,
+    },
+    rewarded: {
+      android: string,
+      ios: string,
+    },
+  },
 };
 
 export const types = {
@@ -142,8 +155,34 @@ export const types = {
   GB_DELETE_MIDI_FILE: 'GB/DELETE_MIDI_FILE',
 };
 
+export const getAdmobIds = (state: ReduxState): AdmobIds => {
+  const showTestAds = state.global.developerMode;
+
+  const getBannerID = (): string|null => {
+    if (deviceInfo.isApple) {
+      return showTestAds ? admob.banner.ios_test : admob.banner.ios;
+    } else {
+      return showTestAds ? admob.banner.android_test : admob.banner.android;
+    }
+  };
+
+  const getRewardedID = (): string|null => {
+    if (deviceInfo.isApple) {
+      return showTestAds ? admob.rewarded.ios_test : admob.rewarded.ios;
+    } else {
+      return showTestAds ? admob.rewarded.android_test : admob.rewarded.android;
+    }
+  };
+
+  return {
+    banner: getBannerID(),
+    rewarded: getRewardedID(),
+  };
+};
+
 export const selectors = {
   getCodepushEnvironment: (state: ReduxState): 'Production'|'Staging' => get(state.global.codepushData, 'environment', 'Production'),
+  getAdmobIds: (state: ReduxState): AdmobIds => getAdmobIds(state),
   getGlobal: (state: ReduxState): State => state.global,
   getUI: (state: ReduxState): UI => state.global.ui,
   getUnlockedSamples: (state: ReduxState): string[] => state.global.unlockedSamples,
@@ -300,12 +339,10 @@ const lockProFeatures = (state: State): State => ({
   },
 });
 
-const checkUnlockedRewards = (state: State, payload: InitialCMSResponse): State => {
+const checkUnlockedRewards = (state: State): State => {
   const samples = getSamples();
-  const payloadPath = payload.isLocal ? 'master.ads' : 'appCollection.items[0].ads';
-  const displayAds = get(payload.data, payloadPath, false);
 
-  if (!displayAds) {
+  if (!config.ads) {
     return {
       ...state,
       unlockedPro: true,
@@ -433,9 +470,6 @@ const unlockProFeatures = (state: State, payload: UnlockProFeaturesResponse): St
 
 export const reducer = (state: State, action: ReduxActionWithPayload): State => {
   switch (action.type) {
-    case cmsTypes.CMS_FETCH_APP_FULFILLED:
-      return checkUnlockedRewards(state, action.payload);
-
     case types.GB_FETCH_PRESET_AND_SAMPLES_FULFILLED:
       return fetchPresetAndSamples(state, action.payload);
 
@@ -496,6 +530,9 @@ export const reducer = (state: State, action: ReduxActionWithPayload): State => 
     case types.GB_UPDATE_SELECTED_SAMPLE:
     case types.GB_UPDATE_SELECTED_REWARD:
       return merge({}, state, { ui: action.payload });
+
+    case types.GB_GET_DEPLOYMENT_DATA:
+      return checkUnlockedRewards(state);
 
     case types.GB_GET_DEPLOYMENT_DATA_FULFILLED:
       return merge({}, state, { codepushData: action.payload });

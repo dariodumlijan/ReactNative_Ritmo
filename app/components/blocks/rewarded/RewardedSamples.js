@@ -11,7 +11,7 @@ import {
 import { Link, useNavigate } from 'react-router-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RewardedAdEventType } from 'react-native-google-mobile-ads';
-import { get, isEmpty, isEqual } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 import { hoursToMilliseconds } from 'date-fns';
 import Select from '../../elements/inputs/Select';
 import Exit from '../../../assets/icons/Exit';
@@ -20,12 +20,12 @@ import useLocale from '../../../locales';
 import { deviceInfo } from '../../../utils';
 import { useRewardedAd } from '../../../utils/hooks';
 import { actions, selectors } from '../../../store/globalStore';
-import { selectors as selectorsCMS } from '../../../store/cmsStore';
 import mainStyle from '../../../styles/main';
 import rewardedStyle from '../../../styles/rewarded';
 import colors from '../../../styles/colors';
 import type { Sample } from '../../../utils/lists';
 import type { ReduxState } from '../../../types';
+import { config } from '../../../tokens';
 
 function RewardedSamples(): Node {
   const { t } = useLocale();
@@ -35,16 +35,15 @@ function RewardedSamples(): Node {
   const reduxStates = useSelector((state: ReduxState) => ({
     personalisedAds: state.global.ui.personalisedAds,
     selectedReward: state.global.ui.selectedReward,
-    resetRewards: get(state.cms, 'master.resetRewards', 24),
-    keepRewards: get(state.cms, 'master.keepRewards', 6),
     rewardedAt: state.global.rewardedAt,
   }), isEqual);
-  const { rewarded } = useSelector(selectorsCMS.getAdmobIds, isEqual);
+  const { rewarded } = useSelector(selectors.getAdmobIds, isEqual);
   const [openSelect, setOpenSelect] = useState(false);
   const [adLoading, setAdLoading] = useState(true);
   const [rewardsAreRefreshable, setRewardsAreRefreshable] = useState(false);
   const rewardedAd = useRewardedAd(rewarded, reduxStates.personalisedAds);
   const hasAllRewards = isEmpty(lockedSamples);
+  const { resetRewards, keepRewards } = config;
 
   useEffect(() => {
     if (rewardedAd) {
@@ -83,7 +82,7 @@ function RewardedSamples(): Node {
   };
 
   const handleCountdown = (currentTime: number) => {
-    const isBelowThreshold = currentTime <= hoursToMilliseconds(reduxStates.keepRewards);
+    const isBelowThreshold = currentTime <= hoursToMilliseconds(keepRewards);
     if (isBelowThreshold && !rewardsAreRefreshable) setRewardsAreRefreshable(true);
   };
 
@@ -105,7 +104,7 @@ function RewardedSamples(): Node {
         >
           <CountdownTimer
             style={rewardedStyle.countdownTimer}
-            countdownFrom={reduxStates.rewardedAt.samples ? reduxStates.rewardedAt.samples + hoursToMilliseconds(reduxStates.resetRewards) : null}
+            countdownFrom={reduxStates.rewardedAt.samples ? reduxStates.rewardedAt.samples + hoursToMilliseconds(resetRewards) : null}
             onChange={handleCountdown}
           />
           <Text style={rewardedStyle.countdownTxt}>{t('rewarded.samples.countdown')}</Text>
@@ -124,7 +123,7 @@ function RewardedSamples(): Node {
             <Text style={rewardedStyle.rewardedExp2Text}>
               {t('rewarded.samples.paragraph_3.text_2')}
               <Text style={{ color: colors.orange }}>
-                {reduxStates.resetRewards}{t('rewarded.samples.paragraph_3.text_3')}
+                {resetRewards}{t('rewarded.samples.paragraph_3.text_3')}
               </Text>
               {t('rewarded.samples.paragraph_3.text_4')}
               <Text style={{ color: colors.orange }}>
@@ -132,7 +131,7 @@ function RewardedSamples(): Node {
               </Text>
               {t('rewarded.samples.paragraph_3.text_6')}
               <Text style={{ color: colors.orange }}>
-                {reduxStates.keepRewards}{t('rewarded.samples.paragraph_3.text_7')}
+                {keepRewards}{t('rewarded.samples.paragraph_3.text_7')}
               </Text>
               {t('rewarded.samples.paragraph_3.text_8')}
             </Text>
@@ -156,7 +155,7 @@ function RewardedSamples(): Node {
               <Text style={rewardedStyle.rewardedExp2Text}>
                 {t('rewarded.samples.paragraph_2.text_1')}
                 <Text style={{ color: colors.orange }}>
-                  {reduxStates.resetRewards}{t('rewarded.samples.paragraph_2.text_2')}
+                  {resetRewards}{t('rewarded.samples.paragraph_2.text_2')}
                 </Text>
                 {t('rewarded.samples.paragraph_2.text_3')}<Text style={{ color: colors.orange }}>{t('rewarded.samples.paragraph_2.text_4')}</Text>{t('rewarded.samples.paragraph_2.text_5')}
               </Text>

@@ -47,21 +47,33 @@ To deploy the app with codepush (*codepush-cli needed):
 Add `env.json` file to root directory
 
 #### A list of all used variables
-    {
-      "REDUX": {
+```JSON
+{
+    "RELEASE_SECRETS": {
+        "RELEASE_KEYSTORE_PASSWORD": "<secret>",
+        "RELEASE_KEYSTORE_KEY_PASSWORD": "<secret>",
+        "RELEASE_KEYSTORE_KEY_ALIAS": "<secret>"
+    },
+    "REDUX": {
         "DENYLIST": [],
         "SANITIZEDLIST": [],
         "SANITIZER": true,
         "STATE_LOG": false
-      },
-      "CMS": {
-        "GRAPHQL_URL": "<secret>",
-        "SPACE": "<secret>",
-        "AUTHORIZATION": "<secret>"
-      },
-      "RELEASE_SECRETS": {
-        "RELEASE_KEYSTORE_PASSWORD": "<secret>",
-        "RELEASE_KEYSTORE_KEY_PASSWORD": "<secret>",
-        "RELEASE_KEYSTORE_KEY_ALIAS": "<secret>"
-      }
+    },
+    "CONFIG": {
+        "KEEP_REWARDS": 6,
+        "RESET_REWARDS": 24,
+        "ADS": true,
+        "AD_IDS": {
+            "BANNER": {
+                "IOS": "<secret>",
+                "ANDROID": "<secret>"
+            },
+            "REWARDED": {
+                "IOS": "<secret>",
+                "ANDROID": "<secret>"
+            }
+        }
     }
+}
+```

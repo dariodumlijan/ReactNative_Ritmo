@@ -11,28 +11,26 @@ import {
 import { Link, useNavigate } from 'react-router-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RewardedAdEventType } from 'react-native-google-mobile-ads';
-import { get, isEqual, map } from 'lodash';
+import { isEqual, map } from 'lodash';
 import Exit from '../../../assets/icons/Exit';
 import useLocale from '../../../locales';
 import { useRewardedAd } from '../../../utils/hooks';
-import { actions } from '../../../store/globalStore';
-import { selectors as selectorsCMS } from '../../../store/cmsStore';
+import { actions, selectors } from '../../../store/globalStore';
 import mainStyle from '../../../styles/main';
 import rewardedStyle from '../../../styles/rewarded';
 import colors from '../../../styles/colors';
+import { config } from '../../../tokens';
 import type { ReduxState } from '../../../types';
 
 function RewardedProFeatures(): Node {
   const { t } = useLocale();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const reduxStates = useSelector((state: ReduxState) => ({
-    personalisedAds: state.global.ui.personalisedAds,
-    resetRewards: get(state.cms, 'master.resetRewards', 24),
-  }), isEqual);
-  const { rewarded } = useSelector(selectorsCMS.getAdmobIds, isEqual);
+  const reduxStates = useSelector((state: ReduxState) => ({ personalisedAds: state.global.ui.personalisedAds }), isEqual);
+  const { rewarded } = useSelector(selectors.getAdmobIds, isEqual);
   const [adLoading, setAdLoading] = useState(true);
   const rewardedAd = useRewardedAd(rewarded, reduxStates.personalisedAds);
+  const { resetRewards } = config;
 
   useEffect(() => {
     if (rewardedAd) {
@@ -84,7 +82,7 @@ function RewardedProFeatures(): Node {
           <Text style={rewardedStyle.rewardedExp2Text}>
             {t('rewarded.pro.paragraph_2.text_1')}
             <Text style={[{ color: colors.orange }]}>
-              {reduxStates.resetRewards}{t('rewarded.pro.paragraph_2.text_2')}
+              {resetRewards}{t('rewarded.pro.paragraph_2.text_2')}
             </Text>
             {t('rewarded.pro.paragraph_2.text_3')}
           </Text>

@@ -8,19 +8,17 @@ import { isEmpty, isEqual } from 'lodash';
 import ConditionalAd from './ConditionalAd';
 import { isTablet } from '../../../utils';
 import { useLocationInfo } from '../../../utils/hooks';
-import { selectors as selectorsGlobal } from '../../../store/globalStore';
-import { selectors as selectorsCMS } from '../../../store/cmsStore';
+import { selectors } from '../../../store/globalStore';
 import mainStyle from '../../../styles/main';
-import type { UI } from '../../../store/globalStore';
+import type { ReduxState } from '../../../types';
 
-type Props = {
-  showAd: boolean,
-};
-
-function AdmobBanner(props: Props): Node {
-  const { banner } = useSelector(selectorsCMS.getAdmobIds, isEqual);
-  const ui: UI = useSelector(selectorsGlobal.getUI, isEqual);
+function AdmobBanner(): Node {
   const locationInfo = useLocationInfo();
+  const { banner, showAds, personalisedAds } = useSelector((state: ReduxState) => ({
+    banner: selectors.getAdmobIds(state).banner,
+    showAds: state.global.ui.showAds,
+    personalisedAds: state.global.ui.personalisedAds,
+  }), isEqual);
 
   const handleBannerSize = (): string => {
     if (isTablet) return BannerAdSize.FULL_BANNER;
@@ -32,13 +30,13 @@ function AdmobBanner(props: Props): Node {
 
   return (
     <View style={mainStyle.ads}>
-      {props.showAd && !isEmpty(banner) && ui.showAds && (
+      {!isEmpty(banner) && showAds && (
         <ConditionalAd>
           <BannerAd
             unitId={banner}
             size={handleBannerSize()}
             requestOptions={{
-              requestNonPersonalizedAdsOnly: !ui.personalisedAds,
+              requestNonPersonalizedAdsOnly: !personalisedAds,
             }}
           />
         </ConditionalAd>

@@ -32,10 +32,10 @@ import mainStyle from '../../styles/main';
 import settingsStyle from '../../styles/settings';
 import notificationsStyle from '../../styles/notifications';
 import { textInputStyle } from '../../styles/inputs';
+import { config } from '../../tokens';
 import colors from '../../styles/colors';
 import type { Sample } from '../../utils/lists';
 import type { State, TimeSignaturePayload } from '../../store/globalStore';
-import type { ReduxState } from '../../types';
 
 function Settings(): Node {
   const { t } = useLocale();
@@ -45,17 +45,15 @@ function Settings(): Node {
   const { samples } = useSelectLists();
   const lockedSamples = useSelector(selectors.getLockedSamples, isEqual);
   const global: State = useSelector(selectors.getGlobal, isEqual);
-  const { resetRewards, keepRewards }: { resetRewards: number, keepRewards: number } = useSelector((state: ReduxState) => ({
-    resetRewards: hoursToMilliseconds(get(state.cms, 'master.resetRewards', 24)),
-    keepRewards: get(state.cms, 'master.keepRewards', 6),
-  }), isEqual);
   const [bpm, setBpm] = useState<string>(String(global.ui.useBPM));
   const [openTimeSigSelect, setOpenTimeSigSelect] = useState(false);
   const [openSoundSelect, setOpenSoundSelect] = useState(false);
   const hasAllRewards = isEmpty(lockedSamples);
   const [rewardsAreRefreshable, setRewardsAreRefreshable] = useState(false);
+  const { resetRewards } = config;
+  const resetRewardsHours = hoursToMilliseconds(resetRewards);
   const shouldShowAlert = hasAllRewards && !rewardsAreRefreshable;
-  const countdownFrom = global.rewardedAt?.samples ? global.rewardedAt.samples + resetRewards : null;
+  const countdownFrom = global.rewardedAt?.samples ? global.rewardedAt.samples + resetRewardsHours : null;
 
   const onTimeSigChange = (timeSig: TimeSignaturePayload) => {
     setOpenTimeSigSelect(false);
@@ -113,7 +111,7 @@ function Settings(): Node {
     }
 
     if (shouldShowAlert) {
-      const refreshAvailableIn = countdownFrom ? countdownFrom - hoursToMilliseconds(keepRewards) : null;
+      const refreshAvailableIn = countdownFrom ? countdownFrom - resetRewardsHours : null;
 
       teleport(
         <Alert clearDelayMS={secondsToMilliseconds(5)}>
@@ -132,7 +130,7 @@ function Settings(): Node {
   };
 
   const handleCountdown = (currentTime: number) => {
-    const isBelowThreshold = currentTime <= hoursToMilliseconds(keepRewards);
+    const isBelowThreshold = currentTime <= resetRewardsHours;
     if (isBelowThreshold && !rewardsAreRefreshable) setRewardsAreRefreshable(true);
   };
 
