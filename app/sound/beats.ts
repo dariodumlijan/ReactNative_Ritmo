@@ -5,7 +5,7 @@ export type Beat = {
   checked: boolean,
   initAngle: number,
   soundDelay: number,
-  soundKey: NodeJS.Timeout | null,
+  soundKey: any,
   timeSig: string,
   visible: boolean,
 };

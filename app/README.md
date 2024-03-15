@@ -54,12 +54,6 @@ Add `env.json` file to root directory
         "RELEASE_KEYSTORE_KEY_PASSWORD": "<secret>",
         "RELEASE_KEYSTORE_KEY_ALIAS": "<secret>"
     },
-    "REDUX": {
-        "DENY_LIST": [],
-        "SANITIZED_LIST": [],
-        "SANITIZER": true,
-        "STATE_LOG": false
-    },
     "CONFIG": {
         "KEEP_REWARDS": 6,
         "RESET_REWARDS": 24,

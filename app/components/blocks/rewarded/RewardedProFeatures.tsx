@@ -7,7 +7,6 @@ import {
   View,
 } from 'react-native';
 import { RewardedAdEventType } from 'react-native-google-mobile-ads';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-native';
 import { isEqual, map } from 'lodash';
 import Exit from '../../../assets/icons/Exit';
@@ -17,15 +16,14 @@ import colors from '../../../styles/colors';
 import mainStyle from '../../../styles/main';
 import rewardedStyle from '../../../styles/rewarded';
 import { config } from '../../../tokens';
-import { useRewardedAd } from '../../../utils/hooks';
-import type { ReduxState } from '../../../types';
+import { useAppDispatch, useAppSelector, useRewardedAd } from '../../../utils/hooks';
 
 function RewardedProFeatures() {
   const { t } = useLocale();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const reduxStates = useSelector((state: ReduxState) => ({ personalisedAds: state.global.ui.personalisedAds }), isEqual);
-  const { rewarded } = useSelector(selectors.getAdmobIds, isEqual);
+  const reduxStates = useAppSelector((state) => ({ personalisedAds: state.global.ui.personalisedAds }), isEqual);
+  const { rewarded } = useAppSelector(selectors.getAdmobIds, isEqual);
   const [adLoading, setAdLoading] = useState(true);
   const rewardedAd = useRewardedAd(rewarded, reduxStates.personalisedAds);
   const { resetRewards } = config;

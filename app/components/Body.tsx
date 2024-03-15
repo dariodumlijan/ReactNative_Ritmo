@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StatusBar, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { NativeRouter, Route, Routes } from 'react-router-native';
 import { secondsToMilliseconds } from 'date-fns';
 import { isEmpty, isEqual } from 'lodash';
@@ -18,11 +17,11 @@ import StateTree from './screens/StateTree';
 import { actions } from '../store/globalStore';
 import mainStyle from '../styles/main';
 import { initializeAds } from '../utils';
-import type { ReduxState } from '../types';
+import { useAppDispatch, useAppSelector } from '../utils/hooks';
 
 function Body() {
-  const dispatch = useDispatch();
-  const deploymentEnvironment = useSelector((state: ReduxState) => state.global.codepushData?.environment, isEqual);
+  const dispatch = useAppDispatch();
+  const deploymentEnvironment = useAppSelector((state) => state.global.codepushData?.environment, isEqual);
   const [loadingAnimationDone, setLoadingAnimationDone] = useState(false);
   const initLoad = useRef(true);
   const timeoutRef = useRef<any>();

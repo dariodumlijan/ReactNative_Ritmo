@@ -1,4 +1,4 @@
-name: Test Integration
+name: Test
 
 on:
   push:
@@ -13,9 +13,8 @@ env:
   NODE_VERSION: 18.0
 
 jobs:
-  run_tests:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request')
-    name: Run Tests
+  test:
+    name: Test
     runs-on: ubuntu-latest
 
     steps:
@@ -37,4 +36,4 @@ jobs:
       # Run tests
       - run: yarn tsc
       - run: yarn lint
-      # - run: yarn test
+      - run: yarn test

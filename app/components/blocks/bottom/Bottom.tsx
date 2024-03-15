@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { Slider } from '@miblanchard/react-native-slider';
 import { secondsToMilliseconds } from 'date-fns';
 import {
@@ -15,28 +14,29 @@ import colors from '../../../styles/colors';
 import { sliderStyle } from '../../../styles/inputs';
 import notificationsStyle from '../../../styles/notifications';
 import { isBeatEmpty } from '../../../utils';
-import { useTeleport } from '../../../utils/hooks';
+import { useAppDispatch, useAppSelector, useTeleport } from '../../../utils/hooks';
 import SliderThumb from '../../elements/inputs/SliderThumb';
 import Alert from '../../elements/misc/Alert';
 import ClearPresetModal from '../../elements/modals/ClearPresetModal';
 import type { Beats } from '../../../sound/beats';
 import type { State as GlobalState, Preset } from '../../../store/globalStore';
 import type { State as StaticState } from '../../../store/staticStore';
+import type { PresetKey, SoundKey } from '../../../types';
 
 function Bottom() {
   const { t } = useLocale();
   const { teleport } = useTeleport();
-  const dispatch = useDispatch();
-  const staticState: StaticState = useSelector(staticSelectors.getStatic, isEqual);
-  const beats: Beats = useSelector(beatSelectors.getBeats, isEqual);
-  const global: GlobalState = useSelector(globalSelectors.getGlobal, isEqual);
+  const dispatch = useAppDispatch();
+  const staticState: StaticState = useAppSelector(staticSelectors.getStatic, isEqual);
+  const beats: Beats = useAppSelector(beatSelectors.getBeats, isEqual);
+  const global: GlobalState = useAppSelector(globalSelectors.getGlobal, isEqual);
   const beatExists = !isBeatEmpty(beats);
 
-  const handleSliderChange = (degree: number, key: string) => {
+  const handleSliderChange = (degree: number, key: SoundKey) => {
     if (global.sliders[key] !== degree) dispatch(beatActions.rotateBeat({ key, degree, useBPM: global.ui.useBPM }));
   };
 
-  const handlePreset = (preset: Preset, key: string) => {
+  const handlePreset = (preset: Preset, key: PresetKey) => {
     if (!isEmpty(preset)) {
       dispatch(globalActions.loadPreset(preset));
 
@@ -61,7 +61,7 @@ function Bottom() {
     }
   };
 
-  const handleModalCall = (key: string) => {
+  const handleModalCall = (key: PresetKey) => {
     if (!global.presets || isEmpty(global.presets[key])) {
       teleport(
         <Alert clearDelayMS={secondsToMilliseconds(3.3)}>
@@ -174,7 +174,7 @@ function Bottom() {
     <View style={bottomStyle.wrapper}>
       <View style={bottomStyle.wrapperBG}>
         <View style={bottomStyle.presetWrapper}>
-          {map(global.presets, (preset: Preset, key: string) => (
+          {map(global.presets, (preset: Preset, key: PresetKey) => (
             <TouchableHighlight
               key={key}
               underlayColor={colors.grayBlue}
@@ -193,7 +193,7 @@ function Bottom() {
           ))}
         </View>
         <View style={sliderStyle.wrapper}>
-          {map(global.sliders, (val: number, key: string) => (
+          {map(global.sliders, (val: number, key: SoundKey) => (
             <Slider
               key={key}
               value={val}

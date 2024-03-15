@@ -2,20 +2,20 @@ import React from 'react';
 import {
   Modal, Text, TouchableOpacity, TouchableWithoutFeedback, View,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
 import useLocale from '../../../locales';
 import { actions } from '../../../store/globalStore';
 import modalsStyle from '../../../styles/modals';
-import { useTeleport } from '../../../utils/hooks';
+import { useAppDispatch, useTeleport } from '../../../utils/hooks';
+import type { PresetKey } from '../../../types';
 
 type Props = {
-  presetKey: string,
+  presetKey: PresetKey,
 };
 
 function ClearPresetModal(props: Props) {
   const { t } = useLocale();
   const { close } = useTeleport();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleClear = () => {
     dispatch(actions.clearPreset(props.presetKey));

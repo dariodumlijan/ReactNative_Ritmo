@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-native';
 import { Slider } from '@miblanchard/react-native-slider';
 import { secondsToMilliseconds } from 'date-fns';
@@ -26,16 +25,15 @@ import { sliderStyle } from '../../styles/inputs';
 import mainStyle from '../../styles/main';
 import modalsStyle from '../../styles/modals';
 import notificationsStyle from '../../styles/notifications';
-import { useTeleport } from '../../utils/hooks';
+import { useAppDispatch, useAppSelector, useTeleport } from '../../utils/hooks';
 import SliderThumb from '../elements/inputs/SliderThumb';
 import Alert from '../elements/misc/Alert';
-import type { ReduxState } from '../../types';
 
 export function Guide() {
   const { t } = useLocale();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { teleport } = useTeleport();
-  const config = useSelector((state: ReduxState) => ({
+  const config = useAppSelector((state) => ({
     sliderMin: state.static.sliderMin,
     sliderMax: state.static.sliderMax,
     sliderStep: state.static.sliderStep,

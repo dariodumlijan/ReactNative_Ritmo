@@ -1,14 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { hoursToMilliseconds } from 'date-fns';
 import { isEqual } from 'lodash';
 import { actions } from '../../../store/globalStore';
 import { config } from '../../../tokens';
-import { useCountdown } from '../../../utils/hooks';
-import type { ReduxState } from '../../../types';
+import { useAppDispatch, useAppSelector, useCountdown } from '../../../utils/hooks';
 
 function RewardsCountdown(): null {
-  const dispatch = useDispatch();
-  const reduxStates = useSelector((state: ReduxState) => ({
+  const dispatch = useAppDispatch();
+  const reduxStates = useAppSelector((state) => ({
     loadTime: state.static.loadTime,
     rewardedAtSamples: state.global.rewardedAt?.samples,
     rewardedAtPro: state.global.rewardedAt?.pro,

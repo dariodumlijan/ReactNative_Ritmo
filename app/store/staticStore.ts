@@ -1,4 +1,5 @@
-import type { ReduxActionWithPayload, ReduxState } from '../types';
+import type { RootState } from '.';
+import type { ReduxAction } from '../types';
 
 export type State = {
   loadTime: number,
@@ -13,10 +14,10 @@ export type State = {
 };
 
 export const selectors = {
-  getStatic: (state: ReduxState): State => state.static,
+  getStatic: (state: RootState): State => state.static,
 };
 
-export const reducer = (state: State, action: ReduxActionWithPayload): State => {
+export const reducer = (state: any, action: ReduxAction) => {
   switch (action.type) {
     default:
       return state || {};

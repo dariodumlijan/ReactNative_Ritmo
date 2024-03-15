@@ -1,12 +1,13 @@
 import { getItem, removeItem, setItem } from './hooks';
 import { localStorageKeys } from '../tokens';
 import type { Preset, RewardedAt } from '../store/globalStore';
+import type { PresetKey } from '../types';
 
 export type FetchResponse = {
   presets: {
-    one: Preset | null,
-    two: Preset | null,
-    three: Preset | null,
+    [PresetKey.one]: Preset | null,
+    [PresetKey.two]: Preset | null,
+    [PresetKey.three]: Preset | null,
   },
   unlockedSamples: string[],
   rewardedAt: RewardedAt,
@@ -47,7 +48,7 @@ export const fetchPresetAndSamples = async (): Promise<FetchResponse> => {
   };
 };
 
-export const writePreset = async (key: string, preset: Preset): Promise<WriteResponse> => {
+export const writePreset = async (key: PresetKey, preset: Preset): Promise<WriteResponse> => {
   await setItem(localStorageKeys.presets[key], JSON.stringify(preset));
 
   return {
@@ -56,7 +57,7 @@ export const writePreset = async (key: string, preset: Preset): Promise<WriteRes
   };
 };
 
-export const clearPreset = async (key: string): Promise<ClearResponse> => {
+export const clearPreset = async (key: PresetKey): Promise<ClearResponse> => {
   await removeItem(localStorageKeys.presets[key]);
 
   return key;

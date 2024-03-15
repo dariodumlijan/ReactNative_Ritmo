@@ -1,11 +1,12 @@
 import { get, map } from 'lodash';
-import { types as globalTypes } from './globalStore';
+import { GlobalTypes } from './globalStore';
 import * as Sound from '../sound';
 import initBeats from '../sound/beats';
 import { calcSoundDelay } from '../utils';
+import type { RootState } from '.';
 import type { TimeSignaturePayload } from './globalStore';
 import type { Beat, Beats } from '../sound/beats';
-import type { ReduxAction, ReduxActionWithPayload, ReduxState } from '../types';
+import type { ReduxAction, SoundKey } from '../types';
 import type { Sample } from '../utils/lists';
 
 type PayloadRotate = {
@@ -15,7 +16,7 @@ type PayloadRotate = {
 };
 
 type PayloadCheckbox = {
-  key: string,
+  key: SoundKey,
   index: number,
   checked: boolean,
 };
@@ -27,40 +28,40 @@ type PayloadPlay = {
 
 type State = Beats;
 
-export const types = {
-  BT_ROTATE_BEAT: 'BT/ROTATE_BEAT',
-  BT_CLEAR_BEAT: 'BT/CLEAR_BEAT',
-  BT_RESET_BEAT: 'BT/RESET_BEAT',
-  BT_TOGGLE_CHECKBOX: 'BT/TOGGLE_CHECKBOX',
-  BT_PLAY_BEAT: 'BT/PLAY_BEAT',
-  BT_PAUSE_BEAT: 'BT/PAUSE_BEAT',
-};
+export enum BeatTypes {
+  BT_ROTATE_BEAT = 'BT/ROTATE_BEAT',
+  BT_CLEAR_BEAT = 'BT/CLEAR_BEAT',
+  BT_RESET_BEAT = 'BT/RESET_BEAT',
+  BT_TOGGLE_CHECKBOX = 'BT/TOGGLE_CHECKBOX',
+  BT_PLAY_BEAT = 'BT/PLAY_BEAT',
+  BT_PAUSE_BEAT = 'BT/PAUSE_BEAT',
+}
 
 export const selectors = {
-  getBeats: (state: ReduxState): State => state.beats,
+  getBeats: (state: RootState): State => state.beats,
 };
 
 export const actions = {
   rotateBeat: (payload: PayloadRotate): ReduxAction => ({
-    type: types.BT_ROTATE_BEAT,
+    type: BeatTypes.BT_ROTATE_BEAT,
     payload,
   }),
   clearBeat: (): ReduxAction => ({
-    type: types.BT_CLEAR_BEAT,
+    type: BeatTypes.BT_CLEAR_BEAT,
   }),
   resetBeat: (): ReduxAction => ({
-    type: types.BT_RESET_BEAT,
+    type: BeatTypes.BT_RESET_BEAT,
   }),
   toggleCheckbox: (payload: PayloadCheckbox): ReduxAction => ({
-    type: types.BT_TOGGLE_CHECKBOX,
+    type: BeatTypes.BT_TOGGLE_CHECKBOX,
     payload,
   }),
   playBeat: (payload: PayloadPlay): ReduxAction => ({
-    type: types.BT_PLAY_BEAT,
+    type: BeatTypes.BT_PLAY_BEAT,
     payload,
   }),
   pauseBeat: (): ReduxAction => ({
-    type: types.BT_PAUSE_BEAT,
+    type: BeatTypes.BT_PAUSE_BEAT,
   }),
 };
 
@@ -155,17 +156,17 @@ const pauseBeat = (state: State): State => {
   return state;
 };
 
-const handleBeatUpdate = (state: State, action: ReduxActionWithPayload): State => {
+const handleBeatUpdate = (state: State, action: ReduxAction): State => {
   switch (action.type) {
-    case types.BT_ROTATE_BEAT:
+    case BeatTypes.BT_ROTATE_BEAT:
       return rotateBeat(state, action.payload);
-    case types.BT_CLEAR_BEAT:
+    case BeatTypes.BT_CLEAR_BEAT:
       return clearBeat(state);
-    case types.BT_TOGGLE_CHECKBOX:
+    case BeatTypes.BT_TOGGLE_CHECKBOX:
       return toggleCheckbox(state, action.payload);
-    case globalTypes.GB_LOAD_PRESET:
+    case GlobalTypes.GB_LOAD_PRESET:
       return action.payload.beat;
-    case globalTypes.GB_UPDATE_TIME_SIG:
+    case GlobalTypes.GB_UPDATE_TIME_SIG:
       return handleTimeSigUpdate(state, action.payload);
 
     default:
@@ -173,23 +174,23 @@ const handleBeatUpdate = (state: State, action: ReduxActionWithPayload): State =
   }
 };
 
-export const reducer = (state: State, action: ReduxActionWithPayload): State => {
+export const reducer = (state: any, action: ReduxAction) => {
   switch (action.type) {
-    case types.BT_ROTATE_BEAT:
-    case types.BT_CLEAR_BEAT:
-    case types.BT_TOGGLE_CHECKBOX:
-    case globalTypes.GB_LOAD_PRESET:
-    case globalTypes.GB_UPDATE_TIME_SIG:
+    case BeatTypes.BT_ROTATE_BEAT:
+    case BeatTypes.BT_CLEAR_BEAT:
+    case BeatTypes.BT_TOGGLE_CHECKBOX:
+    case GlobalTypes.GB_LOAD_PRESET:
+    case GlobalTypes.GB_UPDATE_TIME_SIG:
       const newState = handleBeatUpdate(state, action);
       Sound.updateBeat(newState);
 
       return newState;
 
-    case types.BT_RESET_BEAT:
+    case BeatTypes.BT_RESET_BEAT:
       return resetBeat();
-    case types.BT_PLAY_BEAT:
+    case BeatTypes.BT_PLAY_BEAT:
       return playBeat(state, action.payload);
-    case types.BT_PAUSE_BEAT:
+    case BeatTypes.BT_PAUSE_BEAT:
       return pauseBeat(state);
 
     default:

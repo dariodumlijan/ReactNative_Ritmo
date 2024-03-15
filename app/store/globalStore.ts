@@ -1,7 +1,7 @@
 import {
   get, isNil, map, merge, omit, reject, uniq,
 } from 'lodash';
-import { types as beatTypes } from './beatsStore';
+import { BeatTypes } from './beatsStore';
 import * as API from '../api';
 import { t } from '../locales';
 import * as MIDI from '../midi';
@@ -9,9 +9,10 @@ import { admob, config } from '../tokens';
 import { deviceInfo, isSampleUnlocked } from '../utils';
 import { getSamples, getTimeSignatures, getUnlockedSamples } from '../utils/lists';
 import * as LocalStorage from '../utils/localStorage';
+import type { RootState } from '.';
 import type { BuildMidi, BuildPromise } from '../midi';
 import type { Beats } from '../sound/beats';
-import type { ReduxActionWithPayload, ReduxState } from '../types';
+import type { PresetKey, ReduxAction, SoundKey } from '../types';
 import type { Sample, TimeSig } from '../utils/lists';
 import type {
   FetchResponse,
@@ -26,20 +27,20 @@ export type RewardedAt = {
 };
 
 export type TimeSignaturePayload = {
-  key: 'all' | 'hihat' | 'snare' | 'kick',
+  key: 'all' | keyof typeof SoundKey,
   value: string,
 };
 
 export type Sliders = {
-  hihat: number,
-  snare: number,
-  kick: number,
+  [SoundKey.hihat]: number,
+  [SoundKey.snare]: number,
+  [SoundKey.kick]: number,
 };
 
 export type TimeSignature = {
-  hihat: string,
-  snare: string,
-  kick: string,
+  [SoundKey.hihat]: string,
+  [SoundKey.snare]: string,
+  [SoundKey.kick]: string,
 };
 
 export type UI = {
@@ -82,69 +83,69 @@ export type State = {
   rewardedAt?: RewardedAt,
 };
 
-export const types = {
-  GB_SHOW_PERSONALISED_ADS: 'GB/SHOW_PERSONALISED_ADS',
-  GB_SHOW_ADS: 'GB/SHOW_ADS',
-  GB_TOGGLE_NAVIGATION: 'GB/TOGGLE_NAVIGATION',
-  GB_TOGGLE_DEVELOPER_MODE: 'GB/TOGGLE_DEVELOPER_MODE',
-  GB_UPDATE_BPM: 'GB/UPDATE_BPM',
-  GB_UPDATE_TIME_SIG: 'GB/UPDATE_TIME_SIG',
-  GB_UPDATE_SELECTED_SAMPLE: 'GB/UPDATE_SELECTED_SAMPLE',
-  GB_UPDATE_SELECTED_REWARD: 'GB/UPDATE_SELECTED_REWARD',
+export enum GlobalTypes {
+  GB_SHOW_PERSONALISED_ADS = 'GB/SHOW_PERSONALISED_ADS',
+  GB_SHOW_ADS = 'GB/SHOW_ADS',
+  GB_TOGGLE_NAVIGATION = 'GB/TOGGLE_NAVIGATION',
+  GB_TOGGLE_DEVELOPER_MODE = 'GB/TOGGLE_DEVELOPER_MODE',
+  GB_UPDATE_BPM = 'GB/UPDATE_BPM',
+  GB_UPDATE_TIME_SIG = 'GB/UPDATE_TIME_SIG',
+  GB_UPDATE_SELECTED_SAMPLE = 'GB/UPDATE_SELECTED_SAMPLE',
+  GB_UPDATE_SELECTED_REWARD = 'GB/UPDATE_SELECTED_REWARD',
 
-  GB_GET_DEPLOYMENT_DATA: 'GB/GET_DEPLOYMENT_DATA',
-  GB_GET_DEPLOYMENT_DATA_PENDING: 'GB/GET_DEPLOYMENT_DATA_PENDING',
-  GB_GET_DEPLOYMENT_DATA_REJECTED: 'GB/GET_DEPLOYMENT_DATA_REJECTED',
-  GB_GET_DEPLOYMENT_DATA_FULFILLED: 'GB/GET_DEPLOYMENT_DATA_FULFILLED',
+  GB_GET_DEPLOYMENT_DATA = 'GB/GET_DEPLOYMENT_DATA',
+  GB_GET_DEPLOYMENT_DATA_PENDING = 'GB/GET_DEPLOYMENT_DATA_PENDING',
+  GB_GET_DEPLOYMENT_DATA_REJECTED = 'GB/GET_DEPLOYMENT_DATA_REJECTED',
+  GB_GET_DEPLOYMENT_DATA_FULFILLED = 'GB/GET_DEPLOYMENT_DATA_FULFILLED',
 
-  GB_FETCH_PRESET_AND_SAMPLES: 'GB/FETCH_PRESET_AND_SAMPLES',
-  GB_FETCH_PRESET_AND_SAMPLES_PENDING: 'GB/FETCH_PRESET_AND_SAMPLES_PENDING',
-  GB_FETCH_PRESET_AND_SAMPLES_REJECTED: 'GB/FETCH_PRESET_AND_SAMPLES_REJECTED',
-  GB_FETCH_PRESET_AND_SAMPLES_FULFILLED: 'GB/FETCH_PRESET_AND_SAMPLES_FULFILLED',
+  GB_FETCH_PRESET_AND_SAMPLES = 'GB/FETCH_PRESET_AND_SAMPLES',
+  GB_FETCH_PRESET_AND_SAMPLES_PENDING = 'GB/FETCH_PRESET_AND_SAMPLES_PENDING',
+  GB_FETCH_PRESET_AND_SAMPLES_REJECTED = 'GB/FETCH_PRESET_AND_SAMPLES_REJECTED',
+  GB_FETCH_PRESET_AND_SAMPLES_FULFILLED = 'GB/FETCH_PRESET_AND_SAMPLES_FULFILLED',
 
-  GB_WRITE_PRESET: 'GB/WRITE_PRESET',
-  GB_WRITE_PRESET_PENDING: 'GB/WRITE_PRESET_PENDING',
-  GB_WRITE_PRESET_REJECTED: 'GB/WRITE_PRESET_REJECTED',
-  GB_WRITE_PRESET_FULFILLED: 'GB/WRITE_PRESET_FULFILLED',
+  GB_WRITE_PRESET = 'GB/WRITE_PRESET',
+  GB_WRITE_PRESET_PENDING = 'GB/WRITE_PRESET_PENDING',
+  GB_WRITE_PRESET_REJECTED = 'GB/WRITE_PRESET_REJECTED',
+  GB_WRITE_PRESET_FULFILLED = 'GB/WRITE_PRESET_FULFILLED',
 
-  GB_CLEAR_PRESET: 'GB/CLEAR_PRESET',
-  GB_CLEAR_PRESET_PENDING: 'GB/CLEAR_PRESET_PENDING',
-  GB_CLEAR_PRESET_REJECTED: 'GB/CLEAR_PRESET_REJECTED',
-  GB_CLEAR_PRESET_FULFILLED: 'GB/CLEAR_PRESET_FULFILLED',
+  GB_CLEAR_PRESET = 'GB/CLEAR_PRESET',
+  GB_CLEAR_PRESET_PENDING = 'GB/CLEAR_PRESET_PENDING',
+  GB_CLEAR_PRESET_REJECTED = 'GB/CLEAR_PRESET_REJECTED',
+  GB_CLEAR_PRESET_FULFILLED = 'GB/CLEAR_PRESET_FULFILLED',
 
-  GB_LOAD_PRESET: 'GB/LOAD_PRESET',
+  GB_LOAD_PRESET = 'GB/LOAD_PRESET',
 
-  GB_UNLOCK_PRO_FEATURES: 'GB/UNLOCK_PRO_FEATURES',
-  GB_UNLOCK_PRO_FEATURES_PENDING: 'GB/UNLOCK_PRO_FEATURES_PENDING',
-  GB_UNLOCK_PRO_FEATURES_REJECTED: 'GB/UNLOCK_PRO_FEATURES_REJECTED',
-  GB_UNLOCK_PRO_FEATURES_FULFILLED: 'GB/UNLOCK_PRO_FEATURES_FULFILLED',
+  GB_UNLOCK_PRO_FEATURES = 'GB/UNLOCK_PRO_FEATURES',
+  GB_UNLOCK_PRO_FEATURES_PENDING = 'GB/UNLOCK_PRO_FEATURES_PENDING',
+  GB_UNLOCK_PRO_FEATURES_REJECTED = 'GB/UNLOCK_PRO_FEATURES_REJECTED',
+  GB_UNLOCK_PRO_FEATURES_FULFILLED = 'GB/UNLOCK_PRO_FEATURES_FULFILLED',
 
-  GB_LOCK_PRO_FEATURES: 'GB/LOCK_PRO_FEATURES',
-  GB_LOCK_PRO_FEATURES_PENDING: 'GB/LOCK_PRO_FEATURES_PENDING',
-  GB_LOCK_PRO_FEATURES_REJECTED: 'GB/LOCK_PRO_FEATURES_REJECTED',
-  GB_LOCK_PRO_FEATURES_FULFILLED: 'GB/LOCK_PRO_FEATURES_FULFILLED',
+  GB_LOCK_PRO_FEATURES = 'GB/LOCK_PRO_FEATURES',
+  GB_LOCK_PRO_FEATURES_PENDING = 'GB/LOCK_PRO_FEATURES_PENDING',
+  GB_LOCK_PRO_FEATURES_REJECTED = 'GB/LOCK_PRO_FEATURES_REJECTED',
+  GB_LOCK_PRO_FEATURES_FULFILLED = 'GB/LOCK_PRO_FEATURES_FULFILLED',
 
-  GB_UNLOCK_REWARD: 'GB/UNLOCK_REWARD',
+  GB_UNLOCK_REWARD = 'GB/UNLOCK_REWARD',
 
-  GB_REFRESH_REWARDS: 'GB/REFRESH_REWARDS',
-  GB_REFRESH_REWARDS_PENDING: 'GB/REFRESH_REWARDS_PENDING',
-  GB_REFRESH_REWARDS_REJECTED: 'GB/REFRESH_REWARDS_REJECTED',
-  GB_REFRESH_REWARDS_FULFILLED: 'GB/REFRESH_REWARDS_FULFILLED',
+  GB_REFRESH_REWARDS = 'GB/REFRESH_REWARDS',
+  GB_REFRESH_REWARDS_PENDING = 'GB/REFRESH_REWARDS_PENDING',
+  GB_REFRESH_REWARDS_REJECTED = 'GB/REFRESH_REWARDS_REJECTED',
+  GB_REFRESH_REWARDS_FULFILLED = 'GB/REFRESH_REWARDS_FULFILLED',
 
-  GB_LOCK_REWARDS: 'GB/LOCK_REWARDS',
-  GB_LOCK_REWARDS_PENDING: 'GB/LOCK_REWARDS_PENDING',
-  GB_LOCK_REWARDS_REJECTED: 'GB/LOCK_REWARDS_REJECTED',
-  GB_LOCK_REWARDS_FULFILLED: 'GB/LOCK_REWARDS_FULFILLED',
+  GB_LOCK_REWARDS = 'GB/LOCK_REWARDS',
+  GB_LOCK_REWARDS_PENDING = 'GB/LOCK_REWARDS_PENDING',
+  GB_LOCK_REWARDS_REJECTED = 'GB/LOCK_REWARDS_REJECTED',
+  GB_LOCK_REWARDS_FULFILLED = 'GB/LOCK_REWARDS_FULFILLED',
 
-  GB_EXPORT_MIDI: 'GB/EXPORT_MIDI',
-  GB_EXPORT_MIDI_PENDING: 'GB/EXPORT_MIDI_PENDING',
-  GB_EXPORT_MIDI_REJECTED: 'GB/EXPORT_MIDI_REJECTED',
-  GB_EXPORT_MIDI_FULFILLED: 'GB/EXPORT_MIDI_FULFILLED',
+  GB_EXPORT_MIDI = 'GB/EXPORT_MIDI',
+  GB_EXPORT_MIDI_PENDING = 'GB/EXPORT_MIDI_PENDING',
+  GB_EXPORT_MIDI_REJECTED = 'GB/EXPORT_MIDI_REJECTED',
+  GB_EXPORT_MIDI_FULFILLED = 'GB/EXPORT_MIDI_FULFILLED',
 
-  GB_DELETE_MIDI_FILE: 'GB/DELETE_MIDI_FILE',
-};
+  GB_DELETE_MIDI_FILE = 'GB/DELETE_MIDI_FILE',
+}
 
-export const getAdmobIds = (state: ReduxState): AdmobIds => {
+export const getAdmobIds = (state: RootState): AdmobIds => {
   const showTestAds = state.global.developerMode;
 
   const getBannerID = (): string => {
@@ -170,17 +171,17 @@ export const getAdmobIds = (state: ReduxState): AdmobIds => {
 };
 
 export const selectors = {
-  getCodepushEnvironment: (state: ReduxState): 'Production' | 'Staging' => get(state.global.codepushData, 'environment', 'Production'),
-  getAdmobIds: (state: ReduxState): AdmobIds => getAdmobIds(state),
-  getGlobal: (state: ReduxState): State => state.global,
-  getUI: (state: ReduxState): UI => state.global.ui,
-  getUnlockedSamples: (state: ReduxState): string[] => state.global.unlockedSamples,
-  getLockedSamples: (state: ReduxState): Sample[] => {
+  getCodepushEnvironment: (state: RootState): 'Production' | 'Staging' => get(state.global.codepushData, 'environment', 'Production'),
+  getAdmobIds: (state: RootState): AdmobIds => getAdmobIds(state),
+  getGlobal: (state: RootState): State => state.global,
+  getUI: (state: RootState): UI => state.global.ui,
+  getUnlockedSamples: (state: RootState): string[] => state.global.unlockedSamples,
+  getLockedSamples: (state: RootState): Sample[] => {
     const samples = getSamples();
 
     return reject(samples, (sample: Sample) => isSampleUnlocked(state.global.unlockedSamples, sample));
   },
-  hasUnlockedSample: (state: ReduxState): boolean => {
+  hasUnlockedSample: (state: RootState): boolean => {
     const defaultUnlockedSamples = getUnlockedSamples();
 
     return state.global.unlockedSamples.length > defaultUnlockedSamples.length;
@@ -189,83 +190,83 @@ export const selectors = {
 
 export const actions = {
   getDeploymentData: () => ({
-    type: types.GB_GET_DEPLOYMENT_DATA,
+    type: GlobalTypes.GB_GET_DEPLOYMENT_DATA,
     payload: API.getDeploymentData(),
   }),
   showPersonalisedAds: (bool: boolean) => ({
-    type: types.GB_SHOW_PERSONALISED_ADS,
+    type: GlobalTypes.GB_SHOW_PERSONALISED_ADS,
     payload: { personalisedAds: bool },
   }),
   showAds: (showAds: boolean) => ({
-    type: types.GB_SHOW_ADS,
+    type: GlobalTypes.GB_SHOW_ADS,
     payload: { showAds },
   }),
   unlockReward: (sampleLabel?: string) => ({
-    type: types.GB_UNLOCK_REWARD,
+    type: GlobalTypes.GB_UNLOCK_REWARD,
     payload: sampleLabel,
   }),
   unlockProFeatures: () => ({
-    type: types.GB_UNLOCK_PRO_FEATURES,
+    type: GlobalTypes.GB_UNLOCK_PRO_FEATURES,
     payload: LocalStorage.unlockProFeatures(),
   }),
   refreshRewards: () => ({
-    type: types.GB_REFRESH_REWARDS,
+    type: GlobalTypes.GB_REFRESH_REWARDS,
     payload: LocalStorage.saveRewards(Date.now()),
   }),
   lockRewards: () => ({
-    type: types.GB_LOCK_REWARDS,
+    type: GlobalTypes.GB_LOCK_REWARDS,
     payload: LocalStorage.clearRewards(),
   }),
   lockProFeatures: () => ({
-    type: types.GB_LOCK_PRO_FEATURES,
+    type: GlobalTypes.GB_LOCK_PRO_FEATURES,
     payload: LocalStorage.lockProFeatures(),
   }),
   toggleNavigation: (bool: boolean) => ({
-    type: types.GB_TOGGLE_NAVIGATION,
+    type: GlobalTypes.GB_TOGGLE_NAVIGATION,
     payload: { navigationOpen: bool },
   }),
   toggleDeveloperMode: (bool: boolean) => ({
-    type: types.GB_TOGGLE_DEVELOPER_MODE,
+    type: GlobalTypes.GB_TOGGLE_DEVELOPER_MODE,
     payload: bool,
   }),
   exportMIDI: (buildMIDI: BuildMidi) => ({
-    type: types.GB_EXPORT_MIDI,
+    type: GlobalTypes.GB_EXPORT_MIDI,
     payload: MIDI.exportMIDI(buildMIDI),
   }),
   deleteMIDIFile: (fileUri: string) => ({
-    type: types.GB_DELETE_MIDI_FILE,
+    type: GlobalTypes.GB_DELETE_MIDI_FILE,
     payload: MIDI.deleteMIDIFile(fileUri),
   }),
   fetchPresetAndSamples: () => ({
-    type: types.GB_FETCH_PRESET_AND_SAMPLES,
+    type: GlobalTypes.GB_FETCH_PRESET_AND_SAMPLES,
     payload: LocalStorage.fetchPresetAndSamples(),
   }),
   loadPreset: (preset: Preset) => ({
-    type: types.GB_LOAD_PRESET,
+    type: GlobalTypes.GB_LOAD_PRESET,
     payload: preset,
   }),
-  writePreset: (key: string, preset: Preset) => ({
-    type: types.GB_WRITE_PRESET,
+  writePreset: (key: PresetKey, preset: Preset) => ({
+    type: GlobalTypes.GB_WRITE_PRESET,
     payload: LocalStorage.writePreset(key, preset),
   }),
-  clearPreset: (key: string) => ({
-    type: types.GB_CLEAR_PRESET,
+  clearPreset: (key: PresetKey) => ({
+    type: GlobalTypes.GB_CLEAR_PRESET,
     payload: LocalStorage.clearPreset(key),
   }),
   updateBPM: (bpm: number) => ({
-    type: types.GB_UPDATE_BPM,
+    type: GlobalTypes.GB_UPDATE_BPM,
     payload: { useBPM: bpm },
   }),
   updateTimeSig: (payload: TimeSignaturePayload) => ({
-    type: types.GB_UPDATE_TIME_SIG,
+    type: GlobalTypes.GB_UPDATE_TIME_SIG,
     payload,
   }),
   updateSelectedSample: (sample: Sample) => ({
-    type: types.GB_UPDATE_SELECTED_SAMPLE,
+    type: GlobalTypes.GB_UPDATE_SELECTED_SAMPLE,
     payload: { useSample: sample },
   }),
   updateSelectedReward: (sample: Sample) => ({
-    type: types.GB_UPDATE_SELECTED_REWARD,
+    type: GlobalTypes.GB_UPDATE_SELECTED_REWARD,
     payload: { selectedReward: sample },
   }),
 };
@@ -456,76 +457,76 @@ const unlockProFeatures = (state: State, payload: UnlockProFeaturesResponse): St
   },
 });
 
-export const reducer = (state: State, action: ReduxActionWithPayload): State => {
+export const reducer = (state: any, action: ReduxAction) => {
   switch (action.type) {
-    case types.GB_FETCH_PRESET_AND_SAMPLES_FULFILLED:
+    case GlobalTypes.GB_FETCH_PRESET_AND_SAMPLES_FULFILLED:
       return fetchPresetAndSamples(state, action.payload);
 
-    case types.GB_LOAD_PRESET:
+    case GlobalTypes.GB_LOAD_PRESET:
       return loadPreset(state, action.payload);
 
-    case types.GB_WRITE_PRESET_FULFILLED:
+    case GlobalTypes.GB_WRITE_PRESET_FULFILLED:
       return writePreset(state, action.payload);
 
-    case types.GB_CLEAR_PRESET_FULFILLED:
+    case GlobalTypes.GB_CLEAR_PRESET_FULFILLED:
       return merge({}, state, {
         presets: {
           [action.payload]: null,
         },
       });
 
-    case types.GB_UNLOCK_REWARD:
+    case GlobalTypes.GB_UNLOCK_REWARD:
       return unlockReward(state, action.payload);
 
-    case types.GB_UNLOCK_PRO_FEATURES_FULFILLED:
+    case GlobalTypes.GB_UNLOCK_PRO_FEATURES_FULFILLED:
       return unlockProFeatures(state, action.payload);
 
-    case types.GB_REFRESH_REWARDS_FULFILLED:
+    case GlobalTypes.GB_REFRESH_REWARDS_FULFILLED:
       return refreshRewards(state, action.payload);
 
-    case types.GB_LOCK_REWARDS_FULFILLED:
+    case GlobalTypes.GB_LOCK_REWARDS_FULFILLED:
       return lockSamples(state);
 
-    case types.GB_LOCK_PRO_FEATURES_FULFILLED:
+    case GlobalTypes.GB_LOCK_PRO_FEATURES_FULFILLED:
       return lockProFeatures(state);
 
-    case beatTypes.BT_ROTATE_BEAT:
+    case BeatTypes.BT_ROTATE_BEAT:
       return rotateBeat(state, action.payload);
 
-    case beatTypes.BT_RESET_BEAT:
+    case BeatTypes.BT_RESET_BEAT:
       return resetBeat(state);
 
-    case beatTypes.BT_PLAY_BEAT:
+    case BeatTypes.BT_PLAY_BEAT:
       return merge({}, state, { ui: { isPlaying: true } });
 
-    case beatTypes.BT_PAUSE_BEAT:
+    case BeatTypes.BT_PAUSE_BEAT:
       return merge({}, state, { ui: { isPlaying: false } });
 
-    case types.GB_EXPORT_MIDI_FULFILLED:
-    case types.GB_EXPORT_MIDI_REJECTED:
+    case GlobalTypes.GB_EXPORT_MIDI_FULFILLED:
+    case GlobalTypes.GB_EXPORT_MIDI_REJECTED:
       return exportMIDI(state, action.payload);
 
-    case types.GB_DELETE_MIDI_FILE:
+    case GlobalTypes.GB_DELETE_MIDI_FILE:
       return omit(state, 'ui.fileUri');
 
-    case types.GB_UPDATE_TIME_SIG:
+    case GlobalTypes.GB_UPDATE_TIME_SIG:
       return setTimeSig(state, action.payload);
 
-    case types.GB_SHOW_PERSONALISED_ADS:
-    case types.GB_SHOW_ADS:
-    case types.GB_TOGGLE_NAVIGATION:
-    case types.GB_UPDATE_BPM:
-    case types.GB_UPDATE_SELECTED_SAMPLE:
-    case types.GB_UPDATE_SELECTED_REWARD:
+    case GlobalTypes.GB_SHOW_PERSONALISED_ADS:
+    case GlobalTypes.GB_SHOW_ADS:
+    case GlobalTypes.GB_TOGGLE_NAVIGATION:
+    case GlobalTypes.GB_UPDATE_BPM:
+    case GlobalTypes.GB_UPDATE_SELECTED_SAMPLE:
+    case GlobalTypes.GB_UPDATE_SELECTED_REWARD:
       return merge({}, state, { ui: action.payload });
 
-    case types.GB_GET_DEPLOYMENT_DATA:
+    case GlobalTypes.GB_GET_DEPLOYMENT_DATA:
       return checkUnlockedRewards(state);
 
-    case types.GB_GET_DEPLOYMENT_DATA_FULFILLED:
+    case GlobalTypes.GB_GET_DEPLOYMENT_DATA_FULFILLED:
       return merge({}, state, { codepushData: action.payload });
 
-    case types.GB_TOGGLE_DEVELOPER_MODE:
+    case GlobalTypes.GB_TOGGLE_DEVELOPER_MODE:
       return merge({}, state, { developerMode: action.payload });
 
     default:

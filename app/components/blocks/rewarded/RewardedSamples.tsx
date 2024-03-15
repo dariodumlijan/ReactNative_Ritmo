@@ -7,7 +7,6 @@ import {
   View,
 } from 'react-native';
 import { RewardedAdEventType } from 'react-native-google-mobile-ads';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-native';
 import { hoursToMilliseconds } from 'date-fns';
 import { isEmpty, isEqual } from 'lodash';
@@ -19,23 +18,22 @@ import mainStyle from '../../../styles/main';
 import rewardedStyle from '../../../styles/rewarded';
 import { config } from '../../../tokens';
 import { deviceInfo } from '../../../utils';
-import { useRewardedAd } from '../../../utils/hooks';
+import { useAppDispatch, useAppSelector, useRewardedAd } from '../../../utils/hooks';
 import Select from '../../elements/inputs/Select';
 import CountdownTimer from '../../elements/misc/CountdownTimer';
-import type { ReduxState } from '../../../types';
 import type { Sample } from '../../../utils/lists';
 
 function RewardedSamples() {
   const { t } = useLocale();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const lockedSamples = useSelector(selectors.getLockedSamples, isEqual);
-  const reduxStates = useSelector((state: ReduxState) => ({
+  const lockedSamples = useAppSelector(selectors.getLockedSamples, isEqual);
+  const reduxStates = useAppSelector((state) => ({
     personalisedAds: state.global.ui.personalisedAds,
     selectedReward: state.global.ui.selectedReward,
     rewardedAt: state.global.rewardedAt,
   }), isEqual);
-  const { rewarded } = useSelector(selectors.getAdmobIds, isEqual);
+  const { rewarded } = useAppSelector(selectors.getAdmobIds, isEqual);
   const [openSelect, setOpenSelect] = useState(false);
   const [adLoading, setAdLoading] = useState(true);
   const [rewardsAreRefreshable, setRewardsAreRefreshable] = useState(false);

@@ -9,7 +9,6 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-native';
 import { hoursToMilliseconds, secondsToMilliseconds } from 'date-fns';
 import {
@@ -24,7 +23,7 @@ import mainStyle from '../../styles/main';
 import notificationsStyle from '../../styles/notifications';
 import settingsStyle from '../../styles/settings';
 import { config } from '../../tokens';
-import { useTeleport } from '../../utils/hooks';
+import { useAppDispatch, useAppSelector, useTeleport } from '../../utils/hooks';
 import useSelectLists from '../../utils/lists';
 import Select from '../elements/inputs/Select';
 import TimeSignatureSelect from '../elements/inputs/TimeSignatureSelect';
@@ -32,18 +31,18 @@ import Alert from '../elements/misc/Alert';
 import ConditionalAd from '../elements/misc/ConditionalAd';
 import CountdownTimer from '../elements/misc/CountdownTimer';
 import DismissKeyboard from '../elements/misc/DismissKeyboard';
-import type { State, TimeSignaturePayload } from '../../store/globalStore';
+import type { TimeSignaturePayload } from '../../store/globalStore';
 import type { Sample } from '../../utils/lists';
 
 function Settings() {
   const { t } = useLocale();
   const { teleport } = useTeleport();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { samples } = useSelectLists();
-  const lockedSamples = useSelector(selectors.getLockedSamples, isEqual);
-  const global: State = useSelector(selectors.getGlobal, isEqual);
-  const [bpm, setBpm] = useState<string>(String(global.ui.useBPM));
+  const lockedSamples = useAppSelector(selectors.getLockedSamples, isEqual);
+  const global = useAppSelector(selectors.getGlobal, isEqual);
+  const [bpm, setBpm] = useState(String(global.ui.useBPM));
   const [openTimeSigSelect, setOpenTimeSigSelect] = useState(false);
   const [openSoundSelect, setOpenSoundSelect] = useState(false);
   const hasAllRewards = isEmpty(lockedSamples);

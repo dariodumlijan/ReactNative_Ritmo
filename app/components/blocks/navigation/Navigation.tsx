@@ -7,7 +7,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-native';
 import { isEqual, map } from 'lodash';
 import Exit from '../../../assets/icons/Exit';
@@ -22,18 +21,17 @@ import { actions } from '../../../store/globalStore';
 import colors from '../../../styles/colors';
 import navigationStyle from '../../../styles/navigation';
 import { isBeatEmpty } from '../../../utils';
-import { useTeleport } from '../../../utils/hooks';
+import { useAppDispatch, useAppSelector, useTeleport } from '../../../utils/hooks';
 import ExportMidiModal from '../../elements/modals/ExportMidiModal';
 import type { Beats } from '../../../sound/beats';
-import type { ReduxState } from '../../../types';
 
 function Navigation() {
   const { t } = useLocale();
   const { teleport } = useTeleport();
-  const dispatch = useDispatch();
-  const developerMode = useSelector((state: ReduxState) => state.global.developerMode, isEqual);
-  const navigationOpen = useSelector((state: ReduxState) => state.global.ui.navigationOpen, isEqual);
-  const beats: Beats = useSelector(selectors.getBeats, isEqual);
+  const dispatch = useAppDispatch();
+  const developerMode = useAppSelector((state) => state.global.developerMode, isEqual);
+  const navigationOpen = useAppSelector((state) => state.global.ui.navigationOpen, isEqual);
+  const beats: Beats = useAppSelector(selectors.getBeats, isEqual);
   const opacityTag = useRef(new Animated.Value(1)).current;
   const opacityAlert = useRef(new Animated.Value(0)).current;
   const beatExists = !isBeatEmpty(beats);

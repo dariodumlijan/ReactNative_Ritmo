@@ -14,6 +14,7 @@ import useLocale from '../../../locales';
 import colors from '../../../styles/colors';
 import { timeSignatureSelectStyle } from '../../../styles/inputs';
 import settingsStyle from '../../../styles/settings';
+import { SoundKey } from '../../../types';
 import useSelectLists from '../../../utils/lists';
 import ConditionalAd from '../misc/ConditionalAd';
 import type { TimeSignature } from '../../../store/globalStore';
@@ -21,7 +22,7 @@ import type { TimeSig } from '../../../utils/lists';
 
 type Option = {
   label: string,
-  value: string,
+  value: 'all' | keyof typeof SoundKey,
   disabled: boolean,
 };
 
@@ -48,17 +49,17 @@ function TimeSignatureSelect(props: Props) {
     },
     {
       label: t('settings.time_sig_sections.hihat'),
-      value: 'hihat',
+      value: SoundKey.hihat,
       disabled: !props.unlockedPro,
     },
     {
       label: t('settings.time_sig_sections.snare'),
-      value: 'snare',
+      value: SoundKey.snare,
       disabled: !props.unlockedPro,
     },
     {
       label: t('settings.time_sig_sections.kick'),
-      value: 'kick',
+      value: SoundKey.kick,
       disabled: !props.unlockedPro,
     },
   ];
@@ -100,7 +101,7 @@ function TimeSignatureSelect(props: Props) {
                 {option.label}:
               </Text>
               <Text style={timeSignatureSelectStyle.inputText}>
-                {props.value[option.value]}
+                {props.value[option.value as SoundKey]}
               </Text>
             </View>
           ))}

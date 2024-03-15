@@ -1,49 +1,67 @@
 /* eslint-disable no-console */
-import {
-  concat, forEach, get, includes, isString,
-} from 'lodash';
-import { applyMiddleware, combineReducers, createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
+import { Tuple, configureStore } from '@reduxjs/toolkit';
+import { thunk } from 'redux-thunk';
 import { reducer as beatsStoreReducer } from './beatsStore';
 import { reducer as globalStoreReducer } from './globalStore';
 import { reducer as staticStoreReducer } from './staticStore';
-import ENV from '../../env.json';
+import { t } from '../locales';
+import beats from '../sound/beats';
 import { isPromise } from '../utils';
-import type { ReduxState } from '../types';
+import { getSamples, getTimeSignatures, getUnlockedSamples } from '../utils/lists';
+import type { Sample, TimeSig } from '../utils/lists';
 
-const sanitizedActions = get(ENV, 'REDUX.SANITIZED_LIST', []);
-const actionsDenylist = get(ENV, 'REDUX.DENY_LIST', []);
-
-const sanitizedPayload = 'Set REACT_APP_REDUX_SANITIZER=false';
-const actionSanitizer = (action) => {
-  if (!action.payload) return action;
-
-  return includes(sanitizedActions, action.type)
-    ? { ...action, payload: sanitizedPayload }
-    : action;
+const samples = getSamples();
+const unlockedSamples = getUnlockedSamples();
+const timeSignatures = getTimeSignatures(t);
+const sample = samples[0] as Sample;
+const timeSig = timeSignatures[0] as TimeSig;
+const initialState = {
+  beats,
+  static: {
+    sliderMin: 0,
+    sliderMax: 90,
+    sliderStep: 5,
+    stepsInBar: 360 / 5,
+    midiNoteMin: 8,
+    midiNoteMax: 64,
+    midiBarTicks: 512,
+    reviewMinutes: 2,
+    loadTime: Date.now(),
+  },
+  global: {
+    developerMode: false,
+    unlockedSamples,
+    sliders: {
+      hihat: 0,
+      snare: 0,
+      kick: 0,
+    },
+    ui: {
+      showAds: true,
+      isPlaying: false,
+      isRecording: false,
+      useBPM: 100,
+      useSample: sample,
+      useTimeSig: {
+        hihat: timeSig.value,
+        snare: timeSig.value,
+        kick: timeSig.value,
+      },
+    },
+  },
 };
 
-const stateSanitizer = (state) => {
-  if (get(ENV, 'REDUX.STATE_LOG')) console.log(state);
-  if (!state) return state;
-
-  return {
-    ...state,
-  };
-};
-
-function promiseMiddleware({ dispatch }) {
-  return (next) => (action) => {
+function promiseMiddleware({ dispatch }: { dispatch : any }) {
+  return (next: (arg0: any) => any) => (action: { payload: Promise<any>; type: any; }) => {
     if (action.payload && isPromise(action.payload)) {
       action.payload
-        .then((payload) => {
+        .then((payload: any) => {
           dispatch({
             type: `${action.type}_FULFILLED`,
             payload,
           });
         })
-        .catch((e) => {
+        .catch((e: { status: any; name: any; message: any; }) => {
           console.error(
             `REDUX: ${action.type}_REJECTED: statusCode = `,
             (e && e.status) || '',
@@ -69,40 +87,19 @@ function promiseMiddleware({ dispatch }) {
   };
 }
 
-export function chainActionsMiddleware(chainedActions) {
-  return ({ dispatch }) => (next) => (action) => {
-    let nextActions = chainedActions[action.type];
-    if (nextActions) {
-      nextActions = concat(nextActions);
-      forEach(nextActions, (nextAction) => {
-        if (isString(nextAction)) {
-          console.debug(`REDUX: dispatched chained action: ${nextAction}`);
-          dispatch({ type: nextAction });
-        } else {
-          console.debug(`REDUX: dispatched chained action: ${nextAction.type}`);
-          dispatch(nextAction(action));
-        }
-      });
-    }
+export const createStore = () => configureStore({
+  reducer: {
+    static: staticStoreReducer,
+    global: globalStoreReducer,
+    beats: beatsStoreReducer,
+  },
+  middleware: () => new Tuple(thunk, promiseMiddleware as any),
+  preloadedState: initialState,
+});
 
-    return next(action);
-  };
-}
+export const store = createStore();
 
-export const configureStore = (initialState: {} | Partial<ReduxState>) => {
-  const middleware = [thunk];
-  middleware.push(promiseMiddleware as any);
-  const sanitizers = get(ENV, 'REDUX.SANITIZER') !== false && { actionSanitizer, stateSanitizer };
-  const composeEnhancers = composeWithDevTools({ ...sanitizers, actionsDenylist } as any);
-  const middlewareApplier = composeEnhancers(applyMiddleware(...middleware as any) as any);
-
-  return createStore(
-    combineReducers({
-      static: staticStoreReducer,
-      global: globalStoreReducer,
-      beats: beatsStoreReducer,
-    }),
-    initialState as any,
-    middlewareApplier as any,
-  );
-};
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>;
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch;

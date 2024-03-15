@@ -7,7 +7,6 @@ import {
   View,
 } from 'react-native';
 import codePush from 'react-native-code-push';
-import { useDispatch, useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
 import Logo from '../../assets/icons/Logo';
 import Menu from '../../assets/icons/Menu';
@@ -19,16 +18,16 @@ import mainStyle from '../../styles/main';
 import notificationsStyle from '../../styles/notifications';
 import { codepush } from '../../tokens';
 import { deviceInfo } from '../../utils';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import Bottom from '../blocks/bottom/Bottom';
 import Circle from '../blocks/circle/Circle';
 import Alert from '../elements/misc/Alert';
-import type { ReduxState } from '../../types';
 
 function Home() {
   const { t } = useLocale();
-  const dispatch = useDispatch();
-  const developerMode: boolean = useSelector((state: ReduxState) => state.global.developerMode, isEqual);
-  const codepushEnvironment = useSelector(selectors.getCodepushEnvironment, isEqual);
+  const dispatch = useAppDispatch();
+  const developerMode: boolean = useAppSelector((state) => state.global.developerMode, isEqual);
+  const codepushEnvironment = useAppSelector(selectors.getCodepushEnvironment, isEqual);
   const [codepushSyncing, setCodepushSyncing] = useState(false);
   const isProduction = codepushEnvironment === 'Production';
 

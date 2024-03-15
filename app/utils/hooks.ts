@@ -3,8 +3,9 @@ import {
 } from 'react';
 import { RewardedAd } from 'react-native-google-mobile-ads';
 import InAppReview from 'react-native-in-app-review';
-import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import type { TypedUseSelectorHook } from 'react-redux';
+import { useLocation } from 'react-router-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   addMonths, minutesToMilliseconds, secondsToMilliseconds,
@@ -15,7 +16,7 @@ import { PortalContext } from '../context';
 import { selectors } from '../store/globalStore';
 import { localStorageKeys } from '../tokens';
 import { rewardedKeywords } from '../tokens/keywords';
-import type { ReduxState } from '../types';
+import type { AppDispatch, RootState } from '../store';
 
 export const getItem = async (key: string): Promise<any> => {
   try {
@@ -43,27 +44,25 @@ export const removeItem = async (key: string) => {
   }
 };
 
-export const useLocalStorage = (): {
-  getItem: Function,
-  setItem: Function,
-  removeItem: Function,
-} => ({
+export const localStorage = {
   getItem,
   setItem,
   removeItem,
-});
+};
+
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export const useReview = () => {
   const { loadTime, reviewMinutes, hasUnlockedSample }: {
     loadTime: number,
     reviewMinutes: number,
     hasUnlockedSample: boolean,
-  } = useSelector((state: ReduxState) => ({
+  } = useAppSelector((state) => ({
     loadTime: state.static.loadTime,
     reviewMinutes: state.static.reviewMinutes,
     hasUnlockedSample: selectors.hasUnlockedSample(state),
   }), isEqual);
-  const localStorage = useLocalStorage();
   const isAvailable = InAppReview.isAvailable();
 
   const handleReview = async () => {

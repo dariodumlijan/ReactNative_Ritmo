@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
 export const PortalContext = createContext({
-  teleport: (element) => element,
+  teleport: (element: any) => element,
   close: () => {},
 });

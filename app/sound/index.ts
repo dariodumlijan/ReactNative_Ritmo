@@ -1,5 +1,5 @@
 import Sound from 'react-native-sound';
-import { forEach } from 'lodash';
+import { forEach, get } from 'lodash';
 import type { Beat, Beats } from './beats';
 import type { Sample } from '../utils/lists';
 
@@ -34,7 +34,7 @@ export const playBeat = (props: Props) => {
     }
   };
 
-  const loopThroughBeats = () => forEach(soundBeats, (beatArray, key: string) => play(beatArray, props.sample[`${key}Sound`]));
+  const loopThroughBeats = () => forEach(soundBeats, (beatArray, key: string) => play(beatArray, get(props.sample, `${key}Sound` as string)));
 
   loopThroughBeats();
   intervalID = setInterval(loopThroughBeats, props.bpmInterval);
@@ -43,7 +43,7 @@ export const playBeat = (props: Props) => {
 export const stopBeat = () => {
   const stop = (beatArray: Beat[]) => {
     forEach(beatArray, (beat: Beat) => {
-      clearTimeout(beat.soundKey as NodeJS.Timeout);
+      clearTimeout(beat.soundKey);
       beat.soundKey = null;
     });
   };

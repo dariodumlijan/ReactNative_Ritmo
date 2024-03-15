@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Keyboard, Modal, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
 import useLocale from '../../../locales';
 import { selectors as beatSelectors } from '../../../store/beatsStore';
@@ -10,7 +9,7 @@ import { actions, selectors as globalSelectors } from '../../../store/globalStor
 import { selectors as staticSelectors } from '../../../store/staticStore';
 import colors from '../../../styles/colors';
 import modalsStyle from '../../../styles/modals';
-import { useTeleport } from '../../../utils/hooks';
+import { useAppDispatch, useAppSelector, useTeleport } from '../../../utils/hooks';
 import type { Beats } from '../../../sound/beats';
 import type { UI } from '../../../store/globalStore';
 import type { State as StaticState } from '../../../store/staticStore';
@@ -18,10 +17,10 @@ import type { State as StaticState } from '../../../store/staticStore';
 function ExportMidiModal() {
   const { t } = useLocale();
   const { close } = useTeleport();
-  const dispatch = useDispatch();
-  const staticState: StaticState = useSelector(staticSelectors.getStatic, isEqual);
-  const globalUI: UI = useSelector(globalSelectors.getUI, isEqual);
-  const beats: Beats = useSelector(beatSelectors.getBeats, isEqual);
+  const dispatch = useAppDispatch();
+  const staticState: StaticState = useAppSelector(staticSelectors.getStatic, isEqual);
+  const globalUI: UI = useAppSelector(globalSelectors.getUI, isEqual);
+  const beats: Beats = useAppSelector(beatSelectors.getBeats, isEqual);
   const [fileName, setFileName] = useState('Ritmo_MIDI');
 
   const nameMidiFile = (value: any) => setFileName(value.toString());

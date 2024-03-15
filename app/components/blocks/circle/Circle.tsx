@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { secondsToMilliseconds } from 'date-fns';
 import { isEqual, map } from 'lodash';
 import Pause from '../../../assets/icons/Pause';
@@ -19,23 +18,22 @@ import circleStyle from '../../../styles/circle';
 import colors from '../../../styles/colors';
 import { checkboxStyle } from '../../../styles/inputs';
 import notificationsStyle from '../../../styles/notifications';
+import { calcBpmInterval, calcPulseInterval, isBeatEmpty } from '../../../utils';
 import {
-  calcBpmInterval,
-  calcPulseInterval,
-  isBeatEmpty,
-} from '../../../utils';
-import { useReview, useTeleport } from '../../../utils/hooks';
+  useAppDispatch, useAppSelector, useReview, useTeleport,
+} from '../../../utils/hooks';
 import Alert from '../../elements/misc/Alert';
 import type { Beat, Beats } from '../../../sound/beats';
 import type { UI } from '../../../store/globalStore';
+import type { SoundKey } from '../../../types';
 
 function Circle() {
   const { t } = useLocale();
   const { teleport } = useTeleport();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const reviewApp = useReview();
-  const global: UI = useSelector(globalSelectors.getUI, isEqual);
-  const beats: Beats = useSelector(beatSelectors.getBeats, isEqual);
+  const global: UI = useAppSelector(globalSelectors.getUI, isEqual);
+  const beats: Beats = useAppSelector(beatSelectors.getBeats, isEqual);
   const [circleRadius, setCircleRadius] = useState({ hihat: 0, snare: 0, kick: 0 });
   const beatlineAnimation = useRef(new Animated.Value(0)).current;
   const pulseAnimation = useRef(new Animated.Value(1)).current;
@@ -124,7 +122,7 @@ function Circle() {
     reviewApp();
   };
 
-  const handleCheckbox = (key: string, index: number, checked: boolean) => {
+  const handleCheckbox = (key: SoundKey, index: number, checked: boolean) => {
     dispatch(beatActions.toggleCheckbox({ key, index, checked }));
   };
 
@@ -142,7 +140,7 @@ function Circle() {
         ]}
       />
 
-      {map(circleRadius, (_val, key) => (
+      {map(circleRadius, (_val: number, key: SoundKey) => (
         map(beats[key], (beat: Beat, beatKey: number) => (
           <React.Fragment key={beatKey}>
             {beat.visible && (
@@ -172,7 +170,7 @@ function Circle() {
         ))),
       )}
 
-      {map(circleRadius, (_val, key) => (
+      {map(circleRadius, (_val:number, key: SoundKey) => (
         <View
           key={key}
           style={{ ...circleStyle.circle, ...circleStyle[key] }}
