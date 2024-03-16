@@ -37,4 +37,4 @@ The app has an adjustable BPM, a selection of different time signatures and mult
 
 ###### Copyright
 
-© 2023 Chimera Studio
+© 2024 Chimera Studio

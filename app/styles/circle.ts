@@ -1,0 +1,71 @@
+import { StyleSheet } from 'react-native';
+import colors from './colors';
+import { deviceWidth, isTablet } from '../utils';
+
+const circleRad = deviceWidth / 2;
+const circleStyle = StyleSheet.create({
+  wrapper: {
+    alignItems: 'center',
+    aspectRatio: 1 / 1,
+    display: 'flex',
+    height: isTablet ? '70%' : null,
+    justifyContent: 'center',
+    marginBottom: '12%',
+    marginTop: isTablet ? '6%' : '4%',
+    width: isTablet ? null : '95%',
+  },
+  circle: {
+    alignItems: 'center',
+    aspectRatio: 1 / 1,
+    borderColor: colors.white,
+    borderRadius: circleRad,
+    borderWidth: 5,
+    display: 'flex',
+    justifyContent: 'center',
+    position: 'absolute',
+  },
+  hihat: {
+    width: '100%',
+    zIndex: 1,
+  },
+  snare: {
+    width: '78%',
+    zIndex: 2,
+  },
+  kick: {
+    width: '56%',
+    zIndex: 3,
+  },
+  beatline: {
+    backgroundColor: colors.primary,
+    height: '50%',
+    position: 'absolute',
+    width: 10,
+  },
+  btnWrapper: {
+    alignItems: 'center',
+    aspectRatio: 1 / 1,
+    borderRadius: circleRad,
+    display: 'flex',
+    justifyContent: 'center',
+    position: 'absolute',
+    width: '25%',
+    zIndex: 4,
+  },
+  btnAnimated: {
+    alignItems: 'center',
+    aspectRatio: 1 / 1,
+    backgroundColor: colors.primary,
+    borderRadius: circleRad,
+    display: 'flex',
+    justifyContent: 'center',
+    padding: 25,
+    width: '100%',
+  },
+  btnIcon: {
+    aspectRatio: 1 / 1,
+    width: isTablet ? '60%' : '100%',
+  },
+});
+
+export default circleStyle;

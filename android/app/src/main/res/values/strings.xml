@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <resources>
   <string name="app_name">Ritmo</string>
-  <string moduleConfig="true" name="CodePushDeploymentKey">_E6pPExPbuekfs8--1P1KXx0_9PCdp9lfNFHw</string>
 </resources>
