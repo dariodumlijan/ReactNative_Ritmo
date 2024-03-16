@@ -1,3 +1,5 @@
+![feature_graphic](.github/docs/feature_graphic.png)
+
 # Ritmo - Beatmaking Redefined
 
 ### Create better beats & rhythms
@@ -8,6 +10,12 @@
 
 -   [Google Play Store](https://play.google.com/store/apps/details?id=com.chimerastudio.ritmo)
 -   [App Store](https://apps.apple.com/us/app/ritmo-beatmaking-redefined/id1562582519)
+
+<!-- Hack to display images in a grid -->
+| | | |
+|-|-|-|
+| ![screen_1](.github/docs/screen_1.png) | ![screen_2](.github/docs/screen_2.png) | ![screen_3](.github/docs/screen_3.png)
+| | | |
 
 ### A new fresh way to visualise beats and rhythms as well as create them. With Ritmo, creating exciting, different more complex beats is super easy.
 
