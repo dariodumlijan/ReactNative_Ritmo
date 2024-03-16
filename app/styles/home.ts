@@ -53,10 +53,11 @@ const homeStyle = StyleSheet.create({
     marginTop: isTablet ? 40 : 20,
   },
   appEnvironmentText: {
+    color: colors.primaryDark,
     fontFamily: 'Montserrat-SemiBold',
     fontSize: isTablet ? 14 : 12,
-    paddingVertical: 8,
     paddingHorizontal: 14,
+    paddingVertical: 8,
   },
 });
 

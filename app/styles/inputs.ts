@@ -348,6 +348,7 @@ export const textInputStyle = StyleSheet.create({
     fontFamily: 'Montserrat-SemiBold',
     fontSize: 20,
     height: 40,
+    padding: 0,
     textAlign: 'center',
     textTransform: 'uppercase',
     width: 120,

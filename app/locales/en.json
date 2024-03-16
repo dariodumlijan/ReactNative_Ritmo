@@ -88,10 +88,6 @@
     "cta": "Watch the Ad",
     "disclamer": "If no Advert is shown come back a bit later"
   },
-  "announcement": {
-    "title": "Attention!",
-    "cta": "Okay"
-  },
   "modal": {
     "midi": {
       "label": "MIDI file name:",
@@ -116,11 +112,6 @@
       "Staging": "Production"
     },
     "developer": "Developer mode turned on!"
-  },
-  "error": {
-    "title": "Attention!",
-    "text": "The new version of Ritmo requires internet to download all of the latest features.\n\nPlease make sure you are connected and try again.\n\n*You only need internet to download the latest features once afterwards, you can use the app offline if you wish to do so.",
-    "cta": "Try Again"
   },
   "guide": {
     "title": "How to use Ritmo",

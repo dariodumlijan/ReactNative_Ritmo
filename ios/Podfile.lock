@@ -1070,15 +1070,15 @@ PODS:
     - React-jsi (= 0.73.6)
     - React-logger (= 0.73.6)
     - React-perflogger (= 0.73.6)
-  - RNCAsyncStorage (1.22.2):
+  - RNCAsyncStorage (1.22.3):
     - React-Core
   - RNCClipboard (1.13.2):
     - React-Core
-  - RNDeviceInfo (10.13.0):
+  - RNDeviceInfo (10.13.1):
     - React-Core
   - RNFS (2.20.0):
     - React-Core
-  - RNGoogleMobileAds (13.0.1):
+  - RNGoogleMobileAds (13.0.2):
     - glog
     - Google-Mobile-Ads-SDK (= 11.0.1)
     - GoogleUserMessagingPlatform (= 2.2.0)
@@ -1091,7 +1091,7 @@ PODS:
     - RNSound/Core (= 0.11.2)
   - RNSound/Core (0.11.2):
     - React-Core
-  - RNSVG (14.1.0):
+  - RNSVG (15.1.0):
     - React-Core
   - SocketRocket (0.6.1)
   - SSZipArchive (2.2.3)
@@ -1354,14 +1354,14 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 9636eee762c699ca7c85751a359101797e4c8b3b
   React-utils: d16c1d2251c088ad817996621947d0ac8167b46c
   ReactCommon: 2aa35648354bd4c4665b9a5084a7d37097b89c10
-  RNCAsyncStorage: 014a78b2cc8cc107c9e92ee428dc0c1ac3223416
+  RNCAsyncStorage: 10591b9e0a91eaffee14e69b3721009759235125
   RNCClipboard: 60fed4b71560d7bfe40e9d35dea9762b024da86d
-  RNDeviceInfo: 5e4695f906aeb624855cee8d568a46037e4a50f7
+  RNDeviceInfo: 4f9c7cfd6b9db1b05eb919620a001cf35b536423
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGoogleMobileAds: 9206bdd9ae39163d4d46477fbb56a3ae863de0f7
+  RNGoogleMobileAds: 5b93e2b1f0dade2184fd7f8999d8197903f563db
   RNShare: 859ff710211285676b0bcedd156c12437ea1d564
   RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
-  RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
+  RNSVG: 50cf2c7018e57cf5d3522d98d0a3a4dd6bf9d093
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: 805bf71192903b20fc14babe48080582fee65a80

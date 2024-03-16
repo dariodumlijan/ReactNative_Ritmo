@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Modal,
   SafeAreaView,
+  ScrollView,
   Text,
   TouchableOpacity,
   View,
@@ -47,36 +48,43 @@ function Home() {
   };
 
   return (
-    <SafeAreaView style={homeStyle.wrapper}>
-      <View style={homeStyle.topWrapper}>
-        <View style={homeStyle.topWrapperBG}>
-          <View style={homeStyle.navigation}>
-            <Logo style={homeStyle.logo} fill={colors.gray} />
-            {developerMode && (
+    <ScrollView
+      style={{ flex: 1 }}
+      contentContainerStyle={mainStyle.scrollDeviceContainer}
+      showsVerticalScrollIndicator={false}
+      bounces={false}
+    >
+      <SafeAreaView style={homeStyle.wrapper}>
+        <View style={homeStyle.topWrapper}>
+          <View style={homeStyle.topWrapperBG}>
+            <View style={homeStyle.navigation}>
+              <Logo style={homeStyle.logo} fill={colors.gray} />
+              {developerMode && (
               <TouchableOpacity style={homeStyle.appEnvironment} activeOpacity={0.8} onPress={handleAppEnvironment}>
                 <Text style={homeStyle.appEnvironmentText}>{codepushEnvironment}</Text>
               </TouchableOpacity>
-            )}
-            <TouchableOpacity activeOpacity={0.8} onPress={handleOpenNav}>
-              <Menu style={homeStyle.menu} />
-            </TouchableOpacity>
+              )}
+              <TouchableOpacity activeOpacity={0.8} onPress={handleOpenNav}>
+                <Menu style={homeStyle.menu} />
+              </TouchableOpacity>
+            </View>
+            <Circle />
           </View>
-          <Circle />
         </View>
-      </View>
-      <Bottom />
-      <View style={mainStyle.adSpace} />
+        <Bottom />
+        <View style={mainStyle.adSpace} />
 
-      <Modal animationType="fade" visible={codepushSyncing} transparent>
-        <Alert>
-          <Text style={[notificationsStyle.alertText, { fontSize: 14 }]}>
-            {t('alert.codepush_syncing.text_1')}
-            {t('alert.codepush_syncing.' + codepushEnvironment)}
-            {t('alert.codepush_syncing.text_2')}
-          </Text>
-        </Alert>
-      </Modal>
-    </SafeAreaView>
+        <Modal animationType="fade" visible={codepushSyncing} transparent>
+          <Alert>
+            <Text style={[notificationsStyle.alertText, { fontSize: 14 }]}>
+              {t('alert.codepush_syncing.text_1')}
+              {t('alert.codepush_syncing.' + codepushEnvironment)}
+              {t('alert.codepush_syncing.text_2')}
+            </Text>
+          </Alert>
+        </Modal>
+      </SafeAreaView>
+    </ScrollView>
   );
 }
 

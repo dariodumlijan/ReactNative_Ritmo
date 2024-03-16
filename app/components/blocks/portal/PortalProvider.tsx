@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { PortalContext } from '../../../context';
 
 type Props = {
@@ -6,14 +6,15 @@ type Props = {
 };
 
 function PortalProvider({ children }: Props) {
-  const [component, setComponent] = useState<any>(null);
+  const [component, setComponent] = useState<JSX.Element | null>(null);
 
   const teleport = (element: any) => setComponent(element);
   const close = () => setComponent(null);
 
+  const options = useMemo(() => ({ teleport, close }), []);
+
   return (
-    // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <PortalContext.Provider value={{ teleport, close }}>
+    <PortalContext.Provider value={options}>
       {component}
       {children}
     </PortalContext.Provider>

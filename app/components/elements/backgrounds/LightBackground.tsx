@@ -3,10 +3,9 @@ import { StyleSheet, View } from 'react-native';
 import Logo from '../../../assets/icons/Logo';
 import colors from '../../../styles/colors';
 import { deviceHeight, deviceWidth, isiPhone } from '../../../utils';
-import type { LocationInfo } from '../../../utils/hooks';
 
 type Props = {
-  locationInfo?: LocationInfo
+  hideLogo?: boolean
 };
 
 const styles = StyleSheet.create({
@@ -43,9 +42,7 @@ const styles = StyleSheet.create({
 function LightBackground(props: Props) {
   return (
     <View style={styles.backgroundWrapper}>
-      {!props.locationInfo?.isStateTree && (
-      <Logo style={styles.menuLogo} fill={colors.grayBlue} />
-      )}
+      {!props.hideLogo && (<Logo style={styles.menuLogo} fill={colors.grayBlue} />)}
     </View>
   );
 }

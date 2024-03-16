@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  SafeAreaView, StyleSheet, Text, TouchableOpacity, View,
+  SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
 import CodePush from 'react-native-code-push';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -95,41 +95,40 @@ class ErrorBoundary extends React.Component<Props, State> {
   };
 
   override render() {
-    if (this.state.hasError) {
-      return (
-        <View style={styles.container}>
-          <LightBackground />
-          <SafeAreaView style={styles.safe}>
-            <Text style={styles.title}>Oops...</Text>
-            <Text style={styles.text}>
-              It seems you encountered an error while using the app. Sorry about that.{' '}
-              <Emoji style={styles.emoji} fill={colors.primaryDark} />
-            </Text>
-            <Text style={styles.text}>
-              We are working hard to fix it and we ask for your patients, but if it happens again you can contact the team directly at:
-            </Text>
-            <Text
-              selectable
-              style={[styles.text, { color: colors.primaryDark, marginTop: -10 }]}
-            >
-              chimerastudiotm@gmail.com
-            </Text>
-            <Text style={styles.text}>
-              You can reopen the app manually or by pressing the button below.
-            </Text>
-            <TouchableOpacity
-              style={styles.button}
-              activeOpacity={0.6}
-              onPress={this.handleRestart}
-            >
-              <Text style={styles.buttonText}>Restart the App</Text>
-            </TouchableOpacity>
-          </SafeAreaView>
-        </View>
-      );
-    }
+    if (!this.state.hasError) return this.props.children;
 
-    return this.props.children;
+    return (
+      <View style={styles.container}>
+        <StatusBar hidden />
+        <LightBackground hideLogo />
+        <SafeAreaView style={styles.safe}>
+          <Text style={styles.title}>Oops...</Text>
+          <Text style={styles.text}>
+            It seems you encountered an error while using the app. Sorry about that.{' '}
+            <Emoji style={styles.emoji} fill={colors.primaryDark} />
+          </Text>
+          <Text style={styles.text}>
+            We are working hard to fix it and we ask for your patients, but if it happens again you can contact the team directly at:
+          </Text>
+          <Text
+            selectable
+            style={[styles.text, { color: colors.primaryDark, marginTop: -10 }]}
+          >
+            chimerastudiotm@gmail.com
+          </Text>
+          <Text style={styles.text}>
+            You can reopen the app manually or by pressing the button below.
+          </Text>
+          <TouchableOpacity
+            style={styles.button}
+            activeOpacity={0.6}
+            onPress={this.handleRestart}
+          >
+            <Text style={styles.buttonText}>Restart the App</Text>
+          </TouchableOpacity>
+        </SafeAreaView>
+      </View>
+    );
   }
 }
 

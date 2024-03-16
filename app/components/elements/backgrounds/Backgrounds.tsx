@@ -9,7 +9,7 @@ function Backgrounds() {
   if (locationInfo.isHome) return <SplitBackground />;
   if (locationInfo.isRewarded) return <DarkBackground />;
 
-  return <LightBackground locationInfo={locationInfo} />;
+  return <LightBackground hideLogo={locationInfo.isStateTree} />;
 }
 
 export default Backgrounds;

@@ -44,7 +44,8 @@ export function Guide() {
   const [secretDeviceIdTap, setSecretDeviceIdTap] = useState(0);
 
   const handleDeveloperModeToggle = () => {
-    if (secretDeviceIdTap === 7) {
+    const tapCount = secretDeviceIdTap + 1;
+    if (tapCount === 7) {
       dispatch(actions.toggleDeveloperMode(true));
       teleport(
         <Alert clearDelayMS={secondsToMilliseconds(5)}>
@@ -57,7 +58,7 @@ export function Guide() {
       return;
     }
 
-    setSecretDeviceIdTap(secretDeviceIdTap + 1);
+    setSecretDeviceIdTap(tapCount);
   };
 
   return (
