@@ -109,10 +109,7 @@ function Circle() {
       return;
     }
 
-    dispatch(beatActions.playBeat({
-      useSample: global.useSample,
-      bpmInterval: calcBpmInterval(global.useBPM),
-    }));
+    dispatch(beatActions.playBeat(calcBpmInterval(global.useBPM)));
 
     handleAnimations();
   };

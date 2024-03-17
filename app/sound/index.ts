@@ -1,57 +1,113 @@
+/* eslint-disable @typescript-eslint/lines-between-class-members */
 import Sound from 'react-native-sound';
-import { forEach, get } from 'lodash';
+import { filter, keyBy } from 'lodash';
+import { sliderStep } from '../tokens';
 import type { Beat, Beats } from './beats';
 import type { Sample } from '../utils/lists';
 
+export type PlaybackSounds = {
+  hihat: Sound | null,
+  snare: Sound | null,
+  kick: Sound | null,
+};
+
+type PlaybackBeats = {
+  hihat: { [angle: number]: Beat },
+  snare: { [angle: number]: Beat },
+  kick: { [angle: number]: Beat },
+};
+
 type Props = {
-  bpmInterval: number,
-  sample: Sample,
   beats: Beats,
+  bpmInterval: number,
 };
 
-let intervalID: any = null;
-let soundBeats: any = null;
+export default class Playback {
+  sounds: PlaybackSounds;
+  beats: PlaybackBeats | null;
+  intervalId: number | null;
+  timeoutIds: number[];
 
-export const playBeat = (props: Props) => {
-  soundBeats = { ...props.beats };
+  constructor() {
+    this.sounds = {
+      hihat: null,
+      snare: null,
+      kick: null,
+    };
+    this.beats = null;
+    this.intervalId = null;
+    this.timeoutIds = [];
+  }
 
-  const play = (beatArray: Beat[], soundPath: string) => {
-    for (let index = 0; index < beatArray.length; index++) {
-      const beat: Beat = beatArray[index] as Beat;
-      if (beat.checked) {
-        beat.soundKey = setTimeout(() => {
-          const sound = new Sound(soundPath, Sound.MAIN_BUNDLE, (error) => {
-            if (error) return;
+  initSound = (soundPath: string): Sound => {
+    const sound = new Sound(soundPath, Sound.MAIN_BUNDLE, (error) => {
+      if (error) return;
 
-            sound.setVolume(0.8);
-            sound.play((success) => {
-              if (success) sound.release();
-              else /* Playback Fail */;
-            });
-          });
-        }, beat.soundDelay);
-      }
-    }
-  };
-
-  const loopThroughBeats = () => forEach(soundBeats, (beatArray, key: string) => play(beatArray, get(props.sample, `${key}Sound` as string)));
-
-  loopThroughBeats();
-  intervalID = setInterval(loopThroughBeats, props.bpmInterval);
-};
-
-export const stopBeat = () => {
-  const stop = (beatArray: Beat[]) => {
-    forEach(beatArray, (beat: Beat) => {
-      clearTimeout(beat.soundKey);
-      beat.soundKey = null;
+      sound.setVolume(0.8);
     });
+
+    return sound;
   };
 
-  clearInterval(intervalID);
-  forEach(soundBeats, (beatArray) => stop(beatArray));
-};
+  initSample = (sample: Sample) => {
+    this.sounds.hihat = this.initSound(sample.hihatSound);
+    this.sounds.snare = this.initSound(sample.snareSound);
+    this.sounds.kick = this.initSound(sample.kickSound);
+  };
 
-export const updateBeat = (beats: Beats) => {
-  soundBeats = { ...beats };
-};
+  switchSample = (sample: Sample) => {
+    this.sounds.hihat?.release();
+    this.sounds.snare?.release();
+    this.sounds.kick?.release();
+    this.initSample(sample);
+  };
+
+  formatBeats = (beats: Beats): PlaybackBeats => ({
+    hihat: keyBy(filter(beats.hihat, 'checked'), 'angle'),
+    snare: keyBy(filter(beats.snare, 'checked'), 'angle'),
+    kick: keyBy(filter(beats.kick, 'checked'), 'angle'),
+  });
+
+  /**
+  * Loop through time (by BPM Interval / (360deg / sliderStep)), on each loop check if there is a sound which Angle matches the tick and then play it
+  * */
+  playBeat = (props: Props) => {
+    this.beats = this.formatBeats(props.beats);
+    const delayDegStep = props.bpmInterval / 360;
+
+    const loop = () => {
+      for (let deg = 0; deg < 360; deg += sliderStep) {
+        this.timeoutIds.push(setTimeout(() => {
+          if (this.beats?.hihat[deg]) {
+            this.sounds.hihat?.stop();
+            this.sounds.hihat?.play();
+          }
+          if (this.beats?.snare[deg]) {
+            this.sounds.snare?.stop();
+            this.sounds.snare?.play();
+          }
+          if (this.beats?.kick[deg]) {
+            this.sounds.kick?.stop();
+            this.sounds.kick?.play();
+          }
+        }, delayDegStep * (deg || 1)));
+      }
+    };
+
+    loop();
+    this.intervalId = setInterval(() => loop(), props.bpmInterval);
+  };
+
+  stopBeat = () => {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+    this.timeoutIds.forEach(timeoutId => clearTimeout(timeoutId));
+    this.timeoutIds = [];
+  };
+
+  updateBeat = (beats: Beats) => {
+    this.beats = this.formatBeats(beats);
+  };
+}

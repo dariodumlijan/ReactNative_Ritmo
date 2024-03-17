@@ -5,7 +5,9 @@ import { reducer as beatsStoreReducer } from './beatsStore';
 import { reducer as globalStoreReducer } from './globalStore';
 import { reducer as staticStoreReducer } from './staticStore';
 import { t } from '../locales';
+import Playback from '../sound';
 import beats from '../sound/beats';
+import { sliderStep } from '../tokens';
 import { isPromise } from '../utils';
 import { getSamples, getTimeSignatures, getUnlockedSamples } from '../utils/lists';
 import type { Sample, TimeSig } from '../utils/lists';
@@ -15,13 +17,19 @@ const unlockedSamples = getUnlockedSamples();
 const timeSignatures = getTimeSignatures(t);
 const sample = samples[0] as Sample;
 const timeSig = timeSignatures[0] as TimeSig;
+const playback = new Playback();
+playback.initSample(sample);
+
 const initialState = {
-  beats,
+  beats: {
+    beats,
+    playback,
+  },
   static: {
     sliderMin: 0,
     sliderMax: 90,
-    sliderStep: 5,
-    stepsInBar: 360 / 5,
+    sliderStep,
+    stepsInBar: 360 / sliderStep,
     midiNoteMin: 8,
     midiNoteMax: 64,
     midiBarTicks: 512,

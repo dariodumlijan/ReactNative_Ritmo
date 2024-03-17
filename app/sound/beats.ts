@@ -1,11 +1,7 @@
-import { calcSoundDelay } from '../utils';
-
 export type Beat = {
   angle: number,
   checked: boolean,
   initAngle: number,
-  soundDelay: number,
-  soundKey: any,
   timeSig: string,
   visible: boolean,
 };
@@ -16,25 +12,6 @@ export type Beats = {
   kick: Beat[],
 };
 
-const initDelays = {
-  0: calcSoundDelay(0),
-  30: calcSoundDelay(30),
-  45: calcSoundDelay(45),
-  60: calcSoundDelay(60),
-  90: calcSoundDelay(90),
-  120: calcSoundDelay(120),
-  135: calcSoundDelay(135),
-  150: calcSoundDelay(150),
-  180: calcSoundDelay(180),
-  210: calcSoundDelay(210),
-  225: calcSoundDelay(225),
-  240: calcSoundDelay(240),
-  270: calcSoundDelay(270),
-  300: calcSoundDelay(300),
-  315: calcSoundDelay(315),
-  330: calcSoundDelay(330),
-};
-
 const initBeat: Beat[] = [
   {
     checked: false,
@@ -42,8 +19,6 @@ const initBeat: Beat[] = [
     visible: true,
     angle: 0,
     initAngle: 0,
-    soundDelay: initDelays[0],
-    soundKey: null,
   },
   {
     checked: false,
@@ -51,8 +26,6 @@ const initBeat: Beat[] = [
     visible: true,
     angle: 30,
     initAngle: 30,
-    soundDelay: initDelays[30],
-    soundKey: null,
   },
   {
     checked: false,
@@ -60,8 +33,6 @@ const initBeat: Beat[] = [
     visible: true,
     angle: 45,
     initAngle: 45,
-    soundDelay: initDelays[45],
-    soundKey: null,
   },
   {
     checked: false,
@@ -69,8 +40,6 @@ const initBeat: Beat[] = [
     visible: true,
     angle: 60,
     initAngle: 60,
-    soundDelay: initDelays[60],
-    soundKey: null,
   },
   {
     checked: false,
@@ -78,8 +47,6 @@ const initBeat: Beat[] = [
     visible: true,
     angle: 90,
     initAngle: 90,
-    soundDelay: initDelays[90],
-    soundKey: null,
   },
   {
     checked: false,
@@ -87,8 +54,6 @@ const initBeat: Beat[] = [
     visible: true,
     angle: 120,
     initAngle: 120,
-    soundDelay: initDelays[120],
-    soundKey: null,
   },
   {
     checked: false,
@@ -96,8 +61,6 @@ const initBeat: Beat[] = [
     visible: true,
     angle: 135,
     initAngle: 135,
-    soundDelay: initDelays[135],
-    soundKey: null,
   },
   {
     checked: false,
@@ -105,8 +68,6 @@ const initBeat: Beat[] = [
     visible: true,
     angle: 150,
     initAngle: 150,
-    soundDelay: initDelays[150],
-    soundKey: null,
   },
   {
     checked: false,
@@ -114,8 +75,6 @@ const initBeat: Beat[] = [
     visible: true,
     angle: 180,
     initAngle: 180,
-    soundDelay: initDelays[180],
-    soundKey: null,
   },
   {
     checked: false,
@@ -123,8 +82,6 @@ const initBeat: Beat[] = [
     visible: true,
     angle: 210,
     initAngle: 210,
-    soundDelay: initDelays[210],
-    soundKey: null,
   },
   {
     checked: false,
@@ -132,8 +89,6 @@ const initBeat: Beat[] = [
     visible: true,
     angle: 225,
     initAngle: 225,
-    soundDelay: initDelays[225],
-    soundKey: null,
   },
   {
     checked: false,
@@ -141,8 +96,6 @@ const initBeat: Beat[] = [
     visible: true,
     angle: 240,
     initAngle: 240,
-    soundDelay: initDelays[240],
-    soundKey: null,
   },
   {
     checked: false,
@@ -150,8 +103,6 @@ const initBeat: Beat[] = [
     visible: true,
     angle: 270,
     initAngle: 270,
-    soundDelay: initDelays[270],
-    soundKey: null,
   },
   {
     checked: false,
@@ -159,8 +110,6 @@ const initBeat: Beat[] = [
     visible: true,
     angle: 300,
     initAngle: 300,
-    soundDelay: initDelays[300],
-    soundKey: null,
   },
   {
     checked: false,
@@ -168,8 +117,6 @@ const initBeat: Beat[] = [
     visible: true,
     angle: 315,
     initAngle: 315,
-    soundDelay: initDelays[315],
-    soundKey: null,
   },
   {
     checked: false,
@@ -177,8 +124,6 @@ const initBeat: Beat[] = [
     visible: true,
     angle: 330,
     initAngle: 330,
-    soundDelay: initDelays[330],
-    soundKey: null,
   },
 ];
 

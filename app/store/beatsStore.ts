@@ -1,10 +1,9 @@
 import { get, map } from 'lodash';
 import { GlobalTypes } from './globalStore';
-import * as Sound from '../sound';
 import initBeats from '../sound/beats';
-import { calcSoundDelay } from '../utils';
 import type { RootState } from '.';
 import type { TimeSignaturePayload } from './globalStore';
+import type Playback from '../sound';
 import type { Beat, Beats } from '../sound/beats';
 import type { ReduxAction, SoundKey } from '../types';
 import type { Sample } from '../utils/lists';
@@ -21,12 +20,10 @@ type PayloadCheckbox = {
   checked: boolean,
 };
 
-type PayloadPlay = {
-  useSample: Sample,
-  bpmInterval: number,
+type State = {
+  beats: Beats
+  playback: Playback,
 };
-
-type State = Beats;
 
 export enum BeatTypes {
   BT_ROTATE_BEAT = 'BT/ROTATE_BEAT',
@@ -38,7 +35,7 @@ export enum BeatTypes {
 }
 
 export const selectors = {
-  getBeats: (state: RootState): State => state.beats,
+  getBeats: (state: RootState): Beats => state.beats.beats,
 };
 
 export const actions = {
@@ -56,9 +53,9 @@ export const actions = {
     type: BeatTypes.BT_TOGGLE_CHECKBOX,
     payload,
   }),
-  playBeat: (payload: PayloadPlay): ReduxAction => ({
+  playBeat: (bpmInterval: number): ReduxAction => ({
     type: BeatTypes.BT_PLAY_BEAT,
-    payload,
+    payload: bpmInterval,
   }),
   pauseBeat: (): ReduxAction => ({
     type: BeatTypes.BT_PAUSE_BEAT,
@@ -66,45 +63,24 @@ export const actions = {
 };
 
 const rotateBeat = (state: State, payload: PayloadRotate): State => {
-  const newState = { ...state };
-  const newArray = get(newState, payload.key, []);
+  const newBeats = { ...state.beats };
+  const newArray = get(newBeats, payload.key, []);
 
   return {
     ...state,
-    [payload.key]: map(newArray, (beat: Beat) => ({
-      ...beat,
-      angle: beat.initAngle + payload.degree,
-      soundDelay: calcSoundDelay(
-        beat.initAngle,
-        payload.degree,
-        payload.useBPM,
-      ),
-    })),
+    beats: {
+      ...state.beats,
+      [payload.key]: map(newArray, (beat: Beat) => ({
+        ...beat,
+        angle: beat.initAngle + payload.degree,
+      })),
+    },
   };
-};
-
-const clearBeat = (state: State): State => {
-  const clearKey = (beats: Beat[]) => map(beats, (beat: Beat) => ({
-    ...beat,
-    checked: false,
-  }));
-
-  return {
-    hihat: clearKey(state.hihat),
-    snare: clearKey(state.snare),
-    kick: clearKey(state.kick),
-  };
-};
-
-const resetBeat = (): State => {
-  Sound.stopBeat();
-
-  return initBeats;
 };
 
 const toggleCheckbox = (state: State, payload: PayloadCheckbox): State => {
-  const newState = { ...state };
-  const array = map(newState[payload.key], (beat: Beat, index: number) => {
+  const newBeats = { ...state.beats };
+  const array = map(newBeats[payload.key], (beat: Beat, index: number) => {
     if (index === payload.index) {
       return {
         ...beat,
@@ -117,7 +93,10 @@ const toggleCheckbox = (state: State, payload: PayloadCheckbox): State => {
 
   return {
     ...state,
-    [payload.key]: array,
+    beats: {
+      ...state.beats,
+      [payload.key]: array,
+    },
   };
 };
 
@@ -134,29 +113,59 @@ const handleTimeSigUpdate = (state: State, payload: TimeSignaturePayload): State
   };
 
   return {
-    hihat: toggleVisibility(state.hihat, 'hihat'),
-    snare: toggleVisibility(state.snare, 'snare'),
-    kick: toggleVisibility(state.kick, 'kick'),
+    ...state,
+    beats: {
+      hihat: toggleVisibility(state.beats.hihat, 'hihat'),
+      snare: toggleVisibility(state.beats.snare, 'snare'),
+      kick: toggleVisibility(state.beats.kick, 'kick'),
+    },
   };
 };
 
-const playBeat = (state: State, payload: PayloadPlay): State => {
-  Sound.playBeat({
-    beats: state,
-    sample: payload.useSample,
-    bpmInterval: payload.bpmInterval,
-  });
+const updateSounds = (state: State, payload: { useSample: Sample }): State => {
+  state.playback.switchSample(payload.useSample);
+
+  return state;
+};
+
+const clearBeat = (state: State): State => {
+  const clearKey = (beats: Beat[]) => map(beats, (beat: Beat) => ({
+    ...beat,
+    checked: false,
+  }));
+
+  return {
+    ...state,
+    beats: {
+      hihat: clearKey(state.beats.hihat),
+      snare: clearKey(state.beats.snare),
+      kick: clearKey(state.beats.kick),
+    },
+  };
+};
+
+const resetBeat = (state: State): State => {
+  state.playback.stopBeat();
+
+  return {
+    ...state,
+    beats: initBeats,
+  };
+};
+
+const playBeat = (state: State, bpmInterval: number): State => {
+  state.playback.playBeat({ bpmInterval, beats: state.beats });
 
   return state;
 };
 
 const pauseBeat = (state: State): State => {
-  Sound.stopBeat();
+  state.playback.stopBeat();
 
   return state;
 };
 
-const handleBeatUpdate = (state: State, action: ReduxAction): State => {
+const updateBeat = (state: State, action: ReduxAction): State => {
   switch (action.type) {
     case BeatTypes.BT_ROTATE_BEAT:
       return rotateBeat(state, action.payload);
@@ -165,7 +174,7 @@ const handleBeatUpdate = (state: State, action: ReduxAction): State => {
     case BeatTypes.BT_TOGGLE_CHECKBOX:
       return toggleCheckbox(state, action.payload);
     case GlobalTypes.GB_LOAD_PRESET:
-      return action.payload.beat;
+      return { ...state, beats: action.payload.beat };
     case GlobalTypes.GB_UPDATE_TIME_SIG:
       return handleTimeSigUpdate(state, action.payload);
 
@@ -176,22 +185,25 @@ const handleBeatUpdate = (state: State, action: ReduxAction): State => {
 
 export const reducer = (state: any, action: ReduxAction) => {
   switch (action.type) {
+    case GlobalTypes.GB_UPDATE_SELECTED_SAMPLE:
+      return updateSounds(state, action.payload);
+
+    case BeatTypes.BT_RESET_BEAT:
+      return resetBeat(state);
+    case BeatTypes.BT_PLAY_BEAT:
+      return playBeat(state, action.payload);
+    case BeatTypes.BT_PAUSE_BEAT:
+      return pauseBeat(state);
+
     case BeatTypes.BT_ROTATE_BEAT:
     case BeatTypes.BT_CLEAR_BEAT:
     case BeatTypes.BT_TOGGLE_CHECKBOX:
     case GlobalTypes.GB_LOAD_PRESET:
     case GlobalTypes.GB_UPDATE_TIME_SIG:
-      const newState = handleBeatUpdate(state, action);
-      Sound.updateBeat(newState);
+      const newState = updateBeat(state, action);
+      newState.playback.updateBeat(newState.beats);
 
       return newState;
-
-    case BeatTypes.BT_RESET_BEAT:
-      return resetBeat();
-    case BeatTypes.BT_PLAY_BEAT:
-      return playBeat(state, action.payload);
-    case BeatTypes.BT_PAUSE_BEAT:
-      return pauseBeat(state);
 
     default:
       return state || {};

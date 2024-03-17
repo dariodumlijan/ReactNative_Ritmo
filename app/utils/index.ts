@@ -42,18 +42,6 @@ export const calcBpmInterval = (bpm: number): number => floor(240000 / bpm);
 
 export const calcPulseInterval = (bpmInterval: number): number => floor(bpmInterval / 8);
 
-export const calcSoundDelay = (initAngle: number, sliderVal?: number, useBPM?: number): number => {
-  const bpm = useBPM || 100;
-  const slider = sliderVal || 0;
-  const bpmInterval = calcBpmInterval(bpm);
-  const bpmAdjust = (60 / bpm) * 4;
-  const delayDegree = (1000 * bpmAdjust) / 360;
-  const calcDelay = delayDegree * slider;
-  const beatDelay = delayDegree * initAngle + calcDelay;
-
-  return floor(beatDelay > bpmInterval ? beatDelay - bpmInterval : beatDelay);
-};
-
 type AdsResponse = {
   showAds: boolean,
   personalisedAds: boolean,

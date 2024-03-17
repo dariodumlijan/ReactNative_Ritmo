@@ -1,6 +1,8 @@
 import { get } from 'lodash';
 import ENV from '../../env.json';
 
+export const sliderStep = 5;
+
 export const config = {
   ads: get(ENV, 'CONFIG.ADS', true),
   keepRewards: get(ENV, 'CONFIG.KEEP_REWARDS', 6),
