@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Font } from '.';
 import colors from './colors';
 import { isTablet } from '../utils';
 
@@ -13,14 +14,14 @@ const rewardedStyle = StyleSheet.create({
   },
   countdownTimer: {
     color: colors.gray,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 22,
     marginBottom: 5,
     textAlign: 'center',
   },
   countdownTxt: {
     color: colors.grayLight,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 12,
     textAlign: 'center',
   },
@@ -38,21 +39,21 @@ const rewardedStyle = StyleSheet.create({
   },
   rewardedExpText: {
     color: colors.gray,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 22,
     marginVertical: 2,
     textAlign: 'center',
   },
   rewardedExp2Text: {
     color: colors.gray,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 14,
     marginTop: '20%',
     textAlign: 'center',
   },
   rewardedExp3Text: {
     color: colors.gray,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 18,
     marginBottom: 20,
     marginTop: '10%',
@@ -94,13 +95,13 @@ const rewardedStyle = StyleSheet.create({
   },
   rewardedStartText: {
     color: colors.primaryDark,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 20,
     textAlign: 'center',
   },
   rewardedDisc: {
     color: colors.grayLight,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 12,
     textAlign: 'center',
   },
@@ -119,7 +120,7 @@ const rewardedStyle = StyleSheet.create({
   },
   listText: {
     color: colors.gray,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 14,
   },
 });

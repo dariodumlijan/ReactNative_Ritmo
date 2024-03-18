@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Font } from '.';
 import colors from './colors';
 import { deviceHeight, isApple, isiPhone } from '../utils';
 
@@ -46,7 +47,7 @@ const mainStyle = StyleSheet.create({
   },
   alertText: {
     color: colors.black,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 18,
     textAlign: 'center',
   },

@@ -139,7 +139,7 @@ function TimeSignatureSelect(props: Props) {
               <React.Fragment key={option.value}>
                 <View style={timeSignatureSelectStyle.listLabelWrapper}>
                   <Text style={timeSignatureSelectStyle.listLabel}>
-                    {option.label}
+                    &bull; {option.label}
                   </Text>
                   {option.disabled && (
                     <TouchableHighlight
@@ -154,25 +154,29 @@ function TimeSignatureSelect(props: Props) {
                   )}
                 </View>
                 <View style={timeSignatureSelectStyle.listSection}>
-                  {map(timeSignatures, (sig: TimeSig, key: number) => (
-                    <TouchableOpacity
-                      key={key}
-                      activeOpacity={0.6}
-                      style={key === timeSignatures.length - 1 ? timeSignatureSelectStyle.listItemNoBorder : [timeSignatureSelectStyle.listItem, {
-                        borderBottomColor: colors.grayBlue + '80',
-                      }]}
-                      onPress={() => handleSelect(option, sig)}
-                    >
-                      <Text style={[timeSignatureSelectStyle.listText, {
-                        ...(isActive(option, sig) && {
-                          color: colors.primary,
-                        }),
-                      }]}
+                  {map(timeSignatures, (sig: TimeSig, key: number) => {
+                    const active = isActive(option, sig);
+
+                    return (
+                      <TouchableOpacity
+                        key={key}
+                        activeOpacity={0.6}
+                        style={[timeSignatureSelectStyle.listItem, {
+                          borderBottomColor: colors.grayBlue + '80',
+                          ...(active && { backgroundColor: colors.primary + '40' }),
+                        }]}
+                        onPress={() => handleSelect(option, sig)}
                       >
-                        {sig.label}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
+                        <Text style={[
+                          timeSignatureSelectStyle.listText,
+                          active ? { color: colors.black } : {}]
+                          }
+                        >
+                          {sig.label}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
                 </View>
               </React.Fragment>
             ))}

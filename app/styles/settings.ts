@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Font } from '.';
 import colors from './colors';
 import { isTablet, isiPhone } from '../utils';
 
@@ -30,7 +31,7 @@ const settingsStyle = StyleSheet.create({
   },
   menuTitle: {
     color: colors.primaryDark,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 18,
     marginBottom: 10,
     marginRight: 10,
@@ -63,7 +64,7 @@ const settingsStyle = StyleSheet.create({
   },
   btnRewardScreenText: {
     color: colors.white,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 18,
     textAlign: 'center',
   },

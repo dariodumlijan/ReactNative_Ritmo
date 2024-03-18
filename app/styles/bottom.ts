@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Font } from '.';
 import colors from './colors';
 import { isTablet } from '../utils';
 
@@ -43,7 +44,7 @@ const bottomStyle = StyleSheet.create({
   },
   presetText: {
     color: colors.white,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: isTablet ? 18 : 14,
     lineHeight: isTablet ? 20 : 16,
     textAlign: 'center',
@@ -74,7 +75,7 @@ const bottomStyle = StyleSheet.create({
   },
   btnPrimaryText: {
     color: colors.white,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: isTablet ? 20 : 16,
     textAlign: 'center',
   },

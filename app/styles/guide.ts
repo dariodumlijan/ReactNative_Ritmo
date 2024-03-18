@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native';
+import { Font } from '.';
 import colors from './colors';
 import { isTablet, isiPhone } from '../utils';
 
 const guideStyle = StyleSheet.create({
   guideTitle: {
     color: colors.primaryDark,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 22,
     textAlign: 'center',
   },
@@ -18,7 +19,7 @@ const guideStyle = StyleSheet.create({
   },
   guideSub: {
     color: colors.primaryDark,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 18,
     marginBottom: 5,
     marginTop: 10,
@@ -44,7 +45,7 @@ const guideStyle = StyleSheet.create({
   },
   guideTxt: {
     color: colors.primaryDark,
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: Font.regular,
     fontSize: 16,
     textAlign: 'left',
   },

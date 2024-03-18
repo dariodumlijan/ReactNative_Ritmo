@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Font } from '.';
 import colors from './colors';
 import {
   deviceHeight, deviceWidth, isApple, isTablet,
@@ -51,7 +52,7 @@ export const selectStyle = StyleSheet.create({
   },
   label: {
     color: colors.primaryDark,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 18,
     marginBottom: 10,
     marginRight: 10,
@@ -78,7 +79,7 @@ export const selectStyle = StyleSheet.create({
   },
   inputText: {
     color: colors.grayBlue,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 20,
     marginRight: 10,
     textAlign: 'right',
@@ -130,14 +131,14 @@ export const selectStyle = StyleSheet.create({
   },
   listText: {
     color: colors.black,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 18,
     marginVertical: 10,
     textAlign: 'center',
   },
   listDisabledText: {
     color: colors.disabledList,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 18,
     marginVertical: 10,
     textAlign: 'center',
@@ -153,7 +154,7 @@ export const timeSignatureSelectStyle = StyleSheet.create({
   },
   label: {
     color: colors.primaryDark,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 18,
     marginBottom: 10,
     marginRight: 10,
@@ -177,7 +178,7 @@ export const timeSignatureSelectStyle = StyleSheet.create({
   },
   inputText: {
     color: colors.grayBlue,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 20,
     marginRight: 10,
     minWidth: 55,
@@ -185,7 +186,7 @@ export const timeSignatureSelectStyle = StyleSheet.create({
   },
   inputTextLabel: {
     color: colors.grayBlue,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 16,
     marginRight: 10,
     textAlign: 'right',
@@ -208,7 +209,7 @@ export const timeSignatureSelectStyle = StyleSheet.create({
   },
   listWrapper: {
     borderColor: colors.grayBlue,
-    borderRadius: 30,
+    borderRadius: 20,
     borderWidth: 2,
     marginHorizontal: isTablet ? '15%' : '5%',
     marginVertical: '30%',
@@ -218,23 +219,22 @@ export const timeSignatureSelectStyle = StyleSheet.create({
     zIndex: 2,
   },
   list: {
-    backgroundColor: colors.gray,
+    backgroundColor: colors.white,
     flexGrow: 1,
     width: '100%',
   },
   listLabelWrapper: {
-    backgroundColor: colors.grayBlue,
     alignItems: 'center',
+    backgroundColor: colors.grayBlue,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    padding: 10,
   },
   listLabel: {
     color: colors.white,
-    fontFamily: 'Montserrat-SemiBold',
-    fontSize: 18,
+    fontFamily: Font.semiBold,
+    fontSize: 16,
     marginRight: 20,
   },
   proWrapper: {
@@ -246,7 +246,7 @@ export const timeSignatureSelectStyle = StyleSheet.create({
   },
   proText: {
     color: colors.primaryDark,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 12,
     paddingHorizontal: 10,
     paddingVertical: 5,
@@ -263,8 +263,8 @@ export const timeSignatureSelectStyle = StyleSheet.create({
   },
   listText: {
     color: colors.black,
-    fontFamily: 'Montserrat-SemiBold',
-    fontSize: 18,
+    fontFamily: Font.regular,
+    fontSize: 16,
     marginVertical: 10,
     textAlign: 'center',
   },
@@ -301,7 +301,7 @@ export const sliderStyle = StyleSheet.create({
   },
   label: {
     color: colors.primaryDark,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: isTablet ? 18 : 14,
     lineHeight: isTablet ? 20 : 16,
   },
@@ -321,7 +321,7 @@ export const radioStyle = StyleSheet.create({
   },
   text: {
     color: colors.grayBlue,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 20,
     marginRight: 14,
     textAlign: 'center',
@@ -345,7 +345,7 @@ export const textInputStyle = StyleSheet.create({
     backgroundColor: colors.grayLight,
     borderRadius: 15,
     color: colors.grayBlue,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 20,
     height: 40,
     padding: 0,

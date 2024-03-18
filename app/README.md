@@ -55,8 +55,8 @@ Add `env.json` file to root directory
         "RELEASE_KEYSTORE_KEY_ALIAS": "<secret>"
     },
     "CONFIG": {
-        "KEEP_REWARDS": 6,
-        "RESET_REWARDS": 24,
+        "KEEP_REWARDS": 6, // hours
+        "RESET_REWARDS": 24, // hours
         "ADS": true,
         "AD_IDS": {
             "BANNER": {

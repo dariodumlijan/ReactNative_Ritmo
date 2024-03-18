@@ -39,8 +39,9 @@ function Settings() {
   const [openSoundSelect, setOpenSoundSelect] = useState(false);
   const hasAllRewards = isEmpty(lockedSamples);
   const [rewardsAreRefreshable, setRewardsAreRefreshable] = useState(false);
-  const { resetRewards } = config;
+  const { keepRewards, resetRewards } = config;
   const resetRewardsHours = hoursToMilliseconds(resetRewards);
+  const keepRewardsHours = hoursToMilliseconds(keepRewards);
   const shouldShowAlert = hasAllRewards && !rewardsAreRefreshable;
   const countdownFrom = global.rewardedAt?.samples ? global.rewardedAt.samples + resetRewardsHours : null;
 
@@ -100,7 +101,7 @@ function Settings() {
     }
 
     if (shouldShowAlert) {
-      const refreshAvailableIn = countdownFrom ? countdownFrom - resetRewardsHours : null;
+      const refreshAvailableIn = countdownFrom ? countdownFrom - keepRewardsHours : null;
 
       teleport(
         <Alert clearDelayMS={secondsToMilliseconds(5)}>
@@ -119,7 +120,7 @@ function Settings() {
   };
 
   const handleCountdown = (currentTime: number) => {
-    const isBelowThreshold = currentTime <= resetRewardsHours;
+    const isBelowThreshold = currentTime <= keepRewardsHours;
     if (isBelowThreshold && !rewardsAreRefreshable) setRewardsAreRefreshable(true);
   };
 

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Font } from '.';
 import colors from './colors';
 import { isTablet } from '../utils';
 
@@ -19,14 +20,14 @@ const notificationsStyle = StyleSheet.create({
   },
   alertText: {
     color: colors.gray,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 12,
     margin: 10,
     textAlign: 'center',
   },
   alertTimerText: {
-    color: colors.green,
-    fontFamily: 'Montserrat-SemiBold',
+    color: colors.white,
+    fontFamily: Font.semiBold,
     fontSize: 18,
     marginTop: -5,
     marginBottom: 10,

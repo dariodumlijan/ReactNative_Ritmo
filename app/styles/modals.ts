@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Font } from '.';
 import colors from './colors';
 import { deviceHeight, deviceWidth, isTablet } from '../utils';
 
@@ -35,13 +36,13 @@ const modalsStyle = StyleSheet.create({
   },
   modalTxt: {
     color: colors.grayLight,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: isTablet ? 18 : 14,
     textAlign: 'center',
   },
   modalExp: {
     color: colors.gray,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: isTablet ? 20 : 12,
     marginBottom: isTablet ? 30 : 16,
     marginHorizontal: 10,
@@ -65,7 +66,7 @@ const modalsStyle = StyleSheet.create({
   },
   modalBtnTxt: {
     color: colors.primaryDark,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: isTablet ? 20 : 16,
     textAlign: 'center',
   },
@@ -73,7 +74,7 @@ const modalsStyle = StyleSheet.create({
     backgroundColor: colors.grayLight,
     borderRadius: 20,
     color: colors.grayBlue,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 18,
     marginVertical: 15,
     paddingHorizontal: 10,

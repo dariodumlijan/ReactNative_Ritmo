@@ -6,6 +6,7 @@ import {
 import CodePush from 'react-native-code-push';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Emoji from '../../../assets/icons/Emoji';
+import { Font } from '../../../styles';
 import colors from '../../../styles/colors';
 import { deviceInfo } from '../../../utils';
 import LightBackground from '../../elements/backgrounds/LightBackground';
@@ -36,14 +37,14 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.primaryDark,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 24,
     marginBottom: 10,
     textAlign: 'center',
   },
   text: {
     color: colors.black,
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: Font.regular,
     fontSize: 16,
     marginVertical: 16,
     textAlign: 'left',
@@ -66,13 +67,13 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: colors.white,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 16,
     textAlign: 'center',
   },
   error: {
     color: colors.red,
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: Font.regular,
     fontSize: 12,
     marginVertical: 12,
     textAlign: 'left',

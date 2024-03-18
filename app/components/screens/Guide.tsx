@@ -18,6 +18,7 @@ import MidiFile from '../../assets/img/midiFile.png';
 import MidiFileLogic from '../../assets/img/midiFile_Logic.png';
 import useLocale from '../../locales';
 import { actions } from '../../store/globalStore';
+import { Font } from '../../styles';
 import bottomStyle from '../../styles/bottom';
 import colors from '../../styles/colors';
 import guideStyle from '../../styles/guide';
@@ -167,7 +168,7 @@ export function Guide() {
         <Text style={guideStyle.guideTxt}>{t('guide.section_2.paragraph_2')}</Text>
         <Text style={guideStyle.guideSub}>{t('guide.section_3.title')}</Text>
         <Text style={guideStyle.guideTxt}>
-          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>
+          <Text style={{ fontFamily: Font.semiBold }}>
             {t('guide.section_3.subsection_1.title')}
           </Text>
           {t('guide.section_3.subsection_1.paragraph_1')}
@@ -196,7 +197,7 @@ export function Guide() {
             </TouchableHighlight>
             <Text
               style={{
-                fontFamily: 'Montserrat-Regular',
+                fontFamily: Font.regular,
                 fontSize: 12,
                 textAlign: 'center',
                 color: colors.primaryDark,
@@ -228,7 +229,7 @@ export function Guide() {
             </TouchableHighlight>
             <Text
               style={{
-                fontFamily: 'Montserrat-Regular',
+                fontFamily: Font.regular,
                 fontSize: 12,
                 textAlign: 'center',
                 color: colors.primaryDark,
@@ -240,15 +241,15 @@ export function Guide() {
         </View>
         <Text style={guideStyle.guideTxt}>
           {t('guide.section_3.subsection_1.paragraph_2')}
-          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>
+          <Text style={{ fontFamily: Font.semiBold }}>
             {t('guide.section_3.subsection_2.title')}
           </Text>
           {t('guide.section_3.subsection_2.paragraph_1')}
-          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>
+          <Text style={{ fontFamily: Font.semiBold }}>
             {t('guide.section_3.subsection_3.title')}
           </Text>
           {t('guide.section_3.subsection_3.paragraph_1')}
-          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>
+          <Text style={{ fontFamily: Font.semiBold }}>
             {t('guide.section_3.subsection_3.bold_1')}
           </Text>
           {t('guide.section_3.subsection_3.paragraph_2')}
@@ -267,7 +268,7 @@ export function Guide() {
         <Text style={guideStyle.guideSub}>{t('guide.section_4.title')}</Text>
         <Text style={guideStyle.guideTxt}>
           {t('guide.section_4.paragraph_1')}
-          <Text style={{ fontFamily: 'Montserrat-SemiBold' }}>
+          <Text style={{ fontFamily: Font.semiBold }}>
             {t('guide.section_4.paragraph_2')}
           </Text>
           {t('guide.section_4.paragraph_3')}
@@ -291,7 +292,7 @@ export function Guide() {
         <Text style={guideStyle.guideTxt}>{t('guide.section_5.paragraph_1')}</Text>
         <Text
           style={{
-            fontFamily: 'Montserrat-SemiBold',
+            fontFamily: Font.semiBold,
             textAlign: 'left',
             fontSize: 16,
             color: colors.primaryDark,

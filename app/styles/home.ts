@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Font } from '.';
 import colors from './colors';
 import { isTablet } from '../utils';
 
@@ -54,7 +55,7 @@ const homeStyle = StyleSheet.create({
   },
   appEnvironmentText: {
     color: colors.primaryDark,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: isTablet ? 14 : 12,
     paddingHorizontal: 14,
     paddingVertical: 8,

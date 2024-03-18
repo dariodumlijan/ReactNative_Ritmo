@@ -6,7 +6,7 @@ import { floor } from 'lodash';
 type Props = {
   style?: Object,
   countdownFrom: number | null,
-  onChange?: Function,
+  onChange?: (millisecondsLeft: number) => void,
   isHidden?: boolean,
 };
 

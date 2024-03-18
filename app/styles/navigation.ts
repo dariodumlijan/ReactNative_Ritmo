@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Font } from '.';
 import colors from './colors';
 import { deviceHeight, deviceWidth, isTablet } from '../utils';
 
@@ -58,7 +59,7 @@ const navigationStyle = StyleSheet.create({
   },
   tagline: {
     color: colors.grayLight,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 22,
     left: 0,
     position: 'absolute',
@@ -96,7 +97,7 @@ const navigationStyle = StyleSheet.create({
   },
   label: {
     color: colors.grayLight,
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: Font.semiBold,
     fontSize: 18,
     textAlign: 'left',
   },
