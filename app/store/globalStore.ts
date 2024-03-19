@@ -46,7 +46,6 @@ export type TimeSignature = {
 export type UI = {
   fileUri?: string,
   isPlaying: boolean,
-  isRecording: boolean,
   navigationOpen?: boolean,
   personalisedAds?: boolean,
   selectedReward?: Sample | null,
@@ -361,7 +360,6 @@ const resetBeat = (state: State): State => {
   return merge({}, state, {
     ui: {
       isPlaying: false,
-      isRecording: false,
       useBPM: 100,
       useTimeSig: {
         hihat: timeSig.value,
@@ -401,7 +399,6 @@ const loadPreset = (state: State, preset: Preset): State => ({
   ui: {
     ...state.ui,
     isPlaying: false,
-    isRecording: false,
     useBPM: preset.useBPM,
     useTimeSig: preset.useTimeSig,
   },
@@ -503,8 +500,10 @@ export const reducer = (state: any, action: ReduxAction) => {
       return merge({}, state, { ui: { isPlaying: false } });
 
     case GlobalTypes.GB_EXPORT_MIDI_FULFILLED:
-    case GlobalTypes.GB_EXPORT_MIDI_REJECTED:
       return exportMIDI(state, action.payload);
+
+    case GlobalTypes.GB_EXPORT_MIDI_REJECTED:
+      return state;
 
     case GlobalTypes.GB_DELETE_MIDI_FILE:
       return omit(state, 'ui.fileUri');

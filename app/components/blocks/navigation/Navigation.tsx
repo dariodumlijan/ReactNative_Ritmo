@@ -12,7 +12,6 @@ import { isEqual, map } from 'lodash';
 import Exit from '../../../assets/icons/Exit';
 import Export from '../../../assets/icons/Export';
 import Guide from '../../../assets/icons/Guide';
-import Recordings from '../../../assets/icons/Recordings';
 import Settings from '../../../assets/icons/Settings';
 import StateTree from '../../../assets/icons/StateTree';
 import useLocale from '../../../locales';
@@ -44,10 +43,10 @@ function Navigation() {
       visible: true,
     },
     {
-      path: 'library',
-      label: t('navigation.library'),
-      icon: <Recordings style={navigationStyle.icon} />,
-      visible: false,
+      path: 'export',
+      label: t('navigation.export'),
+      icon: <Export style={navigationStyle.icon} />,
+      visible: true,
     },
     {
       path: 'guide',
@@ -131,7 +130,7 @@ function Navigation() {
         <View style={navigationStyle.linksWrapper}>
           {map(links, (link) => (
             <React.Fragment key={link.path}>
-              {link.visible && (
+              {link.visible && link.path !== 'export' && (
                 <Link
                   style={navigationStyle.link}
                   underlayColor={colors.transparent}
@@ -144,14 +143,16 @@ function Navigation() {
                   </View>
                 </Link>
               )}
+              {link.visible && link.path === 'export' && (
+                <TouchableOpacity style={navigationStyle.link} activeOpacity={0.6} onPress={openMidiModal}>
+                  <View style={navigationStyle.button}>
+                    <Text style={navigationStyle.label}>{t('navigation.export')}</Text>
+                    <Export style={navigationStyle.icon} />
+                  </View>
+                </TouchableOpacity>
+              )}
             </React.Fragment>
           ))}
-          <TouchableOpacity style={navigationStyle.link} activeOpacity={0.6} onPress={openMidiModal}>
-            <View style={navigationStyle.button}>
-              <Text style={navigationStyle.label}>{t('navigation.export')}</Text>
-              <Export style={navigationStyle.icon} />
-            </View>
-          </TouchableOpacity>
         </View>
       </View>
     </>

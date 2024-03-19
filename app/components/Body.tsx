@@ -9,7 +9,6 @@ import AdmobBanner from './elements/misc/AdmobBanner';
 import RewardsCountdown from './elements/misc/RewardsCountdown';
 import Guide from './screens/Guide';
 import Home from './screens/Home';
-import Library from './screens/Library';
 import Loading from './screens/Loading';
 import Rewarded from './screens/Rewarded';
 import Settings from './screens/Settings';
@@ -65,7 +64,6 @@ function Body() {
         <Routes>
           <Route index element={<Home />} />
           <Route path="/settings" element={<Settings />} />
-          <Route path="/library" element={<Library />} />
           <Route path="/guide" element={(<Guide />)} />
           <Route path="/state-tree" element={<StateTree />} />
           <Route path="/rewarded/:section" element={<Rewarded />} />

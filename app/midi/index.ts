@@ -1,9 +1,13 @@
+import { Buffer } from 'buffer';
 import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
 import { filter, forEach, times } from 'lodash';
 import MidiWriter from 'midi-writer-js';
 import type { Beat, Beats } from '../sound/beats';
 import type { TimeSignature } from '../store/globalStore';
+
+// @ts-ignore
+window.Buffer = Buffer; // HACK to fix midi-writer-js: Buffer is not defined
 
 type MidiNote = 'KSH' | 'KS' | 'KH' | 'SH' | 'K' | 'S' | 'H';
 type Note = MidiNote | 'R';

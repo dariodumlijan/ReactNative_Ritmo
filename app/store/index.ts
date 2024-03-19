@@ -47,7 +47,6 @@ const initialState = {
     ui: {
       showAds: true,
       isPlaying: false,
-      isRecording: false,
       useBPM: 100,
       useSample: sample,
       useTimeSig: {

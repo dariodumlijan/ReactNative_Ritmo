@@ -79,16 +79,6 @@ const bottomStyle = StyleSheet.create({
     fontSize: isTablet ? 20 : 16,
     textAlign: 'center',
   },
-  btnRecording: {
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-  },
-  iconRecording: {
-    aspectRatio: 1 / 1,
-    borderRadius: 10,
-    width: 16,
-  },
 });
 
 export default bottomStyle;

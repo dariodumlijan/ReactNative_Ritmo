@@ -88,23 +88,12 @@ export const useReview = () => {
   return handleReview;
 };
 
-export type LocationInfo = {
-  current: string,
-  isHome: boolean,
-  isRewarded: boolean,
-  isSettings: boolean,
-  isGuide: boolean,
-  isLibrary: boolean,
-  isStateTree: boolean,
-};
-
-export const useLocationInfo = (): LocationInfo => {
+export const useLocationInfo = () => {
   const location = useLocation();
   const isHome = location.pathname === '/';
   const isRewarded = location.pathname.includes('/rewarded');
   const isSettings = location.pathname === '/settings';
   const isGuide = location.pathname === '/guide';
-  const isLibrary = location.pathname === '/library';
   const isStateTree = location.pathname === '/state-tree';
 
   return {
@@ -113,7 +102,6 @@ export const useLocationInfo = (): LocationInfo => {
     isRewarded,
     isSettings,
     isGuide,
-    isLibrary,
     isStateTree,
   };
 };

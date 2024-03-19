@@ -8,10 +8,9 @@
     "title": "Redefine Beatmaking",
     "alert": "Nothing to export!",
     "settings": "Settings",
-    "library": "Library",
     "guide": "Guide",
     "state_tree": "State Tree",
-    "export": "Export MIDI"
+    "export": "Export"
   },
   "bottom": {
     "preset": {

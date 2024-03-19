@@ -85,91 +85,6 @@ function Bottom() {
     dispatch(beatActions.resetBeat());
   };
 
-  // const handleRecording = () => {};
-
-  /* Recording Functions - START */
-  /*
-  const startRec = async () => {
-    let findBeat = false;
-    for (let i in beats.hihat) {
-      if (
-        beats.hihat[i].checked === true ||
-        beats.snare[i].checked === true ||
-        beats.kick[i].checked === true
-      ) {
-        findBeat = true;
-        break;
-      }
-    }
-
-    let status = (await Audio.getPermissionsAsync()).granted;
-    if (status === true && isPlaying === false && findBeat === true) {
-      try {
-        await Audio.setAudioModeAsync({
-          allowsRecordingIOS: true,
-          playsInSilentModeIOS: true,
-          staysActiveInBackground: false,
-          shouldDuckAndroid: false,
-          playThroughEarpieceAndroid: false,
-          interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-          interruptionModeAndroid:
-            Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-        });
-
-        await recording.prepareToRecordAsync(RecordingOptions);
-        await recording.startAsync();
-
-        start();
-
-        isRecording = true;
-        setRecordingStatus(isRecording);
-      } catch (err) {
-        console.error(err);
-      }
-    } else if (status === true && isPlaying === true && findBeat === true) {
-      try {
-        await Audio.setAudioModeAsync({
-          allowsRecordingIOS: true,
-          playsInSilentModeIOS: true,
-          staysActiveInBackground: false,
-          shouldDuckAndroid: false,
-          playThroughEarpieceAndroid: true,
-          interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-          interruptionModeAndroid:
-            Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-        });
-
-        await recording.prepareToRecordAsync(RecordingOptions);
-        await recording.startAsync();
-
-        isRecording = true;
-        setRecordingStatus(isRecording);
-      } catch (err) {
-        console.error(err);
-      }
-    } else if (status === true && isPlaying === false && findBeat === false) {
-      alertDelay();
-    } else {
-      await Audio.requestPermissionsAsync();
-    }
-  };
-
-  const stopRec = async () => {
-    pause();
-
-    await recording.stopAndUnloadAsync();
-    setRecording(new Audio.Recording());
-    const uri = recording.getURI();
-
-    console.log(uri);
-    // Current Save Folder URL: /Users/dariodumlijan/Library/Developer/CoreSimulator/Devices/B54A7218-4990-45B7-925F-BC578F42FB29/data/Containers/Data/Application/13C70B38-FE6B-4F46-A0C0-CC95AE195051/Library/Caches/ExponentExperienceData/%40ddario%2FRitmo
-
-    isRecording = false;
-    setRecordingStatus(isRecording);
-  };
-  */
-  /* Recording Functions - END */
-
   return (
     <View style={bottomStyle.wrapper}>
       <View style={bottomStyle.wrapperBG}>
@@ -225,17 +140,6 @@ function Bottom() {
           >
             <Text style={bottomStyle.btnPrimaryText}>{t('bottom.actions.reset')}</Text>
           </TouchableHighlight>
-          {/* <TouchableHighlight
-            underlayColor={colors.grayBlue}
-            style={[bottomStyle.btnPrimary, bottomStyle.btnRecording]}
-            onPress={handleRecording}
-          >
-            <View
-              style={[bottomStyle.iconRecording, {
-                backgroundColor: global.ui.isRecording ? colors.white : colors.red,
-              }]}
-            />
-          </TouchableHighlight> */}
         </View>
       </View>
     </View>
