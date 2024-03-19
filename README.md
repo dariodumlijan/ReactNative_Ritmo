@@ -35,9 +35,9 @@ The app has an adjustable BPM, a selection of different time signatures and mult
 
 ## The Chimera Team
 
--   [Dario Dumlijan - Full-stack Developer](https://dariodumlijan.com/design/business-card)
--   [Boris Vida - UI/UX Designer](https://behance.net/lemondesignuk)
--   [Damjan Gazibaric - Assets Designer](https://behance.net/gazdadesigns)
+-   [Dario Dumlijan - Full-stack Developer](https://www.linkedin.com/in/dariodumlijan/)
+-   [Boris Vida - UI/UX Designer](https://www.linkedin.com/in/bvida48/)
+-   [Damjan Gazibaric - Assets Designer](https://www.linkedin.com/in/damjangazibaric/)
 
 [More by Chimera Studio](https://linktr.ee/chimerastudiotm)
 
