@@ -385,7 +385,7 @@ const fetchPresetAndSamples = (state: State, payload: FetchResponse) => {
     ...state,
     presets: payload.presets,
     unlockedSamples: newUnlockedSamples,
-    unlockedPro: !isNil(payload.rewardedAt.pro),
+    unlockedPro: !config.ads || !isNil(payload.rewardedAt.pro),
     rewardedAt: payload.rewardedAt,
     ui: {
       ...state.ui,

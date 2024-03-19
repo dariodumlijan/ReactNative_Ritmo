@@ -60,9 +60,9 @@ function Home() {
             <View style={homeStyle.navigation}>
               <Logo style={homeStyle.logo} fill={colors.gray} />
               {developerMode && (
-              <TouchableOpacity style={homeStyle.appEnvironment} activeOpacity={0.8} onPress={handleAppEnvironment}>
-                <Text style={homeStyle.appEnvironmentText}>{codepushEnvironment}</Text>
-              </TouchableOpacity>
+                <TouchableOpacity style={homeStyle.appEnvironment} activeOpacity={0.8} onPress={handleAppEnvironment}>
+                  <Text style={homeStyle.appEnvironmentText}>{codepushEnvironment}</Text>
+                </TouchableOpacity>
               )}
               <TouchableOpacity activeOpacity={0.8} onPress={handleOpenNav}>
                 <Menu style={homeStyle.menu} />

@@ -21,7 +21,6 @@ import useSelectLists from '../../utils/lists';
 import Select from '../elements/inputs/Select';
 import TimeSignatureSelect from '../elements/inputs/TimeSignatureSelect';
 import Alert from '../elements/misc/Alert';
-import ConditionalAd from '../elements/misc/ConditionalAd';
 import CountdownTimer from '../elements/misc/CountdownTimer';
 import type { TimeSignaturePayload } from '../../store/globalStore';
 import type { Sample } from '../../utils/lists';
@@ -192,7 +191,7 @@ function Settings() {
               onRewardedClick={handleRewardedSamplesOpen}
               compareSamples={global.unlockedSamples}
             />
-            <ConditionalAd>
+            {config.ads && (
               <TouchableHighlight
                 onPress={handleRewardedSamplesOpen}
                 disabled={openTimeSigSelect || openSoundSelect}
@@ -203,7 +202,7 @@ function Settings() {
                   {t(hasAllRewards ? 'settings.keep_rewards' : 'settings.more_samples')}
                 </Text>
               </TouchableHighlight>
-            </ConditionalAd>
+            )}
           </View>
         </View>
         <View style={mainStyle.adSpace} />

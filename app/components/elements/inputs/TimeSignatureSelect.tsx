@@ -16,7 +16,6 @@ import { timeSignatureSelectStyle } from '../../../styles/inputs';
 import settingsStyle from '../../../styles/settings';
 import { SoundKey } from '../../../types';
 import useSelectLists from '../../../utils/lists';
-import ConditionalAd from '../misc/ConditionalAd';
 import type { TimeSignature } from '../../../store/globalStore';
 import type { TimeSig } from '../../../utils/lists';
 
@@ -109,19 +108,17 @@ function TimeSignatureSelect(props: Props) {
         </TouchableOpacity>
 
         {!props.unlockedPro && (
-          <ConditionalAd>
-            <TouchableHighlight
-              style={[settingsStyle.btnRewardScreen, {
-                marginBottom: 0,
-              }]}
-              onPress={props.onRewardedClick}
-              underlayColor={colors.grayBlue}
-            >
-              <Text style={settingsStyle.btnRewardScreenText}>
-                {t('settings.unlock_advanced')}
-              </Text>
-            </TouchableHighlight>
-          </ConditionalAd>
+          <TouchableHighlight
+            style={[settingsStyle.btnRewardScreen, {
+              marginBottom: 0,
+            }]}
+            onPress={props.onRewardedClick}
+            underlayColor={colors.grayBlue}
+          >
+            <Text style={settingsStyle.btnRewardScreenText}>
+              {t('settings.unlock_advanced')}
+            </Text>
+          </TouchableHighlight>
         )}
       </View>
 

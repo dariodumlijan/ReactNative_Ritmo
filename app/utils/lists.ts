@@ -1,5 +1,6 @@
-import { includes, reduce } from 'lodash';
+import { includes, map, reduce } from 'lodash';
 import useLocale from '../locales';
+import { config } from '../tokens';
 
 export type Sample = {
   label: string,
@@ -85,11 +86,10 @@ export const getSamples = (): Sample[] => ([
 export const getUnlockedSamples = (): string[] => {
   const samples = getSamples();
 
+  if (!config.ads) return map(samples, 'label');
+
   return reduce(samples, (list: string[], sample: Sample) => {
-    if (includes([
-      'Acoustic',
-      'Hip-hop',
-    ], sample.label)) {
+    if (includes(['Acoustic', 'Hip-hop'], sample.label)) {
       return [...list, sample.label];
     }
 

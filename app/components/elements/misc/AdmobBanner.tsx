@@ -2,9 +2,9 @@ import React from 'react';
 import { View } from 'react-native';
 import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 import { isEqual } from 'lodash';
-import ConditionalAd from './ConditionalAd';
 import { selectors } from '../../../store/globalStore';
 import mainStyle from '../../../styles/main';
+import { config } from '../../../tokens';
 import { isTablet } from '../../../utils';
 import { useAppSelector, useLocationInfo } from '../../../utils/hooks';
 
@@ -26,16 +26,14 @@ function AdmobBanner() {
 
   return (
     <View style={mainStyle.ads}>
-      {banner && showAds && (
-        <ConditionalAd>
-          <BannerAd
-            unitId={banner}
-            size={handleBannerSize()}
-            requestOptions={{
-              requestNonPersonalizedAdsOnly: !personalisedAds,
-            }}
-          />
-        </ConditionalAd>
+      {config.ads && showAds && banner && (
+      <BannerAd
+        unitId={banner}
+        size={handleBannerSize()}
+        requestOptions={{
+          requestNonPersonalizedAdsOnly: !personalisedAds,
+        }}
+      />
       )}
     </View>
   );

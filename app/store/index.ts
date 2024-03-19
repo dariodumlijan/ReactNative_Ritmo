@@ -7,7 +7,7 @@ import { reducer as staticStoreReducer } from './staticStore';
 import { t } from '../locales';
 import Playback from '../sound';
 import beats from '../sound/beats';
-import { sliderStep } from '../tokens';
+import { config, sliderStep } from '../tokens';
 import { isPromise } from '../utils';
 import { getSamples, getTimeSignatures, getUnlockedSamples } from '../utils/lists';
 import type { Sample, TimeSig } from '../utils/lists';
@@ -45,7 +45,7 @@ const initialState = {
       kick: 0,
     },
     ui: {
-      showAds: true,
+      showAds: config.ads,
       isPlaying: false,
       useBPM: 100,
       useSample: sample,
