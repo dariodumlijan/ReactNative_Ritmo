@@ -1,6 +1,7 @@
 import { Dimensions, Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import Admob, { AdsConsent, AdsConsentStatus, MaxAdContentRating } from 'react-native-google-mobile-ads';
+import { minutesToMilliseconds } from 'date-fns';
 import {
   every, flatten, floor, includes, values,
 } from 'lodash';
@@ -38,9 +39,7 @@ export const isSampleUnlocked = (unlockedSamples: string[], sample: Option): boo
 
 export const isBeatEmpty = (beats: Beats): boolean => every(flatten(values(beats)), ['checked', false]);
 
-export const calcBpmInterval = (bpm: number): number => floor(240000 / bpm);
-
-export const calcPulseInterval = (bpmInterval: number): number => floor(bpmInterval / 8);
+export const calcBpmInterval = (bpm: number): number => floor((minutesToMilliseconds(1) * 4) / bpm, 2);
 
 type AdsResponse = {
   showAds: boolean,

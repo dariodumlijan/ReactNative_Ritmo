@@ -15,7 +15,7 @@ import { textInputStyle } from '../../styles/inputs';
 import mainStyle from '../../styles/main';
 import notificationsStyle from '../../styles/notifications';
 import settingsStyle from '../../styles/settings';
-import { config } from '../../tokens';
+import { config, maxBPM } from '../../tokens';
 import { useAppDispatch, useAppSelector, useTeleport } from '../../utils/hooks';
 import useSelectLists from '../../utils/lists';
 import Select from '../elements/inputs/Select';
@@ -57,7 +57,7 @@ function Settings() {
   const handleBPM = (val: string) => {
     let newBPM = Math.trunc(Number(val));
     if (newBPM < 1 || (isEmpty(newBPM) && !isNumber(newBPM)) || isNaN(newBPM)) newBPM = 1;
-    if (newBPM > 300) newBPM = 300;
+    if (newBPM > maxBPM) newBPM = maxBPM;
 
     setBpm(String(newBPM));
     dispatch(actions.updateBPM(newBPM));

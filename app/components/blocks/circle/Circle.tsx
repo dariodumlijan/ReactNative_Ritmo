@@ -1,11 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Animated,
-  Easing,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
-  View,
+  Animated, Easing, Text, TouchableHighlight, TouchableOpacity, View,
 } from 'react-native';
 import { secondsToMilliseconds } from 'date-fns';
 import { isEqual, map } from 'lodash';
@@ -18,13 +13,12 @@ import circleStyle from '../../../styles/circle';
 import colors from '../../../styles/colors';
 import { checkboxStyle } from '../../../styles/inputs';
 import notificationsStyle from '../../../styles/notifications';
-import { calcBpmInterval, calcPulseInterval, isBeatEmpty } from '../../../utils';
+import { calcBpmInterval, isBeatEmpty } from '../../../utils';
 import {
   useAppDispatch, useAppSelector, useReview, useTeleport,
 } from '../../../utils/hooks';
 import Alert from '../../elements/misc/Alert';
-import type { Beat, Beats } from '../../../sound/beats';
-import type { UI } from '../../../store/globalStore';
+import type { Beat } from '../../../sound/beats';
 import type { SoundKey } from '../../../types';
 
 function Circle() {
@@ -32,11 +26,10 @@ function Circle() {
   const { teleport } = useTeleport();
   const dispatch = useAppDispatch();
   const reviewApp = useReview();
-  const global: UI = useAppSelector(globalSelectors.getUI, isEqual);
-  const beats: Beats = useAppSelector(beatSelectors.getBeats, isEqual);
+  const global = useAppSelector(globalSelectors.getUI, isEqual);
+  const beats = useAppSelector(beatSelectors.getBeats, isEqual);
   const [circleRadius, setCircleRadius] = useState({ hihat: 0, snare: 0, kick: 0 });
   const beatlineAnimation = useRef(new Animated.Value(0)).current;
-  const pulseAnimation = useRef(new Animated.Value(1)).current;
 
   useEffect(() => () => {
     dispatch(beatActions.pauseBeat());
@@ -47,55 +40,21 @@ function Circle() {
     if (!global.isPlaying) {
       beatlineAnimation.stopAnimation();
       beatlineAnimation.setValue(0);
-      pulseAnimation.stopAnimation();
-      pulseAnimation.setValue(1);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [global.isPlaying]);
 
   const getDimensions = (e: any, key: string) => setCircleRadius({ ...circleRadius, ...{ [key]: e.nativeEvent.layout.width / 2 - 2.5 } });
 
-  const beatlineAngle = beatlineAnimation.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  });
-
-  const handleAnimations = () => {
-    const bpmInterval = calcBpmInterval(global.useBPM);
-    const pulseInterval = calcPulseInterval(bpmInterval);
-
-    const handlePulseAnimation = () => {
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(pulseAnimation, {
-            toValue: 0.9,
-            duration: pulseInterval,
-            useNativeDriver: true,
-            easing: Easing.linear,
-          }),
-          Animated.timing(pulseAnimation, {
-            toValue: 1,
-            duration: pulseInterval,
-            useNativeDriver: true,
-            easing: Easing.linear,
-          }),
-        ]),
-      ).start();
-    };
-
-    const handleLineAnimation = () => {
-      Animated.loop(
-        Animated.timing(beatlineAnimation, {
-          toValue: 1,
-          duration: bpmInterval,
-          useNativeDriver: true,
-          easing: Easing.linear,
-        }),
-      ).start();
-    };
-
-    handleLineAnimation();
-    handlePulseAnimation();
+  const handleAnimations = (bpmInterval: number) => {
+    Animated.loop(
+      Animated.timing(beatlineAnimation, {
+        toValue: 1,
+        duration: bpmInterval,
+        useNativeDriver: true,
+        easing: Easing.linear,
+      }),
+    ).start();
   };
 
   const handleStart = () => {
@@ -109,9 +68,9 @@ function Circle() {
       return;
     }
 
-    dispatch(beatActions.playBeat(calcBpmInterval(global.useBPM)));
-
-    handleAnimations();
+    const bpmInterval = calcBpmInterval(global.useBPM);
+    handleAnimations(bpmInterval);
+    dispatch(beatActions.playBeat(bpmInterval));
   };
 
   const handlePause = () => {
@@ -130,7 +89,12 @@ function Circle() {
           circleStyle.beatline,
           {
             transform: [
-              { rotate: beatlineAngle },
+              {
+                rotate: beatlineAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: ['0deg', '359deg'],
+                }),
+              },
               { translateY: -circleRadius.hihat / 2 },
             ],
           },
@@ -181,16 +145,7 @@ function Circle() {
           underlayColor={colors.primaryDark}
           onPress={handlePause}
         >
-          <Animated.View
-            style={[
-              circleStyle.btnAnimated,
-              {
-                transform: [
-                  { scale: pulseAnimation },
-                ],
-              },
-            ]}
-          >
+          <Animated.View style={circleStyle.btnAnimated}>
             <Pause style={circleStyle.btnIcon} />
           </Animated.View>
         </TouchableHighlight>

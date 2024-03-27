@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Font } from '.';
 import colors from './colors';
-import { deviceHeight, isApple, isiPhone } from '../utils';
+import { isApple, isiPhone } from '../utils';
 
 const mainStyle = StyleSheet.create({
   container: {
@@ -26,7 +26,7 @@ const mainStyle = StyleSheet.create({
   },
   scrollDeviceContainer: {
     flexGrow: 1,
-    minHeight: deviceHeight,
+    // minHeight: deviceHeight,
     width: '100%',
   },
   alert: {

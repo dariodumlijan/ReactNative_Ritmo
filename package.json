@@ -13,14 +13,14 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@babel/eslint-parser": "^7.23.10",
+    "@babel/eslint-parser": "^7.24.1",
     "@miblanchard/react-native-slider": "^2.3.1",
-    "@react-native-async-storage/async-storage": "^1.22.3",
-    "@react-native-clipboard/clipboard": "^1.13.2",
-    "@reduxjs/toolkit": "^2.2.1",
+    "@react-native-async-storage/async-storage": "^1.23.1",
+    "@reduxjs/toolkit": "^2.2.2",
+    "accurate-interval": "^1.0.9",
     "axios": "^1.6.8",
     "buffer": "^6.0.3",
-    "date-fns": "^3.5.0",
+    "date-fns": "^3.6.0",
     "lodash": "^4.17.21",
     "midi-writer-js": "^3.1.1",
     "react": "^18.2.0",
@@ -33,7 +33,7 @@
     "react-native-in-app-review": "^4.3.3",
     "react-native-json-tree": "^1.3.0",
     "react-native-linear-gradient": "^2.8.3",
-    "react-native-share": "^10.0.2",
+    "react-native-share": "^10.1.0",
     "react-native-sound": "^0.11.2",
     "react-native-splash-screen": "^3.3.0",
     "react-native-svg": "^15.1.0",
@@ -44,31 +44,33 @@
     "redux-thunk": "^3.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.0",
-    "@babel/plugin-transform-typescript": "^7.23.6",
-    "@babel/preset-env": "^7.24.0",
-    "@babel/runtime": "^7.24.0",
-    "@react-native/babel-preset": "^0.73.21",
-    "@react-native/eslint-config": "^0.73.2",
-    "@react-native/metro-config": "^0.73.5",
-    "@react-native/typescript-config": "^0.74.0",
+    "@babel/core": "^7.24.3",
+    "@babel/plugin-transform-typescript": "^7.24.1",
+    "@babel/preset-env": "^7.24.3",
+    "@babel/runtime": "^7.24.1",
+    "@react-native/babel-preset": "^0.74.75",
+    "@react-native/eslint-config": "^0.74.75",
+    "@react-native/metro-config": "^0.74.75",
+    "@react-native/typescript-config": "^0.74.75",
     "@testing-library/jest-native": "^5.4.3",
-    "@testing-library/react-native": "^12.4.3",
+    "@testing-library/react-native": "^12.4.4",
     "@tsconfig/react-native": "^3.0.3",
+    "@types/accurate-interval": "^1.0.3",
     "@types/jest": "^29.5.12",
     "@types/lodash": "^4.17.0",
-    "@types/node": "^20.11.28",
-    "@types/react": "^18.2.66",
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.2.69",
     "@types/react-native": "^0.73.0",
     "@types/react-redux": "^7.1.33",
     "@types/react-test-renderer": "^18.0.7",
-    "@typescript-eslint/eslint-plugin": "^7.2.0",
-    "@typescript-eslint/parser": "^7.2.0",
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
+    "@typescript-eslint/parser": "^7.3.1",
     "babel-jest": "^29.7.0",
     "babel-plugin-module-resolver": "^5.0.0",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^18.0.0",
+    "eslint-plugin-ft-flow": "^3.0.7",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jest": "^27.9.0",
     "eslint-plugin-jsx-a11y": "^6.8.0",
@@ -79,7 +81,7 @@
     "react-native-svg-transformer": "^1.3.0",
     "react-test-renderer": "^18.2.0",
     "ts-jest": "^29.1.2",
-    "typescript": "^5.4.2"
+    "typescript": "^5.4.3"
   },
   "rnpm": {
     "assets": [
@@ -87,6 +89,6 @@
     ]
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   }
 }

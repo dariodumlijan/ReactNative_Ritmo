@@ -7,7 +7,7 @@ DEPLOY_ENVIRONMENT = ARGV[1] == '--production' ? 'Production' : 'Staging'
 
 if ARGV.length < 1
   puts
-  puts 'Missing platform argument "--android / --ios"'
+  puts 'Missing platform argument "--all / --android / --ios"'
   puts
   exit
 end

@@ -1,6 +1,7 @@
 import { get } from 'lodash';
 import ENV from '../../env.json';
 
+export const maxBPM = 260;
 export const sliderStep = 5;
 
 export const config = {
