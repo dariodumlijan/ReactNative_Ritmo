@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Font } from '.';
 import colors from './colors';
-import { isTablet, isiPhone } from '../utils';
+import { deviceHeight, isTablet, isiPhone } from '../utils';
 
 const settingsStyle = StyleSheet.create({
   navigation: {
@@ -25,9 +25,9 @@ const settingsStyle = StyleSheet.create({
     alignItems: 'flex-end',
     display: 'flex',
     flex: 1,
-    gap: 100,
+    gap: deviceHeight / 12,
     justifyContent: 'flex-start',
-    maxHeight: 750,
+    maxHeight: 700,
     width: isTablet ? '80%' : '100%',
   },
   menuTitle: {

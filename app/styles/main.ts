@@ -26,7 +26,6 @@ const mainStyle = StyleSheet.create({
   },
   scrollDeviceContainer: {
     flexGrow: 1,
-    // minHeight: deviceHeight,
     width: '100%',
   },
   alert: {
