@@ -8,8 +8,9 @@
 
 ## You can download "Ritmo" on:
 
--   [Google Play Store](https://play.google.com/store/apps/details?id=com.chimerastudio.ritmo)
--   [App Store](https://apps.apple.com/us/app/ritmo-beatmaking-redefined/id1562582519)
+- [Google Play Store](https://play.google.com/store/apps/details?id=com.chimerastudio.ritmo)
+- [App Store](https://apps.apple.com/us/app/ritmo-beatmaking-redefined/id1562582519)
+- [Amazon Store](https://www.amazon.com/Chimera-Studio-Ritmo-Beatmaking-Redefined/dp/B0BCSKJFDT)
 
 <!-- Hack to display images in a grid -->
 | | | |
@@ -35,9 +36,9 @@ The app has an adjustable BPM, a selection of different time signatures and mult
 
 ## The Chimera Team
 
--   [Dario Dumlijan - Full-stack Developer](https://www.linkedin.com/in/dariodumlijan/)
--   [Boris Vida - UI/UX Designer](https://www.linkedin.com/in/bvida48/)
--   [Damjan Gazibaric - Assets Designer](https://www.linkedin.com/in/damjangazibaric/)
+- [Dario Dumlijan - Full-stack Developer](https://www.linkedin.com/in/dariodumlijan/)
+- [Boris Vida - UI/UX Designer](https://www.linkedin.com/in/bvida48/)
+- [Damjan Gazibaric - Assets Designer](https://www.linkedin.com/in/damjangazibaric/)
 
 [More by Chimera Studio](https://linktr.ee/chimerastudiotm)
 
