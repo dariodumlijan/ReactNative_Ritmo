@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, ScrollView, View } from 'react-native';
+import { SafeAreaView, ScrollView } from 'react-native';
 import JSONTree from 'react-native-json-tree';
 import { Link } from 'react-router-native';
 import { includes, isEqual } from 'lodash';
@@ -62,7 +62,6 @@ function StateTree() {
           hideRoot
         />
       </ScrollView>
-      <View style={mainStyle.adSpace} />
     </SafeAreaView>
   );
 }

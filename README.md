@@ -36,9 +36,9 @@ The app has an adjustable BPM, a selection of different time signatures and mult
 
 ## The Chimera Team
 
-- [Dario Dumlijan - Full-stack Developer](https://www.linkedin.com/in/dariodumlijan/)
-- [Boris Vida - UI/UX Designer](https://www.linkedin.com/in/bvida48/)
-- [Damjan Gazibaric - Assets Designer](https://www.linkedin.com/in/damjangazibaric/)
+- [Dario Dumlijan - Application Engineer](https://dariodumlijan.com)
+- [Studio Lumistra - UI/UX Designer](https://studiolumistra.com)
+- [Damjan Gazibaric - Assets Designer](https://www.linkedin.com/in/damjangazibaric)
 
 [More by Chimera Studio](https://linktr.ee/chimerastudiotm)
 
@@ -46,4 +46,4 @@ The app has an adjustable BPM, a selection of different time signatures and mult
 
 ###### Copyright
 
-© 2024 Chimera Studio
+© 2025 Chimera Studio

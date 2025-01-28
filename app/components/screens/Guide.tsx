@@ -117,7 +117,7 @@ export function Guide() {
           step={config.sliderStep}
           minimumTrackTintColor={colors.grayLight}
           maximumTrackTintColor={colors.grayLight}
-          containerStyle={[sliderStyle.container, { marginVertical: 10 }] as ViewStyle}
+          containerStyle={[sliderStyle.container, { marginVertical: 10 }] as unknown as ViewStyle}
           trackStyle={sliderStyle.track}
           renderThumbComponent={() => <SliderThumb label={t('hihat')} />}
           thumbTouchSize={{ width: 65, height: 25 }}
@@ -302,7 +302,6 @@ export function Guide() {
           {t('guide.section_5.email')}
         </Text>
       </ScrollView>
-      <View style={mainStyle.adSpace} />
     </SafeAreaView>
   );
 }

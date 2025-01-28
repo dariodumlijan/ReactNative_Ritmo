@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import CodePush from 'react-native-code-push';
 import Sound from 'react-native-sound';
 import SplashScreen from 'react-native-splash-screen';
 import { Provider } from 'react-redux';
@@ -9,12 +8,6 @@ import Body from './components/Body';
 import { store } from './store';
 import { actions } from './store/globalStore';
 import { getDeviceInfo } from './utils';
-
-const codePushOptions = {
-  checkFrequency: CodePush.CheckFrequency.ON_APP_START,
-  installMode: CodePush.InstallMode.IMMEDIATE,
-  mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
-};
 
 function App() {
   Sound.setCategory('Playback');
@@ -42,4 +35,4 @@ function App() {
   );
 }
 
-export default CodePush(codePushOptions)(App);
+export default App;

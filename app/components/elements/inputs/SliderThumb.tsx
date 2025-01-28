@@ -21,7 +21,7 @@ function SliderThumb(props: Props) {
   };
 
   return (
-    <View style={[sliderStyle.thumb, { backgroundColor: handleColor() }] as ViewStyle}>
+    <View style={[sliderStyle.thumb, { backgroundColor: handleColor() }] as unknown as ViewStyle}>
       <Text style={sliderStyle.label}>{t(`bottom.slider.${props.label}`)}</Text>
     </View>
   );

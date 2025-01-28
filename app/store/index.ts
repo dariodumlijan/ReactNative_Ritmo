@@ -7,13 +7,12 @@ import { reducer as staticStoreReducer } from './staticStore';
 import { t } from '../locales';
 import Playback from '../sound';
 import beats from '../sound/beats';
-import { config, sliderStep } from '../tokens';
+import { sliderStep } from '../tokens';
 import { isPromise } from '../utils';
-import { getSamples, getTimeSignatures, getUnlockedSamples } from '../utils/lists';
+import { getSamples, getTimeSignatures } from '../utils/lists';
 import type { Sample, TimeSig } from '../utils/lists';
 
 const samples = getSamples();
-const unlockedSamples = getUnlockedSamples();
 const timeSignatures = getTimeSignatures(t);
 const sample = samples[0] as Sample;
 const timeSig = timeSignatures[0] as TimeSig;
@@ -38,14 +37,12 @@ const initialState = {
   },
   global: {
     developerMode: false,
-    unlockedSamples,
     sliders: {
       hihat: 0,
       snare: 0,
       kick: 0,
     },
     ui: {
-      showAds: config.ads,
       isPlaying: false,
       useBPM: 100,
       useSample: sample,

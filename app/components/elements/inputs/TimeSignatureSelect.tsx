@@ -3,7 +3,6 @@ import {
   Modal,
   ScrollView,
   Text,
-  TouchableHighlight,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -13,7 +12,6 @@ import Arrow from '../../../assets/icons/Arrow';
 import useLocale from '../../../locales';
 import colors from '../../../styles/colors';
 import { timeSignatureSelectStyle } from '../../../styles/inputs';
-import settingsStyle from '../../../styles/settings';
 import { SoundKey } from '../../../types';
 import useSelectLists from '../../../utils/lists';
 import type { TimeSignature } from '../../../store/globalStore';
@@ -22,18 +20,14 @@ import type { TimeSig } from '../../../utils/lists';
 type Option = {
   label: string,
   value: 'all' | keyof typeof SoundKey,
-  disabled: boolean,
 };
 
 type Props = {
   value: TimeSignature,
   isOpen: boolean,
-  unlockedPro: boolean,
   onSelect: (option: any) => void,
   onOpen: () => void,
   onClose: () => void,
-  onRewardedClick: () => void,
-  isDisabled?: boolean,
 };
 
 function TimeSignatureSelect(props: Props) {
@@ -44,22 +38,18 @@ function TimeSignatureSelect(props: Props) {
     {
       label: t('settings.time_sig_sections.all'),
       value: 'all',
-      disabled: false,
     },
     {
       label: t('settings.time_sig_sections.hihat'),
       value: SoundKey.hihat,
-      disabled: !props.unlockedPro,
     },
     {
       label: t('settings.time_sig_sections.snare'),
       value: SoundKey.snare,
-      disabled: !props.unlockedPro,
     },
     {
       label: t('settings.time_sig_sections.kick'),
       value: SoundKey.kick,
-      disabled: !props.unlockedPro,
     },
   ];
 
@@ -72,16 +62,7 @@ function TimeSignatureSelect(props: Props) {
   };
 
   const handleSelect = (option: Option, sig: TimeSig) => {
-    if (option.disabled) {
-      props.onRewardedClick();
-
-      return;
-    }
-
-    props.onSelect({
-      key: option.value,
-      value: sig.value,
-    });
+    props.onSelect({ key: option.value, value: sig.value });
   };
 
   return (
@@ -89,7 +70,7 @@ function TimeSignatureSelect(props: Props) {
       <View style={timeSignatureSelectStyle.inputWrapper}>
         <Text style={timeSignatureSelectStyle.label}>{t('settings.time_sig')}</Text>
         <TouchableOpacity
-          disabled={props.isOpen || props.isDisabled}
+          disabled={props.isOpen}
           activeOpacity={0.6}
           style={timeSignatureSelectStyle.input}
           onPress={props.onOpen}
@@ -106,20 +87,6 @@ function TimeSignatureSelect(props: Props) {
           ))}
           <Arrow style={timeSignatureSelectStyle.inputIcon} />
         </TouchableOpacity>
-
-        {!props.unlockedPro && (
-          <TouchableHighlight
-            style={[settingsStyle.btnRewardScreen, {
-              marginBottom: 0,
-            }]}
-            onPress={props.onRewardedClick}
-            underlayColor={colors.grayBlue}
-          >
-            <Text style={settingsStyle.btnRewardScreenText}>
-              {t('settings.unlock_advanced')}
-            </Text>
-          </TouchableHighlight>
-        )}
       </View>
 
       <Modal animationType="fade" visible={props.isOpen} onRequestClose={props.onClose} transparent>
@@ -138,17 +105,6 @@ function TimeSignatureSelect(props: Props) {
                   <Text style={timeSignatureSelectStyle.listLabel}>
                     &bull; {option.label}
                   </Text>
-                  {option.disabled && (
-                    <TouchableHighlight
-                      style={timeSignatureSelectStyle.proWrapper}
-                      onPress={props.onRewardedClick}
-                      underlayColor={colors.gray}
-                    >
-                      <Text style={timeSignatureSelectStyle.proText}>
-                        {t('settings.advanced')}
-                      </Text>
-                    </TouchableHighlight>
-                  )}
                 </View>
                 <View style={timeSignatureSelectStyle.listSection}>
                   {map(timeSignatures, (sig: TimeSig, key: number) => {

@@ -1,6 +1,4 @@
-import { includes, map, reduce } from 'lodash';
 import useLocale from '../locales';
-import { config } from '../tokens';
 
 export type Sample = {
   label: string,
@@ -16,7 +14,6 @@ export type TimeSig = {
 
 export type Lists = {
   samples: Sample[],
-  unlockedSamples: string[],
   timeSignatures: TimeSig[],
 };
 
@@ -83,20 +80,6 @@ export const getSamples = (): Sample[] => ([
   },
 ]);
 
-export const getUnlockedSamples = (): string[] => {
-  const samples = getSamples();
-
-  if (!config.ads) return map(samples, 'label');
-
-  return reduce(samples, (list: string[], sample: Sample) => {
-    if (includes(['Acoustic', 'Hip-hop'], sample.label)) {
-      return [...list, sample.label];
-    }
-
-    return list;
-  }, []);
-};
-
 export const getTimeSignatures = (t: Function): TimeSig[] => ([
   { label: t('settings.time_sig_options.option_1'), value: 'Free' },
   { label: t('settings.time_sig_options.option_2'), value: '4/4' },
@@ -108,7 +91,6 @@ const useSelectLists = (): Lists => {
 
   return {
     samples: getSamples(),
-    unlockedSamples: getUnlockedSamples(),
     timeSignatures: getTimeSignatures(t),
   };
 };
