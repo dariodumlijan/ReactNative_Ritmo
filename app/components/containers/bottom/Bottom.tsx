@@ -1,27 +1,27 @@
 import React from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
+import SliderThumb from '@components/elements/inputs/SliderThumb';
+import Alert from '@components/elements/misc/Alert';
+import ClearPresetModal from '@components/elements/modals/ClearPresetModal';
+import useLocale from '@locales';
 import { Slider } from '@miblanchard/react-native-slider';
+import { actions as beatActions, selectors as beatSelectors } from '@store/beatsStore';
+import { actions as globalActions, selectors as globalSelectors } from '@store/globalStore';
+import { selectors as staticSelectors } from '@store/staticStore';
+import bottomStyle from '@styles/bottom';
+import colors from '@styles/colors';
+import { sliderStyle } from '@styles/inputs';
+import notificationsStyle from '@styles/notifications';
+import { isBeatEmpty } from '@utils';
+import { useAppDispatch, useAppSelector, useTeleport } from '@utils/hooks';
 import { secondsToMilliseconds } from 'date-fns';
 import {
   first, isEmpty, isEqual, map,
 } from 'lodash';
-import useLocale from '../../../locales';
-import { actions as beatActions, selectors as beatSelectors } from '../../../store/beatsStore';
-import { actions as globalActions, selectors as globalSelectors } from '../../../store/globalStore';
-import { selectors as staticSelectors } from '../../../store/staticStore';
-import bottomStyle from '../../../styles/bottom';
-import colors from '../../../styles/colors';
-import { sliderStyle } from '../../../styles/inputs';
-import notificationsStyle from '../../../styles/notifications';
-import { isBeatEmpty } from '../../../utils';
-import { useAppDispatch, useAppSelector, useTeleport } from '../../../utils/hooks';
-import SliderThumb from '../../elements/inputs/SliderThumb';
-import Alert from '../../elements/misc/Alert';
-import ClearPresetModal from '../../elements/modals/ClearPresetModal';
-import type { Beats } from '../../../sound/beats';
-import type { State as GlobalState, Preset } from '../../../store/globalStore';
-import type { State as StaticState } from '../../../store/staticStore';
-import type { PresetKey, SoundKey } from '../../../types';
+import type { Beats } from '@sound/beats';
+import type { State as GlobalState, Preset } from '@store/globalStore';
+import type { State as StaticState } from '@store/staticStore';
+import type { PresetKey, SoundKey } from '@types';
 
 function Bottom() {
   const { t } = useLocale();

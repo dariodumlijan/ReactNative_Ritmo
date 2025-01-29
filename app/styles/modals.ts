@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { Font } from '.';
-import colors from './colors';
-import { deviceHeight, deviceWidth, isTablet } from '../utils';
+import { Font } from '@styles';
+import colors from '@styles/colors';
+import { deviceHeight, deviceWidth, isTablet } from '@utils';
 
 const modalsStyle = StyleSheet.create({
   modalOverlay: {

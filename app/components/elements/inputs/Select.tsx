@@ -2,9 +2,9 @@ import React from 'react';
 import {
   Modal, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View,
 } from 'react-native';
+import Arrow from '@assets/icons/Arrow';
+import { selectStyle } from '@styles/inputs';
 import { map } from 'lodash';
-import Arrow from '../../../assets/icons/Arrow';
-import { selectStyle } from '../../../styles/inputs';
 
 export type Option = Object & {
   label: string,

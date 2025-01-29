@@ -8,21 +8,21 @@ import {
   View,
 } from 'react-native';
 import { Link } from 'react-router-native';
+import Exit from '@assets/icons/Exit';
+import Export from '@assets/icons/Export';
+import Guide from '@assets/icons/Guide';
+import Settings from '@assets/icons/Settings';
+import StateTree from '@assets/icons/StateTree';
+import ExportMidiModal from '@components/elements/modals/ExportMidiModal';
+import useLocale from '@locales';
+import { selectors } from '@store/beatsStore';
+import { actions } from '@store/globalStore';
+import colors from '@styles/colors';
+import navigationStyle from '@styles/navigation';
+import { isBeatEmpty } from '@utils';
+import { useAppDispatch, useAppSelector, useTeleport } from '@utils/hooks';
 import { isEqual, map } from 'lodash';
-import Exit from '../../../assets/icons/Exit';
-import Export from '../../../assets/icons/Export';
-import Guide from '../../../assets/icons/Guide';
-import Settings from '../../../assets/icons/Settings';
-import StateTree from '../../../assets/icons/StateTree';
-import useLocale from '../../../locales';
-import { selectors } from '../../../store/beatsStore';
-import { actions } from '../../../store/globalStore';
-import colors from '../../../styles/colors';
-import navigationStyle from '../../../styles/navigation';
-import { isBeatEmpty } from '../../../utils';
-import { useAppDispatch, useAppSelector, useTeleport } from '../../../utils/hooks';
-import ExportMidiModal from '../../elements/modals/ExportMidiModal';
-import type { Beats } from '../../../sound/beats';
+import type { Beats } from '@sound/beats';
 
 function Navigation() {
   const { t } = useLocale();
@@ -55,7 +55,7 @@ function Navigation() {
       visible: true,
     },
     {
-      path: 'state-tree',
+      path: 'dev',
       label: t('navigation.state_tree'),
       icon: <StateTree style={navigationStyle.icon} />,
       visible: developerMode,

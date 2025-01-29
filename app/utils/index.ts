@@ -4,7 +4,7 @@ import { minutesToMilliseconds } from 'date-fns';
 import {
   every, flatten, floor, values,
 } from 'lodash';
-import type { Beats } from '../sound/beats';
+import type { Beats } from '@sound/beats';
 
 type DeviceInfoType = {
   isApple: boolean,

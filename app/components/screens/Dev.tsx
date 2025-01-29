@@ -2,14 +2,14 @@ import React from 'react';
 import { SafeAreaView, ScrollView } from 'react-native';
 import JSONTree from 'react-native-json-tree';
 import { Link } from 'react-router-native';
+import Exit from '@assets/icons/Exit';
+import colors from '@styles/colors';
+import mainStyle from '@styles/main';
+import * as utils from '@utils';
+import { useAppSelector } from '@utils/hooks';
 import { includes, isEqual } from 'lodash';
-import Exit from '../../assets/icons/Exit';
-import colors from '../../styles/colors';
-import mainStyle from '../../styles/main';
-import * as utils from '../../utils';
-import { useAppSelector } from '../../utils/hooks';
 
-function StateTree() {
+function Dev() {
   const store = useAppSelector((state) => state, isEqual);
 
   const theme = {
@@ -66,4 +66,4 @@ function StateTree() {
   );
 }
 
-export default StateTree;
+export default Dev;

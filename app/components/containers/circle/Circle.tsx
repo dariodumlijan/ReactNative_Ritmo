@@ -2,24 +2,24 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   Animated, Easing, Text, TouchableHighlight, TouchableOpacity, View,
 } from 'react-native';
-import { secondsToMilliseconds } from 'date-fns';
-import { isEqual, map } from 'lodash';
-import Pause from '../../../assets/icons/Pause';
-import Play from '../../../assets/icons/Play';
-import useLocale from '../../../locales';
-import { actions as beatActions, selectors as beatSelectors } from '../../../store/beatsStore';
-import { selectors as globalSelectors } from '../../../store/globalStore';
-import circleStyle from '../../../styles/circle';
-import colors from '../../../styles/colors';
-import { checkboxStyle } from '../../../styles/inputs';
-import notificationsStyle from '../../../styles/notifications';
-import { calcBpmInterval, isBeatEmpty } from '../../../utils';
+import Pause from '@assets/icons/Pause';
+import Play from '@assets/icons/Play';
+import Alert from '@components/elements/misc/Alert';
+import useLocale from '@locales';
+import { actions as beatActions, selectors as beatSelectors } from '@store/beatsStore';
+import { selectors as globalSelectors } from '@store/globalStore';
+import circleStyle from '@styles/circle';
+import colors from '@styles/colors';
+import { checkboxStyle } from '@styles/inputs';
+import notificationsStyle from '@styles/notifications';
+import { calcBpmInterval, isBeatEmpty } from '@utils';
 import {
   useAppDispatch, useAppSelector, useReview, useTeleport,
-} from '../../../utils/hooks';
-import Alert from '../../elements/misc/Alert';
-import type { Beat } from '../../../sound/beats';
-import type { SoundKey } from '../../../types';
+} from '@utils/hooks';
+import { secondsToMilliseconds } from 'date-fns';
+import { isEqual, map } from 'lodash';
+import type { Beat } from '@sound/beats';
+import type { SoundKey } from '@types';
 
 function Circle() {
   const { t } = useLocale();

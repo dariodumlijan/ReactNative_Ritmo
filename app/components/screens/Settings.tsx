@@ -3,23 +3,23 @@ import {
   Animated, Keyboard, SafeAreaView, ScrollView, Text, TextInput, View,
 } from 'react-native';
 import { Link } from 'react-router-native';
+import Close from '@assets/icons/Close';
+import Select from '@components/elements/inputs/Select';
+import TimeSignatureSelect from '@components/elements/inputs/TimeSignatureSelect';
+import useLocale from '@locales';
+import { actions, selectors } from '@store/globalStore';
+import colors from '@styles/colors';
+import { textInputStyle } from '@styles/inputs';
+import mainStyle from '@styles/main';
+import settingsStyle from '@styles/settings';
+import { maxBPM } from '@tokens';
+import { useAppDispatch, useAppSelector } from '@utils/hooks';
+import useSelectLists from '@utils/lists';
 import {
   get, isEmpty, isEqual, isNaN, isNumber,
 } from 'lodash';
-import Close from '../../assets/icons/Close';
-import useLocale from '../../locales';
-import { actions, selectors } from '../../store/globalStore';
-import colors from '../../styles/colors';
-import { textInputStyle } from '../../styles/inputs';
-import mainStyle from '../../styles/main';
-import settingsStyle from '../../styles/settings';
-import { maxBPM } from '../../tokens';
-import { useAppDispatch, useAppSelector } from '../../utils/hooks';
-import useSelectLists from '../../utils/lists';
-import Select from '../elements/inputs/Select';
-import TimeSignatureSelect from '../elements/inputs/TimeSignatureSelect';
-import type { TimeSignaturePayload } from '../../store/globalStore';
-import type { Sample } from '../../utils/lists';
+import type { TimeSignaturePayload } from '@store/globalStore';
+import type { Sample } from '@utils/lists';
 
 function Settings() {
   const { t } = useLocale();

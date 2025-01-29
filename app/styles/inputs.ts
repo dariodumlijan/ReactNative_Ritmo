@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { Font } from '.';
-import colors from './colors';
+import { Font } from '@styles';
+import colors from '@styles/colors';
 import {
   deviceHeight, deviceWidth, isApple, isTablet,
-} from '../utils';
+} from '@utils';
 
 export const checkboxStyle = StyleSheet.create({
   wrapper: {

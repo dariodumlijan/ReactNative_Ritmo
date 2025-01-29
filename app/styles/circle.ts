@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import colors from './colors';
-import { deviceWidth, isTablet } from '../utils';
+import colors from '@styles/colors';
+import { deviceWidth, isTablet } from '@utils';
 
 const circleRad = deviceWidth / 2;
 const circleStyle = StyleSheet.create({

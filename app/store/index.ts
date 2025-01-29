@@ -1,16 +1,16 @@
 /* eslint-disable no-console */
+import { t } from '@locales';
 import { Tuple, configureStore } from '@reduxjs/toolkit';
+import Playback from '@sound';
+import beats from '@sound/beats';
+import { reducer as beatsStoreReducer } from '@store/beatsStore';
+import { reducer as globalStoreReducer } from '@store/globalStore';
+import { reducer as staticStoreReducer } from '@store/staticStore';
+import { sliderStep } from '@tokens';
+import { isPromise } from '@utils';
+import { getSamples, getTimeSignatures } from '@utils/lists';
 import { thunk } from 'redux-thunk';
-import { reducer as beatsStoreReducer } from './beatsStore';
-import { reducer as globalStoreReducer } from './globalStore';
-import { reducer as staticStoreReducer } from './staticStore';
-import { t } from '../locales';
-import Playback from '../sound';
-import beats from '../sound/beats';
-import { sliderStep } from '../tokens';
-import { isPromise } from '../utils';
-import { getSamples, getTimeSignatures } from '../utils/lists';
-import type { Sample, TimeSig } from '../utils/lists';
+import type { Sample, TimeSig } from '@utils/lists';
 
 const samples = getSamples();
 const timeSignatures = getTimeSignatures(t);

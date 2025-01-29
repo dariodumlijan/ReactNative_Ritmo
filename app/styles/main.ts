@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { Font } from '.';
-import colors from './colors';
-import { isApple, isiPhone } from '../utils';
+import { Font } from '@styles';
+import colors from '@styles/colors';
+import { isApple, isiPhone } from '@utils';
 
 const mainStyle = StyleSheet.create({
   container: {

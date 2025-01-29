@@ -4,17 +4,32 @@
     // mirror babel.config.js
     "baseUrl": "./app",
     "paths": {
+      "@app/*": [
+        "*"
+      ],
       "@assets/*": [
         "assets/*"
       ],
       "@components/*": [
         "components/*"
       ],
+      "@context": [
+        "context/index.tsx"
+      ],
+      "@context/*": [
+        "context/*"
+      ],
       "@locales": [
         "locales/index.ts"
       ],
       "@locales/*": [
         "locales/*"
+      ],
+      "@sound": [
+        "sound/index.ts"
+      ],
+      "@sound/*": [
+        "sound/*"
       ],
       "@store": [
         "store/index.ts"
@@ -27,6 +42,9 @@
       ],
       "@styles/*": [
         "styles/*"
+      ],
+      "@tokens": [
+        "tokens/index.ts"
       ],
       "@types": [
         "types/index.ts"

@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { Font } from '.';
-import colors from './colors';
-import { deviceHeight, isTablet, isiPhone } from '../utils';
+import { Font } from '@styles';
+import colors from '@styles/colors';
+import { deviceHeight, isTablet, isiPhone } from '@utils';
 
 const settingsStyle = StyleSheet.create({
   navigation: {

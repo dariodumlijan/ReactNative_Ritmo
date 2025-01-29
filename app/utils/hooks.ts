@@ -5,14 +5,14 @@ import InAppReview from 'react-native-in-app-review';
 import { useDispatch, useSelector } from 'react-redux';
 import type { TypedUseSelectorHook } from 'react-redux';
 import { useLocation } from 'react-router-native';
+import { PortalContext } from '@context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { localStorageKeys } from '@tokens';
 import {
   addMonths, minutesToMilliseconds, secondsToMilliseconds,
 } from 'date-fns';
 import { isEqual } from 'lodash';
-import { PortalContext } from '../context';
-import { localStorageKeys } from '../tokens';
-import type { AppDispatch, RootState } from '../store';
+import type { AppDispatch, RootState } from '@store';
 
 export const getItem = async (key: string): Promise<any> => {
   try {
@@ -84,14 +84,14 @@ export const useLocationInfo = () => {
   const isHome = location.pathname === '/';
   const isSettings = location.pathname === '/settings';
   const isGuide = location.pathname === '/guide';
-  const isStateTree = location.pathname === '/state-tree';
+  const isDev = location.pathname === '/dev';
 
   return {
     current: location.pathname,
     isHome,
     isSettings,
     isGuide,
-    isStateTree,
+    isDev,
   };
 };
 

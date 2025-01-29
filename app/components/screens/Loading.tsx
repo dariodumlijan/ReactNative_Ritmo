@@ -6,9 +6,9 @@ import {
   Text,
   View,
 } from 'react-native';
-import Icon from '../../assets/icons/Icon';
-import useLocale from '../../locales';
-import colors from '../../styles/colors';
+import Icon from '@assets/icons/Icon';
+import useLocale from '@locales';
+import colors from '@styles/colors';
 
 const styles = StyleSheet.create({
   wrapper: {

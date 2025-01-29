@@ -2,11 +2,11 @@ import React from 'react';
 import {
   Modal, Text, TouchableOpacity, TouchableWithoutFeedback, View,
 } from 'react-native';
-import useLocale from '../../../locales';
-import { actions } from '../../../store/globalStore';
-import modalsStyle from '../../../styles/modals';
-import { useAppDispatch, useTeleport } from '../../../utils/hooks';
-import type { PresetKey } from '../../../types';
+import useLocale from '@locales';
+import { actions } from '@store/globalStore';
+import modalsStyle from '@styles/modals';
+import { useAppDispatch, useTeleport } from '@utils/hooks';
+import type { PresetKey } from '@types';
 
 type Props = {
   presetKey: PresetKey,

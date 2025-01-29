@@ -3,13 +3,13 @@ import React from 'react';
 import {
   SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View,
 } from 'react-native';
+import Emoji from '@assets/icons/Emoji';
+import LightBackground from '@components/elements/backgrounds/LightBackground';
+import Hr from '@components/elements/misc/Hr';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Emoji from '../../../assets/icons/Emoji';
-import { Font } from '../../../styles';
-import colors from '../../../styles/colors';
-import { deviceInfo } from '../../../utils';
-import LightBackground from '../../elements/backgrounds/LightBackground';
-import Hr from '../../elements/misc/Hr';
+import { Font } from '@styles';
+import colors from '@styles/colors';
+import { deviceInfo } from '@utils';
 
 const styles = StyleSheet.create({
   container: {

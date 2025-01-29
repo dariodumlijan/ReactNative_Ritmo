@@ -1,9 +1,9 @@
 import React from 'react';
 import type { ViewStyle } from 'react-native';
 import { Text, View } from 'react-native';
-import useLocale from '../../../locales';
-import colors from '../../../styles/colors';
-import { sliderStyle } from '../../../styles/inputs';
+import useLocale from '@locales';
+import colors from '@styles/colors';
+import { sliderStyle } from '@styles/inputs';
 
 type Props = {
   label: string,

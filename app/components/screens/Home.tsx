@@ -2,15 +2,15 @@ import React from 'react';
 import {
   SafeAreaView, ScrollView, TouchableOpacity, View,
 } from 'react-native';
-import Logo from '../../assets/icons/Logo';
-import Menu from '../../assets/icons/Menu';
-import { actions } from '../../store/globalStore';
-import colors from '../../styles/colors';
-import homeStyle from '../../styles/home';
-import mainStyle from '../../styles/main';
-import { useAppDispatch } from '../../utils/hooks';
-import Bottom from '../blocks/bottom/Bottom';
-import Circle from '../blocks/circle/Circle';
+import Logo from '@assets/icons/Logo';
+import Menu from '@assets/icons/Menu';
+import Bottom from '@components/containers/bottom/Bottom';
+import Circle from '@components/containers/circle/Circle';
+import { actions } from '@store/globalStore';
+import colors from '@styles/colors';
+import homeStyle from '@styles/home';
+import mainStyle from '@styles/main';
+import { useAppDispatch } from '@utils/hooks';
 
 function Home() {
   const dispatch = useAppDispatch();

@@ -1,6 +1,6 @@
 import { useState } from 'react';
+import enLang from '@locales/en.json';
 import get from 'lodash/get';
-import enLang from './en.json';
 
 enum Languages {
   en = 'en',

@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StatusBar, View } from 'react-native';
 import { NativeRouter, Route, Routes } from 'react-router-native';
+import Navigation from '@components/containers/navigation/Navigation';
+import Backgrounds from '@components/elements/backgrounds/Backgrounds';
+import Dev from '@components/screens/Dev';
+import Guide from '@components/screens/Guide';
+import Home from '@components/screens/Home';
+import Loading from '@components/screens/Loading';
+import Settings from '@components/screens/Settings';
+import { actions } from '@store/globalStore';
+import mainStyle from '@styles/main';
+import { useAppDispatch } from '@utils/hooks';
 import { secondsToMilliseconds } from 'date-fns';
-import Navigation from './blocks/navigation/Navigation';
-import Backgrounds from './elements/backgrounds/Backgrounds';
-import Guide from './screens/Guide';
-import Home from './screens/Home';
-import Loading from './screens/Loading';
-import Settings from './screens/Settings';
-import StateTree from './screens/StateTree';
-import { actions } from '../store/globalStore';
-import mainStyle from '../styles/main';
-import { useAppDispatch } from '../utils/hooks';
 
 function Body() {
   const dispatch = useAppDispatch();
@@ -45,7 +45,7 @@ function Body() {
           <Route index element={<Home />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/guide" element={(<Guide />)} />
-          <Route path="/state-tree" element={<StateTree />} />
+          <Route path="/dev" element={<Dev />} />
         </Routes>
 
       </NativeRouter>

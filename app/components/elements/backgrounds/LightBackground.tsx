@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Logo from '../../../assets/icons/Logo';
-import colors from '../../../styles/colors';
-import { deviceHeight, deviceWidth, isiPhone } from '../../../utils';
+import Logo from '@assets/icons/Logo';
+import colors from '@styles/colors';
+import { deviceHeight, deviceWidth, isiPhone } from '@utils';
 
 type Props = {
   hideLogo?: boolean

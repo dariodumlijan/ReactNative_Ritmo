@@ -7,15 +7,15 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import Arrow from '@assets/icons/Arrow';
+import useLocale from '@locales';
+import colors from '@styles/colors';
+import { timeSignatureSelectStyle } from '@styles/inputs';
+import { SoundKey } from '@types';
+import useSelectLists from '@utils/lists';
 import { every, map, reject } from 'lodash';
-import Arrow from '../../../assets/icons/Arrow';
-import useLocale from '../../../locales';
-import colors from '../../../styles/colors';
-import { timeSignatureSelectStyle } from '../../../styles/inputs';
-import { SoundKey } from '../../../types';
-import useSelectLists from '../../../utils/lists';
-import type { TimeSignature } from '../../../store/globalStore';
-import type { TimeSig } from '../../../utils/lists';
+import type { TimeSignature } from '@store/globalStore';
+import type { TimeSig } from '@utils/lists';
 
 type Option = {
   label: string,

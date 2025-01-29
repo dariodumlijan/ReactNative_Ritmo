@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import colors from '../../../styles/colors';
-import { deviceHeight, deviceWidth, isiPhone } from '../../../utils';
+import colors from '@styles/colors';
+import { deviceHeight, deviceWidth, isiPhone } from '@utils';
 
 const styles = StyleSheet.create({
   backgroundWrapper: {

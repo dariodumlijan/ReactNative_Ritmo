@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import Sound from 'react-native-sound';
 import SplashScreen from 'react-native-splash-screen';
 import { Provider } from 'react-redux';
-import ErrorBoundary from './components/blocks/errors/ErrorBoundary';
-import PortalProvider from './components/blocks/portal/PortalProvider';
-import Body from './components/Body';
-import { store } from './store';
-import { actions } from './store/globalStore';
-import { getDeviceInfo } from './utils';
+import Body from '@components/Body';
+import PortalProvider from '@components/containers/portal/PortalProvider';
+import ErrorBoundary from '@components/screens/ErrorBoundary';
+import { store } from '@store';
+import { actions } from '@store/globalStore';
+import { getDeviceInfo } from '@utils';
 
 function App() {
   Sound.setCategory('Playback');

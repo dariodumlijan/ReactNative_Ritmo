@@ -1,15 +1,15 @@
+import * as MIDI from '@app/midi';
+import { t } from '@locales';
+import { BeatTypes } from '@store/beatsStore';
+import { getSamples, getTimeSignatures } from '@utils/lists';
+import * as LocalStorage from '@utils/localStorage';
 import { merge, omit } from 'lodash';
-import { BeatTypes } from './beatsStore';
-import { t } from '../locales';
-import * as MIDI from '../midi';
-import { getSamples, getTimeSignatures } from '../utils/lists';
-import * as LocalStorage from '../utils/localStorage';
-import type { RootState } from '.';
-import type { BuildMidi, BuildPromise } from '../midi';
-import type { Beats } from '../sound/beats';
-import type { PresetKey, ReduxAction, SoundKey } from '../types';
-import type { Sample, TimeSig } from '../utils/lists';
-import type { FetchResponse, WriteResponse } from '../utils/localStorage';
+import type { BuildMidi, BuildPromise } from '@app/midi';
+import type { Beats } from '@sound/beats';
+import type { RootState } from '@store';
+import type { PresetKey, ReduxAction, SoundKey } from '@types';
+import type { Sample, TimeSig } from '@utils/lists';
+import type { FetchResponse, WriteResponse } from '@utils/localStorage';
 
 export type TimeSignaturePayload = {
   key: 'all' | keyof typeof SoundKey,

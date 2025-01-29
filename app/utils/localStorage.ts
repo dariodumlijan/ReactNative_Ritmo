@@ -1,7 +1,7 @@
-import { getItem, removeItem, setItem } from './hooks';
-import { localStorageKeys } from '../tokens';
-import type { Preset } from '../store/globalStore';
-import type { PresetKey } from '../types';
+import { localStorageKeys } from '@tokens';
+import { getItem, removeItem, setItem } from '@utils/hooks';
+import type { Preset } from '@store/globalStore';
+import type { PresetKey } from '@types';
 
 export type FetchResponse = {
   presets: {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Animated } from 'react-native';
-import notificationsStyle from '../../../styles/notifications';
-import { useTeleport } from '../../../utils/hooks';
+import notificationsStyle from '@styles/notifications';
+import { useTeleport } from '@utils/hooks';
 
 type Props = {
   children: any,

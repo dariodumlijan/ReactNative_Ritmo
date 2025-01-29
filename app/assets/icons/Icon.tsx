@@ -2,9 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import {
   Animated, Easing, StyleSheet, View,
 } from 'react-native';
+import colors from '@styles/colors';
+import { deviceWidth } from '@utils';
 import { secondsToMilliseconds } from 'date-fns';
-import colors from '../../styles/colors';
-import { deviceWidth } from '../../utils';
 
 type Props = {
   style?: Object,

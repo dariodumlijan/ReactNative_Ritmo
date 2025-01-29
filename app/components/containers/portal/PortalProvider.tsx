@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { PortalContext } from '../../../context';
+import { PortalContext } from '@context';
 
 type Props = {
   children: any,

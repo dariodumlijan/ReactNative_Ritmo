@@ -1,12 +1,12 @@
+import initBeats from '@sound/beats';
+import { GlobalTypes } from '@store/globalStore';
 import { get, map } from 'lodash';
-import { GlobalTypes } from './globalStore';
-import initBeats from '../sound/beats';
-import type { RootState } from '.';
-import type { TimeSignaturePayload } from './globalStore';
-import type Playback from '../sound';
-import type { Beat, Beats } from '../sound/beats';
-import type { ReduxAction, SoundKey } from '../types';
-import type { Sample } from '../utils/lists';
+import type Playback from '@sound';
+import type { Beat, Beats } from '@sound/beats';
+import type { RootState } from '@store';
+import type { TimeSignaturePayload } from '@store/globalStore';
+import type { ReduxAction, SoundKey } from '@types';
+import type { Sample } from '@utils/lists';
 
 type PayloadRotate = {
   key: string,
