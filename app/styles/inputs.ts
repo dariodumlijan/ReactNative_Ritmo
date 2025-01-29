@@ -44,12 +44,6 @@ export const selectStyle = StyleSheet.create({
     flexShrink: 1,
     justifyContent: 'space-between',
   },
-  inputWrapperRewarded: {
-    alignItems: 'center',
-    display: 'flex',
-    flexShrink: 1,
-    justifyContent: 'space-between',
-  },
   label: {
     color: colors.primaryDark,
     fontFamily: Font.semiBold,
@@ -68,15 +62,6 @@ export const selectStyle = StyleSheet.create({
     justifyContent: 'center',
     width: 200,
   },
-  inputRewarded: {
-    alignItems: 'center',
-    backgroundColor: colors.grayLight,
-    borderRadius: 15,
-    display: 'flex',
-    height: 40,
-    justifyContent: 'center',
-    width: 250,
-  },
   inputText: {
     color: colors.grayBlue,
     fontFamily: Font.semiBold,
@@ -88,12 +73,6 @@ export const selectStyle = StyleSheet.create({
     aspectRatio: 1 / 1,
     left: 10,
     position: 'absolute',
-    width: 20,
-  },
-  inputIconRewarded: {
-    aspectRatio: 1 / 1,
-    position: 'absolute',
-    right: 10,
     width: 20,
   },
   listOverlay: {
