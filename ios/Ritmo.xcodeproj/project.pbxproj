@@ -70,7 +70,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Ritmo/main.m; sourceTree = "<group>"; };
 		176F1212BA3CF7F9ADFD6B91 /* Pods-Ritmo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ritmo.debug.xcconfig"; path = "Target Support Files/Pods-Ritmo/Pods-Ritmo.debug.xcconfig"; sourceTree = "<group>"; };
 		1919AF634765473C9E053803 /* midiFile.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = midiFile.png; path = ../app/assets/img/midiFile.png; sourceTree = "<group>"; };
-		1BCE514D660BAA9F49DFA72F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = Ritmo/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		1BCE514D660BAA9F49DFA72F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Ritmo/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		35D199E344164BBBB2EECEE6 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../app/assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
 		3E0E2ACE2724D05A002BFFB7 /* epictoms_kick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = epictoms_kick.mp3; sourceTree = "<group>"; };
 		3E0E2ACF2724D05A002BFFB7 /* african1_kick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = african1_kick.mp3; sourceTree = "<group>"; };
@@ -583,6 +583,11 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Ritmo.app/Ritmo";
 			};
 			name = Debug;
@@ -608,6 +613,11 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Ritmo.app/Ritmo";
 			};
 			name = Release;
