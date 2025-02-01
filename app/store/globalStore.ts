@@ -1,7 +1,7 @@
 import * as MIDI from '@app/midi';
 import { t } from '@locales';
 import { BeatTypes } from '@store/beatsStore';
-import { getSamples, getTimeSignatures } from '@utils/lists';
+import { getTimeSignatures } from '@utils/lists';
 import * as LocalStorage from '@utils/localStorage';
 import { merge, omit } from 'lodash';
 import type { BuildMidi, BuildPromise } from '@app/midi';
@@ -144,7 +144,6 @@ const rotateBeat = (
 ): State => merge({}, state, { sliders: { [payload.key]: payload.degree } });
 
 const resetBeat = (state: State): State => {
-  const samples = getSamples();
   const timeSignatures = getTimeSignatures(t);
   const timeSig: TimeSig = timeSignatures[0] as TimeSig;
 
@@ -157,7 +156,6 @@ const resetBeat = (state: State): State => {
         snare: timeSig.value,
         kick: timeSig.value,
       },
-      useSample: samples[0],
     },
     sliders: {
       hihat: 0,

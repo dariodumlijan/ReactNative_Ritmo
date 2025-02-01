@@ -8,7 +8,7 @@ function Backgrounds() {
 
   if (locationInfo.isHome) return <SplitBackground />;
 
-  return <LightBackground hideLogo={locationInfo.isDev} />;
+  return <LightBackground showLogo={locationInfo.isSettings} />;
 }
 
 export default Backgrounds;

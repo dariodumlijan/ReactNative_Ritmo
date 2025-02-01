@@ -56,7 +56,7 @@ function Navigation() {
     },
     {
       path: 'dev',
-      label: t('navigation.state_tree'),
+      label: t('navigation.dev'),
       icon: <StateTree style={navigationStyle.icon} />,
       visible: developerMode,
     },

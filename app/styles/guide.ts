@@ -14,8 +14,11 @@ const guideStyle = StyleSheet.create({
     flex: 1,
     height: '100%',
     marginBottom: isiPhone ? '0%' : '8%',
-    marginTop: isiPhone ? '18%' : '22%',
+    marginTop: isiPhone ? '12%' : '22%',
     width: '100%',
+  },
+  guideContainer: {
+    paddingBottom: 100,
   },
   guideSub: {
     color: colors.primaryDark,

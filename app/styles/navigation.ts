@@ -55,6 +55,7 @@ const navigationStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     marginBottom: 20,
+    marginTop: 20,
     width: '100%',
   },
   tagline: {

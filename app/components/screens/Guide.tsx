@@ -68,7 +68,7 @@ export function Guide() {
         <Exit fill={colors.primaryDark} />
       </Link>
 
-      <ScrollView style={guideStyle.guideScroll}>
+      <ScrollView style={guideStyle.guideScroll} contentContainerStyle={guideStyle.guideContainer}>
         <Text style={guideStyle.guideTitle}>{t('guide.title')}</Text>
         <Text style={guideStyle.guideSub}>{t('guide.section_1.title')}</Text>
         <Text style={guideStyle.guideTxt}>{t('guide.section_1.paragraph_1')}</Text>

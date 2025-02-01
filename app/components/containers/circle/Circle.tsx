@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import type { LayoutChangeEvent } from 'react-native';
 import {
   Animated, Easing, Text, TouchableHighlight, TouchableOpacity, View,
 } from 'react-native';
@@ -17,7 +18,7 @@ import {
   useAppDispatch, useAppSelector, useReview, useTeleport,
 } from '@utils/hooks';
 import { secondsToMilliseconds } from 'date-fns';
-import { isEqual, map } from 'lodash';
+import { get, isEqual, map } from 'lodash';
 import type { Beat } from '@sound/beats';
 import type { SoundKey } from '@types';
 
@@ -44,7 +45,12 @@ function Circle() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [global.isPlaying]);
 
-  const getDimensions = (e: any, key: string) => setCircleRadius({ ...circleRadius, ...{ [key]: e.nativeEvent.layout.width / 2 - 2.5 } });
+  const getDimensions = (e: LayoutChangeEvent, key: string) => {
+    const width = get(e, 'nativeEvent.layout.width', undefined);
+    if (!width) return;
+
+    setCircleRadius((state) => ({ ...state, ...{ [key]: width / 2 - 2.5 } }));
+  };
 
   const handleAnimations = (bpmInterval: number) => {
     Animated.loop(
@@ -135,7 +141,7 @@ function Circle() {
         <View
           key={key}
           style={{ ...circleStyle.circle, ...circleStyle[key] }}
-          onLayout={(e: any) => getDimensions(e, key)}
+          onLayout={(e) => getDimensions(e, key)}
         />
       ))}
 

@@ -50,15 +50,17 @@ function Bottom() {
         useBPM: global.ui.useBPM,
         useTimeSig: global.ui.useTimeSig,
       }));
-    } else {
-      teleport(
-        <Alert clearDelayMS={secondsToMilliseconds(3.3)}>
-          <Text style={notificationsStyle.alertText}>
-            {t('alert.no_beat')}
-          </Text>
-        </Alert>,
-      );
+
+      return;
     }
+
+    teleport(
+      <Alert clearDelayMS={secondsToMilliseconds(3.3)}>
+        <Text style={notificationsStyle.alertText}>
+          {t('alert.no_beat')}
+        </Text>
+      </Alert>,
+    );
   };
 
   const handleModalCall = (key: PresetKey) => {

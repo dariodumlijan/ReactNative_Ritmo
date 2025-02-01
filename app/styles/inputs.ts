@@ -257,7 +257,7 @@ export const sliderStyle = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: isTablet ? '10%' : '5%',
     marginVertical: '5%',
-    maxHeight: 200,
+    maxHeight: 150,
     maxWidth: 500,
     width: isTablet ? '80%' : '90%',
   },

@@ -35,7 +35,7 @@ const bottomStyle = StyleSheet.create({
   presetBtn: {
     backgroundColor: colors.primary,
     borderColor: colors.gray,
-    borderRadius: 30,
+    borderRadius: 18,
     borderWidth: 2,
     display: 'flex',
     justifyContent: 'center',

@@ -31,8 +31,8 @@ function Home() {
           <View style={homeStyle.topWrapperBG}>
             <View style={homeStyle.navigation}>
               <Logo style={homeStyle.logo} fill={colors.gray} />
-              <TouchableOpacity activeOpacity={0.8} onPress={handleOpenNav}>
-                <Menu style={homeStyle.menu} />
+              <TouchableOpacity style={homeStyle.menu} activeOpacity={0.8} onPress={handleOpenNav}>
+                <Menu />
               </TouchableOpacity>
             </View>
             <Circle />

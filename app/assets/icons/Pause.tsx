@@ -7,7 +7,7 @@ type Props = {
 
 function Pause(props: Props) {
   return (
-    <Svg viewBox="0 0 80 80" style={props.style}>
+    <Svg viewBox="0 0 80 80" style={[{ pointerEvents: 'box-only' }, props.style]}>
       <Path
         fill="#DFE2EC"
         d="M8,0h14c4.4,0,8,3.6,8,8v64c0,4.4-3.6,8-8,8H8c-4.4,0-8-3.6-8-8V8C0,3.6,3.6,0,8,0z"

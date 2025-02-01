@@ -14,12 +14,14 @@ const settingsStyle = StyleSheet.create({
     width: isTablet ? '80%' : '100%',
   },
   closeIconWrapper: {
-    height: '80%',
     aspectRatio: 1 / 2,
+    height: '80%',
+    transform: [{ scaleX: -1 }],
+    transformOrigin: 'center',
   },
   closeIcon: {
-    height: '100%',
     aspectRatio: 1 / 2,
+    height: '100%',
   },
   menuWrapper: {
     alignItems: 'flex-end',

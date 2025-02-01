@@ -120,7 +120,7 @@ class ErrorBoundary extends React.Component<Props, State> {
     return (
       <View style={styles.container}>
         <StatusBar hidden />
-        <LightBackground hideLogo />
+        <LightBackground />
         <ScrollView
           style={{ flex: 1 }}
           contentContainerStyle={styles.scrollDeviceContainer}
