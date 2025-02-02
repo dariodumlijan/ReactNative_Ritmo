@@ -11,8 +11,8 @@ const availableLanguages = {
 };
 
 type Props = {
-  t: Function,
-  setLanguage: Function,
+  t: (key: string) => string,
+  setLanguage: (key: Languages) => void,
 };
 
 export const t = (key: string, lng: Languages = Languages.en): string => get(availableLanguages[lng], key, key.toString());
@@ -22,7 +22,7 @@ const useLocale = (): Props => {
 
   return {
     t: (key: string) => t(key, lng),
-    setLanguage: (key: any) => setLng(key),
+    setLanguage: (key: Languages) => setLng(key),
   };
 };
 

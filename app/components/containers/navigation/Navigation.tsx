@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import { Link } from 'react-router-native';
+import { useTeleport } from '@app/context';
 import Exit from '@assets/icons/Exit';
 import Export from '@assets/icons/Export';
 import Guide from '@assets/icons/Guide';
@@ -20,7 +21,7 @@ import { actions } from '@store/globalStore';
 import colors from '@styles/colors';
 import navigationStyle from '@styles/navigation';
 import { isBeatEmpty } from '@utils';
-import { useAppDispatch, useAppSelector, useTeleport } from '@utils/hooks';
+import { useAppDispatch, useAppSelector } from '@utils/hooks';
 import { isEqual, map } from 'lodash';
 import type { Beats } from '@sound/beats';
 

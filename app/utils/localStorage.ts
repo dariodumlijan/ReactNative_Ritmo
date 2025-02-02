@@ -1,7 +1,39 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { localStorageKeys } from '@tokens';
-import { getItem, removeItem, setItem } from '@utils/hooks';
 import type { Preset } from '@store/globalStore';
 import type { PresetKey } from '@types';
+
+export const getItem = async (key: string): Promise<any> => {
+  try {
+    const response = await AsyncStorage.getItem(key);
+
+    return response;
+  } catch (error) {
+    Promise.reject(error);
+  }
+};
+
+export const setItem = async (key: string, data: string) => {
+  try {
+    await AsyncStorage.setItem(key, data);
+  } catch (error) {
+    Promise.reject(error);
+  }
+};
+
+export const removeItem = async (key: string) => {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch (error) {
+    Promise.reject(error);
+  }
+};
+
+export const localStorage = {
+  getItem,
+  setItem,
+  removeItem,
+};
 
 export type FetchResponse = {
   presets: {

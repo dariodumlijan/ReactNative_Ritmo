@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import {
   Keyboard, Modal, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View,
 } from 'react-native';
+import { useTeleport } from '@app/context';
 import useLocale from '@locales';
 import { selectors as beatSelectors } from '@store/beatsStore';
 import { actions, selectors as globalSelectors } from '@store/globalStore';
 import { selectors as staticSelectors } from '@store/staticStore';
 import colors from '@styles/colors';
 import modalsStyle from '@styles/modals';
-import { useAppDispatch, useAppSelector, useTeleport } from '@utils/hooks';
+import { useAppDispatch, useAppSelector } from '@utils/hooks';
 import { isEqual } from 'lodash';
 import type { Beats } from '@sound/beats';
 import type { UI } from '@store/globalStore';

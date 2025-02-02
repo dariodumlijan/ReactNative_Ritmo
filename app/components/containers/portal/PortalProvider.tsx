@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import type { ReactNode } from 'react';
 import { PortalContext } from '@context';
 
 type Props = {
@@ -6,12 +7,11 @@ type Props = {
 };
 
 function PortalProvider({ children }: Props) {
-  const [component, setComponent] = useState<JSX.Element | null>(null);
-
-  const teleport = (element: any) => setComponent(element);
-  const close = () => setComponent(null);
-
-  const options = useMemo(() => ({ teleport, close }), []);
+  const [component, setComponent] = useState<ReactNode | null>(null);
+  const options = useMemo(() => ({
+    teleport: (element: ReactNode) => setComponent(element),
+    close: () => setComponent(null),
+  }), []);
 
   return (
     <PortalContext.Provider value={options}>

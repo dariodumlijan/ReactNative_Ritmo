@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
+import { useTeleport } from '@app/context';
 import SliderThumb from '@components/elements/inputs/SliderThumb';
 import Alert from '@components/elements/misc/Alert';
 import ClearPresetModal from '@components/elements/modals/ClearPresetModal';
@@ -13,7 +14,7 @@ import colors from '@styles/colors';
 import { sliderStyle } from '@styles/inputs';
 import notificationsStyle from '@styles/notifications';
 import { isBeatEmpty } from '@utils';
-import { useAppDispatch, useAppSelector, useTeleport } from '@utils/hooks';
+import { useAppDispatch, useAppSelector } from '@utils/hooks';
 import { secondsToMilliseconds } from 'date-fns';
 import {
   first, isEmpty, isEqual, map,

@@ -50,15 +50,14 @@ const bottomStyle = StyleSheet.create({
     textAlign: 'center',
   },
   btnWrapper: {
-    // marginBottom: isiPhone ? 80 : 40,
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
     flexShrink: 1,
     justifyContent: 'flex-start',
     marginHorizontal: !isTablet ? '5%' : 0,
-    maxWidth: 500,
-    width: isTablet ? '78%' : '90%',
+    maxWidth: isTablet ? 600 : 500,
+    width: '90%',
   },
   btnPrimary: {
     backgroundColor: colors.primaryDark,

@@ -41,7 +41,8 @@ function Dev() {
           backgroundColor: colors.whiteTransparent,
           borderRadius: 10,
           flex: 1,
-          marginTop: utils.deviceInfo.isiPhone ? '18%' : '22%',
+          marginBottom: 20,
+          marginTop: utils.isTablet ? '22%' : '12%',
           overflow: 'hidden',
         }}
         contentContainerStyle={mainStyle.scrollDeviceContainer}

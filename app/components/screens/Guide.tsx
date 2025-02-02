@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import { Link } from 'react-router-native';
+import { useTeleport } from '@app/context';
 import Exit from '@assets/icons/Exit';
 import MidiFile from '@assets/img/midiFile.png';
 import MidiFileLogic from '@assets/img/midiFile_Logic.png';
@@ -26,7 +27,7 @@ import { sliderStyle } from '@styles/inputs';
 import mainStyle from '@styles/main';
 import modalsStyle from '@styles/modals';
 import notificationsStyle from '@styles/notifications';
-import { useAppDispatch, useAppSelector, useTeleport } from '@utils/hooks';
+import { useAppDispatch, useAppSelector } from '@utils/hooks';
 import { secondsToMilliseconds } from 'date-fns';
 import { isEqual } from 'lodash';
 

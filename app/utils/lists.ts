@@ -80,7 +80,7 @@ export const getSamples = (): Sample[] => ([
   },
 ]);
 
-export const getTimeSignatures = (t: Function): TimeSig[] => ([
+export const getTimeSignatures = (t: (key: string) => string): TimeSig[] => ([
   { label: t('settings.time_sig_options.option_1'), value: 'Free' },
   { label: t('settings.time_sig_options.option_2'), value: '4/4' },
   { label: t('settings.time_sig_options.option_3'), value: '3/4' },

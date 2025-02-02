@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import colors from '@styles/colors';
-import { isTablet } from '@utils';
+import { isTablet, isiPhone } from '@utils';
 
 const homeStyle = StyleSheet.create({
   wrapper: {
@@ -10,6 +10,7 @@ const homeStyle = StyleSheet.create({
   },
   topWrapper: {
     alignItems: 'center',
+    backgroundColor: colors.gray,
     display: 'flex',
     height: '60%',
     justifyContent: 'center',
@@ -44,7 +45,7 @@ const homeStyle = StyleSheet.create({
     justifyContent: 'center',
     height: 30,
     width: 40,
-    marginBottom: 12,
+    marginBottom: isiPhone ? 12 : 15,
   },
 });
 
