@@ -7,14 +7,20 @@ export type Sample = {
   kickSound: string,
 };
 
-export type TimeSig = {
+export enum TimeSig {
+  Free = 'Free',
+  FourFour = '4/4',
+  TreeFour = '3/4',
+}
+
+export type TimeSigOption = {
   label: string,
-  value: string,
+  value: TimeSig,
 };
 
 export type Lists = {
   samples: Sample[],
-  timeSignatures: TimeSig[],
+  timeSignatures: TimeSigOption[],
 };
 
 export const getSamples = (): Sample[] => ([
@@ -80,10 +86,10 @@ export const getSamples = (): Sample[] => ([
   },
 ]);
 
-export const getTimeSignatures = (t: (key: string) => string): TimeSig[] => ([
-  { label: t('settings.time_sig_options.option_1'), value: 'Free' },
-  { label: t('settings.time_sig_options.option_2'), value: '4/4' },
-  { label: t('settings.time_sig_options.option_3'), value: '3/4' },
+export const getTimeSignatures = (t: (key: string) => string): TimeSigOption[] => ([
+  { label: t('settings.time_sig_options.option_1'), value: TimeSig.Free },
+  { label: t('settings.time_sig_options.option_2'), value: TimeSig.FourFour },
+  { label: t('settings.time_sig_options.option_3'), value: TimeSig.TreeFour },
 ]);
 
 const useSelectLists = (): Lists => {

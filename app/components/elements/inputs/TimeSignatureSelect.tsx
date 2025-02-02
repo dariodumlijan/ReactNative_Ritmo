@@ -15,7 +15,7 @@ import { SoundKey } from '@types';
 import useSelectLists from '@utils/lists';
 import { every, map, reject } from 'lodash';
 import type { TimeSignature } from '@store/globalStore';
-import type { TimeSig } from '@utils/lists';
+import type { TimeSigOption } from '@utils/lists';
 
 type Option = {
   label: string,
@@ -53,7 +53,7 @@ function TimeSignatureSelect(props: Props) {
     },
   ];
 
-  const isActive = (option: Option, sig: TimeSig) => {
+  const isActive = (option: Option, sig: TimeSigOption) => {
     if (option.value === 'all') {
       return every(props.value, (ts) => ts === sig.value);
     }
@@ -61,7 +61,7 @@ function TimeSignatureSelect(props: Props) {
     return props.value[option.value] === sig.value;
   };
 
-  const handleSelect = (option: Option, sig: TimeSig) => {
+  const handleSelect = (option: Option, sig: TimeSigOption) => {
     props.onSelect({ key: option.value, value: sig.value });
   };
 
@@ -107,7 +107,7 @@ function TimeSignatureSelect(props: Props) {
                   </Text>
                 </View>
                 <View style={timeSignatureSelectStyle.listSection}>
-                  {map(timeSignatures, (sig: TimeSig, key: number) => {
+                  {map(timeSignatures, (sig: TimeSigOption, key: number) => {
                     const active = isActive(option, sig);
 
                     return (

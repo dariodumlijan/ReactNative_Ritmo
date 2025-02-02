@@ -10,12 +10,12 @@ import { sliderStep } from '@tokens';
 import { isPromise } from '@utils';
 import { getSamples, getTimeSignatures } from '@utils/lists';
 import { thunk } from 'redux-thunk';
-import type { Sample, TimeSig } from '@utils/lists';
+import type { Sample, TimeSigOption } from '@utils/lists';
 
 const samples = getSamples();
 const timeSignatures = getTimeSignatures(t);
 const sample = samples[0] as Sample;
-const timeSig = timeSignatures[0] as TimeSig;
+const timeSig = timeSignatures[0] as TimeSigOption;
 const playback = new Playback();
 playback.initSample(sample);
 

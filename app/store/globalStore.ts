@@ -8,12 +8,12 @@ import type { BuildMidi, BuildPromise } from '@app/midi';
 import type { Beats } from '@sound/beats';
 import type { RootState } from '@store';
 import type { PresetKey, ReduxAction, SoundKey } from '@types';
-import type { Sample, TimeSig } from '@utils/lists';
+import type { Sample, TimeSig, TimeSigOption } from '@utils/lists';
 import type { FetchResponse, WriteResponse } from '@utils/localStorage';
 
 export type TimeSignaturePayload = {
   key: 'all' | keyof typeof SoundKey,
-  value: string,
+  value: TimeSig,
 };
 
 export type Sliders = {
@@ -23,9 +23,9 @@ export type Sliders = {
 };
 
 export type TimeSignature = {
-  [SoundKey.hihat]: string,
-  [SoundKey.snare]: string,
-  [SoundKey.kick]: string,
+  [SoundKey.hihat]: TimeSig,
+  [SoundKey.snare]: TimeSig,
+  [SoundKey.kick]: TimeSig,
 };
 
 export type UI = {
@@ -145,7 +145,7 @@ const rotateBeat = (
 
 const resetBeat = (state: State): State => {
   const timeSignatures = getTimeSignatures(t);
-  const timeSig: TimeSig = timeSignatures[0] as TimeSig;
+  const timeSig: TimeSigOption = timeSignatures[0] as TimeSigOption;
 
   return merge({}, state, {
     ui: {
