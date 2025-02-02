@@ -2,11 +2,9 @@ import React from 'react';
 import {
   Modal, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View,
 } from 'react-native';
+import Arrow from '@assets/icons/Arrow';
+import { selectStyle } from '@styles/inputs';
 import { map } from 'lodash';
-import Arrow from '../../../assets/icons/Arrow';
-import { selectStyle } from '../../../styles/inputs';
-import { isSampleUnlocked } from '../../../utils';
-import { useLocationInfo } from '../../../utils/hooks';
 
 export type Option = Object & {
   label: string,
@@ -20,39 +18,27 @@ type Props = {
   onSelect: (option: any) => void,
   onOpen: () => void,
   onClose: () => void,
-  onRewardedClick? : () => void,
-  compareSamples?: string[],
-  isDisabled?: boolean,
 };
 
 function Select(props: Props) {
-  const locationInfo = useLocationInfo();
-
   const handleSelect = (option: Option) => {
-    const disabled = props.compareSamples ? !isSampleUnlocked(props.compareSamples, option) : false;
-    if (disabled) {
-      if (props.onRewardedClick) props.onRewardedClick();
-
-      return;
-    }
-
     props.onSelect(option);
   };
 
   return (
     <>
-      <View style={locationInfo.isRewarded ? selectStyle.inputWrapperRewarded : selectStyle.inputWrapper}>
+      <View style={selectStyle.inputWrapper}>
         {props.title && (
           <Text style={selectStyle.label}>{props.title}</Text>
         )}
         <TouchableOpacity
-          disabled={props.isOpen || props.isDisabled}
+          disabled={props.isOpen}
           activeOpacity={0.6}
-          style={locationInfo.isRewarded ? selectStyle.inputRewarded : selectStyle.input}
+          style={selectStyle.input}
           onPress={() => props.onOpen()}
         >
           <Text style={selectStyle.inputText}>{props.value}</Text>
-          <Arrow style={locationInfo.isRewarded ? selectStyle.inputIconRewarded : selectStyle.inputIcon} />
+          <Arrow style={selectStyle.inputIcon} />
         </TouchableOpacity>
       </View>
 
@@ -75,7 +61,7 @@ function Select(props: Props) {
               }
                 onPress={() => handleSelect(option)}
               >
-                <Text style={props.compareSamples && !isSampleUnlocked(props.compareSamples, option) ? selectStyle.listDisabledText : selectStyle.listText}>
+                <Text style={selectStyle.listText}>
                   {option.label}
                 </Text>
               </TouchableOpacity>

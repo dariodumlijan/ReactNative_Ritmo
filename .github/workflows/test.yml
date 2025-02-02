@@ -16,6 +16,7 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - uses: actions/checkout@v4
@@ -28,9 +29,6 @@ jobs:
       
       - name: Install dependencies
         run: yarn install
-
-      - name: Create mock ENV
-        run: cp __mocks__/env.json env.json
 
       # Run tests
       - run: yarn tsc

@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import colors from './colors';
-import { deviceWidth, isTablet } from '../utils';
+import colors from '@styles/colors';
+import { deviceWidth, isApple, isTablet } from '@utils';
 
 const circleRad = deviceWidth / 2;
 const circleStyle = StyleSheet.create({
@@ -45,26 +45,19 @@ const circleStyle = StyleSheet.create({
   btnWrapper: {
     alignItems: 'center',
     aspectRatio: 1 / 1,
-    borderRadius: circleRad,
-    display: 'flex',
-    justifyContent: 'center',
-    position: 'absolute',
-    width: '25%',
-    zIndex: 4,
-  },
-  btnAnimated: {
-    alignItems: 'center',
-    aspectRatio: 1 / 1,
     backgroundColor: colors.primary,
     borderRadius: circleRad,
     display: 'flex',
     justifyContent: 'center',
-    padding: 25,
-    width: '100%',
+    padding: !isApple && isTablet ? 40 : 25,
+    position: 'absolute',
+    width: '25%',
+    zIndex: 5,
   },
   btnIcon: {
     aspectRatio: 1 / 1,
-    width: isTablet ? '60%' : '100%',
+    padding: isTablet ? '15%' : 0,
+    width: '100%',
   },
 });
 

@@ -1,16 +1,27 @@
 import { Buffer } from 'buffer';
 import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
-import { filter, forEach, times } from 'lodash';
+import { TimeSig } from '@app/utils/lists';
+import { forEach, times, without } from 'lodash';
 import MidiWriter from 'midi-writer-js';
-import type { Beat, Beats } from '../sound/beats';
-import type { TimeSignature } from '../store/globalStore';
+import type { Beat, Beats } from '@sound/beats';
+import type { TimeSignature } from '@store/globalStore';
 
 // @ts-ignore
 window.Buffer = Buffer; // HACK to fix midi-writer-js: Buffer is not defined
 
-type MidiNote = 'KSH' | 'KS' | 'KH' | 'SH' | 'K' | 'S' | 'H';
-type Note = MidiNote | 'R';
+enum MidiNote {
+  KSH = 'KSH',
+  KS = 'KS',
+  KH = 'KH',
+  SH = 'SH',
+  K = 'K',
+  S = 'S',
+  H = 'H',
+  R = 'R',
+}
+
+type Note = MidiNote | MidiNote.R;
 type MidiLayout = MidiNote[];
 type NotesLayout = Note[];
 
@@ -64,22 +75,32 @@ export const exportMIDI = async ({
     const hihatIndex = hihatMIDI.indexOf(countAngle);
     const snareIndex = snareMIDI.indexOf(countAngle);
     const kickIndex = kickMIDI.indexOf(countAngle);
-    if (kickIndex !== -1 && snareIndex !== -1 && hihatIndex !== -1) {
-      notesLayout.push('KSH');
-    } else if (kickIndex !== -1 && snareIndex !== -1) {
-      notesLayout.push('KS');
-    } else if (kickIndex !== -1 && hihatIndex !== -1) {
-      notesLayout.push('KH');
-    } else if (snareIndex !== -1 && hihatIndex !== -1) {
-      notesLayout.push('SH');
-    } else if (kickIndex !== -1) {
-      notesLayout.push('K');
-    } else if (snareIndex !== -1) {
-      notesLayout.push('S');
-    } else if (hihatIndex !== -1) {
-      notesLayout.push('H');
-    } else {
-      notesLayout.push('R');
+
+    switch (true) {
+      case kickIndex !== -1 && snareIndex !== -1 && hihatIndex !== -1:
+        notesLayout.push(MidiNote.KSH);
+        break;
+      case kickIndex !== -1 && snareIndex !== -1:
+        notesLayout.push(MidiNote.KS);
+        break;
+      case kickIndex !== -1 && hihatIndex !== -1:
+        notesLayout.push(MidiNote.KH);
+        break;
+      case snareIndex !== -1 && hihatIndex !== -1:
+        notesLayout.push(MidiNote.SH);
+        break;
+      case kickIndex !== -1:
+        notesLayout.push(MidiNote.K);
+        break;
+      case snareIndex !== -1:
+        notesLayout.push(MidiNote.S);
+        break;
+      case hihatIndex !== -1:
+        notesLayout.push(MidiNote.H);
+        break;
+      default:
+        notesLayout.push(MidiNote.R);
+        break;
     }
 
     countAngle += sliderStep;
@@ -108,88 +129,106 @@ export const exportMIDI = async ({
   for (let i = startTicks.length - 1; i >= 0; i--) {
     const startTick = startTicks[i] as number;
     let calcNoteTick = prevNote - startTick;
-    if (calcNoteTick > midiNoteMax) {
-      calcNoteTick = midiNoteMax;
-    }
+    if (calcNoteTick > midiNoteMax) calcNoteTick = midiNoteMax;
+
     const noteTick = 'T' + calcNoteTick;
     notesTicks.unshift(noteTick);
     prevNote = startTick as number;
   }
 
-  /* Create midi note layout array without rests (R) */
-  const midiLayout: MidiLayout = filter(notesLayout, (key) => key !== 'R') as MidiLayout;
+  /* Create MIDI note layout array without rests (R) */
+  const midiLayout: MidiLayout = without(notesLayout, MidiNote.R) as MidiLayout;
 
-  /* Write midi sequance */
+  /* Write MIDI sequence */
   const track = new MidiWriter.Track();
   const notesMIDI: any[] = [];
   times(midiLayout.length, (i) => {
-    const startTick = startTicks[i] as number;
-    const noteTick = notesTicks[i] as string;
+    // `|| 1` is a hack to fix a bug in the midi lib which by default
+    // will set a duration as the delta ie. note position
+    const startTick = startTicks[i] || 1;
+    const noteTick = notesTicks[i];
 
-    if (midiLayout[i] === 'KSH') {
-      notesMIDI.push(
-        new MidiWriter.NoteEvent({
-          pitch: ['C2', 'D2', 'F#2'],
-          duration: noteTick,
-          startTick,
-        }),
-      );
-    } else if (midiLayout[i] === 'KS') {
-      notesMIDI.push(
-        new MidiWriter.NoteEvent({
-          pitch: ['C2', 'D2'],
-          duration: noteTick,
-          startTick,
-        }),
-      );
-    } else if (midiLayout[i] === 'KH') {
-      notesMIDI.push(
-        new MidiWriter.NoteEvent({
-          pitch: ['C2', 'F#2'],
-          duration: noteTick,
-          startTick,
-        }),
-      );
-    } else if (midiLayout[i] === 'SH') {
-      notesMIDI.push(
-        new MidiWriter.NoteEvent({
-          pitch: ['D2', 'F#2'],
-          duration: noteTick,
-          startTick,
-        }),
-      );
-    } else if (midiLayout[i] === 'K') {
-      notesMIDI.push(
-        new MidiWriter.NoteEvent({
-          pitch: ['C2'],
-          duration: noteTick,
-          startTick,
-        }),
-      );
-    } else if (midiLayout[i] === 'S') {
-      notesMIDI.push(
-        new MidiWriter.NoteEvent({
-          pitch: ['D2'],
-          duration: noteTick,
-          startTick,
-        }),
-      );
-    } else if (midiLayout[i] === 'H') {
-      notesMIDI.push(
-        new MidiWriter.NoteEvent({
-          pitch: ['F#2'],
-          duration: noteTick,
-          startTick,
-        }),
-      );
+    switch (midiLayout[i]) {
+      case MidiNote.KSH:
+        notesMIDI.push(
+          new MidiWriter.NoteEvent({
+            pitch: ['C2', 'D2', 'F#2'],
+            duration: noteTick,
+            startTick,
+          }),
+        );
+        break;
+      case MidiNote.KS:
+        notesMIDI.push(
+          new MidiWriter.NoteEvent({
+            pitch: ['C2', 'D2'],
+            duration: noteTick,
+            startTick,
+          }),
+        );
+        break;
+      case MidiNote.KH:
+        notesMIDI.push(
+          new MidiWriter.NoteEvent({
+            pitch: ['C2', 'F#2'],
+            duration: noteTick,
+            startTick,
+          }),
+        );
+        break;
+      case MidiNote.SH:
+        notesMIDI.push(
+          new MidiWriter.NoteEvent({
+            pitch: ['D2', 'F#2'],
+            duration: noteTick,
+            startTick,
+          }),
+        );
+        break;
+      case MidiNote.K:
+        notesMIDI.push(
+          new MidiWriter.NoteEvent({
+            pitch: ['C2'],
+            duration: noteTick,
+            startTick,
+          }),
+        );
+        break;
+      case MidiNote.S:
+        notesMIDI.push(
+          new MidiWriter.NoteEvent({
+            pitch: ['D2'],
+            duration: noteTick,
+            startTick,
+          }),
+        );
+        break;
+      case MidiNote.H:
+        notesMIDI.push(
+          new MidiWriter.NoteEvent({
+            pitch: ['F#2'],
+            duration: noteTick,
+            startTick,
+          }),
+        );
+        break;
+      default:
+        break;
     }
   });
+
   track.addEvent(notesMIDI, () => ({ sequential: false }));
   track.setTempo(useBPM);
-  if (useTimeSig.kick === '4/4') {
-    track.setTimeSignature(4, 4, 24, 8);
-  } else if (useTimeSig.kick === '3/4') {
-    track.setTimeSignature(3, 4, 24, 8);
+
+  switch (useTimeSig.kick) {
+    case TimeSig.FourFour:
+      track.setTimeSignature(4, 4, 24, 8);
+      break;
+    case TimeSig.TreeFour:
+      track.setTimeSignature(3, 4, 24, 8);
+      break;
+    default:
+      break;
   }
 
   /* Write .mid file to app storage */

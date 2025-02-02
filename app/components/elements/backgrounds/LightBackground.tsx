@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Logo from '../../../assets/icons/Logo';
-import colors from '../../../styles/colors';
-import { deviceHeight, deviceWidth, isiPhone } from '../../../utils';
+import Logo from '@assets/icons/Logo';
+import colors from '@styles/colors';
+import { deviceHeight, deviceWidth, isiPhone } from '@utils';
 
 type Props = {
-  hideLogo?: boolean
+  showLogo?: boolean
 };
 
 const styles = StyleSheet.create({
@@ -35,6 +35,8 @@ const styles = StyleSheet.create({
       { translateX: deviceHeight / 2.25 },
       { translateY: deviceHeight / 2.5 },
     ],
+    transformOrigin: 'center',
+    maxHeight: deviceWidth / 2,
     width: deviceHeight,
   },
 });
@@ -42,7 +44,11 @@ const styles = StyleSheet.create({
 function LightBackground(props: Props) {
   return (
     <View style={styles.backgroundWrapper}>
-      {!props.hideLogo && (<Logo style={styles.menuLogo} fill={colors.grayBlue} />)}
+      {props.showLogo && (
+        <View style={styles.menuLogo}>
+          <Logo fill={colors.grayBlue} />
+        </View>
+      )}
     </View>
   );
 }

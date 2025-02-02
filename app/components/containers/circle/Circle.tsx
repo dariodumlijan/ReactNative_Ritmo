@@ -1,25 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
+import type { LayoutChangeEvent } from 'react-native';
 import {
   Animated, Easing, Text, TouchableHighlight, TouchableOpacity, View,
 } from 'react-native';
+import { useTeleport } from '@app/context';
+import Pause from '@assets/icons/Pause';
+import Play from '@assets/icons/Play';
+import Alert from '@components/elements/misc/Alert';
+import useLocale from '@locales';
+import { actions as beatActions, selectors as beatSelectors } from '@store/beatsStore';
+import { selectors as globalSelectors } from '@store/globalStore';
+import circleStyle from '@styles/circle';
+import colors from '@styles/colors';
+import { checkboxStyle } from '@styles/inputs';
+import notificationsStyle from '@styles/notifications';
+import { calcBpmInterval, isApple, isBeatEmpty } from '@utils';
+import { useAppDispatch, useAppSelector, useReview } from '@utils/hooks';
 import { secondsToMilliseconds } from 'date-fns';
-import { isEqual, map } from 'lodash';
-import Pause from '../../../assets/icons/Pause';
-import Play from '../../../assets/icons/Play';
-import useLocale from '../../../locales';
-import { actions as beatActions, selectors as beatSelectors } from '../../../store/beatsStore';
-import { selectors as globalSelectors } from '../../../store/globalStore';
-import circleStyle from '../../../styles/circle';
-import colors from '../../../styles/colors';
-import { checkboxStyle } from '../../../styles/inputs';
-import notificationsStyle from '../../../styles/notifications';
-import { calcBpmInterval, isBeatEmpty } from '../../../utils';
 import {
-  useAppDispatch, useAppSelector, useReview, useTeleport,
-} from '../../../utils/hooks';
-import Alert from '../../elements/misc/Alert';
-import type { Beat } from '../../../sound/beats';
-import type { SoundKey } from '../../../types';
+  get, isEqual, map, uniqueId,
+} from 'lodash';
+import type { Beat } from '@sound/beats';
+import type { SoundKey } from '@types';
 
 function Circle() {
   const { t } = useLocale();
@@ -29,6 +31,7 @@ function Circle() {
   const global = useAppSelector(globalSelectors.getUI, isEqual);
   const beats = useAppSelector(beatSelectors.getBeats, isEqual);
   const [circleRadius, setCircleRadius] = useState({ hihat: 0, snare: 0, kick: 0 });
+  const [, setSalt] = useState(uniqueId('salt'));
   const beatlineAnimation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => () => {
@@ -37,16 +40,22 @@ function Circle() {
   }, []);
 
   useEffect(() => {
-    if (!global.isPlaying) {
-      beatlineAnimation.stopAnimation();
-      beatlineAnimation.setValue(0);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [global.isPlaying]);
+    if (global.isPlaying) return;
 
-  const getDimensions = (e: any, key: string) => setCircleRadius({ ...circleRadius, ...{ [key]: e.nativeEvent.layout.width / 2 - 2.5 } });
+    beatlineAnimation.resetAnimation();
+    if (isApple) return;
+    // hack for android animation reset bug
+    setTimeout(() => setSalt(uniqueId('salt')), 1);
+  }, [beatlineAnimation, global.isPlaying]);
 
-  const handleAnimations = (bpmInterval: number) => {
+  const getDimensions = (e: LayoutChangeEvent, key: string) => {
+    const width = get(e, 'nativeEvent.layout.width', undefined);
+    if (!width) return;
+
+    setCircleRadius((state) => ({ ...state, ...{ [key]: width / 2 - 2.5 } }));
+  };
+
+  const handleAnimation = (bpmInterval: number) => {
     Animated.loop(
       Animated.timing(beatlineAnimation, {
         toValue: 1,
@@ -69,13 +78,19 @@ function Circle() {
     }
 
     const bpmInterval = calcBpmInterval(global.useBPM);
-    handleAnimations(bpmInterval);
+    handleAnimation(bpmInterval);
     dispatch(beatActions.playBeat(bpmInterval));
   };
 
   const handlePause = () => {
     dispatch(beatActions.pauseBeat());
     reviewApp();
+  };
+
+  const handleTogglePlay = () => {
+    if (global.isPlaying) return handlePause();
+
+    return handleStart();
   };
 
   const handleCheckbox = (key: SoundKey, index: number, checked: boolean) => {
@@ -114,7 +129,7 @@ function Circle() {
                       { rotate: beat.angle + 'deg' },
                       { translateY: -circleRadius[key] },
                     ],
-                    zIndex: 5,
+                    zIndex: 4,
                   },
                 ]}
                 onPress={() => handleCheckbox(key, beatKey, !beat.checked)}
@@ -135,35 +150,22 @@ function Circle() {
         <View
           key={key}
           style={{ ...circleStyle.circle, ...circleStyle[key] }}
-          onLayout={(e: any) => getDimensions(e, key)}
+          onLayout={(e) => getDimensions(e, key)}
         />
       ))}
 
-      {global.isPlaying ? (
-        <TouchableHighlight
-          style={circleStyle.btnWrapper}
-          underlayColor={colors.primaryDark}
-          onPress={handlePause}
-        >
-          <Animated.View style={circleStyle.btnAnimated}>
-            <Pause style={circleStyle.btnIcon} />
-          </Animated.View>
-        </TouchableHighlight>
-      ) : (
-        <TouchableHighlight
-          style={[
-            circleStyle.btnWrapper,
-            {
-              backgroundColor: colors.primary,
-              padding: 25,
-            },
-          ]}
-          underlayColor={colors.primaryDark}
-          onPress={handleStart}
-        >
+      <TouchableHighlight
+        style={circleStyle.btnWrapper}
+        underlayColor={colors.primaryDark}
+        activeOpacity={1}
+        onPress={handleTogglePlay}
+      >
+        {global.isPlaying ? (
+          <Pause style={circleStyle.btnIcon} />
+        ) : (
           <Play style={circleStyle.btnIcon} />
-        </TouchableHighlight>
-      )}
+        )}
+      </TouchableHighlight>
     </View>
   );
 }

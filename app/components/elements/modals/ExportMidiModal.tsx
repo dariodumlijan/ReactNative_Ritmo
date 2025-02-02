@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react';
 import {
   Keyboard, Modal, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View,
 } from 'react-native';
+import { useTeleport } from '@app/context';
+import useLocale from '@locales';
+import { selectors as beatSelectors } from '@store/beatsStore';
+import { actions, selectors as globalSelectors } from '@store/globalStore';
+import { selectors as staticSelectors } from '@store/staticStore';
+import colors from '@styles/colors';
+import modalsStyle from '@styles/modals';
+import { useAppDispatch, useAppSelector } from '@utils/hooks';
 import { isEqual } from 'lodash';
-import useLocale from '../../../locales';
-import { selectors as beatSelectors } from '../../../store/beatsStore';
-import { actions, selectors as globalSelectors } from '../../../store/globalStore';
-import { selectors as staticSelectors } from '../../../store/staticStore';
-import colors from '../../../styles/colors';
-import modalsStyle from '../../../styles/modals';
-import { useAppDispatch, useAppSelector, useTeleport } from '../../../utils/hooks';
-import type { Beats } from '../../../sound/beats';
-import type { UI } from '../../../store/globalStore';
-import type { State as StaticState } from '../../../store/staticStore';
+import type { Beats } from '@sound/beats';
+import type { UI } from '@store/globalStore';
+import type { State as StaticState } from '@store/staticStore';
 
 function ExportMidiModal() {
   const { t } = useLocale();
@@ -44,10 +45,10 @@ function ExportMidiModal() {
 
   useEffect(() => {
     Keyboard.dismiss();
-    if (globalUI.fileUri) {
-      dispatch(actions.deleteMIDIFile(globalUI.fileUri));
-      close();
-    }
+    if (!globalUI.fileUri) return;
+
+    dispatch(actions.deleteMIDIFile(globalUI.fileUri));
+    close();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalUI.fileUri]);
 

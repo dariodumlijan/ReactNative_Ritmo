@@ -1,16 +1,15 @@
 /* eslint-disable no-console */
 import React from 'react';
 import {
-  SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View,
+  SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View,
 } from 'react-native';
-import CodePush from 'react-native-code-push';
+import Emoji from '@assets/icons/Emoji';
+import LightBackground from '@components/elements/backgrounds/LightBackground';
+import Hr from '@components/elements/misc/Hr';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Emoji from '../../../assets/icons/Emoji';
-import { Font } from '../../../styles';
-import colors from '../../../styles/colors';
-import { deviceInfo } from '../../../utils';
-import LightBackground from '../../elements/backgrounds/LightBackground';
-import Hr from '../../elements/misc/Hr';
+import { Font } from '@styles';
+import colors from '@styles/colors';
+import { deviceInfo } from '@utils';
 
 const styles = StyleSheet.create({
   container: {
@@ -111,12 +110,9 @@ class ErrorBoundary extends React.Component<Props, State> {
     console.log('-------------');
     console.error(errorInfo.componentStack);
     console.log('----ERROR----');
-  }
 
-  handleRestart = async () => {
-    await AsyncStorage.clear();
-    CodePush.restartApp();
-  };
+    AsyncStorage.clear().catch(() => {});
+  }
 
   override render() {
     if (!this.state.hasError) return this.props.children;
@@ -124,7 +120,7 @@ class ErrorBoundary extends React.Component<Props, State> {
     return (
       <View style={styles.container}>
         <StatusBar hidden />
-        <LightBackground hideLogo />
+        <LightBackground />
         <ScrollView
           style={{ flex: 1 }}
           contentContainerStyle={styles.scrollDeviceContainer}
@@ -166,13 +162,6 @@ class ErrorBoundary extends React.Component<Props, State> {
               )}
             </>
             )}
-            <TouchableOpacity
-              style={styles.button}
-              activeOpacity={0.6}
-              onPress={this.handleRestart}
-            >
-              <Text style={styles.buttonText}>Restart the App</Text>
-            </TouchableOpacity>
           </SafeAreaView>
         </ScrollView>
       </View>

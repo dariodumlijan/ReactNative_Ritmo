@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { Font } from '.';
-import colors from './colors';
+import { Font } from '@styles';
+import colors from '@styles/colors';
 import {
   deviceHeight, deviceWidth, isApple, isTablet,
-} from '../utils';
+} from '@utils';
 
 export const checkboxStyle = StyleSheet.create({
   wrapper: {
@@ -44,12 +44,6 @@ export const selectStyle = StyleSheet.create({
     flexShrink: 1,
     justifyContent: 'space-between',
   },
-  inputWrapperRewarded: {
-    alignItems: 'center',
-    display: 'flex',
-    flexShrink: 1,
-    justifyContent: 'space-between',
-  },
   label: {
     color: colors.primaryDark,
     fontFamily: Font.semiBold,
@@ -68,15 +62,6 @@ export const selectStyle = StyleSheet.create({
     justifyContent: 'center',
     width: 200,
   },
-  inputRewarded: {
-    alignItems: 'center',
-    backgroundColor: colors.grayLight,
-    borderRadius: 15,
-    display: 'flex',
-    height: 40,
-    justifyContent: 'center',
-    width: 250,
-  },
   inputText: {
     color: colors.grayBlue,
     fontFamily: Font.semiBold,
@@ -88,12 +73,6 @@ export const selectStyle = StyleSheet.create({
     aspectRatio: 1 / 1,
     left: 10,
     position: 'absolute',
-    width: 20,
-  },
-  inputIconRewarded: {
-    aspectRatio: 1 / 1,
-    position: 'absolute',
-    right: 10,
     width: 20,
   },
   listOverlay: {
@@ -278,8 +257,8 @@ export const sliderStyle = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: isTablet ? '10%' : '5%',
     marginVertical: '5%',
-    maxHeight: 200,
-    maxWidth: 500,
+    maxHeight: isTablet ? 200 : 150,
+    maxWidth: isTablet ? 600 : 500,
     width: isTablet ? '80%' : '90%',
   },
   container: {

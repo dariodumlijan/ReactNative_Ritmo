@@ -9,7 +9,7 @@
     "alert": "Nothing to export!",
     "settings": "Settings",
     "guide": "Guide",
-    "state_tree": "State Tree",
+    "dev": "Dev",
     "export": "Export"
   },
   "bottom": {
@@ -44,48 +44,7 @@
     },
     "sound": "Sound",
     "more_samples": "Get more samples",
-    "keep_rewards": "Keep rewards",
-    "advanced": "Advanced",
-    "unlock_advanced": "Unlock advanced"
-  },
-  "rewarded": {
-    "samples": {
-      "countdown": "till unlocked samples are locked",
-      "select_cta": "Choose the library you want:",
-      "paragraph_1": "To get the chosen library\n\nwatch one Advert:",
-      "paragraph_2": {
-        "text_1": "All unlocked samples will be available for ",
-        "text_2": "h\n",
-        "text_3": "from",
-        "text_4": " the last one",
-        "text_5": " that you unlocked."
-      },
-      "paragraph_3": {
-        "text_1": "To keep the rewards,\n\nwatch one Advert:",
-        "text_2": "The refresh will give you ",
-        "text_3": "h\n",
-        "text_4": "from ",
-        "text_5": "the end of the Ad\n",
-        "text_6": "and will become available again\n",
-        "text_7": "h",
-        "text_8": " before the time runs out."
-      }
-    },
-    "pro": {
-      "paragraph_1": "\n\nTo unlock PRO features\n\nwatch one Advert:",
-      "paragraph_2": {
-        "text_1": "The PRO features will be unlocked for ",
-        "text_2": "h\n",
-        "text_3": "from the time you unlocked them."
-      },
-      "paragraph_3": "The PRO features are:",
-      "features": {
-        "features_1": "Time signatures for individual sound",
-        "features_2": "Individual beat/note offset (*coming soon)"
-      }
-    },
-    "cta": "Watch the Ad",
-    "disclamer": "If no Advert is shown come back a bit later"
+    "advanced": "Advanced"
   },
   "modal": {
     "midi": {
@@ -97,19 +56,11 @@
       "title": "Are you sure you want to clear the saved beat?",
       "yes": "Yes",
       "no": "No"
-    },
-    "keep_rewards": "This will become available in:",
-    "no_ads": "In order to unlock more samples you need to enable basic ads..."
+    }
   },
   "alert": {
     "no_beat": "Tap on a circle to add a beat.",
     "no_preset": "No preset to delete.",
-    "codepush_syncing": {
-      "text_1": "Switching to ",
-      "text_2": ", this could take a while...",
-      "Production": "Staging",
-      "Staging": "Production"
-    },
     "developer": "Developer mode turned on!"
   },
   "guide": {

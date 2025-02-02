@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { Font } from '.';
-import colors from './colors';
-import { isTablet } from '../utils';
+import { Font } from '@styles';
+import colors from '@styles/colors';
+import { isTablet } from '@utils';
 
 const bottomStyle = StyleSheet.create({
   wrapper: {
@@ -35,7 +35,7 @@ const bottomStyle = StyleSheet.create({
   presetBtn: {
     backgroundColor: colors.primary,
     borderColor: colors.gray,
-    borderRadius: 30,
+    borderRadius: 18,
     borderWidth: 2,
     display: 'flex',
     justifyContent: 'center',
@@ -50,15 +50,14 @@ const bottomStyle = StyleSheet.create({
     textAlign: 'center',
   },
   btnWrapper: {
-    // marginBottom: isiPhone ? 80 : 40,
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
     flexShrink: 1,
     justifyContent: 'flex-start',
     marginHorizontal: !isTablet ? '5%' : 0,
-    maxWidth: 500,
-    width: isTablet ? '78%' : '90%',
+    maxWidth: isTablet ? 600 : 500,
+    width: '90%',
   },
   btnPrimary: {
     backgroundColor: colors.primaryDark,

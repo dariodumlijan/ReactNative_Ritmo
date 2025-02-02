@@ -1,15 +1,15 @@
 import React from 'react';
-import { SafeAreaView, ScrollView, View } from 'react-native';
+import { SafeAreaView, ScrollView } from 'react-native';
 import JSONTree from 'react-native-json-tree';
 import { Link } from 'react-router-native';
+import Exit from '@assets/icons/Exit';
+import colors from '@styles/colors';
+import mainStyle from '@styles/main';
+import * as utils from '@utils';
+import { useAppSelector } from '@utils/hooks';
 import { includes, isEqual } from 'lodash';
-import Exit from '../../assets/icons/Exit';
-import colors from '../../styles/colors';
-import mainStyle from '../../styles/main';
-import * as utils from '../../utils';
-import { useAppSelector } from '../../utils/hooks';
 
-function StateTree() {
+function Dev() {
   const store = useAppSelector((state) => state, isEqual);
 
   const theme = {
@@ -41,7 +41,8 @@ function StateTree() {
           backgroundColor: colors.whiteTransparent,
           borderRadius: 10,
           flex: 1,
-          marginTop: utils.deviceInfo.isiPhone ? '18%' : '22%',
+          marginBottom: 20,
+          marginTop: utils.isTablet ? '22%' : '12%',
           overflow: 'hidden',
         }}
         contentContainerStyle={mainStyle.scrollDeviceContainer}
@@ -62,9 +63,8 @@ function StateTree() {
           hideRoot
         />
       </ScrollView>
-      <View style={mainStyle.adSpace} />
     </SafeAreaView>
   );
 }
 
-export default StateTree;
+export default Dev;

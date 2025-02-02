@@ -1,15 +1,14 @@
 import React from 'react';
-import DarkBackground from './DarkBackground';
-import LightBackground from './LightBackground';
-import SplitBackground from './SplitBackground';
-import { useLocationInfo } from '../../../utils/hooks';
+import LightBackground from '@components/elements/backgrounds/LightBackground';
+import SplitBackground from '@components/elements/backgrounds/SplitBackground';
+import { useLocationInfo } from '@utils/hooks';
 
 function Backgrounds() {
   const locationInfo = useLocationInfo();
-  if (locationInfo.isHome) return <SplitBackground />;
-  if (locationInfo.isRewarded) return <DarkBackground />;
 
-  return <LightBackground hideLogo={locationInfo.isStateTree} />;
+  if (locationInfo.isHome) return <SplitBackground />;
+
+  return <LightBackground showLogo={locationInfo.isSettings} />;
 }
 
 export default Backgrounds;

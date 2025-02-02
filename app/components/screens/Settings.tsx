@@ -1,48 +1,34 @@
 import React, { useState } from 'react';
 import {
-  Animated, Keyboard, SafeAreaView, ScrollView, Text, TextInput, TouchableHighlight, View,
+  Animated, Keyboard, SafeAreaView, ScrollView, Text, TextInput, View,
 } from 'react-native';
-import { Link, useNavigate } from 'react-router-native';
-import { hoursToMilliseconds, secondsToMilliseconds } from 'date-fns';
+import { Link } from 'react-router-native';
+import Close from '@assets/icons/Close';
+import Select from '@components/elements/inputs/Select';
+import TimeSignatureSelect from '@components/elements/inputs/TimeSignatureSelect';
+import useLocale from '@locales';
+import { actions, selectors } from '@store/globalStore';
+import colors from '@styles/colors';
+import { textInputStyle } from '@styles/inputs';
+import mainStyle from '@styles/main';
+import settingsStyle from '@styles/settings';
+import { maxBPM } from '@tokens';
+import { useAppDispatch, useAppSelector } from '@utils/hooks';
+import useSelectLists from '@utils/lists';
 import {
   get, isEmpty, isEqual, isNaN, isNumber,
 } from 'lodash';
-import Close from '../../assets/icons/Close';
-import useLocale from '../../locales';
-import { actions, selectors } from '../../store/globalStore';
-import colors from '../../styles/colors';
-import { textInputStyle } from '../../styles/inputs';
-import mainStyle from '../../styles/main';
-import notificationsStyle from '../../styles/notifications';
-import settingsStyle from '../../styles/settings';
-import { config, maxBPM } from '../../tokens';
-import { useAppDispatch, useAppSelector, useTeleport } from '../../utils/hooks';
-import useSelectLists from '../../utils/lists';
-import Select from '../elements/inputs/Select';
-import TimeSignatureSelect from '../elements/inputs/TimeSignatureSelect';
-import Alert from '../elements/misc/Alert';
-import CountdownTimer from '../elements/misc/CountdownTimer';
-import type { TimeSignaturePayload } from '../../store/globalStore';
-import type { Sample } from '../../utils/lists';
+import type { TimeSignaturePayload } from '@store/globalStore';
+import type { Sample } from '@utils/lists';
 
 function Settings() {
   const { t } = useLocale();
-  const { teleport } = useTeleport();
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { samples } = useSelectLists();
-  const lockedSamples = useAppSelector(selectors.getLockedSamples, isEqual);
   const global = useAppSelector(selectors.getGlobal, isEqual);
   const [bpm, setBpm] = useState(String(global.ui.useBPM));
   const [openTimeSigSelect, setOpenTimeSigSelect] = useState(false);
   const [openSoundSelect, setOpenSoundSelect] = useState(false);
-  const hasAllRewards = isEmpty(lockedSamples);
-  const [rewardsAreRefreshable, setRewardsAreRefreshable] = useState(false);
-  const { keepRewards, resetRewards } = config;
-  const resetRewardsHours = hoursToMilliseconds(resetRewards);
-  const keepRewardsHours = hoursToMilliseconds(keepRewards);
-  const shouldShowAlert = hasAllRewards && !rewardsAreRefreshable;
-  const countdownFrom = global.rewardedAt?.samples ? global.rewardedAt.samples + resetRewardsHours : null;
 
   const onTimeSigChange = (timeSig: TimeSignaturePayload) => {
     setOpenTimeSigSelect(false);
@@ -67,62 +53,6 @@ function Settings() {
     Keyboard.dismiss();
   };
 
-  const handleRewardedProOpen = () => {
-    if (!global.ui.showAds) {
-      setOpenTimeSigSelect(false);
-      teleport(
-        <Alert clearDelayMS={secondsToMilliseconds(5)}>
-          <Text style={[notificationsStyle.alertText, { fontSize: 14 }]}>
-            {t('modal.no_ads')}
-          </Text>
-        </Alert>,
-      );
-
-      return;
-    }
-
-    Keyboard.dismiss();
-    navigate('/rewarded/pro-features');
-  };
-
-  const handleRewardedSamplesOpen = () => {
-    if (!global.ui.showAds) {
-      setOpenSoundSelect(false);
-      teleport(
-        <Alert clearDelayMS={secondsToMilliseconds(5)}>
-          <Text style={[notificationsStyle.alertText, { fontSize: 14 }]}>
-            {t('modal.no_ads')}
-          </Text>
-        </Alert>,
-      );
-
-      return;
-    }
-
-    if (shouldShowAlert) {
-      const refreshAvailableIn = countdownFrom ? countdownFrom - keepRewardsHours : null;
-
-      teleport(
-        <Alert clearDelayMS={secondsToMilliseconds(5)}>
-          <Text style={[notificationsStyle.alertText, { fontSize: 14 }]}>
-            {t('modal.keep_rewards')}
-          </Text>
-          <CountdownTimer countdownFrom={refreshAvailableIn} style={notificationsStyle.alertTimerText} />
-        </Alert>,
-      );
-
-      return;
-    }
-
-    Keyboard.dismiss();
-    navigate('/rewarded/samples');
-  };
-
-  const handleCountdown = (currentTime: number) => {
-    const isBelowThreshold = currentTime <= keepRewardsHours;
-    if (isBelowThreshold && !rewardsAreRefreshable) setRewardsAreRefreshable(true);
-  };
-
   return (
     <ScrollView
       style={{ flex: 1 }}
@@ -131,11 +61,6 @@ function Settings() {
       bounces={false}
     >
       <SafeAreaView style={mainStyle.safe}>
-        <CountdownTimer
-          countdownFrom={countdownFrom}
-          onChange={handleCountdown}
-          isHidden
-        />
         <View style={settingsStyle.navigation}>
           <Link
             to="/"
@@ -175,8 +100,6 @@ function Settings() {
             onOpen={() => setOpenTimeSigSelect(true)}
             onClose={() => setOpenTimeSigSelect(false)}
             onSelect={onTimeSigChange}
-            onRewardedClick={handleRewardedProOpen}
-            unlockedPro={global.unlockedPro || false}
           />
 
           <View style={settingsStyle.soundWrapper}>
@@ -188,24 +111,9 @@ function Settings() {
               onOpen={() => setOpenSoundSelect(true)}
               onClose={() => setOpenSoundSelect(false)}
               onSelect={onSampleChange}
-              onRewardedClick={handleRewardedSamplesOpen}
-              compareSamples={global.unlockedSamples}
             />
-            {config.ads && (
-              <TouchableHighlight
-                onPress={handleRewardedSamplesOpen}
-                disabled={openTimeSigSelect || openSoundSelect}
-                underlayColor={colors.grayBlue}
-                style={settingsStyle.btnRewardScreen}
-              >
-                <Text style={settingsStyle.btnRewardScreenText}>
-                  {t(hasAllRewards ? 'settings.keep_rewards' : 'settings.more_samples')}
-                </Text>
-              </TouchableHighlight>
-            )}
           </View>
         </View>
-        <View style={mainStyle.adSpace} />
       </SafeAreaView>
     </ScrollView>
   );

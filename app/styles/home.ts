@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { Font } from '.';
-import colors from './colors';
-import { isTablet } from '../utils';
+import colors from '@styles/colors';
+import { isTablet, isiPhone } from '@utils';
 
 const homeStyle = StyleSheet.create({
   wrapper: {
@@ -28,7 +27,7 @@ const homeStyle = StyleSheet.create({
     width: '100%',
   },
   navigation: {
-    alignItems: 'flex-start',
+    alignItems: 'flex-end',
     display: 'flex',
     flexDirection: 'row',
     height: isTablet ? '12%' : '14%',
@@ -41,24 +40,12 @@ const homeStyle = StyleSheet.create({
     height: '100%',
   },
   menu: {
-    aspectRatio: 1 / 2,
-    height: '120%',
-    marginTop: -2,
-  },
-  appEnvironment: {
-    alignItems: 'center',
-    backgroundColor: colors.gray,
-    borderRadius: 15,
     display: 'flex',
+    alignItems: 'flex-end',
     justifyContent: 'center',
-    marginTop: isTablet ? 40 : 20,
-  },
-  appEnvironmentText: {
-    color: colors.primaryDark,
-    fontFamily: Font.semiBold,
-    fontSize: isTablet ? 14 : 12,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
+    height: 30,
+    width: 40,
+    marginBottom: isiPhone ? 12 : 15,
   },
 });
 

@@ -10,25 +10,26 @@ import {
   View,
 } from 'react-native';
 import { Link } from 'react-router-native';
+import { useTeleport } from '@app/context';
+import Exit from '@assets/icons/Exit';
+import MidiFile from '@assets/img/midiFile.png';
+import MidiFileLogic from '@assets/img/midiFile_Logic.png';
+import SliderThumb from '@components/elements/inputs/SliderThumb';
+import Alert from '@components/elements/misc/Alert';
+import useLocale from '@locales';
 import { Slider } from '@miblanchard/react-native-slider';
+import { actions } from '@store/globalStore';
+import { Font } from '@styles';
+import bottomStyle from '@styles/bottom';
+import colors from '@styles/colors';
+import guideStyle from '@styles/guide';
+import { sliderStyle } from '@styles/inputs';
+import mainStyle from '@styles/main';
+import modalsStyle from '@styles/modals';
+import notificationsStyle from '@styles/notifications';
+import { useAppDispatch, useAppSelector } from '@utils/hooks';
 import { secondsToMilliseconds } from 'date-fns';
 import { isEqual } from 'lodash';
-import Exit from '../../assets/icons/Exit';
-import MidiFile from '../../assets/img/midiFile.png';
-import MidiFileLogic from '../../assets/img/midiFile_Logic.png';
-import useLocale from '../../locales';
-import { actions } from '../../store/globalStore';
-import { Font } from '../../styles';
-import bottomStyle from '../../styles/bottom';
-import colors from '../../styles/colors';
-import guideStyle from '../../styles/guide';
-import { sliderStyle } from '../../styles/inputs';
-import mainStyle from '../../styles/main';
-import modalsStyle from '../../styles/modals';
-import notificationsStyle from '../../styles/notifications';
-import { useAppDispatch, useAppSelector, useTeleport } from '../../utils/hooks';
-import SliderThumb from '../elements/inputs/SliderThumb';
-import Alert from '../elements/misc/Alert';
 
 export function Guide() {
   const { t } = useLocale();
@@ -68,7 +69,7 @@ export function Guide() {
         <Exit fill={colors.primaryDark} />
       </Link>
 
-      <ScrollView style={guideStyle.guideScroll}>
+      <ScrollView style={guideStyle.guideScroll} contentContainerStyle={guideStyle.guideContainer}>
         <Text style={guideStyle.guideTitle}>{t('guide.title')}</Text>
         <Text style={guideStyle.guideSub}>{t('guide.section_1.title')}</Text>
         <Text style={guideStyle.guideTxt}>{t('guide.section_1.paragraph_1')}</Text>
@@ -117,7 +118,7 @@ export function Guide() {
           step={config.sliderStep}
           minimumTrackTintColor={colors.grayLight}
           maximumTrackTintColor={colors.grayLight}
-          containerStyle={[sliderStyle.container, { marginVertical: 10 }] as ViewStyle}
+          containerStyle={[sliderStyle.container, { marginVertical: 10 }] as unknown as ViewStyle}
           trackStyle={sliderStyle.track}
           renderThumbComponent={() => <SliderThumb label={t('hihat')} />}
           thumbTouchSize={{ width: 65, height: 25 }}
@@ -302,7 +303,6 @@ export function Guide() {
           {t('guide.section_5.email')}
         </Text>
       </ScrollView>
-      <View style={mainStyle.adSpace} />
     </SafeAreaView>
   );
 }

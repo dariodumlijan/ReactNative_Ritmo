@@ -1,34 +1,19 @@
-import {
-  get, isNil, map, merge, omit, reject, uniq,
-} from 'lodash';
-import { BeatTypes } from './beatsStore';
-import * as API from '../api';
-import { t } from '../locales';
-import * as MIDI from '../midi';
-import { admob, config } from '../tokens';
-import { deviceInfo, isSampleUnlocked } from '../utils';
-import { getSamples, getTimeSignatures, getUnlockedSamples } from '../utils/lists';
-import * as LocalStorage from '../utils/localStorage';
-import type { RootState } from '.';
-import type { BuildMidi, BuildPromise } from '../midi';
-import type { Beats } from '../sound/beats';
-import type { PresetKey, ReduxAction, SoundKey } from '../types';
-import type { Sample, TimeSig } from '../utils/lists';
-import type {
-  FetchResponse,
-  SaveRewardsResponse,
-  UnlockProFeaturesResponse,
-  WriteResponse,
-} from '../utils/localStorage';
-
-export type RewardedAt = {
-  samples?: number | null,
-  pro?: number | null,
-};
+import * as MIDI from '@app/midi';
+import { t } from '@locales';
+import { BeatTypes } from '@store/beatsStore';
+import { getTimeSignatures } from '@utils/lists';
+import * as LocalStorage from '@utils/localStorage';
+import { merge, omit } from 'lodash';
+import type { BuildMidi, BuildPromise } from '@app/midi';
+import type { Beats } from '@sound/beats';
+import type { RootState } from '@store';
+import type { PresetKey, ReduxAction, SoundKey } from '@types';
+import type { Sample, TimeSig, TimeSigOption } from '@utils/lists';
+import type { FetchResponse, WriteResponse } from '@utils/localStorage';
 
 export type TimeSignaturePayload = {
   key: 'all' | keyof typeof SoundKey,
-  value: string,
+  value: TimeSig,
 };
 
 export type Sliders = {
@@ -38,18 +23,15 @@ export type Sliders = {
 };
 
 export type TimeSignature = {
-  [SoundKey.hihat]: string,
-  [SoundKey.snare]: string,
-  [SoundKey.kick]: string,
+  [SoundKey.hihat]: TimeSig,
+  [SoundKey.snare]: TimeSig,
+  [SoundKey.kick]: TimeSig,
 };
 
 export type UI = {
   fileUri?: string,
   isPlaying: boolean,
   navigationOpen?: boolean,
-  personalisedAds?: boolean,
-  selectedReward?: Sample | null,
-  showAds: boolean,
   useBPM: number,
   useSample: Sample,
   useTimeSig: TimeSignature,
@@ -61,46 +43,26 @@ export type Preset = {
   useTimeSig: TimeSignature,
 };
 
-type AdmobIds = {
-  banner: string,
-  rewarded: string,
-};
-
 export type State = {
-  codepushData?: Object & {
-    environment: 'Production' | 'Staging',
-    deploymentKey: string,
-  },
   developerMode: boolean,
   presets?: {
     [key: string]: Preset | null,
   },
   sliders: Sliders,
   ui: UI,
-  unlockedSamples: string[],
-  unlockedPro?: boolean,
-  rewardedAt?: RewardedAt,
 };
 
 export enum GlobalTypes {
-  GB_SHOW_PERSONALISED_ADS = 'GB/SHOW_PERSONALISED_ADS',
-  GB_SHOW_ADS = 'GB/SHOW_ADS',
   GB_TOGGLE_NAVIGATION = 'GB/TOGGLE_NAVIGATION',
   GB_TOGGLE_DEVELOPER_MODE = 'GB/TOGGLE_DEVELOPER_MODE',
   GB_UPDATE_BPM = 'GB/UPDATE_BPM',
   GB_UPDATE_TIME_SIG = 'GB/UPDATE_TIME_SIG',
   GB_UPDATE_SELECTED_SAMPLE = 'GB/UPDATE_SELECTED_SAMPLE',
-  GB_UPDATE_SELECTED_REWARD = 'GB/UPDATE_SELECTED_REWARD',
 
-  GB_GET_DEPLOYMENT_DATA = 'GB/GET_DEPLOYMENT_DATA',
-  GB_GET_DEPLOYMENT_DATA_PENDING = 'GB/GET_DEPLOYMENT_DATA_PENDING',
-  GB_GET_DEPLOYMENT_DATA_REJECTED = 'GB/GET_DEPLOYMENT_DATA_REJECTED',
-  GB_GET_DEPLOYMENT_DATA_FULFILLED = 'GB/GET_DEPLOYMENT_DATA_FULFILLED',
-
-  GB_FETCH_PRESET_AND_SAMPLES = 'GB/FETCH_PRESET_AND_SAMPLES',
-  GB_FETCH_PRESET_AND_SAMPLES_PENDING = 'GB/FETCH_PRESET_AND_SAMPLES_PENDING',
-  GB_FETCH_PRESET_AND_SAMPLES_REJECTED = 'GB/FETCH_PRESET_AND_SAMPLES_REJECTED',
-  GB_FETCH_PRESET_AND_SAMPLES_FULFILLED = 'GB/FETCH_PRESET_AND_SAMPLES_FULFILLED',
+  GB_FETCH_PRESETS = 'GB/FETCH_PRESETS',
+  GB_FETCH_PRESETS_PENDING = 'GB/FETCH_PRESETS_PENDING',
+  GB_FETCH_PRESETS_REJECTED = 'GB/FETCH_PRESETS_REJECTED',
+  GB_FETCH_PRESETS_FULFILLED = 'GB/FETCH_PRESETS_FULFILLED',
 
   GB_WRITE_PRESET = 'GB/WRITE_PRESET',
   GB_WRITE_PRESET_PENDING = 'GB/WRITE_PRESET_PENDING',
@@ -114,28 +76,6 @@ export enum GlobalTypes {
 
   GB_LOAD_PRESET = 'GB/LOAD_PRESET',
 
-  GB_UNLOCK_PRO_FEATURES = 'GB/UNLOCK_PRO_FEATURES',
-  GB_UNLOCK_PRO_FEATURES_PENDING = 'GB/UNLOCK_PRO_FEATURES_PENDING',
-  GB_UNLOCK_PRO_FEATURES_REJECTED = 'GB/UNLOCK_PRO_FEATURES_REJECTED',
-  GB_UNLOCK_PRO_FEATURES_FULFILLED = 'GB/UNLOCK_PRO_FEATURES_FULFILLED',
-
-  GB_LOCK_PRO_FEATURES = 'GB/LOCK_PRO_FEATURES',
-  GB_LOCK_PRO_FEATURES_PENDING = 'GB/LOCK_PRO_FEATURES_PENDING',
-  GB_LOCK_PRO_FEATURES_REJECTED = 'GB/LOCK_PRO_FEATURES_REJECTED',
-  GB_LOCK_PRO_FEATURES_FULFILLED = 'GB/LOCK_PRO_FEATURES_FULFILLED',
-
-  GB_UNLOCK_REWARD = 'GB/UNLOCK_REWARD',
-
-  GB_REFRESH_REWARDS = 'GB/REFRESH_REWARDS',
-  GB_REFRESH_REWARDS_PENDING = 'GB/REFRESH_REWARDS_PENDING',
-  GB_REFRESH_REWARDS_REJECTED = 'GB/REFRESH_REWARDS_REJECTED',
-  GB_REFRESH_REWARDS_FULFILLED = 'GB/REFRESH_REWARDS_FULFILLED',
-
-  GB_LOCK_REWARDS = 'GB/LOCK_REWARDS',
-  GB_LOCK_REWARDS_PENDING = 'GB/LOCK_REWARDS_PENDING',
-  GB_LOCK_REWARDS_REJECTED = 'GB/LOCK_REWARDS_REJECTED',
-  GB_LOCK_REWARDS_FULFILLED = 'GB/LOCK_REWARDS_FULFILLED',
-
   GB_EXPORT_MIDI = 'GB/EXPORT_MIDI',
   GB_EXPORT_MIDI_PENDING = 'GB/EXPORT_MIDI_PENDING',
   GB_EXPORT_MIDI_REJECTED = 'GB/EXPORT_MIDI_REJECTED',
@@ -144,82 +84,12 @@ export enum GlobalTypes {
   GB_DELETE_MIDI_FILE = 'GB/DELETE_MIDI_FILE',
 }
 
-export const getAdmobIds = (state: RootState): AdmobIds => {
-  const showTestAds = state.global.developerMode;
-
-  const getBannerID = (): string => {
-    if (deviceInfo.isApple) {
-      return showTestAds ? admob.banner.ios_test : admob.banner.ios;
-    }
-
-    return showTestAds ? admob.banner.android_test : admob.banner.android;
-  };
-
-  const getRewardedID = (): string => {
-    if (deviceInfo.isApple) {
-      return showTestAds ? admob.rewarded.ios_test : admob.rewarded.ios;
-    }
-
-    return showTestAds ? admob.rewarded.android_test : admob.rewarded.android;
-  };
-
-  return {
-    banner: getBannerID(),
-    rewarded: getRewardedID(),
-  };
-};
-
 export const selectors = {
-  getCodepushEnvironment: (state: RootState): 'Production' | 'Staging' => get(state.global.codepushData, 'environment', 'Production'),
-  getAdmobIds: (state: RootState): AdmobIds => getAdmobIds(state),
   getGlobal: (state: RootState): State => state.global,
   getUI: (state: RootState): UI => state.global.ui,
-  getUnlockedSamples: (state: RootState): string[] => state.global.unlockedSamples,
-  getLockedSamples: (state: RootState): Sample[] => {
-    const samples = getSamples();
-
-    return reject(samples, (sample: Sample) => isSampleUnlocked(state.global.unlockedSamples, sample));
-  },
-  hasUnlockedSample: (state: RootState): boolean => {
-    const defaultUnlockedSamples = getUnlockedSamples();
-
-    return state.global.unlockedSamples.length > defaultUnlockedSamples.length;
-  },
 };
 
 export const actions = {
-  getDeploymentData: () => ({
-    type: GlobalTypes.GB_GET_DEPLOYMENT_DATA,
-    payload: API.getDeploymentData(),
-  }),
-  showPersonalisedAds: (bool: boolean) => ({
-    type: GlobalTypes.GB_SHOW_PERSONALISED_ADS,
-    payload: { personalisedAds: bool },
-  }),
-  showAds: (showAds: boolean) => ({
-    type: GlobalTypes.GB_SHOW_ADS,
-    payload: { showAds },
-  }),
-  unlockReward: (sampleLabel?: string) => ({
-    type: GlobalTypes.GB_UNLOCK_REWARD,
-    payload: sampleLabel,
-  }),
-  unlockProFeatures: () => ({
-    type: GlobalTypes.GB_UNLOCK_PRO_FEATURES,
-    payload: LocalStorage.unlockProFeatures(),
-  }),
-  refreshRewards: () => ({
-    type: GlobalTypes.GB_REFRESH_REWARDS,
-    payload: LocalStorage.saveRewards(Date.now()),
-  }),
-  lockRewards: () => ({
-    type: GlobalTypes.GB_LOCK_REWARDS,
-    payload: LocalStorage.clearRewards(),
-  }),
-  lockProFeatures: () => ({
-    type: GlobalTypes.GB_LOCK_PRO_FEATURES,
-    payload: LocalStorage.lockProFeatures(),
-  }),
   toggleNavigation: (bool: boolean) => ({
     type: GlobalTypes.GB_TOGGLE_NAVIGATION,
     payload: { navigationOpen: bool },
@@ -236,9 +106,9 @@ export const actions = {
     type: GlobalTypes.GB_DELETE_MIDI_FILE,
     payload: MIDI.deleteMIDIFile(fileUri),
   }),
-  fetchPresetAndSamples: () => ({
-    type: GlobalTypes.GB_FETCH_PRESET_AND_SAMPLES,
-    payload: LocalStorage.fetchPresetAndSamples(),
+  fetchPresets: () => ({
+    type: GlobalTypes.GB_FETCH_PRESETS,
+    payload: LocalStorage.fetchPresets(),
   }),
   loadPreset: (preset: Preset) => ({
     type: GlobalTypes.GB_LOAD_PRESET,
@@ -264,98 +134,18 @@ export const actions = {
     type: GlobalTypes.GB_UPDATE_SELECTED_SAMPLE,
     payload: { useSample: sample },
   }),
-  updateSelectedReward: (sample: Sample) => ({
-    type: GlobalTypes.GB_UPDATE_SELECTED_REWARD,
-    payload: { selectedReward: sample },
-  }),
-};
-
-const unlockReward = (state: State, sampleLabel?: string): State => {
-  const samples = getSamples();
-  const reward = sampleLabel || state.ui.selectedReward?.label;
-  const newUnlockedSamples = uniq(reward ? [...state.unlockedSamples, reward] : [...state.unlockedSamples]);
-  const lockedSamples = reject(samples, (sample: Sample) => isSampleUnlocked(newUnlockedSamples, sample));
-  const rewardedAt = Date.now();
-  LocalStorage.saveRewards(rewardedAt, newUnlockedSamples);
-
-  return {
-    ...state,
-    ui: {
-      ...state.ui,
-      selectedReward: get(lockedSamples, [0], null),
-    },
-    unlockedSamples: newUnlockedSamples,
-    rewardedAt: {
-      ...state.rewardedAt,
-      samples: rewardedAt,
-    },
-  };
-};
-
-const refreshRewards = (state: State, payload: SaveRewardsResponse): State => ({
-  ...state,
-  rewardedAt: {
-    ...state.rewardedAt,
-    samples: payload.rewardedAt,
-  },
-});
-
-const lockSamples = (state: State): State => {
-  const samples = getSamples();
-  const unlockedSamples = getUnlockedSamples();
-  const lockedSamples = reject(samples, (sample: Sample) => isSampleUnlocked(unlockedSamples, sample));
-
-  return {
-    ...state,
-    unlockedSamples,
-    rewardedAt: {
-      ...state.rewardedAt,
-      samples: null,
-    },
-    ui: {
-      ...state.ui,
-      selectedReward: get(lockedSamples, [0], null),
-    },
-  };
-};
-
-const lockProFeatures = (state: State): State => ({
-  ...state,
-  unlockedPro: false,
-  rewardedAt: {
-    ...state.rewardedAt,
-    pro: null,
-  },
-});
-
-const checkUnlockedRewards = (state: State): State => {
-  const samples = getSamples();
-
-  if (!config.ads) {
-    return {
-      ...state,
-      unlockedPro: true,
-      unlockedSamples: map(samples, 'label'),
-    };
-  }
-
-  return state;
 };
 
 const exportMIDI = (state: State, payload: BuildPromise): State => merge({}, state, { ui: { fileUri: payload.fileUri } });
 
 const rotateBeat = (
   state: State,
-  payload: {
-    degree: number,
-    key: string,
-  },
+  payload: { degree: number, key: string },
 ): State => merge({}, state, { sliders: { [payload.key]: payload.degree } });
 
 const resetBeat = (state: State): State => {
-  const samples = getSamples();
   const timeSignatures = getTimeSignatures(t);
-  const timeSig: TimeSig = timeSignatures[0] as TimeSig;
+  const timeSig: TimeSigOption = timeSignatures[0] as TimeSigOption;
 
   return merge({}, state, {
     ui: {
@@ -366,7 +156,6 @@ const resetBeat = (state: State): State => {
         snare: timeSig.value,
         kick: timeSig.value,
       },
-      useSample: samples[0],
     },
     sliders: {
       hihat: 0,
@@ -376,23 +165,7 @@ const resetBeat = (state: State): State => {
   });
 };
 
-const fetchPresetAndSamples = (state: State, payload: FetchResponse) => {
-  const samples = getSamples();
-  const newUnlockedSamples = uniq([...state.unlockedSamples, ...payload.unlockedSamples]);
-  const lockedSamples = reject(samples, (sample: Sample) => isSampleUnlocked(newUnlockedSamples, sample));
-
-  return {
-    ...state,
-    presets: payload.presets,
-    unlockedSamples: newUnlockedSamples,
-    unlockedPro: !config.ads || !isNil(payload.rewardedAt.pro),
-    rewardedAt: payload.rewardedAt,
-    ui: {
-      ...state.ui,
-      selectedReward: get(lockedSamples, [0], null),
-    },
-  };
-};
+const fetchPresets = (state: State, payload: FetchResponse) => ({ ...state, presets: payload.presets });
 
 const loadPreset = (state: State, preset: Preset): State => ({
   ...state,
@@ -445,19 +218,10 @@ const setTimeSig = (state: State, payload: TimeSignaturePayload): State => {
   };
 };
 
-const unlockProFeatures = (state: State, payload: UnlockProFeaturesResponse): State => ({
-  ...state,
-  unlockedPro: true,
-  rewardedAt: {
-    ...state.rewardedAt,
-    pro: payload,
-  },
-});
-
 export const reducer = (state: any, action: ReduxAction) => {
   switch (action.type) {
-    case GlobalTypes.GB_FETCH_PRESET_AND_SAMPLES_FULFILLED:
-      return fetchPresetAndSamples(state, action.payload);
+    case GlobalTypes.GB_FETCH_PRESETS_FULFILLED:
+      return fetchPresets(state, action.payload);
 
     case GlobalTypes.GB_LOAD_PRESET:
       return loadPreset(state, action.payload);
@@ -471,21 +235,6 @@ export const reducer = (state: any, action: ReduxAction) => {
           [action.payload]: null,
         },
       });
-
-    case GlobalTypes.GB_UNLOCK_REWARD:
-      return unlockReward(state, action.payload);
-
-    case GlobalTypes.GB_UNLOCK_PRO_FEATURES_FULFILLED:
-      return unlockProFeatures(state, action.payload);
-
-    case GlobalTypes.GB_REFRESH_REWARDS_FULFILLED:
-      return refreshRewards(state, action.payload);
-
-    case GlobalTypes.GB_LOCK_REWARDS_FULFILLED:
-      return lockSamples(state);
-
-    case GlobalTypes.GB_LOCK_PRO_FEATURES_FULFILLED:
-      return lockProFeatures(state);
 
     case BeatTypes.BT_ROTATE_BEAT:
       return rotateBeat(state, action.payload);
@@ -511,19 +260,10 @@ export const reducer = (state: any, action: ReduxAction) => {
     case GlobalTypes.GB_UPDATE_TIME_SIG:
       return setTimeSig(state, action.payload);
 
-    case GlobalTypes.GB_SHOW_PERSONALISED_ADS:
-    case GlobalTypes.GB_SHOW_ADS:
     case GlobalTypes.GB_TOGGLE_NAVIGATION:
     case GlobalTypes.GB_UPDATE_BPM:
     case GlobalTypes.GB_UPDATE_SELECTED_SAMPLE:
-    case GlobalTypes.GB_UPDATE_SELECTED_REWARD:
       return merge({}, state, { ui: action.payload });
-
-    case GlobalTypes.GB_GET_DEPLOYMENT_DATA:
-      return checkUnlockedRewards(state);
-
-    case GlobalTypes.GB_GET_DEPLOYMENT_DATA_FULFILLED:
-      return merge({}, state, { codepushData: action.payload });
 
     case GlobalTypes.GB_TOGGLE_DEVELOPER_MODE:
       return merge({}, state, { developerMode: action.payload });

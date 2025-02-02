@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { Font } from '.';
-import colors from './colors';
-import { isTablet } from '../utils';
+import { Font } from '@styles';
+import colors from '@styles/colors';
+import { isTablet } from '@utils';
 
 const notificationsStyle = StyleSheet.create({
   alertWrapper: {

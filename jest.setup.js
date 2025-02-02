@@ -19,17 +19,6 @@ jest.doMock('react-native', () => Object.setPrototypeOf(
         eventsAddListener: jest.fn(),
         eventsNotifyReady: jest.fn(),
       },
-      RNGoogleMobileAdsModule: {
-        addListener: jest.fn(),
-        removeListeners: jest.fn(),
-        eventsAddListener: jest.fn(),
-        eventsNotifyReady: jest.fn(),
-      },
-      RNGoogleMobileAdsInterstitialModule: {
-        interstitialLoad: jest.fn(),
-      },
-      RNGoogleMobileAdsRewardedModule: {},
-      RNGoogleMobileAdsConsentModule: {},
     },
     TurboModuleRegistry: {
       getEnforcing: () => ({
@@ -57,30 +46,6 @@ jest.mock('react-native-in-app-review', () => ({
   RequestInAppReview: jest.fn(),
   isAvailable: jest.fn(),
 }));
-
-jest.mock('react-native-code-push', () => {
-  const cp = () => (app) => app;
-  Object.assign(cp, {
-    InstallMode: {},
-    CheckFrequency: {},
-    SyncStatus: {},
-    UpdateState: {},
-    DeploymentStatus: {},
-    DEFAULT_UPDATE_DIALOG: {},
-
-    checkForUpdate: jest.fn(),
-    codePushify: jest.fn(),
-    getConfiguration: jest.fn(),
-    getCurrentPackage: jest.fn(),
-    getUpdateMetadata: jest.fn(),
-    log: jest.fn(),
-    notifyAppReady: jest.fn(),
-    notifyApplicationReady: jest.fn(),
-    sync: jest.fn(),
-  });
-
-  return cp;
-});
 
 jest.mock('react-native-share', () => ({
   default: jest.fn(),

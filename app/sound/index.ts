@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/lines-between-class-members */
 import Sound from 'react-native-sound';
+import { sliderStep } from '@tokens';
 import accurateInterval from 'accurate-interval';
 import { filter, floor, keyBy } from 'lodash';
-import { sliderStep } from '../tokens';
-import type { Beat, Beats } from './beats';
-import type { Sample } from '../utils/lists';
+import type { Beat, Beats } from '@sound/beats';
+import type { Sample } from '@utils/lists';
 import type { AccurateInterval } from 'accurate-interval';
 
 export type PlaybackSounds = {

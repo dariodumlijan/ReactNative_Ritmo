@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { Font } from '.';
-import colors from './colors';
-import { isTablet, isiPhone } from '../utils';
+import { Font } from '@styles';
+import colors from '@styles/colors';
+import { isTablet } from '@utils';
 
 const guideStyle = StyleSheet.create({
   guideTitle: {
@@ -13,9 +13,11 @@ const guideStyle = StyleSheet.create({
   guideScroll: {
     flex: 1,
     height: '100%',
-    marginBottom: isiPhone ? '0%' : '8%',
-    marginTop: isiPhone ? '18%' : '22%',
+    marginTop: isTablet ? '22%' : '12%',
     width: '100%',
+  },
+  guideContainer: {
+    paddingBottom: 100,
   },
   guideSub: {
     color: colors.primaryDark,

@@ -8,10 +8,7 @@ type Props = {
 
 function Logo(props: Props) {
   return (
-    <Svg
-      viewBox="0 0 1042.8 285.54"
-      style={props.style}
-    >
+    <Svg viewBox="0 0 1042.8 285.54" style={props.style}>
       <Path
         fill={props.fill}
         d="M151.8,62A51.13,51.13,0,0,1,59,91.6V281.4H0V62Z"

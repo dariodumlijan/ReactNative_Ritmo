@@ -1,5 +1,5 @@
-import type { RootState } from '.';
-import type { ReduxAction } from '../types';
+import type { RootState } from '@store';
+import type { ReduxAction } from '@types';
 
 export type State = {
   loadTime: number,

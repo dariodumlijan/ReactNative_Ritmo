@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { Font } from '.';
-import colors from './colors';
-import { deviceHeight, deviceWidth, isTablet } from '../utils';
+import { Font } from '@styles';
+import colors from '@styles/colors';
+import { deviceHeight, deviceWidth, isTablet } from '@utils';
 
 const navBgMaxSize = 1000;
 const navMaxSize = navBgMaxSize / 2;
@@ -55,6 +55,7 @@ const navigationStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     marginBottom: 20,
+    marginTop: 20,
     width: '100%',
   },
   tagline: {
